@@ -1,0 +1,32 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Architect Review Swarm",
+  "version": "1.0.0",
+  "author": "DevOps Solutions",
+  "description": "A high-level architectural review swarm for quality auditing and security scanning.",
+  "industry": "Software Development",
+  "tags": ["development", "code-review", "architecture"],
+  
+  "defaults": {
+    "model": "llama-3.3-70b-versatile",
+    "temperature": 0.2
+  },
+
+  "roster": [
+    {
+      "id": "sr_architect",
+      "path": "agents/sr_architect.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "security_auditor",
+      "path": "agents/security_auditor.json",
+      "supervisor": "sr_architect",
+      "priority": "high"
+    }
+  ],
+
+  "required_mcps": "mcps.json",
+  "global_workflows": []
+}

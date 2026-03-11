@@ -1,0 +1,32 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Clinical Intake Swarm",
+  "version": "1.0.0",
+  "author": "Medical Systems Inc.",
+  "description": "An optimized swarm for processing raw patient data and clinical intake automation.",
+  "industry": "Medical Practices",
+  "tags": ["healthcare", "patient-intake", "triage"],
+  
+  "defaults": {
+    "model": "llama-3.3-70b-versatile",
+    "temperature": 0.4
+  },
+
+  "roster": [
+    {
+      "id": "care_coordinator",
+      "path": "agents/care_coordinator.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "intake_processor",
+      "path": "agents/intake_processor.json",
+      "supervisor": "care_coordinator",
+      "priority": "normal"
+    }
+  ],
+
+  "required_mcps": "mcps.json",
+  "global_workflows": []
+}

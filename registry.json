@@ -11,7 +11,8 @@
     "Specialized Consultancies",
     "Logistics & Supply Chain",
     "Engineering & Architecture",
-    "EdTech & Training"
+    "EdTech & Training",
+    "Software Development"
   ],
   "company_sizes": [25, 50, 100, 150, 200],
   "templates": [
@@ -23,6 +24,24 @@
       "tags": ["law", "contracts", "auditing"],
       "path": "legal/contract-review",
       "company_size": 25
+    },
+    {
+      "id": "healthcare-patient-intake",
+      "name": "Patient Intake Automation",
+      "description": "Process clinical data and automate patient intake workflows.",
+      "industry": "Medical Practices",
+      "tags": ["healthcare", "intake", "medical"],
+      "path": "healthcare/patient-intake",
+      "company_size": 25
+    },
+    {
+      "id": "development-code-reviewer",
+      "name": "Sr. Architect Reviewer",
+      "description": "Automated code review and architectural auditing from a senior perspective.",
+      "industry": "Software Development",
+      "tags": ["development", "devops", "code-review"],
+      "path": "development/code-reviewer",
+      "company_size": 50
     }
   ]
 }
