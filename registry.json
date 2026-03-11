@@ -1,0 +1,15 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/template-registry-v1.json",
+  "repository": "Tadpole-OS-Industry-Templates",
+  "industries": ["legal", "healthcare", "development"],
+  "templates": [
+    {
+      "id": "legal-contract-review",
+      "name": "Legal Contract Auditor",
+      "description": "A high-performance swarm tailored for NDA and contract analysis, featuring a Managing Partner and an Auditor agent.",
+      "industry": "legal",
+      "tags": ["law", "contracts", "auditing"],
+      "path": "legal/contract-review"
+    }
+  ]
+}
