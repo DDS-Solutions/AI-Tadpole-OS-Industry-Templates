@@ -1,15 +1,28 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/template-registry-v1.json",
   "repository": "Tadpole-OS-Industry-Templates",
-  "industries": ["legal", "healthcare", "development"],
+  "industries": [
+    "Legal Services",
+    "Medical Practices",
+    "Financial Services",
+    "Digital Marketing",
+    "E-commerce",
+    "Real Estate",
+    "Specialized Consultancies",
+    "Logistics & Supply Chain",
+    "Engineering & Architecture",
+    "EdTech & Training"
+  ],
+  "company_sizes": [25, 50, 100, 150, 200],
   "templates": [
     {
       "id": "legal-contract-review",
       "name": "Legal Contract Auditor",
-      "description": "A high-performance swarm tailored for NDA and contract analysis, featuring a Managing Partner and an Auditor agent.",
-      "industry": "legal",
+      "description": "AI-driven contract analysis, litigation forecasting, and automated discovery.",
+      "industry": "Legal Services",
       "tags": ["law", "contracts", "auditing"],
-      "path": "legal/contract-review"
+      "path": "legal/contract-review",
+      "company_size": 25
     }
   ]
 }
