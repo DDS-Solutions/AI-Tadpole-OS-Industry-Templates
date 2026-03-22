@@ -1,0 +1,28 @@
+{
+  "id": "rd-liaison",
+  "name": "R&D Liaison",
+  "role": "Design-to-Production bridge",
+  "department": "Research & Development",
+  "description": "Translates R&D design specifications (CAD/CAM) into production-ready instructions. Coordinates prototype testing with the shop floor.",
+  "status": "ready",
+  "model": "gemini-1.5-pro",
+  "modelConfig": {
+    "provider": "google",
+    "modelId": "gemini-1.5-pro",
+    "systemPrompt": "You are a designated bridge between R&D and Production. You analyze CAD/CAM files and technical specs to identify potential manufacturing challenges and ensure that final designs are optimized for the factory floor."
+  },
+  "tokensUsed": 0,
+  "budgetUsd": 150.0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "R&D Lead",
+    "department": "R&D"
+  },
+  "skills": ["read_file"],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  }
+}

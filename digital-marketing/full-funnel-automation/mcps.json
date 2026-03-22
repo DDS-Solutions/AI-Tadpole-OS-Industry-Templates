@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "marketing-analytics": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-marketing-connect"],
+      "env": {
+        "META_API_KEY": "YOUR_API_KEY_HERE",
+        "GOOGLE_ADS_ID": "YOUR_ADS_ID_HERE"
+      }
+    },
+    "slack-notifications": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-slack"],
+      "env": {
+        "SLACK_BOT_TOKEN": "YOUR_BOT_TOKEN_HERE"
+      }
+    }
+  }
+}

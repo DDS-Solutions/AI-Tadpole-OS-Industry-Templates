@@ -1,0 +1,28 @@
+{
+  "id": "ad-optimizer",
+  "name": "Ad Optimizer",
+  "role": "Performance Marketer",
+  "department": "Marketing",
+  "description": "Manages and optimizes ad spend across platforms. Monitors ROI and adjusts budgets in real-time to maximize conversion.",
+  "status": "ready",
+  "model": "gemini-1.5-flash",
+  "modelConfig": {
+    "provider": "google",
+    "modelId": "gemini-1.5-flash",
+    "systemPrompt": "You are an expert in performance marketing. You analyze ad performance data from Meta, Google, and LinkedIn to optimize bids and budgets for the best possible ROI."
+  },
+  "tokensUsed": 0,
+  "budgetUsd": 125.0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Optimizer",
+    "department": "Marketing"
+  },
+  "skills": ["read_file", "list_dir"],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  }
+}

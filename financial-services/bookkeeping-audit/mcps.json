@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "google-sheets": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-google-sheets"],
+      "env": {
+        "GOOGLE_API_KEY": "YOUR_API_KEY_HERE"
+      }
+    },
+    "postgres-finance": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres", "postgresql://localhost:5432/finance_db"]
+    }
+  }
+}

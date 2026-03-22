@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "enterprise-erp": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-oracle-netsuite"],
+      "env": {
+        "NETSUITE_TOKEN_ID": "YOUR_TOKEN_ID_HERE"
+      }
+    },
+    "digital-twin-services": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-nvidia-omniverse"],
+      "env": {
+        "OMNIVERSE_API_KEY": "YOUR_API_KEY_HERE"
+      }
+    }
+  }
+}

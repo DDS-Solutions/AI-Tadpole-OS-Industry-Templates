@@ -1,0 +1,28 @@
+{
+  "id": "digital-twin-sync",
+  "name": "Digital Twin Sync",
+  "role": "Real-time Virtualization Lead",
+  "department": "Engineering",
+  "description": "Synchronizes real-time factory floor data with the digital twin model. Simulates production changes to predict outcomes before deployment.",
+  "status": "ready",
+  "model": "gemini-1.5-pro",
+  "modelConfig": {
+    "provider": "google",
+    "modelId": "gemini-1.5-pro",
+    "systemPrompt": "You are a digital twin synchronization agent for an enterprise smart factory. You process high-frequency sensor data to maintain a real-time virtual model of the factory floor and evaluate the impact of proposed production plan changes."
+  },
+  "tokensUsed": 0,
+  "budgetUsd": 250.0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Twin Architect",
+    "department": "Engineering"
+  },
+  "skills": ["read_file", "list_dir"],
+  "workflows": ["smart_factory_sync"],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  }
+}

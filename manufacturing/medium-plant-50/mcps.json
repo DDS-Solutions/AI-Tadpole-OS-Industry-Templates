@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "plant-telemetry": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-iot-hub"],
+      "env": {
+        "AZURE_IOT_CONN_STR": "YOUR_CONNECTION_STRING_HERE"
+      }
+    },
+    "erp-integration": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sap-connector"],
+      "env": {
+        "SAP_CLIENT_ID": "YOUR_CLIENT_ID_HERE"
+      }
+    }
+  }
+}

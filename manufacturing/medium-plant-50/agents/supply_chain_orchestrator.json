@@ -1,0 +1,28 @@
+{
+  "id": "supply-chain-orchestrator",
+  "name": "Supply Chain Orchestrator",
+  "role": "Logistics & Vendor Manager",
+  "department": "Logistics",
+  "description": "Coordinates with multiple vendors to ensure timely delivery of components and materials. Optimizes lead times and shipping costs.",
+  "status": "ready",
+  "model": "gemini-1.5-pro",
+  "modelConfig": {
+    "provider": "google",
+    "modelId": "gemini-1.5-pro",
+    "systemPrompt": "You are a supply chain optimization agent. You manage vendor relationships, track shipment statuses, and identify logistics bottlenecks to ensure that the plant always has the materials it needs."
+  },
+  "tokensUsed": 0,
+  "budgetUsd": 100.0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Supply Chain Lead",
+    "department": "Logistics"
+  },
+  "skills": ["read_file"],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  }
+}

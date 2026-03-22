@@ -1,0 +1,28 @@
+{
+  "id": "bookkeeper-bot",
+  "name": "Bookkeeper Bot",
+  "role": "Daily Reconciliation Specialist",
+  "department": "Finance",
+  "description": "Handles daily bank reconciliation and expense categorization. Ensures all transactions are logged and tagged correctly.",
+  "status": "ready",
+  "model": "gemini-1.5-flash",
+  "modelConfig": {
+    "provider": "google",
+    "modelId": "gemini-1.5-flash",
+    "systemPrompt": "You are a precise bookkeeping agent. Your goal is to reconcile bank statements with internal ledgers, identify discrepancies, and categorize expenses based on the Chart of Accounts."
+  },
+  "tokensUsed": 0,
+  "budgetUsd": 50.0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Bookkeeper",
+    "department": "Finance"
+  },
+  "skills": ["read_file", "list_dir"],
+  "workflows": ["reconciliation_guide"],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  }
+}

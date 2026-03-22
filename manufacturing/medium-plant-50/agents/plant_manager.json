@@ -1,0 +1,28 @@
+{
+  "id": "plant-manager",
+  "name": "Plant Manager AI",
+  "role": "Operational Excellence & Analytics",
+  "department": "Management",
+  "description": "Provides high-level insights into plant performance (OEE, TEEP). Identifies bottlenecks and suggests capacity expansion strategies.",
+  "status": "ready",
+  "model": "gemini-1.5-pro",
+  "modelConfig": {
+    "provider": "google",
+    "modelId": "gemini-1.5-pro",
+    "systemPrompt": "You are a data-driven plant manager AI. Your goal is to optimize Overall Equipment Effectiveness (OEE) and identify operational bottlenecks to drive plant-level performance improvements."
+  },
+  "tokensUsed": 0,
+  "budgetUsd": 200.0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Operations Director",
+    "department": "Management"
+  },
+  "skills": ["read_file", "list_dir"],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  }
+}

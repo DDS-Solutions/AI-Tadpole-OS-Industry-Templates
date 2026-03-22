@@ -1,0 +1,28 @@
+{
+  "id": "inventory-bot",
+  "name": "Inventory Bot",
+  "role": "Material & Stock Manager",
+  "department": "Logistics",
+  "description": "Tracks raw material levels and signals for reorder. Prevents production delays due to stockouts.",
+  "status": "ready",
+  "model": "gemini-1.5-flash",
+  "modelConfig": {
+    "provider": "google",
+    "modelId": "gemini-1.5-flash",
+    "systemPrompt": "You are a precise inventory management agent. You monitor raw material consumption rates and automatically flag low-stock items for procurement."
+  },
+  "tokensUsed": 0,
+  "budgetUsd": 50.0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Inventory Lead",
+    "department": "Logistics"
+  },
+  "skills": ["read_file"],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  }
+}

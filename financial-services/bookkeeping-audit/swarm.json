@@ -1,0 +1,13 @@
+{
+  "id": "bookkeeping-audit",
+  "name": "Bookkeeping & Audit Swarm",
+  "industry": "Financial Services",
+  "company_size": "SMB (<50 Employees)",
+  "description": "Automate daily reconciliation, tax preparation, and audit trails. Designed for small businesses to reduce accounting overhead and ensure compliance.",
+  "author": "Tadpole OS",
+  "tags": ["finance", "accounting", "tax", "audit"],
+  "path": "financial-services/bookkeeping-audit",
+  "agents": ["bookkeeper-bot", "tax-strategist", "audit-overseer"],
+  "required_mcps": "mcps.json",
+  "version": "1.0.0"
+}

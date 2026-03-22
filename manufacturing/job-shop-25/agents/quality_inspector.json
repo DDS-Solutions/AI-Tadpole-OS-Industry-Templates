@@ -1,0 +1,28 @@
+{
+  "id": "quality-inspector",
+  "name": "Quality Inspector",
+  "role": "Precision & Standards Control",
+  "department": "Production",
+  "description": "Analyzes sensor data and manual inspection logs to ensure all products meet tolerance standards. Detects anomalies before products leave the factory floor.",
+  "status": "ready",
+  "model": "gemini-1.5-flash",
+  "modelConfig": {
+    "provider": "google",
+    "modelId": "gemini-1.5-flash",
+    "systemPrompt": "You are a quality control AI. You analyze measurement logs and visual inspection data to verify that parts are within tolerance. You flag any defects for immediate rework."
+  },
+  "tokensUsed": 0,
+  "budgetUsd": 75.0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "QC Lead",
+    "department": "Production"
+  },
+  "skills": ["read_file", "list_dir"],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  }
+}

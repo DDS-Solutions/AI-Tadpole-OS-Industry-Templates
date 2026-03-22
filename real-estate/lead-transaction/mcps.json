@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "real-estate-crm": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-hubspot-crm"],
+      "env": {
+        "HUBSPOT_API_KEY": "YOUR_API_KEY_HERE"
+      }
+    },
+    "zillow-data": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-zillow-fetcher"],
+      "env": {
+        "ZILLOW_RAPIDAPI_KEY": "YOUR_API_KEY_HERE"
+      }
+    }
+  }
+}

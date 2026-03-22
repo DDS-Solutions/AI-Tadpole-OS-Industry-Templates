@@ -1,0 +1,13 @@
+{
+  "id": "medium-plant-50",
+  "name": "Medium Manufacturing Plant (50 Seats)",
+  "industry": "Manufacturing",
+  "company_size": "SMB (<50 Employees)",
+  "description": "Optimize predictive maintenance, supply chain coordination, and plant-level analytics for medium-sized manufacturing facilities.",
+  "author": "Tadpole OS",
+  "tags": ["manufacturing", "maintenance", "supply-chain", "analytics"],
+  "path": "manufacturing/medium-plant-50",
+  "agents": ["maintenance-lead", "supply-chain-orchestrator", "plant-manager"],
+  "required_mcps": "mcps.json",
+  "version": "1.0.0"
+}

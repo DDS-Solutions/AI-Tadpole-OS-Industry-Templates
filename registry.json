@@ -12,7 +12,8 @@
     "Logistics & Supply Chain",
     "Engineering & Architecture",
     "EdTech & Training",
-    "Software Development"
+    "Software Development",
+    "Manufacturing"
   ],
   "company_sizes": [25, 50, 100, 150, 200],
   "templates": [
@@ -42,6 +43,60 @@
       "tags": ["development", "devops", "code-review"],
       "path": "development/code-reviewer",
       "company_size": 50
+    },
+    {
+      "id": "bookkeeping-audit",
+      "name": "SMB Bookkeeping Swarm",
+      "description": "Automated daily reconciliation, tax optimization, and digital audit trails.",
+      "industry": "Financial Services",
+      "tags": ["finance", "accounting", "tax", "audit"],
+      "path": "financial-services/bookkeeping-audit",
+      "company_size": 25
+    },
+    {
+      "id": "full-funnel-automation",
+      "name": "Marketing Funnel Pilot",
+      "description": "Automated content generation, ad spend optimization, and journey analytics.",
+      "industry": "Digital Marketing",
+      "tags": ["marketing", "ads", "content", "automation"],
+      "path": "digital-marketing/full-funnel-automation",
+      "company_size": 25
+    },
+    {
+      "id": "lead-transaction-management",
+      "name": "Real Estate Closer",
+      "description": "Automated lead nurturing, MLS syndication, and escrow timeline tracking.",
+      "industry": "Real Estate",
+      "tags": ["real-estate", "leads", "transactions", "automation"],
+      "path": "real-estate/lead-transaction",
+      "company_size": 25
+    },
+    {
+      "id": "manufacturing-job-shop-25",
+      "name": "Job Shop (25 Seats)",
+      "description": "Optimized production scheduling and material tracking for small-scale manufacturing.",
+      "industry": "Manufacturing",
+      "tags": ["manufacturing", "production", "inventory"],
+      "path": "manufacturing/job-shop-25",
+      "company_size": 25
+    },
+    {
+      "id": "manufacturing-medium-plant-50",
+      "name": "Medium Plant (50 Seats)",
+      "description": "Predictive maintenance and supply chain orchestration for medium-sized facilities.",
+      "industry": "Manufacturing",
+      "tags": ["manufacturing", "maintenance", "supply-chain"],
+      "path": "manufacturing/medium-plant-50",
+      "company_size": 50
+    },
+    {
+      "id": "manufacturing-smart-factory-100",
+      "name": "Smart Factory (100 Seats)",
+      "description": "Enterprise-level ERP integration and digital twin synchronization across sites.",
+      "industry": "Manufacturing",
+      "tags": ["smart-factory", "digital-twin", "erp"],
+      "path": "manufacturing/smart-factory-100",
+      "company_size": 100
     }
   ]
 }

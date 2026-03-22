@@ -1,0 +1,13 @@
+{
+  "id": "lead-transaction-management",
+  "name": "Real Estate Lead & Transaction Management",
+  "industry": "Real Estate",
+  "company_size": "SMB (<25 Employees)",
+  "description": "Automate lead nurturing, property listing syndication, and transaction coordination. Designed for small agencies to close more deals with less paperwork.",
+  "author": "Tadpole OS",
+  "tags": ["real-estate", "leads", "transactions", "automation"],
+  "path": "real-estate/lead-transaction",
+  "agents": ["listing-agent", "transaction-coordinator", "client-concierge"],
+  "required_mcps": "mcps.json",
+  "version": "1.0.0"
+}

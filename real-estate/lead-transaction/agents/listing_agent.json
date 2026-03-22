@@ -1,0 +1,28 @@
+{
+  "id": "listing-agent",
+  "name": "Listing Agent",
+  "role": "Inventory & Listing Manager",
+  "department": "Sales",
+  "description": "Manages property listings, generates descriptions, and syndicates data to MLS-compatible platforms.",
+  "status": "ready",
+  "model": "gemini-1.5-pro",
+  "modelConfig": {
+    "provider": "google",
+    "modelId": "gemini-1.5-pro",
+    "systemPrompt": "You are a real estate listing expert. Your goal is to create attractive, SEO-friendly property descriptions and ensure that all listing details are accurately synced across sales channels."
+  },
+  "tokensUsed": 0,
+  "budgetUsd": 100.0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Listing Lead",
+    "department": "Sales"
+  },
+  "skills": ["generate_image", "read_file"],
+  "workflows": ["lead_nurture"],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  }
+}
