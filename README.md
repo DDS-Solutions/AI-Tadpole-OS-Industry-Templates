@@ -56,4 +56,4 @@ We welcome contributions from industry experts! If you have built an incredibly 
 4. Submit a Pull Request!
 
 ---
-*Built for [Tadpole OS](https://github.com/DDS-Solutions/AI-TadPole-OS).*
+*Built for [AI-Tadpole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS).*
