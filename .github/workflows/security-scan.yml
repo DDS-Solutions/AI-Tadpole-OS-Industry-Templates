@@ -1,0 +1,34 @@
+name: Sapphire Shield Security Scan
+
+on:
+  pull_request:
+    paths:
+      - 'templates/**'
+      - 'legal/**'
+      - 'healthcare/**'
+      - 'development/**'
+      - 'financial-services/**'
+      - 'digital-marketing/**'
+      - 'real-estate/**'
+      - 'manufacturing/**'
+
+jobs:
+  malware-scan:
+    name: ClamAV Malware Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install ClamAV
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clamav clamav-daemon
+
+      - name: Update ClamAV Database
+        run: |
+          sudo freshclam
+
+      - name: Scan Files
+        run: |
+          clamscan -r . --exclude-dir=node_modules --exclude-dir=.git

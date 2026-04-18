@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  /* Neural Color Palette */
+  --color-zinc-950: #040405;
+  --color-zinc-900: #0a0a0c;
+  --color-zinc-800: #1a1a20;
+  --color-zinc-700: #27272a;
+  
+  --color-background: var(--color-zinc-950);
+  --color-surface: var(--color-zinc-900);
+  --color-border: var(--color-zinc-800);
+  
+  /* Intelligence Accent */
+  --color-neural-pulse: #e4e4e7;
+  --color-cyber-green: #22c55e;
+  
+  /* Typography */
+  --font-sans: "Inter", "system-ui", sans-serif;
+  --font-mono: "JetBrains Mono", "monospace";
+
+  /* Glassmorphism Tokens */
+  --blur-neural: 12px;
+  
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-neural-pulse antialiased selection:bg-cyber-green/30;
+    font-family: var(--font-sans);
+  }
+
+  code, pre {
+    font-family: var(--font-mono);
+  }
+}
+
+@layer components {
+  .sovereign-panel {
+    background: color-mix(in srgb, var(--color-zinc-900) 60%, transparent);
+    backdrop-filter: blur(var(--blur-neural));
+    border: 1px solid color-mix(in srgb, var(--color-zinc-800) 40%, transparent);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .sovereign-panel:hover {
+    border-color: color-mix(in srgb, var(--color-zinc-700) 60%, transparent);
+    box-shadow: 0 15px 50px -12px rgba(0, 0, 0, 0.7);
+  }
+
+  .neural-pulse-effect {
+    animation: neural-pulse 2s infinite ease-in-out;
+  }
+}
+
+@keyframes neural-pulse {
+  0% { opacity: 0.3; filter: drop-shadow(0 0 0px #fff); }
+  50% { opacity: 0.8; filter: drop-shadow(0 0 4px #fff); }
+  100% { opacity: 0.3; filter: drop-shadow(0 0 0px #fff); }
+}
+
+@keyframes dash-offset {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+
+.swarm-edge-pulse {
+  stroke-dasharray: 4, 4;
+  animation: dash-offset 20s linear infinite;
+}
