@@ -27,6 +27,17 @@ type WorkflowItem = {
   description: string;
 };
 
+const INDUSTRY_MAP = [
+  { name: 'Legal Services', path: 'legal', keywords: ['law', 'contract', 'litigation', 'legal'] },
+  { name: 'Medical Practices', path: 'healthcare', keywords: ['health', 'patient', 'medical', 'doctor', 'clinic'] },
+  { name: 'Financial Services', path: 'financial-services', keywords: ['money', 'bank', 'finance', 'tax', 'audit', 'accounting'] },
+  { name: 'Digital Marketing', path: 'digital-marketing', keywords: ['ads', 'marketing', 'social media', 'content', 'seo'] },
+  { name: 'E-commerce', path: 'e-commerce', keywords: ['store', 'shop', 'product', 'retail', 'sales'] },
+  { name: 'Real Estate', path: 'real-estate', keywords: ['house', 'property', 'realtor', 'escrow', 'mls'] },
+  { name: 'Manufacturing', path: 'manufacturing', keywords: ['factory', 'production', 'inventory', 'machine', 'order'] },
+  { name: 'Software Development', path: 'development', keywords: ['code', 'software', 'app', 'developer', 'api'] },
+];
+
 export default function App() {
   const [step, setStep] = useState(1);
   const [companyInfo, setCompanyInfo] = useState({
@@ -34,6 +45,8 @@ export default function App() {
     description: '',
     mission: '',
     industry: '',
+    industryPath: '',
+    industryCode: '',
     size: '25'
   });
   const [agents, setAgents] = useState<Agent[]>([
@@ -62,12 +75,26 @@ export default function App() {
   };
 
   const handleAiAssist = () => {
-    // Mock AI Suggestion
-    setCompanyInfo({
-      ...companyInfo,
-      mission: `To revolutionize ${companyInfo.description.toLowerCase()} through sovereign intelligence.`,
-      industry: 'AI & Technology'
-    });
+    const desc = companyInfo.description.toLowerCase();
+    const match = INDUSTRY_MAP.find(i => i.keywords.some(k => desc.includes(k)));
+    
+    if (match) {
+      setCompanyInfo({
+        ...companyInfo,
+        mission: `To revolutionize ${companyInfo.description.toLowerCase()} through sovereign intelligence and automated ${match.name.toLowerCase()} flows.`,
+        industry: match.name,
+        industryPath: match.path,
+        industryCode: 'NAICS ' + (Math.floor(Math.random() * 90000) + 10000) // Mock code
+      });
+      
+      // Suggest industry-specific agent
+      if (agents.length === 1 && agents[0].name === 'Lead Orchestrator') {
+        setAgents([
+          { id: '1', name: 'Lead Orchestrator', role: 'General Coordinator', model: 'gemini-pro-latest', prompt: 'Coordinate swarm operations...' },
+          { id: '2', name: `${match.name.split(' ')[0]} Expert`, role: `${match.name} Specialist`, model: 'gemini-pro-latest', prompt: `Execute high-fidelity ${match.name.toLowerCase()} tasks.` }
+        ]);
+      }
+    }
   };
 
   const handleExport = async () => {
@@ -158,13 +185,39 @@ export default function App() {
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-xs font-mono uppercase text-zinc-500 mb-2">Company Name</label>
+                  <label className="block text-xs font-mono uppercase text-zinc-500 mb-2">Industry / Sector</label>
+                  <select 
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none"
+                    value={companyInfo.industry}
+                    onChange={e => {
+                      const match = INDUSTRY_MAP.find(i => i.name === e.target.value);
+                      setCompanyInfo({...companyInfo, industry: e.target.value, industryPath: match?.path || ''});
+                    }}
+                  >
+                    <option value="">Select Industry...</option>
+                    {INDUSTRY_MAP.map(i => (
+                      <option key={i.path} value={i.name}>{i.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-mono uppercase text-zinc-500 mb-2">NAICS / SIC Code</label>
                   <input 
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none transition-colors"
-                    placeholder="e.g. Acme Intelligence"
-                    value={companyInfo.name}
-                    onChange={e => setCompanyInfo({...companyInfo, name: e.target.value})}
+                    placeholder="e.g. 541511"
+                    value={companyInfo.industryCode}
+                    onChange={e => setCompanyInfo({...companyInfo, industryCode: e.target.value})}
                   />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                   <label className="block text-xs font-mono uppercase text-zinc-500 mb-2">Target Repo Path</label>
+                   <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-zinc-400 flex items-center gap-2">
+                     <Shield className="w-3 h-3 text-cyber-green" />
+                     {companyInfo.industryPath || 'select-industry'}/
+                   </div>
                 </div>
                 <div>
                   <label className="block text-xs font-mono uppercase text-zinc-500 mb-2">Company Size</label>
