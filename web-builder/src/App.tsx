@@ -38,8 +38,18 @@ const INDUSTRY_MAP = [
   { name: 'Software Development', path: 'development', keywords: ['code', 'software', 'app', 'developer', 'api'] },
 ];
 
+const REGISTRY = [
+  { id: "legal-contract-review", name: "Legal Contract Auditor", industry: "Legal Services", path: "legal/contract-review", tags: ["law", "contracts"] },
+  { id: "healthcare-patient-intake", name: "Patient Intake Automation", industry: "Medical Practices", path: "healthcare/patient-intake", tags: ["healthcare", "intake"] },
+  { id: "development-code-reviewer", name: "Sr. Architect Reviewer", industry: "Software Development", path: "development/code-reviewer", tags: ["development", "devops"] },
+  { id: "bookkeeping-audit", name: "SMB Bookkeeping Swarm", industry: "Financial Services", path: "financial-services/bookkeeping-audit", tags: ["finance", "accounting"] },
+  { id: "full-funnel-automation", name: "Marketing Funnel Pilot", industry: "Digital Marketing", path: "digital-marketing/full-funnel-automation", tags: ["marketing", "ads"] },
+  { id: "lead-transaction-management", name: "Real Estate Closer", industry: "Real Estate", path: "real-estate/lead-transaction", tags: ["real-estate", "leads"] },
+];
+
 export default function App() {
   const [step, setStep] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
   const [companyInfo, setCompanyInfo] = useState({
     name: '',
     description: '',
@@ -453,6 +463,56 @@ export default function App() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Gallery Section */}
+      <section className="w-full mt-24 mb-12">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+          <div>
+            <h2 className="text-2xl font-bold">Community Templates</h2>
+            <p className="text-zinc-500 text-sm">Explore existing swarms in the ecosystem</p>
+          </div>
+          <div className="relative w-full md:w-64">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+            <input 
+              className="w-full bg-zinc-950 border border-zinc-800 rounded-full py-2 pl-10 pr-4 text-sm focus:border-cyber-green outline-none"
+              placeholder="Search library..."
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {REGISTRY.filter(t => 
+            t.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+            t.industry.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            t.tags.some(tag => tag.includes(searchTerm.toLowerCase()))
+          ).map(template => (
+            <div key={template.id} className="sovereign-panel p-6 border-zinc-800/50 hover:bg-zinc-900/30 transition-all cursor-default">
+              <div className="flex justify-between items-start mb-4">
+                <div className="bg-zinc-950 p-2 rounded-lg border border-zinc-800">
+                  <Cpu className="w-4 h-4 text-zinc-500" />
+                </div>
+                <span className="text-[10px] font-mono text-cyber-green/50 uppercase tracking-tighter bg-cyber-green/5 px-2 py-0.5 rounded border border-cyber-green/10">
+                  {template.industry}
+                </span>
+              </div>
+              <h3 className="font-bold text-lg mb-2">{template.name}</h3>
+              <div className="flex items-center gap-2 text-[10px] text-zinc-500 font-mono mb-4">
+                <Shield className="w-3 h-3" />
+                {template.path}/
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {template.tags.map(tag => (
+                  <span key={tag} className="text-[10px] text-zinc-400 bg-zinc-950 px-2 py-1 rounded-md border border-zinc-800">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
 
       <footer className="mt-12 text-zinc-600 text-[10px] font-mono tracking-widest uppercase">
         Sovereign Reality Systems • 2026 • Verified SEC-ARA
