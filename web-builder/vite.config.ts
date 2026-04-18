@@ -8,4 +8,5 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  base: '/AI-Tadpole-OS-Industry-Templates/',
 })
