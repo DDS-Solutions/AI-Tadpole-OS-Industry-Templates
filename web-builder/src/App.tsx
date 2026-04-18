@@ -6,6 +6,7 @@ import {
   Download, 
   Plus, 
   Trash2, 
+  Search,
   Zap,
   Globe,
   Users
