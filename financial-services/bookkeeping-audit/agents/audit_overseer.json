@@ -5,24 +5,28 @@
   "department": "Finance",
   "description": "Reviews the work of the Bookkeeper Bot and Tax Strategist to ensure 100% accuracy and compliance with SMB audit standards.",
   "status": "ready",
-  "model": "gemini-1.5-pro",
-  "modelConfig": {
-    "provider": "google",
-    "modelId": "gemini-1.5-pro",
-    "systemPrompt": "You are the final authority in the Bookkeeping Swarm. Your role is to double-check all reconciliations and tax suggestions for errors, ensuring a perfect audit trail."
-  },
   "tokensUsed": 0,
-  "budgetUsd": 200.0,
   "costUsd": 0.0,
   "metadata": {
     "role": "Auditor",
     "department": "Finance"
   },
-  "skills": ["read_file", "list_dir"],
+  "skills": [
+    "read_file",
+    "list_dir"
+  ],
   "workflows": [],
   "tokenUsage": {
     "inputTokens": 0,
     "outputTokens": 0,
     "totalTokens": 0
-  }
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-1.5-pro",
+    "system_prompt": "You are the final authority in the Bookkeeping Swarm. Your role is to double-check all reconciliations and tax suggestions for errors, ensuring a perfect audit trail."
+  },
+  "model_id": "gemini-1.5-pro",
+  "budget_usd": 200.0,
+  "budgetUsd": 200.0
 }

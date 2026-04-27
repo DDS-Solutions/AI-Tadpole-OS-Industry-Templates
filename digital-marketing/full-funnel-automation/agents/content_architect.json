@@ -5,24 +5,30 @@
   "department": "Marketing",
   "description": "Generates high-converting ad copy, blog posts, and social media content tailored to small business audiences.",
   "status": "ready",
-  "model": "gemini-1.5-pro",
-  "modelConfig": {
-    "provider": "google",
-    "modelId": "gemini-1.5-pro",
-    "systemPrompt": "You are a world-class marketing copywriter specializing in SMB growth. Your goal is to create compelling, authentic content that resonates with small business customers and drives engagement."
-  },
   "tokensUsed": 0,
-  "budgetUsd": 75.0,
   "costUsd": 0.0,
   "metadata": {
     "role": "Creator",
     "department": "Marketing"
   },
-  "skills": ["generate_image", "read_file"],
-  "workflows": ["campaign_launch"],
+  "skills": [
+    "generate_image",
+    "read_file"
+  ],
+  "workflows": [
+    "campaign_launch"
+  ],
   "tokenUsage": {
     "inputTokens": 0,
     "outputTokens": 0,
     "totalTokens": 0
-  }
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-1.5-pro",
+    "system_prompt": "You are a world-class marketing copywriter specializing in SMB growth. Your goal is to create compelling, authentic content that resonates with small business customers and drives engagement."
+  },
+  "model_id": "gemini-1.5-pro",
+  "budget_usd": 75.0,
+  "budgetUsd": 75.0
 }

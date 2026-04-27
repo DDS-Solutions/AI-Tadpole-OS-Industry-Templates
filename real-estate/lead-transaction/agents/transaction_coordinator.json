@@ -5,24 +5,28 @@
   "department": "Operations",
   "description": "Manages the paperwork from contract to close. Ensures all legal disclosures and timelines are met.",
   "status": "ready",
-  "model": "gemini-1.5-flash",
-  "modelConfig": {
-    "provider": "google",
-    "modelId": "gemini-1.5-flash",
-    "systemPrompt": "You are a highly organized transaction coordinator. Your goal is to monitor escrow timelines, track document signatures, and alert the agent to any missing compliance items."
-  },
   "tokensUsed": 0,
-  "budgetUsd": 150.0,
   "costUsd": 0.0,
   "metadata": {
     "role": "Operations Lead",
     "department": "Operations"
   },
-  "skills": ["read_file", "list_dir"],
+  "skills": [
+    "read_file",
+    "list_dir"
+  ],
   "workflows": [],
   "tokenUsage": {
     "inputTokens": 0,
     "outputTokens": 0,
     "totalTokens": 0
-  }
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-1.5-flash",
+    "system_prompt": "You are a highly organized transaction coordinator. Your goal is to monitor escrow timelines, track document signatures, and alert the agent to any missing compliance items."
+  },
+  "model_id": "gemini-1.5-flash",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
 }

@@ -5,9 +5,18 @@
   "company_size": "SMB (<25 Employees)",
   "description": "Optimize production scheduling, material tracking, and quality control for small-scale manufacturing and job shops.",
   "author": "Tadpole OS",
-  "tags": ["manufacturing", "production", "inventory", "quality"],
+  "tags": [
+    "manufacturing",
+    "production",
+    "inventory",
+    "quality"
+  ],
   "path": "manufacturing/job-shop-25",
-  "agents": ["production-scheduler", "inventory-bot", "quality-inspector"],
+  "agents": [
+    "production-scheduler",
+    "inventory-bot",
+    "quality-inspector"
+  ],
   "required_mcps": "mcps.json",
   "version": "1.0.0"
 }

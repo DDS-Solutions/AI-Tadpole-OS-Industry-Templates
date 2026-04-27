@@ -5,24 +5,30 @@
   "department": "Production",
   "description": "Manages machine allocation and job sequencing. Minimizes downtime and ensures on-time delivery for custom orders.",
   "status": "ready",
-  "model": "gemini-1.5-pro",
-  "modelConfig": {
-    "provider": "google",
-    "modelId": "gemini-1.5-pro",
-    "systemPrompt": "You are an expert production scheduler for a manufacturing job shop. Your goal is to optimize the sequence of jobs across multiple machines to maximize throughput and minimize idle time."
-  },
   "tokensUsed": 0,
-  "budgetUsd": 100.0,
   "costUsd": 0.0,
   "metadata": {
     "role": "Lead Scheduler",
     "department": "Production"
   },
-  "skills": ["read_file", "list_dir"],
-  "workflows": ["production_run"],
+  "skills": [
+    "read_file",
+    "list_dir"
+  ],
+  "workflows": [
+    "production_run"
+  ],
   "tokenUsage": {
     "inputTokens": 0,
     "outputTokens": 0,
     "totalTokens": 0
-  }
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-1.5-pro",
+    "system_prompt": "You are an expert production scheduler for a manufacturing job shop. Your goal is to optimize the sequence of jobs across multiple machines to maximize throughput and minimize idle time."
+  },
+  "model_id": "gemini-1.5-pro",
+  "budget_usd": 100.0,
+  "budgetUsd": 100.0
 }

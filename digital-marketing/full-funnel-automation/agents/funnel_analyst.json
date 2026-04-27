@@ -5,24 +5,28 @@
   "department": "Marketing",
   "description": "Analyzes the entire customer journey, from first touch to conversion. Identifies bottlenecks in the funnel and suggests UX/copy improvements.",
   "status": "ready",
-  "model": "gemini-1.5-pro",
-  "modelConfig": {
-    "provider": "google",
-    "modelId": "gemini-1.5-pro",
-    "systemPrompt": "You are a data-driven conversion rate optimizer. Your goal is to analyze customer behavior data, identify friction points in the marketing funnel, and provide actionable recommendations to increase conversion rates."
-  },
   "tokensUsed": 0,
-  "budgetUsd": 150.0,
   "costUsd": 0.0,
   "metadata": {
     "role": "Analyst",
     "department": "Marketing"
   },
-  "skills": ["read_file", "list_dir"],
+  "skills": [
+    "read_file",
+    "list_dir"
+  ],
   "workflows": [],
   "tokenUsage": {
     "inputTokens": 0,
     "outputTokens": 0,
     "totalTokens": 0
-  }
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-1.5-pro",
+    "system_prompt": "You are a data-driven conversion rate optimizer. Your goal is to analyze customer behavior data, identify friction points in the marketing funnel, and provide actionable recommendations to increase conversion rates."
+  },
+  "model_id": "gemini-1.5-pro",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
 }

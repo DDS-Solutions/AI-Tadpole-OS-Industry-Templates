@@ -5,24 +5,30 @@
   "department": "IT / Operations",
   "description": "Orchestrates complex data flows between SAP, Oracle, and Tadpole OS. Ensures that financial and operational data is perfectly synced across the enterprise.",
   "status": "ready",
-  "model": "gemini-1.5-pro",
-  "modelConfig": {
-    "provider": "google",
-    "modelId": "gemini-1.5-pro",
-    "systemPrompt": "You are a master of enterprise resource planning (ERP). Your goal is to ensure that Tadpole OS swarms are perfectly synchronized with the central SAP or Oracle instance, maintaining a single source of truth for all enterprise data."
-  },
   "tokensUsed": 0,
-  "budgetUsd": 300.0,
   "costUsd": 0.0,
   "metadata": {
     "role": "Integration Architect",
     "department": "IT"
   },
-  "skills": ["read_file", "list_dir"],
-  "workflows": ["smart_factory_sync"],
+  "skills": [
+    "read_file",
+    "list_dir"
+  ],
+  "workflows": [
+    "smart_factory_sync"
+  ],
   "tokenUsage": {
     "inputTokens": 0,
     "outputTokens": 0,
     "totalTokens": 0
-  }
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-1.5-pro",
+    "system_prompt": "You are a master of enterprise resource planning (ERP). Your goal is to ensure that Tadpole OS swarms are perfectly synchronized with the central SAP or Oracle instance, maintaining a single source of truth for all enterprise data."
+  },
+  "model_id": "gemini-1.5-pro",
+  "budget_usd": 300.0,
+  "budgetUsd": 300.0
 }

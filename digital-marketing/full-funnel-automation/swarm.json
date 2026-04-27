@@ -5,9 +5,18 @@
   "company_size": "SMB (<50 Employees)",
   "description": "Automate content creation, ad spend optimization, and conversion tracking. Designed to give small teams the marketing power of a large agency.",
   "author": "Tadpole OS",
-  "tags": ["marketing", "ads", "content", "automation"],
+  "tags": [
+    "marketing",
+    "ads",
+    "content",
+    "automation"
+  ],
   "path": "digital-marketing/full-funnel-automation",
-  "agents": ["content-architect", "ad-optimizer", "funnel-analyst"],
+  "agents": [
+    "content-architect",
+    "ad-optimizer",
+    "funnel-analyst"
+  ],
   "required_mcps": "mcps.json",
   "version": "1.0.0"
 }

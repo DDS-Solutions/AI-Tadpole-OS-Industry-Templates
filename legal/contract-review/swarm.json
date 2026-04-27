@@ -5,13 +5,15 @@
   "author": "SMB Legal Inc.",
   "description": "A high-performance swarm tailored for contract analysis.",
   "industry": "legal",
-  "tags": ["law", "contracts", "auditing"],
-  
+  "tags": [
+    "law",
+    "contracts",
+    "auditing"
+  ],
   "defaults": {
     "model": "gemini-pro-latest",
     "temperature": 0.2
   },
-
   "roster": [
     {
       "id": "legal_eagle",
@@ -20,7 +22,6 @@
       "priority": "critical"
     }
   ],
-
   "required_mcps": "mcps.json",
   "global_workflows": []
 }

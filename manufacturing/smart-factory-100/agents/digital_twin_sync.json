@@ -5,24 +5,30 @@
   "department": "Engineering",
   "description": "Synchronizes real-time factory floor data with the digital twin model. Simulates production changes to predict outcomes before deployment.",
   "status": "ready",
-  "model": "gemini-1.5-pro",
-  "modelConfig": {
-    "provider": "google",
-    "modelId": "gemini-1.5-pro",
-    "systemPrompt": "You are a digital twin synchronization agent for an enterprise smart factory. You process high-frequency sensor data to maintain a real-time virtual model of the factory floor and evaluate the impact of proposed production plan changes."
-  },
   "tokensUsed": 0,
-  "budgetUsd": 250.0,
   "costUsd": 0.0,
   "metadata": {
     "role": "Twin Architect",
     "department": "Engineering"
   },
-  "skills": ["read_file", "list_dir"],
-  "workflows": ["smart_factory_sync"],
+  "skills": [
+    "read_file",
+    "list_dir"
+  ],
+  "workflows": [
+    "smart_factory_sync"
+  ],
   "tokenUsage": {
     "inputTokens": 0,
     "outputTokens": 0,
     "totalTokens": 0
-  }
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-1.5-pro",
+    "system_prompt": "You are a digital twin synchronization agent for an enterprise smart factory. You process high-frequency sensor data to maintain a real-time virtual model of the factory floor and evaluate the impact of proposed production plan changes."
+  },
+  "model_id": "gemini-1.5-pro",
+  "budget_usd": 250.0,
+  "budgetUsd": 250.0
 }

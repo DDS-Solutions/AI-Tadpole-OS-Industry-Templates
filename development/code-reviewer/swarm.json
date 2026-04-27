@@ -5,13 +5,15 @@
   "author": "DevOps Solutions",
   "description": "A high-level architectural review swarm for quality auditing and security scanning.",
   "industry": "Software Development",
-  "tags": ["development", "code-review", "architecture"],
-  
+  "tags": [
+    "development",
+    "code-review",
+    "architecture"
+  ],
   "defaults": {
     "model": "llama-3.3-70b-versatile",
     "temperature": 0.2
   },
-
   "roster": [
     {
       "id": "sr_architect",
@@ -26,7 +28,6 @@
       "priority": "high"
     }
   ],
-
   "required_mcps": "mcps.json",
   "global_workflows": []
 }

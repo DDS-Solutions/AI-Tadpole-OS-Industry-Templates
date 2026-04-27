@@ -5,24 +5,29 @@
   "department": "Service",
   "description": "Maintains relationships with leads and past clients. Sends personalized property updates and follows up on transaction satisfaction.",
   "status": "ready",
-  "model": "gemini-1.5-pro",
-  "modelConfig": {
-    "provider": "google",
-    "modelId": "gemini-1.5-pro",
-    "systemPrompt": "You are a warm, professional customer success agent for a boutique real estate agency. Your goal is to nurture leads with helpful property info and ensure past clients feel valued by the brand."
-  },
   "tokensUsed": 0,
-  "budgetUsd": 50.0,
   "costUsd": 0.0,
   "metadata": {
     "role": "Concierge",
     "department": "Service"
   },
-  "skills": ["read_file"],
-  "workflows": ["lead_nurture"],
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [
+    "lead_nurture"
+  ],
   "tokenUsage": {
     "inputTokens": 0,
     "outputTokens": 0,
     "totalTokens": 0
-  }
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-1.5-pro",
+    "system_prompt": "You are a warm, professional customer success agent for a boutique real estate agency. Your goal is to nurture leads with helpful property info and ensure past clients feel valued by the brand."
+  },
+  "model_id": "gemini-1.5-pro",
+  "budget_usd": 50.0,
+  "budgetUsd": 50.0
 }

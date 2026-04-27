@@ -5,24 +5,30 @@
   "department": "Engineering",
   "description": "Analyzes machine health data (vibration, heat, cycles) to predict failures before they occur. Manages the preventive maintenance schedule.",
   "status": "ready",
-  "model": "gemini-1.5-pro",
-  "modelConfig": {
-    "provider": "google",
-    "modelId": "gemini-1.5-pro",
-    "systemPrompt": "You are a predictive maintenance expert. You analyze industrial sensor data to identifying patterns that indicate upcoming machine failure. Your goal is to schedule maintenance windows that minimize production impact."
-  },
   "tokensUsed": 0,
-  "budgetUsd": 150.0,
   "costUsd": 0.0,
   "metadata": {
     "role": "Maintenance Lead",
     "department": "Engineering"
   },
-  "skills": ["read_file", "list_dir"],
-  "workflows": ["maintenance_cycle"],
+  "skills": [
+    "read_file",
+    "list_dir"
+  ],
+  "workflows": [
+    "maintenance_cycle"
+  ],
   "tokenUsage": {
     "inputTokens": 0,
     "outputTokens": 0,
     "totalTokens": 0
-  }
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-1.5-pro",
+    "system_prompt": "You are a predictive maintenance expert. You analyze industrial sensor data to identifying patterns that indicate upcoming machine failure. Your goal is to schedule maintenance windows that minimize production impact."
+  },
+  "model_id": "gemini-1.5-pro",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
 }
