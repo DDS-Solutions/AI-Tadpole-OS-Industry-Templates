@@ -1,0 +1,31 @@
+{
+  "id": "localization-assistant",
+  "name": "Localization Assistant Bot",
+  "role": "Dialogue Localization Agent",
+  "department": "Creative Pipeline",
+  "description": "Translates dialog text and aligns localized scripts with core narrative files.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Localization Assistant",
+    "department": "Creative Pipeline"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-1.5-flash",
+    "system_prompt": "You are a game script localization specialist. You review narrative text files and translate dialog lines."
+  },
+  "model_id": "gemini-1.5-flash",
+  "budget_usd": 50.0,
+  "budgetUsd": 50.0
+}

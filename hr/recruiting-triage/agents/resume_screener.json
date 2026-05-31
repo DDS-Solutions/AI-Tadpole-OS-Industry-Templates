@@ -1,0 +1,31 @@
+{
+  "id": "resume-screener",
+  "name": "Resume Screener Bot",
+  "role": "Talent Screener",
+  "department": "Human Resources",
+  "description": "Extracts candidate experience and scores resumes locally against specific job descriptions.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Resume Screener",
+    "department": "Human Resources"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-1.5-flash",
+    "system_prompt": "You are a talent acquisition screener. You analyze candidate profile files against job descriptions, grading skill match levels."
+  },
+  "model_id": "gemini-1.5-flash",
+  "budget_usd": 60.0,
+  "budgetUsd": 60.0
+}

@@ -43,6 +43,11 @@ const INDUSTRY_MAP = [
   { name: 'Pharmaceuticals', path: 'pharma', keywords: ['pharma', 'clinical', 'trial', 'adverse', 'drug', 'protocol'] },
   { name: 'Agriculture & AgTech', path: 'agriculture', keywords: ['agriculture', 'farm', 'soil', 'crop', 'irrigation', 'weather'] },
   { name: 'Governance & Compliance', path: 'compliance', keywords: ['compliance', 'audit', 'soc2', 'iso', 'security', 'regulatory'] },
+  { name: 'Cybersecurity', path: 'security', keywords: ['security', 'cybersecurity', 'secops', 'log', 'firewall', 'threat', 'incident'] },
+  { name: 'Human Resources', path: 'hr', keywords: ['hr', 'recruiting', 'resume', 'onboarding', 'candidate', 'hiring', 'talent'] },
+  { name: 'Education', path: 'education', keywords: ['education', 'curriculum', 'lesson', 'student', 'grade', 'school', 'learn'] },
+  { name: 'Critical Infrastructure', path: 'utilities', keywords: ['utility', 'grid', 'power', 'telemetry', 'scada', 'substation', 'maintenance'] },
+  { name: 'Media & Creative', path: 'creative', keywords: ['media', 'creative', 'asset', 'game', 'dialog', 'narrative', 'localization'] },
 ];
 
 const REGISTRY = [
@@ -58,6 +63,11 @@ const REGISTRY = [
   { id: "pharma-clinical-trials", name: "Clinical Trial Manager", industry: "Pharmaceuticals", path: "pharma/clinical-trials", tags: ["pharma", "clinical", "compliance"] },
   { id: "agriculture-precision-farming", name: "Precision Agriculture Swarm", industry: "Agriculture & AgTech", path: "agriculture/precision-farming", tags: ["agriculture", "farming", "analytics"] },
   { id: "compliance-regulatory-audit", name: "Regulatory Compliance Swarm", industry: "Governance & Compliance", path: "compliance/regulatory-audit", tags: ["compliance", "audit", "security"] },
+  { id: "security-incident-response", name: "Incident Response Swarm", industry: "Cybersecurity", path: "security/incident-response", tags: ["security", "secops", "incident"] },
+  { id: "hr-recruiting-triage", name: "Recruiting Triage Swarm", industry: "Human Resources", path: "hr/recruiting-triage", tags: ["hr", "recruiting", "hiring"] },
+  { id: "education-curriculum-planner", name: "Curriculum Planner Swarm", industry: "Education", path: "education/curriculum-planner", tags: ["education", "curriculum", "school"] },
+  { id: "utilities-grid-telemetry", name: "Grid Telemetry Swarm", industry: "Critical Infrastructure", path: "utilities/grid-telemetry", tags: ["utilities", "grid", "telemetry"] },
+  { id: "creative-asset-pipeline", name: "Creative Asset Pipeline Swarm", industry: "Media & Creative", path: "creative/asset-pipeline", tags: ["creative", "media", "assets"] },
 ];
 
 export default function App() {

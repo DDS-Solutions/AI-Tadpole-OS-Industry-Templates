@@ -1,0 +1,31 @@
+{
+  "id": "log-analyst",
+  "name": "Security Log Analyst",
+  "role": "Log Auditor & Triage Specialist",
+  "department": "Security Operations",
+  "description": "Parses authorization and access logs locally, identifying anomalous traffic spikes or brute-force patterns.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Log Analyst",
+    "department": "Security Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-1.5-flash",
+    "system_prompt": "You are a Security Operations Center (SOC) log analyst. You review raw server authentication records, SSH login history, and flag suspicious IP addresses."
+  },
+  "model_id": "gemini-1.5-flash",
+  "budget_usd": 100.0,
+  "budgetUsd": 100.0
+}

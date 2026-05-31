@@ -1,0 +1,31 @@
+{
+  "id": "curriculum-auditor",
+  "name": "Curriculum Auditor Bot",
+  "role": "Lesson Plan Auditor",
+  "department": "Academic Affairs",
+  "description": "Reviews draft lesson plans against local/state learning standards, identifying gaps.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Curriculum Auditor",
+    "department": "Academic Affairs"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-1.5-flash",
+    "system_prompt": "You are a school curriculum reviewer. You inspect lesson plan documents to verify if state math or language standards are covered."
+  },
+  "model_id": "gemini-1.5-flash",
+  "budget_usd": 60.0,
+  "budgetUsd": 60.0
+}

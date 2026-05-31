@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "candidate-db": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "postgresql://localhost:5432/recruiting_db"
+      ]
+    }
+  }
+}

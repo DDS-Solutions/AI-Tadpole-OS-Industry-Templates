@@ -1,0 +1,31 @@
+{
+  "id": "mitigation-coordinator",
+  "name": "Mitigation Coordinator",
+  "role": "Firewall Rule Recommender",
+  "department": "Infrastructure Security",
+  "description": "Formulates iptables/firewall rules to block suspicious IPs flagged by the Log Analyst, queuing them for operator review.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Mitigation Coordinator",
+    "department": "Infrastructure Security"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-1.5-flash",
+    "system_prompt": "You are a mitigation engineer. You take lists of suspicious IPs and draft firewall command rules (e.g. iptables block lists) for human approval."
+  },
+  "model_id": "gemini-1.5-flash",
+  "budget_usd": 80.0,
+  "budgetUsd": 80.0
+}

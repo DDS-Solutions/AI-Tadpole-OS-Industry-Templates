@@ -1,0 +1,33 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Recruiting Triage Swarm",
+  "version": "1.0.0",
+  "author": "HR Systems Group",
+  "description": "Designed for parsing candidate resumes, screening against role criteria, and coordinating onboarding files.",
+  "industry": "Human Resources",
+  "tags": [
+    "hr",
+    "recruiting",
+    "onboarding"
+  ],
+  "defaults": {
+    "model": "gemini-1.5-flash",
+    "temperature": 0.4
+  },
+  "roster": [
+    {
+      "id": "resume_screener",
+      "path": "agents/resume_screener.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "onboarding_coordinator",
+      "path": "agents/onboarding_coordinator.json",
+      "supervisor": "resume_screener",
+      "priority": "normal"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": []
+}

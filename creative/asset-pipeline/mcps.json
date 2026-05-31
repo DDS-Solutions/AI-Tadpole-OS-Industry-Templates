@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "assets-db": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sqlite",
+        "data/creative_assets.db"
+      ]
+    }
+  }
+}

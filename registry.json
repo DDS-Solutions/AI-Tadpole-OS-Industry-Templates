@@ -19,7 +19,12 @@
     "Transportation & Logistics",
     "Pharmaceuticals",
     "Agriculture & AgTech",
-    "Governance & Compliance"
+    "Governance & Compliance",
+    "Cybersecurity",
+    "Human Resources",
+    "Education",
+    "Critical Infrastructure",
+    "Media & Creative"
   ],
   "company_sizes": [
     25,
@@ -226,6 +231,73 @@
         "security"
       ],
       "path": "compliance/regulatory-audit",
+      "company_size": 25
+    },
+    {
+      "id": "security-incident-response",
+      "name": "Incident Response Swarm",
+      "description": "Designed for security log auditing, incident triage, and automated mitigation recommendation.",
+      "industry": "Cybersecurity",
+      "tags": [
+        "security",
+        "secops",
+        "incident-response"
+      ],
+      "path": "security/incident-response",
+      "company_size": 25
+    },
+    {
+      "id": "hr-recruiting-triage",
+      "name": "Recruiting Triage Swarm",
+      "description": "Designed for parsing candidate resumes, screening against role criteria, and coordinating onboarding files.",
+      "industry": "Human Resources",
+      "tags": [
+        "hr",
+        "recruiting",
+        "onboarding"
+      ],
+      "path": "hr/recruiting-triage",
+      "company_size": 25
+    },
+    {
+      "id": "education-curriculum-planner",
+      "name": "Curriculum Planner Swarm",
+      "description": "Designed for curriculum audit mapping, lesson plan alignment, and student analytics reviews.",
+      "industry": "Education",
+      "tags": [
+        "education",
+        "curriculum",
+        "analytics"
+      ],
+      "path": "education/curriculum-planner",
+      "company_size": 25
+    },
+    {
+      "id": "utilities-grid-telemetry",
+      "name": "Grid Telemetry Swarm",
+      "description": "Designed for grid status logs auditing, alarm triage, and utility crew scheduling.",
+      "industry": "Critical Infrastructure",
+      "tags": [
+        "utilities",
+        "grid",
+        "telemetry",
+        "scada"
+      ],
+      "path": "utilities/grid-telemetry",
+      "company_size": 25
+    },
+    {
+      "id": "creative-asset-pipeline",
+      "name": "Creative Asset Pipeline Swarm",
+      "description": "Designed for creative asset verification, size budget checks, and dialog localization tracking.",
+      "industry": "Media & Creative",
+      "tags": [
+        "creative",
+        "media",
+        "assets",
+        "localization"
+      ],
+      "path": "creative/asset-pipeline",
       "company_size": 25
     }
   ]

@@ -1,0 +1,31 @@
+{
+  "id": "crew-scheduler",
+  "name": "Crew Scheduler Bot",
+  "role": "Maintenance Dispatcher",
+  "department": "Operations Control",
+  "description": "Drafts work orders and assigns local maintenance crews based on alarm severity logs.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Crew Scheduler",
+    "department": "Operations Control"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-1.5-flash",
+    "system_prompt": "You are a maintenance dispatcher. You assign technicians and draft repair tickets based on alarm triggers."
+  },
+  "model_id": "gemini-1.5-flash",
+  "budget_usd": 75.0,
+  "budgetUsd": 75.0
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Creative Asset Pipeline Swarm",
+  "version": "1.0.0",
+  "author": "PixelStream Studios",
+  "description": "Designed for creative asset verification, size budget checks, and dialog localization tracking.",
+  "industry": "Media & Creative",
+  "tags": [
+    "creative",
+    "media",
+    "assets",
+    "localization"
+  ],
+  "defaults": {
+    "model": "gemini-1.5-flash",
+    "temperature": 0.3
+  },
+  "roster": [
+    {
+      "id": "asset_verifier",
+      "path": "agents/asset_verifier.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "localization_assistant",
+      "path": "agents/localization_assistant.json",
+      "supervisor": "asset_verifier",
+      "priority": "normal"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": []
+}

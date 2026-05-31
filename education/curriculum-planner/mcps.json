@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "grades-db": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sqlite",
+        "data/student_records.db"
+      ]
+    }
+  }
+}

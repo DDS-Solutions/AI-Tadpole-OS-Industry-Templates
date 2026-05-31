@@ -1,0 +1,33 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Curriculum Planner Swarm",
+  "version": "1.0.0",
+  "author": "EdTech Solutions",
+  "description": "Designed for curriculum audit mapping, lesson plan alignment, and student analytics reviews.",
+  "industry": "Education",
+  "tags": [
+    "education",
+    "curriculum",
+    "analytics"
+  ],
+  "defaults": {
+    "model": "gemini-1.5-flash",
+    "temperature": 0.3
+  },
+  "roster": [
+    {
+      "id": "curriculum_auditor",
+      "path": "agents/curriculum_auditor.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "progress_advisor",
+      "path": "agents/progress_advisor.json",
+      "supervisor": "curriculum_auditor",
+      "priority": "normal"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": []
+}

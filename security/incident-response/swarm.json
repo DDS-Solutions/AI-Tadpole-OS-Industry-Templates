@@ -1,0 +1,33 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Incident Response Swarm",
+  "version": "1.0.0",
+  "author": "SecOps Labs",
+  "description": "Designed for security log auditing, incident triage, and automated mitigation recommendation.",
+  "industry": "Cybersecurity",
+  "tags": [
+    "security",
+    "secops",
+    "incident-response"
+  ],
+  "defaults": {
+    "model": "gemini-1.5-flash",
+    "temperature": 0.1
+  },
+  "roster": [
+    {
+      "id": "log_analyst",
+      "path": "agents/log_analyst.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "mitigation_coordinator",
+      "path": "agents/mitigation_coordinator.json",
+      "supervisor": "log_analyst",
+      "priority": "high"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": []
+}

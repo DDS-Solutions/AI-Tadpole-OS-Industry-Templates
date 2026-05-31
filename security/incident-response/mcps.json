@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "log-files": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sqlite",
+        "data/security_logs.db"
+      ]
+    }
+  }
+}
