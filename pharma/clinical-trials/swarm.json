@@ -1,0 +1,34 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Clinical Trial Management Swarm",
+  "version": "1.0.0",
+  "author": "PharmaFlow Research",
+  "description": "Designed for clinical trial protocol mapping, candidate documentation analysis, and automated adverse event tracking.",
+  "industry": "Pharmaceuticals",
+  "tags": [
+    "pharma",
+    "clinical",
+    "trials",
+    "compliance"
+  ],
+  "defaults": {
+    "model": "gemini-1.5-flash",
+    "temperature": 0.1
+  },
+  "roster": [
+    {
+      "id": "protocol_auditor",
+      "path": "agents/protocol_auditor.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "safety_monitor",
+      "path": "agents/safety_monitor.json",
+      "supervisor": "protocol_auditor",
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": []
+}

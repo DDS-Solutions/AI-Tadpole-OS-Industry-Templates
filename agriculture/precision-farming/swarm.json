@@ -1,0 +1,34 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Precision Agriculture Swarm",
+  "version": "1.0.0",
+  "author": "AgriTech Labs",
+  "description": "Designed for crop yield forecasting, soil moisture telemetry analysis, and irrigation planning.",
+  "industry": "Agriculture & AgTech",
+  "tags": [
+    "agriculture",
+    "farming",
+    "agronomy",
+    "analytics"
+  ],
+  "defaults": {
+    "model": "gemini-1.5-flash",
+    "temperature": 0.3
+  },
+  "roster": [
+    {
+      "id": "agronomist_bot",
+      "path": "agents/agronomist_bot.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "irrigation_planner",
+      "path": "agents/irrigation_planner.json",
+      "supervisor": "agronomist_bot",
+      "priority": "normal"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": []
+}

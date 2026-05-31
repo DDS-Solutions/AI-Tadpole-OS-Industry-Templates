@@ -1,0 +1,34 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Chemical Safety Swarm",
+  "version": "1.0.0",
+  "author": "ChemiSafe Compliance",
+  "description": "Designed for chemical inventory management, SDS compliance auditing, and safety checklist validation.",
+  "industry": "Chemical Sector",
+  "tags": [
+    "chemical",
+    "safety",
+    "compliance",
+    "auditing"
+  ],
+  "defaults": {
+    "model": "gemini-1.5-flash",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "safety_officer",
+      "path": "agents/safety_officer.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "compliance_liaison",
+      "path": "agents/compliance_liaison.json",
+      "supervisor": "safety_officer",
+      "priority": "high"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": []
+}

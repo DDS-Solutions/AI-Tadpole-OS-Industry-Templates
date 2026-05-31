@@ -1,0 +1,34 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Fleet Logistics Swarm",
+  "version": "1.0.0",
+  "author": "TransitSphere Solutions",
+  "description": "A high-performance swarm for fleet scheduling, route optimization, vehicle maintenance tracking, and fuel efficiency.",
+  "industry": "Transportation & Logistics",
+  "tags": [
+    "transportation",
+    "fleet",
+    "logistics",
+    "routes"
+  ],
+  "defaults": {
+    "model": "gemini-1.5-flash",
+    "temperature": 0.3
+  },
+  "roster": [
+    {
+      "id": "dispatch_coordinator",
+      "path": "agents/dispatch_coordinator.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "maintenance_tracker",
+      "path": "agents/maintenance_tracker.json",
+      "supervisor": "dispatch_coordinator",
+      "priority": "high"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": []
+}

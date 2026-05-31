@@ -1,0 +1,31 @@
+{
+  "id": "protocol-auditor",
+  "name": "Protocol Auditor Bot",
+  "role": "Clinical Protocol Tracker",
+  "department": "Clinical Research",
+  "description": "Reviews patient intake logs against clinical trial criteria and flags deviation protocols.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Protocol Auditor",
+    "department": "Clinical Research"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-1.5-flash",
+    "system_prompt": "You are a clinical trial auditor. You review clinical records against specified protocol inclusion/exclusion criteria to check eligibility."
+  },
+  "model_id": "gemini-1.5-flash",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

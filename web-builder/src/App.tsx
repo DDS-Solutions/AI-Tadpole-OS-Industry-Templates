@@ -37,6 +37,12 @@ const INDUSTRY_MAP = [
   { name: 'Real Estate', path: 'real-estate', keywords: ['house', 'property', 'realtor', 'escrow', 'mls'] },
   { name: 'Manufacturing', path: 'manufacturing', keywords: ['factory', 'production', 'inventory', 'machine', 'order'] },
   { name: 'Software Development', path: 'development', keywords: ['code', 'software', 'app', 'developer', 'api'] },
+  { name: 'Food & Beverage', path: 'food', keywords: ['food', 'restaurant', 'menu', 'kitchen', 'recipe', 'inventory'] },
+  { name: 'Chemical Sector', path: 'chemical', keywords: ['chemical', 'safety', 'sds', 'toxic', 'hazardous'] },
+  { name: 'Transportation & Logistics', path: 'transportation', keywords: ['transportation', 'fleet', 'delivery', 'route', 'truck', 'driver'] },
+  { name: 'Pharmaceuticals', path: 'pharma', keywords: ['pharma', 'clinical', 'trial', 'adverse', 'drug', 'protocol'] },
+  { name: 'Agriculture & AgTech', path: 'agriculture', keywords: ['agriculture', 'farm', 'soil', 'crop', 'irrigation', 'weather'] },
+  { name: 'Governance & Compliance', path: 'compliance', keywords: ['compliance', 'audit', 'soc2', 'iso', 'security', 'regulatory'] },
 ];
 
 const REGISTRY = [
@@ -46,6 +52,12 @@ const REGISTRY = [
   { id: "bookkeeping-audit", name: "SMB Bookkeeping Swarm", industry: "Financial Services", path: "financial-services/bookkeeping-audit", tags: ["finance", "accounting"] },
   { id: "full-funnel-automation", name: "Marketing Funnel Pilot", industry: "Digital Marketing", path: "digital-marketing/full-funnel-automation", tags: ["marketing", "ads"] },
   { id: "lead-transaction-management", name: "Real Estate Closer", industry: "Real Estate", path: "real-estate/lead-transaction", tags: ["real-estate", "leads"] },
+  { id: "food-restaurant-ops", name: "Food & Beverage Operations", industry: "Food & Beverage", path: "food/restaurant-ops", tags: ["food", "restaurant", "inventory"] },
+  { id: "chemical-process-safety", name: "Chemical Safety Auditor", industry: "Chemical Sector", path: "chemical/process-safety", tags: ["chemical", "safety", "compliance"] },
+  { id: "transportation-fleet-logistics", name: "Fleet Logistics Swarm", industry: "Transportation & Logistics", path: "transportation/fleet-logistics", tags: ["transportation", "fleet", "logistics"] },
+  { id: "pharma-clinical-trials", name: "Clinical Trial Manager", industry: "Pharmaceuticals", path: "pharma/clinical-trials", tags: ["pharma", "clinical", "compliance"] },
+  { id: "agriculture-precision-farming", name: "Precision Agriculture Swarm", industry: "Agriculture & AgTech", path: "agriculture/precision-farming", tags: ["agriculture", "farming", "analytics"] },
+  { id: "compliance-regulatory-audit", name: "Regulatory Compliance Swarm", industry: "Governance & Compliance", path: "compliance/regulatory-audit", tags: ["compliance", "audit", "security"] },
 ];
 
 export default function App() {

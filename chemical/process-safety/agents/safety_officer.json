@@ -1,0 +1,31 @@
+{
+  "id": "safety-officer",
+  "name": "Safety Officer Bot",
+  "role": "SDS Safety Auditor",
+  "department": "EHS (Environmental Health & Safety)",
+  "description": "Reviews Chemical Safety Data Sheets (SDS), verifies storage compatibility, and checks safety checklists.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Safety Officer",
+    "department": "EHS"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-1.5-flash",
+    "system_prompt": "You are a Chemical Safety Data Sheets (SDS) auditor. You review storage conditions, flag toxic/incompatible chemicals, and check emergency response steps."
+  },
+  "model_id": "gemini-1.5-flash",
+  "budget_usd": 75.0,
+  "budgetUsd": 75.0
+}

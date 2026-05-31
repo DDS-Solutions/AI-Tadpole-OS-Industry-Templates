@@ -1,0 +1,31 @@
+{
+  "id": "supplier-coordinator",
+  "name": "Supplier Coordinator Bot",
+  "role": "Vendor Procurement Agent",
+  "department": "Procurement",
+  "description": "Cross-references restock requests with supplier price lists and generates drafts of purchase orders.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Supplier Coordinator",
+    "department": "Procurement"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-1.5-flash",
+    "system_prompt": "You are a procurement agent. You receive inventory restock lists, find matching suppliers from your price sheet, and compile draft POs."
+  },
+  "model_id": "gemini-1.5-flash",
+  "budget_usd": 50.0,
+  "budgetUsd": 50.0
+}

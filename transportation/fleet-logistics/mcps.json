@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "fleet-telemetry": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "postgresql://localhost:5432/fleet_telemetry_db"
+      ]
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Restaurant Operations Swarm",
+  "version": "1.0.0",
+  "author": "FoodService Labs",
+  "description": "An optimized swarm for managing kitchen inventory, menu performance, and automated supplier ordering.",
+  "industry": "Food & Beverage",
+  "tags": [
+    "food",
+    "restaurant",
+    "inventory",
+    "ordering"
+  ],
+  "defaults": {
+    "model": "gemini-1.5-flash",
+    "temperature": 0.3
+  },
+  "roster": [
+    {
+      "id": "kitchen_manager",
+      "path": "agents/kitchen_manager.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "supplier_coordinator",
+      "path": "agents/supplier_coordinator.json",
+      "supervisor": "kitchen_manager",
+      "priority": "normal"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": []
+}

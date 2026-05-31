@@ -13,7 +13,13 @@
     "Engineering & Architecture",
     "EdTech & Training",
     "Software Development",
-    "Manufacturing"
+    "Manufacturing",
+    "Food & Beverage",
+    "Chemical Sector",
+    "Transportation & Logistics",
+    "Pharmaceuticals",
+    "Agriculture & AgTech",
+    "Governance & Compliance"
   ],
   "company_sizes": [
     25,
@@ -142,6 +148,85 @@
       ],
       "path": "manufacturing/smart-factory-100",
       "company_size": 100
+    },
+    {
+      "id": "food-restaurant-ops",
+      "name": "Food & Beverage Operations",
+      "description": "Automate kitchen inventory, menu performance analytics, and supplier ordering workflows.",
+      "industry": "Food & Beverage",
+      "tags": [
+        "food",
+        "restaurant",
+        "inventory",
+        "ordering"
+      ],
+      "path": "food/restaurant-ops",
+      "company_size": 25
+    },
+    {
+      "id": "chemical-process-safety",
+      "name": "Chemical Safety Auditor",
+      "description": "Automate chemical inventory, Safety Data Sheet (SDS) compliance auditing, and safety checklists.",
+      "industry": "Chemical Sector",
+      "tags": [
+        "chemical",
+        "safety",
+        "compliance"
+      ],
+      "path": "chemical/process-safety",
+      "company_size": 25
+    },
+    {
+      "id": "transportation-fleet-logistics",
+      "name": "Fleet Logistics Swarm",
+      "description": "Fleet scheduling, route optimization, maintenance tracking, and fuel efficiency analytics.",
+      "industry": "Transportation & Logistics",
+      "tags": [
+        "transportation",
+        "fleet",
+        "logistics"
+      ],
+      "path": "transportation/fleet-logistics",
+      "company_size": 25
+    },
+    {
+      "id": "pharma-clinical-trials",
+      "name": "Clinical Trial Manager",
+      "description": "Automate clinical trial protocol mapping, trial candidate documentation, and adverse event logging.",
+      "industry": "Pharmaceuticals",
+      "tags": [
+        "pharma",
+        "clinical",
+        "compliance"
+      ],
+      "path": "pharma/clinical-trials",
+      "company_size": 25
+    },
+    {
+      "id": "agriculture-precision-farming",
+      "name": "Precision Agriculture Swarm",
+      "description": "Crop yield forecasting, soil health telemetry analysis, and irrigation optimization.",
+      "industry": "Agriculture & AgTech",
+      "tags": [
+        "agriculture",
+        "farming",
+        "analytics"
+      ],
+      "path": "agriculture/precision-farming",
+      "company_size": 25
+    },
+    {
+      "id": "compliance-regulatory-audit",
+      "name": "Regulatory Compliance Swarm",
+      "description": "Continuous security posture assessment, SOC2/ISO readiness checks, and regulatory compliance mapping.",
+      "industry": "Governance & Compliance",
+      "tags": [
+        "compliance",
+        "audit",
+        "security"
+      ],
+      "path": "compliance/regulatory-audit",
+      "company_size": 25
     }
   ]
 }
