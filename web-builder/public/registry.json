@@ -1,0 +1,304 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/template-registry-v1.json",
+  "repository": "Tadpole-OS-Industry-Templates",
+  "industries": [
+    "Legal Services",
+    "Medical Practices",
+    "Financial Services",
+    "Digital Marketing",
+    "E-commerce",
+    "Real Estate",
+    "Specialized Consultancies",
+    "Logistics & Supply Chain",
+    "Engineering & Architecture",
+    "EdTech & Training",
+    "Software Development",
+    "Manufacturing",
+    "Food & Beverage",
+    "Chemical Sector",
+    "Transportation & Logistics",
+    "Pharmaceuticals",
+    "Agriculture & AgTech",
+    "Governance & Compliance",
+    "Cybersecurity",
+    "Human Resources",
+    "Education",
+    "Critical Infrastructure",
+    "Media & Creative"
+  ],
+  "company_sizes": [
+    25,
+    50,
+    100,
+    150,
+    200
+  ],
+  "templates": [
+    {
+      "id": "legal-contract-review",
+      "name": "Legal Contract Auditor",
+      "description": "AI-driven contract analysis, litigation forecasting, and automated discovery.",
+      "industry": "Legal Services",
+      "tags": [
+        "law",
+        "contracts",
+        "auditing"
+      ],
+      "path": "legal/contract-review",
+      "company_size": 25
+    },
+    {
+      "id": "healthcare-patient-intake",
+      "name": "Patient Intake Automation",
+      "description": "Process clinical data and automate patient intake workflows.",
+      "industry": "Medical Practices",
+      "tags": [
+        "healthcare",
+        "intake",
+        "medical"
+      ],
+      "path": "healthcare/patient-intake",
+      "company_size": 25
+    },
+    {
+      "id": "development-code-reviewer",
+      "name": "Sr. Architect Reviewer",
+      "description": "Automated code review and architectural auditing from a senior perspective.",
+      "industry": "Software Development",
+      "tags": [
+        "development",
+        "devops",
+        "code-review"
+      ],
+      "path": "development/code-reviewer",
+      "company_size": 50
+    },
+    {
+      "id": "bookkeeping-audit",
+      "name": "SMB Bookkeeping Swarm",
+      "description": "Automated daily reconciliation, tax optimization, and digital audit trails.",
+      "industry": "Financial Services",
+      "tags": [
+        "finance",
+        "accounting",
+        "tax",
+        "audit"
+      ],
+      "path": "financial-services/bookkeeping-audit",
+      "company_size": 25
+    },
+    {
+      "id": "full-funnel-automation",
+      "name": "Marketing Funnel Pilot",
+      "description": "Automated content generation, ad spend optimization, and journey analytics.",
+      "industry": "Digital Marketing",
+      "tags": [
+        "marketing",
+        "ads",
+        "content",
+        "automation"
+      ],
+      "path": "digital-marketing/full-funnel-automation",
+      "company_size": 25
+    },
+    {
+      "id": "lead-transaction-management",
+      "name": "Real Estate Closer",
+      "description": "Automated lead nurturing, MLS syndication, and escrow timeline tracking.",
+      "industry": "Real Estate",
+      "tags": [
+        "real-estate",
+        "leads",
+        "transactions",
+        "automation"
+      ],
+      "path": "real-estate/lead-transaction",
+      "company_size": 25
+    },
+    {
+      "id": "manufacturing-job-shop-25",
+      "name": "Job Shop (25 Seats)",
+      "description": "Optimized production scheduling and material tracking for small-scale manufacturing.",
+      "industry": "Manufacturing",
+      "tags": [
+        "manufacturing",
+        "production",
+        "inventory"
+      ],
+      "path": "manufacturing/job-shop-25",
+      "company_size": 25
+    },
+    {
+      "id": "manufacturing-medium-plant-50",
+      "name": "Medium Plant (50 Seats)",
+      "description": "Predictive maintenance and supply chain orchestration for medium-sized facilities.",
+      "industry": "Manufacturing",
+      "tags": [
+        "manufacturing",
+        "maintenance",
+        "supply-chain"
+      ],
+      "path": "manufacturing/medium-plant-50",
+      "company_size": 50
+    },
+    {
+      "id": "manufacturing-smart-factory-100",
+      "name": "Smart Factory (100 Seats)",
+      "description": "Enterprise-level ERP integration and digital twin synchronization across sites.",
+      "industry": "Manufacturing",
+      "tags": [
+        "smart-factory",
+        "digital-twin",
+        "erp"
+      ],
+      "path": "manufacturing/smart-factory-100",
+      "company_size": 100
+    },
+    {
+      "id": "food-restaurant-ops",
+      "name": "Food & Beverage Operations",
+      "description": "Automate kitchen inventory, menu performance analytics, and supplier ordering workflows.",
+      "industry": "Food & Beverage",
+      "tags": [
+        "food",
+        "restaurant",
+        "inventory",
+        "ordering"
+      ],
+      "path": "food/restaurant-ops",
+      "company_size": 25
+    },
+    {
+      "id": "chemical-process-safety",
+      "name": "Chemical Safety Auditor",
+      "description": "Automate chemical inventory, Safety Data Sheet (SDS) compliance auditing, and safety checklists.",
+      "industry": "Chemical Sector",
+      "tags": [
+        "chemical",
+        "safety",
+        "compliance"
+      ],
+      "path": "chemical/process-safety",
+      "company_size": 25
+    },
+    {
+      "id": "transportation-fleet-logistics",
+      "name": "Fleet Logistics Swarm",
+      "description": "Fleet scheduling, route optimization, maintenance tracking, and fuel efficiency analytics.",
+      "industry": "Transportation & Logistics",
+      "tags": [
+        "transportation",
+        "fleet",
+        "logistics"
+      ],
+      "path": "transportation/fleet-logistics",
+      "company_size": 25
+    },
+    {
+      "id": "pharma-clinical-trials",
+      "name": "Clinical Trial Manager",
+      "description": "Automate clinical trial protocol mapping, trial candidate documentation, and adverse event logging.",
+      "industry": "Pharmaceuticals",
+      "tags": [
+        "pharma",
+        "clinical",
+        "compliance"
+      ],
+      "path": "pharma/clinical-trials",
+      "company_size": 25
+    },
+    {
+      "id": "agriculture-precision-farming",
+      "name": "Precision Agriculture Swarm",
+      "description": "Crop yield forecasting, soil health telemetry analysis, and irrigation optimization.",
+      "industry": "Agriculture & AgTech",
+      "tags": [
+        "agriculture",
+        "farming",
+        "analytics"
+      ],
+      "path": "agriculture/precision-farming",
+      "company_size": 25
+    },
+    {
+      "id": "compliance-regulatory-audit",
+      "name": "Regulatory Compliance Swarm",
+      "description": "Continuous security posture assessment, SOC2/ISO readiness checks, and regulatory compliance mapping.",
+      "industry": "Governance & Compliance",
+      "tags": [
+        "compliance",
+        "audit",
+        "security"
+      ],
+      "path": "compliance/regulatory-audit",
+      "company_size": 25
+    },
+    {
+      "id": "security-incident-response",
+      "name": "Incident Response Swarm",
+      "description": "Designed for security log auditing, incident triage, and automated mitigation recommendation.",
+      "industry": "Cybersecurity",
+      "tags": [
+        "security",
+        "secops",
+        "incident-response"
+      ],
+      "path": "security/incident-response",
+      "company_size": 25
+    },
+    {
+      "id": "hr-recruiting-triage",
+      "name": "Recruiting Triage Swarm",
+      "description": "Designed for parsing candidate resumes, screening against role criteria, and coordinating onboarding files.",
+      "industry": "Human Resources",
+      "tags": [
+        "hr",
+        "recruiting",
+        "onboarding"
+      ],
+      "path": "hr/recruiting-triage",
+      "company_size": 25
+    },
+    {
+      "id": "education-curriculum-planner",
+      "name": "Curriculum Planner Swarm",
+      "description": "Designed for curriculum audit mapping, lesson plan alignment, and student analytics reviews.",
+      "industry": "Education",
+      "tags": [
+        "education",
+        "curriculum",
+        "analytics"
+      ],
+      "path": "education/curriculum-planner",
+      "company_size": 25
+    },
+    {
+      "id": "utilities-grid-telemetry",
+      "name": "Grid Telemetry Swarm",
+      "description": "Designed for grid status logs auditing, alarm triage, and utility crew scheduling.",
+      "industry": "Critical Infrastructure",
+      "tags": [
+        "utilities",
+        "grid",
+        "telemetry",
+        "scada"
+      ],
+      "path": "utilities/grid-telemetry",
+      "company_size": 25
+    },
+    {
+      "id": "creative-asset-pipeline",
+      "name": "Creative Asset Pipeline Swarm",
+      "description": "Designed for creative asset verification, size budget checks, and dialog localization tracking.",
+      "industry": "Media & Creative",
+      "tags": [
+        "creative",
+        "media",
+        "assets",
+        "localization"
+      ],
+      "path": "creative/asset-pipeline",
+      "company_size": 25
+    }
+  ]
+}

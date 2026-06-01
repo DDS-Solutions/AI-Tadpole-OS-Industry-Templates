@@ -6,7 +6,7 @@ Official community repository for Tadpole OS. Download, share, and install indus
 
 ## 🛠️ Build Your Own Swarm
 
-Don't want to start from scratch? Use our **[Swarm Architect](https://tadpole-os.github.io/tadpole-os-industry-templates/)** to visually design your intelligence roster, mission, and playbooks.
+Don't want to start from scratch? Use our **[Swarm Architect](https://dds-solutions.github.io/AI-Tadpole-OS-Industry-Templates/)** to visually design your intelligence roster, mission, and playbooks.
 
 *   **Hybrid AI Profiler**: Suggests skills based on your company mission.
 *   **One-Click Export**: Downloads a production-ready Swarm Archive (.zip).
@@ -16,7 +16,7 @@ Don't want to start from scratch? Use our **[Swarm Architect](https://tadpole-os
 
 ## 🌟 What is a Swarm Template?
 
-Tadpole OS operates via "**Swarms**" — interconnected graphs of AI agents, specific skills, and Markdown-based standard operating procedures (workflows). 
+AI-Tadpole-OS operates via "**Swarms**" — interconnected graphs of AI agents, specific skills, and Markdown-based standard operating procedures (workflows). 
 
 Instead of configuring dozens of AI agents up manually, you can download a complete Swarm Template tailored exactly to your industry (e.g., Legal, Healthcare, Development).
 
@@ -24,7 +24,7 @@ Instead of configuring dozens of AI agents up manually, you can download a compl
 
 You can install these directly from your Tadpole OS dashboard!
 
-1. Open your **Tadpole OS Dashboard**.
+1. Open your **AI-Tadpole-OS Dashboard**.
 2. Navigate to **Settings** -> **System Configuration**.
 3. Under the **Template Ecosystem** panel, click **Open Template Store**.
 4. Browse the available industries and click **Install Swarm** on the template you want.

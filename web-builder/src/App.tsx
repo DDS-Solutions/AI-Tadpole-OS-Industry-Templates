@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Shield, 
   Cpu, 
@@ -89,6 +89,41 @@ export default function App() {
     { id: '1', name: 'Standard Triage', description: 'Analyze incoming data and route to appropriate agent.' }
   ]);
 
+  const [dynamicIndustries, setDynamicIndustries] = useState(INDUSTRY_MAP);
+  const [dynamicRegistry, setDynamicRegistry] = useState(REGISTRY);
+  const [isCustomIndustry, setIsCustomIndustry] = useState(false);
+  const [customIndustryName, setCustomIndustryName] = useState('');
+  const [customIndustryPath, setCustomIndustryPath] = useState('');
+
+  useEffect(() => {
+    fetch('./registry.json')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.industries) {
+          const registryIndustries = data.industries.map((name: string) => {
+            const existing = INDUSTRY_MAP.find(i => i.name === name);
+            return {
+              name,
+              path: existing?.path || name.toLowerCase().replace(/ & /g, '-').replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+              keywords: existing?.keywords || name.toLowerCase().split(/\s+/)
+            };
+          });
+          setDynamicIndustries(registryIndustries);
+        }
+        if (data && data.templates) {
+          const registryTemplates = data.templates.map((t: any) => ({
+            id: t.id,
+            name: t.name,
+            industry: t.industry,
+            path: t.path,
+            tags: t.tags || []
+          }));
+          setDynamicRegistry(registryTemplates);
+        }
+      })
+      .catch(err => console.error("Error loading registry.json:", err));
+  }, []);
+
   const addAgent = () => {
     const id = Math.random().toString(36).substr(2, 9);
     setAgents([...agents, { id, name: 'New Agent', role: '', model: 'gemini-pro-latest', prompt: '' }]);
@@ -109,9 +144,10 @@ export default function App() {
 
   const handleAiAssist = () => {
     const desc = companyInfo.description.toLowerCase();
-    const match = INDUSTRY_MAP.find(i => i.keywords.some(k => desc.includes(k)));
+    const match = dynamicIndustries.find(i => i.keywords.some(k => desc.includes(k)));
     
     if (match) {
+      setIsCustomIndustry(false);
       setCompanyInfo({
         ...companyInfo,
         mission: `To revolutionize ${companyInfo.description.toLowerCase()} through sovereign intelligence and automated ${match.name.toLowerCase()} flows.`,
@@ -216,21 +252,84 @@ export default function App() {
             </div>
             
             <div className="space-y-6">
+              <div>
+                <label className="block text-xs font-mono uppercase text-zinc-500 mb-2">Company / Swarm Name</label>
+                <input 
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none transition-colors"
+                  placeholder="e.g. My Enterprise Swarm"
+                  value={companyInfo.name}
+                  onChange={e => setCompanyInfo({...companyInfo, name: e.target.value})}
+                />
+              </div>
+
+              {isCustomIndustry && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-zinc-950 border border-zinc-800 rounded-lg">
+                  <div>
+                    <label className="block text-xs font-mono uppercase text-zinc-500 mb-2">Custom Industry Name</label>
+                    <input 
+                      className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none transition-colors"
+                      placeholder="e.g. Biotech Research"
+                      value={customIndustryName}
+                      onChange={e => {
+                        setCustomIndustryName(e.target.value);
+                        const autoPath = e.target.value.toLowerCase().replace(/ & /g, '-').replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+                        setCustomIndustryPath(autoPath);
+                        setCompanyInfo({
+                          ...companyInfo,
+                          industry: e.target.value,
+                          industryPath: autoPath
+                        });
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-mono uppercase text-zinc-500 mb-2">Custom Target Directory Path</label>
+                    <input 
+                      className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none transition-colors"
+                      placeholder="e.g. biotech"
+                      value={customIndustryPath}
+                      onChange={e => {
+                        setCustomIndustryPath(e.target.value);
+                        setCompanyInfo({
+                          ...companyInfo,
+                          industryPath: e.target.value
+                        });
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-xs font-mono uppercase text-zinc-500 mb-2">Industry / Sector</label>
                   <select 
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none"
-                    value={companyInfo.industry}
+                    value={isCustomIndustry ? "CUSTOM" : companyInfo.industry}
                     onChange={e => {
-                      const match = INDUSTRY_MAP.find(i => i.name === e.target.value);
-                      setCompanyInfo({...companyInfo, industry: e.target.value, industryPath: match?.path || ''});
+                      if (e.target.value === "CUSTOM") {
+                        setIsCustomIndustry(true);
+                        setCompanyInfo({
+                          ...companyInfo,
+                          industry: customIndustryName,
+                          industryPath: customIndustryPath
+                        });
+                      } else {
+                        setIsCustomIndustry(false);
+                        const match = dynamicIndustries.find(i => i.name === e.target.value);
+                        setCompanyInfo({
+                          ...companyInfo,
+                          industry: e.target.value,
+                          industryPath: match?.path || ''
+                        });
+                      }
                     }}
                   >
                     <option value="">Select Industry...</option>
-                    {INDUSTRY_MAP.map(i => (
+                    {dynamicIndustries.map(i => (
                       <option key={i.path} value={i.name}>{i.name}</option>
                     ))}
+                    <option value="CUSTOM">+ Add Custom Industry...</option>
                   </select>
                 </div>
                 <div>
@@ -506,7 +605,7 @@ export default function App() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {REGISTRY.filter(t => 
+          {dynamicRegistry.filter(t => 
             t.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
             t.industry.toLowerCase().includes(searchTerm.toLowerCase()) ||
             t.tags.some(tag => tag.includes(searchTerm.toLowerCase()))
