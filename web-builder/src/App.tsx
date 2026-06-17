@@ -26,6 +26,11 @@ type WorkflowItem = {
   id: string;
   name: string;
   description: string;
+  isOkfPlaybook?: boolean;
+  resourceUri?: string;
+  topic?: string;
+  conceptType?: string;
+  tags?: string;
 };
 
 const INDUSTRY_MAP = [
@@ -135,7 +140,16 @@ export default function App() {
 
   const addWorkflow = () => {
     const id = Math.random().toString(36).substr(2, 9);
-    setWorkflows([...workflows, { id, name: 'New Workflow', description: '' }]);
+    setWorkflows([...workflows, { 
+      id, 
+      name: 'New Workflow/Playbook', 
+      description: '',
+      isOkfPlaybook: false,
+      resourceUri: '',
+      topic: companyInfo.industry.toLowerCase() || 'general',
+      conceptType: 'playbook',
+      tags: companyInfo.industry.toLowerCase() || 'general'
+    }]);
   };
 
   const removeWorkflow = (id: string) => {
@@ -169,6 +183,10 @@ export default function App() {
   const handleExport = async () => {
     const zip = new JSZip();
     
+    // Group workflows into standard workflows vs knowledge playbooks
+    const standardWorkflows = workflows.filter(w => !w.isOkfPlaybook);
+    const okfPlaybooks = workflows.filter(w => w.isOkfPlaybook);
+
     // swarm.json
     const swarmJson = {
       $schema: "https://tadpoleos.dev/schemas/swarm-v1.json",
@@ -182,7 +200,7 @@ export default function App() {
         path: `agents/${a.id}.json`,
         role: a.role
       })),
-      global_workflows: workflows.map(w => `workflows/${w.id}.md`)
+      global_workflows: standardWorkflows.map(w => `workflows/${w.id}.md`)
     };
     
     zip.file("swarm.json", JSON.stringify(swarmJson, null, 2));
@@ -200,10 +218,46 @@ export default function App() {
     });
     
     // workflows/*.md
-    const workflowsFolder = zip.folder("workflows");
-    workflows.forEach(workflow => {
-      workflowsFolder?.file(`${workflow.id}.md`, `# Workflow: ${workflow.name}\n\n${workflow.description}`);
-    });
+    if (standardWorkflows.length > 0) {
+      const workflowsFolder = zip.folder("workflows");
+      standardWorkflows.forEach(workflow => {
+        workflowsFolder?.file(`${workflow.id}.md`, `# Workflow: ${workflow.name}\n\n${workflow.description}`);
+      });
+    }
+
+    // Ingest knowledge playbooks if any are defined
+    if (okfPlaybooks.length > 0) {
+      // Create knowledge.json
+      const knowledgeJson = okfPlaybooks.map(w => ({
+        title: w.name,
+        description: w.description.slice(0, 200), // excerpt for desc
+        topic: w.topic || companyInfo.industry.toLowerCase() || 'general',
+        concept_type: w.conceptType || 'playbook',
+        resource_uri: w.resourceUri || undefined,
+        tags: w.tags || companyInfo.industry.toLowerCase() || 'general',
+        text: w.description
+      }));
+      zip.file("knowledge.json", JSON.stringify(knowledgeJson, null, 2));
+
+      // Create knowledge/*.md with YAML frontmatter
+      const knowledgeFolder = zip.folder("knowledge");
+      okfPlaybooks.forEach(w => {
+        const cleanName = w.name.toLowerCase().replace(/[^a-z0-9]/g, '_');
+        const frontmatter = [
+          "---",
+          `title: "${w.name.replace(/"/g, '\\"')}"`,
+          w.resourceUri ? `url: "${w.resourceUri}"` : null,
+          w.tags ? `tags: "${w.tags.replace(/"/g, '\\"')}"` : null,
+          `description: "${w.description.slice(0, 150).replace(/\n/g, ' ').replace(/"/g, '\\"')}"`,
+          "---",
+          "",
+          `# ${w.name}`,
+          "",
+          w.description
+        ].filter(Boolean).join("\n");
+        knowledgeFolder?.file(`${cleanName}.md`, frontmatter);
+      });
+    }
     
     const content = await zip.generateAsync({ type: "blob" });
     const url = window.URL.createObjectURL(content);
@@ -526,6 +580,86 @@ export default function App() {
                         setWorkflows(newWorkflows);
                       }}
                     />
+
+                    {/* OKF/IKS Integration Panel */}
+                    <div className="pt-4 border-t border-zinc-900 mt-4 space-y-4">
+                      <label className="flex items-center gap-2 text-xs text-zinc-400 cursor-pointer font-mono">
+                        <input 
+                          type="checkbox"
+                          checked={!!workflow.isOkfPlaybook}
+                          onChange={e => {
+                            const newWorkflows = [...workflows];
+                            const curr = newWorkflows.find(w => w.id === workflow.id)!;
+                            curr.isOkfPlaybook = e.target.checked;
+                            if (e.target.checked) {
+                              curr.topic = curr.topic || companyInfo.industry.toLowerCase() || 'general';
+                              curr.conceptType = curr.conceptType || 'playbook';
+                              curr.tags = curr.tags || companyInfo.industry.toLowerCase() || 'general';
+                            }
+                            setWorkflows(newWorkflows);
+                          }}
+                          className="rounded border-zinc-850 bg-zinc-950 text-cyber-green focus:ring-0 focus:ring-offset-0"
+                        />
+                        <span>Index into Institutional Knowledge Store (OKF/IKS)</span>
+                      </label>
+
+                      {workflow.isOkfPlaybook && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-6 border-l border-zinc-800">
+                          <div>
+                            <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1">External SOP / Confluence URL</label>
+                            <input 
+                              className="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-xs focus:border-cyber-green outline-none text-zinc-300"
+                              placeholder="e.g. https://confluence.company.com/pages/..."
+                              value={workflow.resourceUri || ''}
+                              onChange={e => {
+                                const newWorkflows = [...workflows];
+                                newWorkflows.find(w => w.id === workflow.id)!.resourceUri = e.target.value;
+                                setWorkflows(newWorkflows);
+                              }}
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1">Topic</label>
+                            <input 
+                              className="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-xs focus:border-cyber-green outline-none text-zinc-300"
+                              placeholder="e.g. marketing, compliance"
+                              value={workflow.topic || ''}
+                              onChange={e => {
+                                const newWorkflows = [...workflows];
+                                newWorkflows.find(w => w.id === workflow.id)!.topic = e.target.value;
+                                setWorkflows(newWorkflows);
+                              }}
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1">Concept Type</label>
+                            <input 
+                              className="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-xs focus:border-cyber-green outline-none text-zinc-300"
+                              placeholder="e.g. playbook, guideline"
+                              value={workflow.conceptType || ''}
+                              onChange={e => {
+                                const newWorkflows = [...workflows];
+                                newWorkflows.find(w => w.id === workflow.id)!.conceptType = e.target.value;
+                                setWorkflows(newWorkflows);
+                              }}
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1">Tags (comma-separated)</label>
+                            <input 
+                              className="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-xs focus:border-cyber-green outline-none text-zinc-300"
+                              placeholder="e.g. seo, advertising"
+                              value={workflow.tags || ''}
+                              onChange={e => {
+                                const newWorkflows = [...workflows];
+                                newWorkflows.find(w => w.id === workflow.id)!.tags = e.target.value;
+                                setWorkflows(newWorkflows);
+                              }}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
