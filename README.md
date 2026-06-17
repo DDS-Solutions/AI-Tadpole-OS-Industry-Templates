@@ -33,20 +33,68 @@ You can install these directly from your Tadpole OS dashboard!
 
 ## 📁 Repository Structure
 
-Templates are organized by industry for easy discovery. Each template folder contains a complete Swarm Profile.
+Templates are organized by industry for easy discovery. Each template folder contains a complete Swarm Profile, optional MCP tools, and institutional playbooks.
 
 ```text
 /
-├── legal/
-│   └── contract-review/       # A swarm designed for auditing NDAs
+├── digital-marketing/
+│   └── full-funnel-automation/ # A swarm designed for full-funnel optimization
 │       ├── swarm.json
 │       ├── agents/
-│       └── workflows/
-├── healthcare/
-│   └── patient-intake/        # A swarm designed to process raw patient data
+│       ├── workflows/
+│       ├── mcps.json
+│       ├── knowledge.json      # Playbook and SOP metadata index
+│       └── knowledge/          # Corporate SOPs and reference docs
+│           └── seo_sop.md
+├── legal/
+│   └── contract-review/       # A swarm designed for auditing NDAs
 └── development/
     └── code-reviewer/         # A swarm that acts as a Sr. Architect
 ```
+
+## 🧠 Institutional Knowledge Integration (OKF/IKS)
+
+Tadpole OS Swarms can automatically ingest institutional knowledge, playbooks, and corporate SOPs into your local **Open Knowledge Foundation (OKF)** vector database upon deployment. This enables newly spawned agents to instantly access and conform to your company's official guidelines, documentation, and processes.
+
+### Bundling Formats
+
+Swarm template authors can bundle knowledge assets in two formats:
+
+#### Format A: Markdown SOPs (Recommended)
+Add `.md` files to the `/knowledge/` subdirectory within the template. You can include custom YAML frontmatter at the top of each file to capture metadata, which is automatically extracted and indexed:
+
+```markdown
+---
+title: Full-Funnel SEO Optimization & Content Strategy Playbook
+url: https://confluence.example.com/display/MKT/Full-Funnel+SEO+Playbook
+tags: marketing, seo, content, organic
+description: A comprehensive playbook detailing organic search strategies.
+---
+# Full-Funnel SEO Playbook
+Body content...
+```
+
+#### Format B: Structured JSON (`knowledge.json`)
+Alternatively (or additionally), you can define a `knowledge.json` file in the root of the template folder containing a structured list of knowledge requests:
+
+```json
+[
+  {
+    "title": "Full-Funnel SEO Optimization Playbook",
+    "description": "Organic search guidelines.",
+    "topic": "marketing",
+    "concept_type": "playbook",
+    "resource_uri": "https://confluence.example.com/display/MKT/Full-Funnel+SEO+Playbook",
+    "tags": "marketing, seo, content",
+    "text": "Playbook body..."
+  }
+]
+```
+
+### Resilient Ingestion & Live Previews
+
+* **Automatic Previews**: The Template Store reads your `knowledge.json` metadata index, displaying a dedicated **Playbooks & Institutional Knowledge** panel in the preview modal. Users can review documentation URLs and descriptions prior to deployment.
+* **Resilient Degradation**: If vector memory or embedding generation is disabled (e.g., due to `PRIVACY_MODE=true` or missing API keys), the template installation logs a warning but proceeds with the deployment, ensuring zero downtime.
 
 ## 🛡️ The Sapphire Shield: Security First
 
