@@ -55,24 +55,34 @@ const INDUSTRY_MAP = [
   { name: 'Media & Creative', path: 'creative', keywords: ['media', 'creative', 'asset', 'game', 'dialog', 'narrative', 'localization'] },
 ];
 
-const REGISTRY = [
-  { id: "legal-contract-review", name: "Legal Contract Auditor", industry: "Legal Services", path: "legal/contract-review", tags: ["law", "contracts"] },
-  { id: "healthcare-patient-intake", name: "Patient Intake Automation", industry: "Medical Practices", path: "healthcare/patient-intake", tags: ["healthcare", "intake"] },
-  { id: "development-code-reviewer", name: "Sr. Architect Reviewer", industry: "Software Development", path: "development/code-reviewer", tags: ["development", "devops"] },
-  { id: "bookkeeping-audit", name: "SMB Bookkeeping Swarm", industry: "Financial Services", path: "financial-services/bookkeeping-audit", tags: ["finance", "accounting"] },
-  { id: "full-funnel-automation", name: "Marketing Funnel Pilot", industry: "Digital Marketing", path: "digital-marketing/full-funnel-automation", tags: ["marketing", "ads"] },
-  { id: "lead-transaction-management", name: "Real Estate Closer", industry: "Real Estate", path: "real-estate/lead-transaction", tags: ["real-estate", "leads"] },
-  { id: "food-restaurant-ops", name: "Food & Beverage Operations", industry: "Food & Beverage", path: "food/restaurant-ops", tags: ["food", "restaurant", "inventory"] },
-  { id: "chemical-process-safety", name: "Chemical Safety Auditor", industry: "Chemical Sector", path: "chemical/process-safety", tags: ["chemical", "safety", "compliance"] },
-  { id: "transportation-fleet-logistics", name: "Fleet Logistics Swarm", industry: "Transportation & Logistics", path: "transportation/fleet-logistics", tags: ["transportation", "fleet", "logistics"] },
-  { id: "pharma-clinical-trials", name: "Clinical Trial Manager", industry: "Pharmaceuticals", path: "pharma/clinical-trials", tags: ["pharma", "clinical", "compliance"] },
-  { id: "agriculture-precision-farming", name: "Precision Agriculture Swarm", industry: "Agriculture & AgTech", path: "agriculture/precision-farming", tags: ["agriculture", "farming", "analytics"] },
-  { id: "compliance-regulatory-audit", name: "Regulatory Compliance Swarm", industry: "Governance & Compliance", path: "compliance/regulatory-audit", tags: ["compliance", "audit", "security"] },
-  { id: "security-incident-response", name: "Incident Response Swarm", industry: "Cybersecurity", path: "security/incident-response", tags: ["security", "secops", "incident"] },
-  { id: "hr-recruiting-triage", name: "Recruiting Triage Swarm", industry: "Human Resources", path: "hr/recruiting-triage", tags: ["hr", "recruiting", "hiring"] },
-  { id: "education-curriculum-planner", name: "Curriculum Planner Swarm", industry: "Education", path: "education/curriculum-planner", tags: ["education", "curriculum", "school"] },
-  { id: "utilities-grid-telemetry", name: "Grid Telemetry Swarm", industry: "Critical Infrastructure", path: "utilities/grid-telemetry", tags: ["utilities", "grid", "telemetry"] },
-  { id: "creative-asset-pipeline", name: "Creative Asset Pipeline Swarm", industry: "Media & Creative", path: "creative/asset-pipeline", tags: ["creative", "media", "assets"] },
+type TemplateItem = {
+  id: string;
+  name: string;
+  description: string;
+  industry: string;
+  path: string;
+  tags: string[];
+  company_size?: number;
+};
+
+const REGISTRY: TemplateItem[] = [
+  { id: "legal-contract-review", name: "Legal Contract Auditor", description: "AI-driven contract analysis, litigation forecasting, and automated discovery.", industry: "Legal Services", path: "legal/contract-review", tags: ["law", "contracts"] },
+  { id: "healthcare-patient-intake", name: "Patient Intake Automation", description: "Process clinical data and automate patient intake workflows.", industry: "Medical Practices", path: "healthcare/patient-intake", tags: ["healthcare", "intake"] },
+  { id: "development-code-reviewer", name: "Sr. Architect Reviewer", description: "Automated code review and architectural auditing from a senior perspective.", industry: "Software Development", path: "development/code-reviewer", tags: ["development", "devops"] },
+  { id: "bookkeeping-audit", name: "SMB Bookkeeping Swarm", description: "Automated daily reconciliation, tax optimization, and digital audit trails.", industry: "Financial Services", path: "financial-services/bookkeeping-audit", tags: ["finance", "accounting"] },
+  { id: "full-funnel-automation", name: "Marketing Funnel Pilot", description: "Automated content generation, ad spend optimization, and journey analytics.", industry: "Digital Marketing", path: "digital-marketing/full-funnel-automation", tags: ["marketing", "ads"] },
+  { id: "lead-transaction-management", name: "Real Estate Closer", description: "Automated lead nurturing, MLS syndication, and escrow timeline tracking.", industry: "Real Estate", path: "real-estate/lead-transaction", tags: ["real-estate", "leads"] },
+  { id: "food-restaurant-ops", name: "Food & Beverage Operations", description: "Automate kitchen inventory, menu performance analytics, and supplier ordering workflows.", industry: "Food & Beverage", path: "food/restaurant-ops", tags: ["food", "restaurant", "inventory"] },
+  { id: "chemical-process-safety", name: "Chemical Safety Auditor", description: "Automate chemical inventory, Safety Data Sheet (SDS) compliance auditing, and safety checklists.", industry: "Chemical Sector", path: "chemical/process-safety", tags: ["chemical", "safety", "compliance"] },
+  { id: "transportation-fleet-logistics", name: "Fleet Logistics Swarm", description: "Fleet scheduling, route optimization, maintenance tracking, and fuel efficiency analytics.", industry: "Transportation & Logistics", path: "transportation/fleet-logistics", tags: ["transportation", "fleet", "logistics"] },
+  { id: "pharma-clinical-trials", name: "Clinical Trial Manager", description: "Automate clinical trial protocol mapping, trial candidate documentation, and adverse event logging.", industry: "Pharmaceuticals", path: "pharma/clinical-trials", tags: ["pharma", "clinical", "compliance"] },
+  { id: "agriculture-precision-farming", name: "Precision Agriculture Swarm", description: "Crop yield forecasting, soil health telemetry analysis, and irrigation optimization.", industry: "Agriculture & AgTech", path: "agriculture/precision-farming", tags: ["agriculture", "farming", "analytics"] },
+  { id: "compliance-regulatory-audit", name: "Regulatory Compliance Swarm", description: "Continuous security posture assessment, SOC2/ISO readiness checks, and regulatory compliance mapping.", industry: "Governance & Compliance", path: "compliance/regulatory-audit", tags: ["compliance", "audit", "security"] },
+  { id: "security-incident-response", name: "Incident Response Swarm", description: "Designed for security log auditing, incident triage, and automated mitigation recommendation.", industry: "Cybersecurity", path: "security/incident-response", tags: ["security", "secops", "incident"] },
+  { id: "hr-recruiting-triage", name: "Recruiting Triage Swarm", description: "Designed for parsing candidate resumes, screening against role criteria, and coordinating onboarding files.", industry: "Human Resources", path: "hr/recruiting-triage", tags: ["hr", "recruiting", "hiring"] },
+  { id: "education-curriculum-planner", name: "Curriculum Planner Swarm", description: "Designed for curriculum audit mapping, lesson plan alignment, and student analytics reviews.", industry: "Education", path: "education/curriculum-planner", tags: ["education", "curriculum", "school"] },
+  { id: "utilities-grid-telemetry", name: "Grid Telemetry Swarm", description: "Designed for grid status logs auditing, alarm triage, and utility crew scheduling.", industry: "Critical Infrastructure", path: "utilities/grid-telemetry", tags: ["utilities", "grid", "telemetry"] },
+  { id: "creative-asset-pipeline", name: "Creative Asset Pipeline Swarm", description: "Designed for creative asset verification, size budget checks, and dialog localization tracking.", industry: "Media & Creative", path: "creative/asset-pipeline", tags: ["creative", "media", "assets"] },
 ];
 
 const INDUSTRY_CODES_MAP: Record<string, { code: string; label: string }[]> = {
@@ -211,11 +221,16 @@ export default function App() {
   ]);
 
   const [dynamicIndustries, setDynamicIndustries] = useState(INDUSTRY_MAP);
-  const [dynamicRegistry, setDynamicRegistry] = useState(REGISTRY);
+  const [dynamicRegistry, setDynamicRegistry] = useState<TemplateItem[]>(REGISTRY);
   const [isCustomIndustry, setIsCustomIndustry] = useState(false);
   const [customIndustryName, setCustomIndustryName] = useState('');
   const [customIndustryPath, setCustomIndustryPath] = useState('');
   const [showCustomCodeInput, setShowCustomCodeInput] = useState(false);
+
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<TemplateItem | null>(null);
+  const [isLoadingSwarmDetails, setIsLoadingSwarmDetails] = useState(false);
+  const [loadedSwarmDetails, setLoadedSwarmDetails] = useState<{ roster: any[]; workflows: any[] } | null>(null);
 
   useEffect(() => {
     fetch('./registry.json')
@@ -236,9 +251,11 @@ export default function App() {
           const registryTemplates = data.templates.map((t: any) => ({
             id: t.id,
             name: t.name,
+            description: t.description || '',
             industry: t.industry,
             path: t.path,
-            tags: t.tags || []
+            tags: t.tags || [],
+            company_size: t.company_size
           }));
           setDynamicRegistry(registryTemplates);
         }
@@ -385,6 +402,158 @@ export default function App() {
     link.download = `${companyInfo.name.toLowerCase().replace(/\s+/g, '-')}-swarm.zip`;
     link.click();
   };
+
+  const fetchSwarmDetails = async (templatePath: string) => {
+    setIsLoadingSwarmDetails(true);
+    setLoadedSwarmDetails(null);
+    try {
+      const rawBase = `https://raw.githubusercontent.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates/main/${templatePath}`;
+      const response = await fetch(`${rawBase}/swarm.json`);
+      if (!response.ok) throw new Error("Failed to fetch swarm.json");
+      const swarmData = await response.json();
+
+      // Fetch agents details from swarmData.roster
+      const rosterWithDetails = await Promise.all(
+        (swarmData.roster || []).map(async (agentRef: any) => {
+          try {
+            const agentRes = await fetch(`${rawBase}/${agentRef.path}`);
+            if (agentRes.ok) {
+              const agentDetails = await agentRes.json();
+              return {
+                id: agentRef.id,
+                name: agentDetails.name || agentRef.id,
+                role: agentDetails.role || agentRef.role || '',
+                model: agentDetails.model || 'gemini-pro-latest',
+                prompt: agentDetails.system_prompt || ''
+              };
+            }
+          } catch (e) {
+            console.error("Error loading agent details", e);
+          }
+          return {
+            id: agentRef.id,
+            name: agentRef.id,
+            role: agentRef.role || '',
+            model: 'gemini-pro-latest',
+            prompt: ''
+          };
+        })
+      );
+
+      // Fetch workflows details from swarmData.global_workflows
+      const workflowsWithDetails = await Promise.all(
+        (swarmData.global_workflows || []).map(async (workflowPath: string) => {
+          try {
+            const workflowRes = await fetch(`${rawBase}/${workflowPath}`);
+            if (workflowRes.ok) {
+              const mdContent = await workflowRes.text();
+              const nameMatch = mdContent.match(/^#\s*Workflow:\s*(.*)$/m) || mdContent.match(/^#\s*(.*)$/m);
+              const name = nameMatch ? nameMatch[1].trim() : workflowPath.split('/').pop()?.replace('.md', '') || 'Workflow';
+              const description = mdContent.replace(/^#.*$/m, '').trim();
+              return {
+                id: Math.random().toString(36).substr(2, 9),
+                name,
+                description,
+                isOkfPlaybook: false
+              };
+            }
+          } catch (e) {
+            console.error("Error loading workflow details", e);
+          }
+          return {
+            id: Math.random().toString(36).substr(2, 9),
+            name: workflowPath.split('/').pop()?.replace('.md', '') || 'Workflow',
+            description: '',
+            isOkfPlaybook: false
+          };
+        })
+      );
+
+      // Fetch knowledge/ playbooks (from knowledge.json if it exists)
+      let okfPlaybooks: any[] = [];
+      try {
+        const knowledgeRes = await fetch(`${rawBase}/knowledge.json`);
+        if (knowledgeRes.ok) {
+          const knowledgeData = await knowledgeRes.json();
+          okfPlaybooks = (knowledgeData || []).map((k: any) => ({
+            id: Math.random().toString(36).substr(2, 9),
+            name: k.title || k.name || 'Knowledge Playbook',
+            description: k.text || k.description || '',
+            isOkfPlaybook: true,
+            resourceUri: k.resource_uri || '',
+            topic: k.topic || '',
+            conceptType: k.concept_type || 'playbook',
+            tags: k.tags || ''
+          }));
+        }
+      } catch (e) {
+        // knowledge.json is optional
+      }
+
+      setLoadedSwarmDetails({
+        roster: rosterWithDetails,
+        workflows: [...workflowsWithDetails, ...okfPlaybooks]
+      });
+    } catch (err) {
+      console.error("Error fetching swarm details:", err);
+      setLoadedSwarmDetails({ roster: [], workflows: [] });
+    } finally {
+      setIsLoadingSwarmDetails(false);
+    }
+  };
+
+  const handleTemplateClick = (template: any) => {
+    setSelectedTemplateId(template.id);
+    setSelectedTemplate(template);
+    fetchSwarmDetails(template.path);
+  };
+
+  const handleUpdateSelectedTemplate = (key: string, value: any) => {
+    if (!selectedTemplate) return;
+    const updated = { ...selectedTemplate, [key]: value };
+    setSelectedTemplate(updated);
+    setDynamicRegistry(prev => prev.map(t => t.id === selectedTemplate.id ? updated : t));
+  };
+
+  const handleLoadSwarmIntoBuilder = () => {
+    if (!selectedTemplate) return;
+
+    const match = dynamicIndustries.find(i => i.name === selectedTemplate.industry);
+    setCompanyInfo({
+      name: selectedTemplate.name,
+      description: selectedTemplate.description,
+      mission: `To revolutionize ${selectedTemplate.description.toLowerCase()} through sovereign intelligence and automated ${selectedTemplate.industry.toLowerCase()} flows.`,
+      industry: selectedTemplate.industry,
+      industryPath: match?.path || selectedTemplate.path.split('/')[0] || '',
+      industryCode: INDUSTRY_CODES_MAP[selectedTemplate.industry]?.[0]?.code || '',
+      size: (selectedTemplate.company_size || 25).toString()
+    });
+
+    if (loadedSwarmDetails?.roster && loadedSwarmDetails.roster.length > 0) {
+      setAgents(loadedSwarmDetails.roster);
+    } else {
+      setAgents([
+        { id: '1', name: 'Lead Orchestrator', role: 'General Coordinator', model: 'gemini-pro-latest', prompt: 'Coordinate swarm operations...' }
+      ]);
+    }
+
+    if (loadedSwarmDetails?.workflows && loadedSwarmDetails.workflows.length > 0) {
+      setWorkflows(loadedSwarmDetails.workflows);
+    } else {
+      setWorkflows([
+        { id: '1', name: 'Standard Triage', description: 'Analyze incoming data and route to appropriate agent.' }
+      ]);
+    }
+
+    setStep(1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const filteredTemplates = dynamicRegistry.filter(t => 
+    t.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    t.industry.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    t.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
 
   return (
     <div className="min-h-screen p-4 md:p-8 flex flex-col items-center max-w-5xl mx-auto">
@@ -885,53 +1054,169 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Gallery Section */}
+      {/* Community Templates Library Card */}
       <section className="w-full mt-24 mb-12">
-        <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-          <div>
-            <h2 className="text-2xl font-bold">Community Templates</h2>
-            <p className="text-zinc-500 text-sm">Explore existing swarms in the ecosystem</p>
-          </div>
-          <div className="relative w-full md:w-64">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-            <input 
-              className="w-full bg-zinc-950 border border-zinc-800 rounded-full py-2 pl-10 pr-4 text-sm focus:border-cyber-green outline-none"
-              placeholder="Search library..."
-              value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
-            />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {dynamicRegistry.filter(t => 
-            t.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-            t.industry.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            t.tags.some(tag => tag.includes(searchTerm.toLowerCase()))
-          ).map(template => (
-            <div key={template.id} className="sovereign-panel p-6 border-zinc-800/50 hover:bg-zinc-900/30 transition-all cursor-default">
-              <div className="flex justify-between items-start mb-4">
-                <div className="bg-zinc-950 p-2 rounded-lg border border-zinc-800">
-                  <Cpu className="w-4 h-4 text-zinc-500" />
-                </div>
-                <span className="text-[10px] font-mono text-cyber-green/50 uppercase tracking-tighter bg-cyber-green/5 px-2 py-0.5 rounded border border-cyber-green/10">
-                  {template.industry}
-                </span>
-              </div>
-              <h3 className="font-bold text-lg mb-2">{template.name}</h3>
-              <div className="flex items-center gap-2 text-[10px] text-zinc-500 font-mono mb-4">
-                <Shield className="w-3 h-3" />
-                {template.path}/
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {template.tags.map(tag => (
-                  <span key={tag} className="text-[10px] text-zinc-400 bg-zinc-950 px-2 py-1 rounded-md border border-zinc-800">
-                    #{tag}
-                  </span>
-                ))}
-              </div>
+        <div className="sovereign-panel p-6 flex flex-col min-h-[600px] border-zinc-800/50">
+          {/* Card Header */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center pb-6 border-b border-zinc-800 gap-4 mb-6" style={{ borderColor: 'color-mix(in srgb, var(--color-border) 40%, transparent)' }}>
+            <div>
+              <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                <Cpu className="w-5 h-5 text-cyber-green" /> Community Templates Library
+              </h2>
+              <p className="text-zinc-500 text-xs mt-1">Explore, edit, and select pre-configured agent swarms in the ecosystem</p>
             </div>
-          ))}
+            {/* Search Input */}
+            <div className="relative w-full md:w-80">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+              <input 
+                className="w-full bg-zinc-950 border border-zinc-800 rounded-full py-2 pl-10 pr-4 text-sm focus:border-cyber-green outline-none text-zinc-300"
+                placeholder="Search library..."
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+              />
+            </div>
+          </div>
+
+          {/* Card Body - Split Layout */}
+          <div className="flex flex-col lg:flex-row gap-6 flex-1 min-h-[480px]">
+            {/* Left Side: Scrollable List of Templates */}
+            <div className="w-full lg:w-2/5 pr-0 lg:pr-6 max-h-[500px] overflow-y-auto custom-scrollbar flex flex-col gap-2" style={{ borderRight: '1px solid color-mix(in srgb, var(--color-border) 45%, transparent)' }}>
+              {filteredTemplates.length === 0 ? (
+                <div className="text-zinc-650 text-sm font-mono p-4 text-center">No templates match search criteria</div>
+              ) : (
+                filteredTemplates.map(template => {
+                  const isSelected = selectedTemplateId === template.id;
+                  return (
+                    <div
+                      key={template.id}
+                      onClick={() => handleTemplateClick(template)}
+                      className={`p-4 rounded-xl border sovereign-transition cursor-pointer text-left ${
+                        isSelected 
+                          ? 'bg-zinc-900 border-cyber-green/50 text-white' 
+                          : 'bg-zinc-950/40 border-zinc-800 text-zinc-400 hover:border-zinc-700'
+                      }`}
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">{template.industry}</span>
+                        {isSelected && <span className="w-1.5 h-1.5 bg-cyber-green rounded-full animate-pulse" />}
+                      </div>
+                      <h4 className="font-bold text-sm text-zinc-100">{template.name}</h4>
+                      <p className="text-xs text-zinc-500 line-clamp-1 mt-1">{template.description}</p>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+
+            {/* Right Side: Detail & Edit Panel */}
+            <div className="w-full lg:w-3/5 flex flex-col gap-6 bg-zinc-950/20 p-6 rounded-xl border border-zinc-850/60 max-h-[500px] overflow-y-auto custom-scrollbar" style={{ borderColor: 'color-mix(in srgb, var(--color-border) 30%, transparent)' }}>
+              {selectedTemplate ? (
+                <div className="flex flex-col gap-6 h-full justify-between">
+                  {/* Template Metadata Editing */}
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <span className="mono-label text-[10px] text-zinc-500">Selected Swarm Template</span>
+                        <input
+                          className="bg-transparent text-lg font-bold text-white border-b border-zinc-800 hover:border-zinc-700 focus:border-cyber-green outline-none w-full pb-1 mt-1"
+                          value={selectedTemplate.name}
+                          onChange={e => handleUpdateSelectedTemplate('name', e.target.value)}
+                        />
+                      </div>
+                      <div className="text-right ml-4">
+                        <span className="mono-label text-[10px] text-zinc-500 block">Industry</span>
+                        <span className="text-[10px] font-mono text-cyber-green uppercase tracking-tighter bg-cyber-green/5 px-2 py-0.5 rounded border border-cyber-green/10 inline-block mt-1">
+                          {selectedTemplate.industry}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div>
+                      <span className="mono-label text-[10px] text-zinc-500">Description</span>
+                      <textarea
+                        className="w-full bg-zinc-950/60 border border-zinc-850 rounded-lg p-3 text-xs text-zinc-300 focus:border-cyber-green outline-none min-h-[60px] resize-y mt-1"
+                        value={selectedTemplate.description}
+                        onChange={e => handleUpdateSelectedTemplate('description', e.target.value)}
+                      />
+                    </div>
+
+                    {/* Path & Size */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <span className="mono-label text-[10px] text-zinc-500">Path</span>
+                        <div className="bg-zinc-950/60 border border-zinc-800 rounded-lg p-2.5 text-xs text-zinc-400 font-mono mt-1" style={{ borderColor: 'color-mix(in srgb, var(--color-border) 40%, transparent)' }}>
+                          {selectedTemplate.path}
+                        </div>
+                      </div>
+                      <div>
+                        <span className="mono-label text-[10px] text-zinc-500">Default Company Size</span>
+                        <div className="bg-zinc-950/60 border border-zinc-800 rounded-lg p-2.5 text-xs text-zinc-400 font-mono mt-1" style={{ borderColor: 'color-mix(in srgb, var(--color-border) 40%, transparent)' }}>
+                          {selectedTemplate.company_size || 25} Seats
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Swarm Roster Status */}
+                    <div>
+                      <span className="mono-label text-[10px] text-zinc-500 block mb-2">Agents & Roster configuration</span>
+                      {isLoadingSwarmDetails ? (
+                        <div className="text-xs text-zinc-500 font-mono py-2 animate-pulse flex items-center gap-2">
+                          <div className="w-3.5 h-3.5 border-2 border-zinc-800 border-t-cyber-green rounded-full animate-spin" />
+                          Fetching roster details from repository...
+                        </div>
+                      ) : (
+                        <div className="space-y-2">
+                          {loadedSwarmDetails?.roster && loadedSwarmDetails.roster.length > 0 ? (
+                            loadedSwarmDetails.roster.map((agent: any, idx: number) => (
+                              <div key={idx} className="bg-zinc-950/80 border border-zinc-850 p-3 rounded-lg flex justify-between items-center text-xs" style={{ borderColor: 'color-mix(in srgb, var(--color-border) 30%, transparent)' }}>
+                                <div>
+                                  <div className="font-bold text-zinc-200">{agent.name || agent.id}</div>
+                                  <div className="text-zinc-500 font-mono text-[10px] mt-0.5">{agent.role || 'Agent Role'}</div>
+                                </div>
+                                <span className="text-[9px] font-mono text-zinc-550 bg-zinc-900 border border-zinc-800 px-1.5 py-0.5 rounded" style={{ color: 'var(--color-zinc-500)' }}>
+                                  {agent.model || 'gemini-pro-latest'}
+                                </span>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="text-zinc-600 text-xs font-mono italic">No loaded roster details (click template or try checking connection)</div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Tags */}
+                    <div>
+                      <span className="mono-label text-[10px] text-zinc-500 block mb-2">Tags</span>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedTemplate.tags.map((tag: string, idx: number) => (
+                          <span key={idx} className="text-[10px] text-zinc-400 bg-zinc-950 px-2 py-1 rounded-md border border-zinc-800">
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="pt-4 border-t border-zinc-900 flex justify-end gap-3" style={{ borderColor: 'color-mix(in srgb, var(--color-border) 40%, transparent)' }}>
+                    <button
+                      onClick={handleLoadSwarmIntoBuilder}
+                      disabled={isLoadingSwarmDetails || !loadedSwarmDetails}
+                      className="bg-cyber-green text-zinc-950 font-bold text-xs px-5 py-2.5 rounded-lg hover:scale-102 transition-all cursor-pointer flex items-center gap-1.5 shadow-[0_0_12px_rgba(34,197,94,0.15)] disabled:opacity-50"
+                    >
+                      <Download className="w-3.5 h-3.5" /> Load into Swarm Architect
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
+                  <Cpu className="w-10 h-10 text-zinc-700 mb-3" />
+                  <p className="text-zinc-500 text-sm">Select a template from the list to preview details, edit configuration, or load it into the workspace.</p>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </section>
 
