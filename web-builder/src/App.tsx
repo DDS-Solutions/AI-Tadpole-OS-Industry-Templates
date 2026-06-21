@@ -423,8 +423,8 @@ export default function App() {
                 id: agentRef.id,
                 name: agentDetails.name || agentRef.id,
                 role: agentDetails.role || agentRef.role || '',
-                model: agentDetails.model || 'gemini-pro-latest',
-                prompt: agentDetails.system_prompt || ''
+                model: agentDetails.model_id || agentDetails.model || agentDetails.model_config?.model_id || 'gemini-pro-latest',
+                prompt: agentDetails.system_prompt || agentDetails.model_config?.system_prompt || ''
               };
             }
           } catch (e) {
