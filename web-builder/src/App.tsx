@@ -215,6 +215,7 @@ export default function App() {
   const [isCustomIndustry, setIsCustomIndustry] = useState(false);
   const [customIndustryName, setCustomIndustryName] = useState('');
   const [customIndustryPath, setCustomIndustryPath] = useState('');
+  const [showCustomCodeInput, setShowCustomCodeInput] = useState(false);
 
   useEffect(() => {
     fetch('./registry.json')
@@ -278,6 +279,7 @@ export default function App() {
     
     if (match) {
       setIsCustomIndustry(false);
+      setShowCustomCodeInput(false);
       const defaultCode = INDUSTRY_CODES_MAP[match.name]?.[0]?.code || ('NAICS ' + (Math.floor(Math.random() * 90000) + 10000));
       setCompanyInfo({
         ...companyInfo,
@@ -489,6 +491,7 @@ export default function App() {
                         setIsCustomIndustry(false);
                         const match = dynamicIndustries.find(i => i.name === e.target.value);
                         const defaultCode = e.target.value ? (INDUSTRY_CODES_MAP[e.target.value]?.[0]?.code || '') : '';
+                        setShowCustomCodeInput(false);
                         setCompanyInfo({
                           ...companyInfo,
                           industry: e.target.value,
@@ -507,18 +510,55 @@ export default function App() {
                 </div>
                 <div>
                   <label className="block text-xs font-mono uppercase text-zinc-500 mb-2">NAICS / SIC Code</label>
-                  <input 
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none transition-colors"
-                    placeholder="e.g. 541511"
-                    list="industry-codes"
-                    value={companyInfo.industryCode}
-                    onChange={e => setCompanyInfo({...companyInfo, industryCode: e.target.value})}
-                  />
-                  <datalist id="industry-codes">
-                    {(INDUSTRY_CODES_MAP[companyInfo.industry] || []).map(c => (
-                      <option key={c.code} value={c.code}>{c.label}</option>
-                    ))}
-                  </datalist>
+                  {(() => {
+                    const codes = INDUSTRY_CODES_MAP[companyInfo.industry] || [];
+                    const isCodeCustom = companyInfo.industryCode !== '' && !codes.some(c => c.code === companyInfo.industryCode);
+                    const showInput = codes.length === 0 || showCustomCodeInput || isCodeCustom;
+
+                    if (companyInfo.industry && codes.length > 0) {
+                      return (
+                        <div className="flex flex-col md:flex-row gap-3">
+                          <select 
+                            className="flex-1 bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none"
+                            value={(showCustomCodeInput || isCodeCustom) ? "CUSTOM" : companyInfo.industryCode}
+                            onChange={e => {
+                              if (e.target.value === "CUSTOM") {
+                                setShowCustomCodeInput(true);
+                                setCompanyInfo({...companyInfo, industryCode: ''});
+                              } else {
+                                setShowCustomCodeInput(false);
+                                setCompanyInfo({...companyInfo, industryCode: e.target.value});
+                              }
+                            }}
+                          >
+                            <option value="">Select Code...</option>
+                            {codes.map(c => (
+                              <option key={c.code} value={c.code}>{c.label}</option>
+                            ))}
+                            <option value="CUSTOM">Custom Code...</option>
+                          </select>
+                          
+                          {showInput && (
+                            <input 
+                              className="flex-1 bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none transition-colors"
+                              placeholder="Enter Custom Code..."
+                              value={companyInfo.industryCode}
+                              onChange={e => setCompanyInfo({...companyInfo, industryCode: e.target.value})}
+                            />
+                          )}
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <input 
+                          className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none transition-colors"
+                          placeholder="e.g. 541511"
+                          value={companyInfo.industryCode}
+                          onChange={e => setCompanyInfo({...companyInfo, industryCode: e.target.value})}
+                        />
+                      );
+                    }
+                  })()}
                 </div>
               </div>
               
