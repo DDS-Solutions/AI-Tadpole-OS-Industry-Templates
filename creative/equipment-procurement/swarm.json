@@ -1,0 +1,36 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Studio Equipment Purchasing & Asset Inventory",
+  "version": "1.0.0",
+  "description": "Edge Operations: Camera/lens procurement, studio shipping logs, asset receiving, and hardware QA.",
+  "industry": "media-creative",
+  "tags": [
+    "creative",
+    "procurement",
+    "inventory",
+    "hardware-qa",
+    "cameras"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "studio_buyer",
+      "path": "agents/studio_buyer.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "camera_qa_auditor",
+      "path": "agents/camera_qa_auditor.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/optics_receiving_sop.md"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Release Quality Assurance & ISO 9000",
+  "version": "1.0.0",
+  "description": "Edge Operations: Software release QA, test compliance auditing, security asset shipping, and patch management.",
+  "industry": "software-development",
+  "tags": [
+    "development",
+    "qa",
+    "iso9000",
+    "release-management",
+    "security"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "release_qa",
+      "path": "agents/release_qa.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "iso_software_verifier",
+      "path": "agents/iso_software_verifier.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/release_sop.md"
+  ]
+}

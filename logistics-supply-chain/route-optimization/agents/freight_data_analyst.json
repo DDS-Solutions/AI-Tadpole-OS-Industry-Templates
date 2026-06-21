@@ -1,0 +1,31 @@
+{
+  "id": "freight_data_analyst",
+  "name": "Freight Performance Analyst",
+  "role": "Transit Log Analysis",
+  "department": "Operations",
+  "description": "You analyze carrier transit schedules, delivery delays, and freight pricing databases.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Transit Log Analysis",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You analyze carrier transit schedules, delivery delays, and freight pricing databases."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

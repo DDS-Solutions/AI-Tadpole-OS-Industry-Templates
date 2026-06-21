@@ -1,0 +1,31 @@
+{
+  "id": "materials_qa",
+  "name": "Metallurgical QA Inspector",
+  "role": "ISO 9000 Mill Test Verification",
+  "department": "Operations",
+  "description": "You verify manufacturer mill test reports, dimensions, and alloy certifications.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "ISO 9000 Mill Test Verification",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You verify manufacturer mill test reports, dimensions, and alloy certifications."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

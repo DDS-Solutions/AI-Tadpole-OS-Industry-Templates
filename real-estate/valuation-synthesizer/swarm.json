@@ -1,0 +1,35 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Property Valuation & Appraisal Synthesizer",
+  "version": "1.0.0",
+  "description": "Knowledge Work: Property data compilation, local market appraisal indexing, and trend report writing.",
+  "industry": "real-estate",
+  "tags": [
+    "real-estate",
+    "valuation",
+    "appraisal",
+    "synthesis"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "market_data_harvester",
+      "path": "agents/market_data_harvester.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "appraisal_compiler",
+      "path": "agents/appraisal_compiler.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/valuation_sop.md"
+  ]
+}

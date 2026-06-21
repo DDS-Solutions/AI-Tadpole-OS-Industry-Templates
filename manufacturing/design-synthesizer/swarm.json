@@ -1,0 +1,35 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "CAD Design Specification Auditor",
+  "version": "1.0.0",
+  "description": "Knowledge Work: Reviewing product designs, indexing mechanical blueprints, and material compliance audits.",
+  "industry": "manufacturing",
+  "tags": [
+    "manufacturing",
+    "cad",
+    "specifications",
+    "synthesis"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "blueprint_parser",
+      "path": "agents/blueprint_parser.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "spec_compiler",
+      "path": "agents/spec_compiler.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/design_sop.md"
+  ]
+}

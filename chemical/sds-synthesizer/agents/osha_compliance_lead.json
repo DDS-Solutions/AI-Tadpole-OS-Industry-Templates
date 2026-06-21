@@ -1,0 +1,31 @@
+{
+  "id": "osha_compliance_lead",
+  "name": "OSHA Compliance Specialist",
+  "role": "Regulatory Protocol Mapping",
+  "department": "Operations",
+  "description": "You map hazard profiles to OSHA workplace rules and write hazard response guidelines.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Regulatory Protocol Mapping",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You map hazard profiles to OSHA workplace rules and write hazard response guidelines."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

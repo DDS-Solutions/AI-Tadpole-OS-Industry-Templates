@@ -1,0 +1,35 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "SEO Content Strategy Indexer",
+  "version": "1.0.0",
+  "description": "Knowledge Work: Web scraping, SEO keyword trend analysis, search intent mapping, and strategy synthesis.",
+  "industry": "digital-marketing",
+  "tags": [
+    "marketing",
+    "seo",
+    "content-strategy",
+    "synthesis"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "seo_analyst",
+      "path": "agents/seo_analyst.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "strategy_synthesizer",
+      "path": "agents/strategy_synthesizer.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/seo_sop.md"
+  ]
+}

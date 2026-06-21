@@ -1,0 +1,31 @@
+{
+  "id": "framework_mapper",
+  "name": "Regulatory Schema Mapper",
+  "role": "Control Requirement Mapping",
+  "department": "Operations",
+  "description": "You index control clauses of SOC2, ISO 27001, HIPAA, and NIST compliance frameworks.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Control Requirement Mapping",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You index control clauses of SOC2, ISO 27001, HIPAA, and NIST compliance frameworks."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Factory Floor ISO 9000 QA & Inventory",
+  "version": "1.0.0",
+  "description": "Edge Operations: Materials receiving, shipping finished goods, parts inventory audits, and ISO 9000 quality checks.",
+  "industry": "manufacturing",
+  "tags": [
+    "manufacturing",
+    "iso9000",
+    "qa",
+    "inventory",
+    "shipping"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "floor_inventory_manager",
+      "path": "agents/floor_inventory_manager.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "iso_inspector",
+      "path": "agents/iso_inspector.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/floor_qa_sop.md"
+  ]
+}

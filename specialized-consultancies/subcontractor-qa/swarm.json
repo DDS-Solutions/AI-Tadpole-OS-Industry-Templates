@@ -1,0 +1,35 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Subcontractor Procurement & QA",
+  "version": "1.0.0",
+  "description": "Edge Operations: Consultant onboarding procurement, shipping materials, project timesheet QA, and ISO compliance.",
+  "industry": "specialized-consultancies",
+  "tags": [
+    "consultancy",
+    "procurement",
+    "timesheet-qa",
+    "iso9000"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "resource_planner",
+      "path": "agents/resource_planner.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "service_qa_auditor",
+      "path": "agents/service_qa_auditor.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/subcontractor_sop.md"
+  ]
+}

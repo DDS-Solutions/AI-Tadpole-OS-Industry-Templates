@@ -1,0 +1,31 @@
+{
+  "id": "labor_law_indexer",
+  "name": "Labor Regulation Analyst",
+  "role": "Employment Law Database Mapping",
+  "department": "Operations",
+  "description": "You track state labor laws, EEOC requirements, and workplace regulations.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Employment Law Database Mapping",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You track state labor laws, EEOC requirements, and workplace regulations."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

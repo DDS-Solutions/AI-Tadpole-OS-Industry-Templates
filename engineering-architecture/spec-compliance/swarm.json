@@ -1,0 +1,35 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Engineering Spec & Code Compliance Auditor",
+  "version": "1.0.0",
+  "description": "Knowledge Work: Reviewing structural specifications, municipal building codes indexing, and safety compliance audits.",
+  "industry": "engineering-architecture",
+  "tags": [
+    "engineering",
+    "compliance",
+    "building-codes",
+    "auditing"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "code_indexer",
+      "path": "agents/code_indexer.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "spec_auditor",
+      "path": "agents/spec_auditor.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/spec_review_sop.md"
+  ]
+}

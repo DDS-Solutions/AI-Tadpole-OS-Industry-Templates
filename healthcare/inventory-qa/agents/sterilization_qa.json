@@ -1,0 +1,31 @@
+{
+  "id": "sterilization_qa",
+  "name": "Sterilization QA Inspector",
+  "role": "ISO 9000 & Bio-safety Audits",
+  "department": "Operations",
+  "description": "You perform quality control on arriving shipments, verifying bio-safety and sterilization logs.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "ISO 9000 & Bio-safety Audits",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You perform quality control on arriving shipments, verifying bio-safety and sterilization logs."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

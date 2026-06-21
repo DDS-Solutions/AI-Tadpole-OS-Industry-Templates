@@ -1,0 +1,31 @@
+{
+  "id": "purchasing_auditor",
+  "name": "Purchasing Integrity Auditor",
+  "role": "Purchase Order Discrepancies",
+  "department": "Operations",
+  "description": "You verify purchasing transactions, validate vendor compliance, and investigate invoice mismatch rep",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Purchase Order Discrepancies",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You verify purchasing transactions, validate vendor compliance, and investigate invoice mismatch reports."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

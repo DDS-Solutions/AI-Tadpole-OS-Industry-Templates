@@ -1,0 +1,36 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Medical Inventory & Procurement QA",
+  "version": "1.0.0",
+  "description": "Edge Operations: Purchasing medical supplies, shipping, receiving audits, and ISO compliance sterilization QA.",
+  "industry": "medical-practices",
+  "tags": [
+    "healthcare",
+    "inventory",
+    "shipping",
+    "iso9000",
+    "procurement"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "inventory_procurement",
+      "path": "agents/inventory_procurement.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "sterilization_qa",
+      "path": "agents/sterilization_qa.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/inventory_sop.md"
+  ]
+}

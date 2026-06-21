@@ -1,0 +1,36 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Ad Spend & Vendor Purchasing QA",
+  "version": "1.0.0",
+  "description": "Edge Operations: Media buy procurement, invoice verification, ad network compliance, and ISO quality auditing.",
+  "industry": "digital-marketing",
+  "tags": [
+    "marketing",
+    "adspend",
+    "purchasing",
+    "compliance",
+    "vendor-qa"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "media_buyer",
+      "path": "agents/media_buyer.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "compliance_qa",
+      "path": "agents/compliance_qa.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/ad_qa_sop.md"
+  ]
+}

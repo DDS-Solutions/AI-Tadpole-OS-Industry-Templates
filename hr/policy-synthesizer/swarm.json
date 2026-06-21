@@ -1,0 +1,35 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Employee Handbook & Compliance Indexer",
+  "version": "1.0.0",
+  "description": "Knowledge Work: Parsing labor laws, employee handbook updates indexing, and compliance guidelines synthesis.",
+  "industry": "human-resources",
+  "tags": [
+    "hr",
+    "policy",
+    "compliance",
+    "employee-handbook"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "labor_law_indexer",
+      "path": "agents/labor_law_indexer.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "handbook_updater",
+      "path": "agents/handbook_updater.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/policy_audit_sop.md"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Vendor Invoice & Purchasing QA",
+  "version": "1.0.0",
+  "description": "Edge Operations: Invoice processing, shipping validation, vendor ledger audits, and purchase reconciliation.",
+  "industry": "financial-services",
+  "tags": [
+    "finance",
+    "invoices",
+    "reconciliation",
+    "purchasing",
+    "audit"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "ledger_reconciler",
+      "path": "agents/ledger_reconciler.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "purchasing_auditor",
+      "path": "agents/purchasing_auditor.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/reconciliation_sop.md"
+  ]
+}

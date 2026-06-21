@@ -1,0 +1,36 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "CAD Material Purchasing & ISO 9000 QA",
+  "version": "1.0.0",
+  "description": "Edge Operations: Raw materials purchasing, parts receiving, supplier testing certs, and metallurgical quality QA.",
+  "industry": "engineering-architecture",
+  "tags": [
+    "engineering",
+    "procurement",
+    "inventory",
+    "iso9000",
+    "materials"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "materials_purchaser",
+      "path": "agents/materials_purchaser.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "materials_qa",
+      "path": "agents/materials_qa.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/materials_qa_sop.md"
+  ]
+}

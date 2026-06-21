@@ -1,0 +1,31 @@
+{
+  "id": "fleet_auditor",
+  "name": "Fleet Policy Compliance Auditor",
+  "role": "Driver Log Auditing",
+  "department": "Operations",
+  "description": "You review commercial driver hours-of-service logs against federal DOT limitations.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Driver Log Auditing",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You review commercial driver hours-of-service logs against federal DOT limitations."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

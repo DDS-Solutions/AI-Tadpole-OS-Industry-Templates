@@ -1,0 +1,35 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "EdTech Curriculum & Course Indexer",
+  "version": "1.0.0",
+  "description": "Knowledge Work: Educational standards mapping, syllabus content synthesis, and training guideline indexing.",
+  "industry": "edtech-training",
+  "tags": [
+    "education",
+    "curriculum",
+    "syllabus",
+    "indexing"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "standards_mapper",
+      "path": "agents/standards_mapper.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "curriculum_indexer",
+      "path": "agents/curriculum_indexer.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/curriculum_sop.md"
+  ]
+}

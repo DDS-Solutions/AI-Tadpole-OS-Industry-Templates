@@ -1,0 +1,35 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Accreditation & Curriculum Audit Synthesizer",
+  "version": "1.0.0",
+  "description": "Knowledge Work: Academic standards audits, accreditation compliance indexing, and curriculum synthesis.",
+  "industry": "education",
+  "tags": [
+    "education",
+    "accreditation",
+    "curriculum",
+    "compliance"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "accreditation_law_analyst",
+      "path": "agents/accreditation_law_analyst.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "curriculum_auditor",
+      "path": "agents/curriculum_auditor.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/accreditation_sop.md"
+  ]
+}

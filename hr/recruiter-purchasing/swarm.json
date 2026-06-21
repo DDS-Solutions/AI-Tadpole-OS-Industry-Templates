@@ -1,0 +1,35 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Recruiting Tool Procurement & Contractor QA",
+  "version": "1.0.0",
+  "description": "Edge Operations: Job board purchasing, external placement contractor QA, and invoice auditing.",
+  "industry": "human-resources",
+  "tags": [
+    "hr",
+    "procurement",
+    "contractor-qa",
+    "recruiting-tools"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "hr_tools_purchaser",
+      "path": "agents/hr_tools_purchaser.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "agency_qa_specialist",
+      "path": "agents/agency_qa_specialist.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/recruiting_audit_sop.md"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "contractor_qa",
+  "name": "Contractor Quality Inspector",
+  "role": "SLA & Workmanship Verification",
+  "department": "Operations",
+  "description": "You inspect maintenance work logs, material safety records, and verify contractor SLA adherence.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "SLA & Workmanship Verification",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You inspect maintenance work logs, material safety records, and verify contractor SLA adherence."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

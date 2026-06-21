@@ -1,0 +1,31 @@
+{
+  "id": "yield_synthesizer",
+  "name": "Crop Yield Strategist",
+  "role": "Yield Prediction Modeling",
+  "department": "Operations",
+  "description": "You synthesize telemetry trends, historical yield charts, and crop recommendations.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Yield Prediction Modeling",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You synthesize telemetry trends, historical yield charts, and crop recommendations."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

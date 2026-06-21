@@ -1,0 +1,36 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Soil Science & Agronomy Database Indexer",
+  "version": "1.0.0",
+  "description": "Knowledge Work: Soil telemetry data parsing, crop yields indexing, and agricultural research synthesis.",
+  "industry": "agriculture-agtech",
+  "tags": [
+    "agriculture",
+    "soil",
+    "agronomy",
+    "telemetry",
+    "synthesis"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "agronomy_data_collector",
+      "path": "agents/agronomy_data_collector.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "yield_synthesizer",
+      "path": "agents/yield_synthesizer.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/soil_telemetry_sop.md"
+  ]
+}

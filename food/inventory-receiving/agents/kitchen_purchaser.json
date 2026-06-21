@@ -1,0 +1,31 @@
+{
+  "id": "kitchen_purchaser",
+  "name": "Produce Purchasing Agent",
+  "role": "Supplier Order Coordination",
+  "department": "Operations",
+  "description": "You manage food order contracts, track supplier prices, and schedule deliveries.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Supplier Order Coordination",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You manage food order contracts, track supplier prices, and schedule deliveries."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

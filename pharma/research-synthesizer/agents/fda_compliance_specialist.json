@@ -1,0 +1,31 @@
+{
+  "id": "fda_compliance_specialist",
+  "name": "FDA Compliance Specialist",
+  "role": "Regulatory Protocol Mapping",
+  "department": "Operations",
+  "description": "You crosscheck drug development steps and trial definitions against FDA regulatory checklists.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Regulatory Protocol Mapping",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You crosscheck drug development steps and trial definitions against FDA regulatory checklists."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

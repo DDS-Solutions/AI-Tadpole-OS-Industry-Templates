@@ -1,0 +1,36 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Script & Localization Knowledge Indexer",
+  "version": "1.0.0",
+  "description": "Knowledge Work: Script parsing, dialog semantic mapping, cultural adaptation databases indexing, and localization synthesis.",
+  "industry": "media-creative",
+  "tags": [
+    "creative",
+    "scripts",
+    "localization",
+    "indexing",
+    "synthesis"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "dialog_semantic_mapper",
+      "path": "agents/dialog_semantic_mapper.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "localization_synthesizer",
+      "path": "agents/localization_synthesizer.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/script_localization_sop.md"
+  ]
+}

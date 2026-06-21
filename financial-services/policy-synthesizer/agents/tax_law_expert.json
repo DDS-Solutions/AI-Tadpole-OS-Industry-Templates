@@ -1,0 +1,31 @@
+{
+  "id": "tax_law_expert",
+  "name": "Tax Policy Analyst",
+  "role": "Regulatory Framework Mapping",
+  "department": "Operations",
+  "description": "You analyze federal tax code updates, financial regulations, and state tax guidelines.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Regulatory Framework Mapping",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You analyze federal tax code updates, financial regulations, and state tax guidelines."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

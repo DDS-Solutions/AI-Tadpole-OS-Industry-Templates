@@ -1,0 +1,31 @@
+{
+  "id": "spec_parser",
+  "name": "API Spec Parser",
+  "role": "OpenAPI Spec Indexing",
+  "department": "Operations",
+  "description": "You index OpenAPI definitions, SQL database schemas, and codebase comments.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "OpenAPI Spec Indexing",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You index OpenAPI definitions, SQL database schemas, and codebase comments."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

@@ -299,6 +299,678 @@
       ],
       "path": "creative/asset-pipeline",
       "company_size": 25
+    },
+    {
+      "id": "legal-precedent-synthesis",
+      "name": "Legal Precedent Synthesizer",
+      "description": "Knowledge Work: Automated analysis of legal precedents, case law synthesis, and document drafting.",
+      "industry": "Legal Services",
+      "tags": [
+        "law",
+        "precedents",
+        "synthesis",
+        "knowledge"
+      ],
+      "path": "legal/precedent-synthesis",
+      "company_size": 25
+    },
+    {
+      "id": "legal-procurement-qa",
+      "name": "Legal Vendor Procurement & QA",
+      "description": "Edge Operations: Purchasing audits, contract lifecycle QA, and vendor compliance assessment.",
+      "industry": "Legal Services",
+      "tags": [
+        "law",
+        "purchasing",
+        "qa",
+        "vendor-compliance"
+      ],
+      "path": "legal/procurement-qa",
+      "company_size": 25
+    },
+    {
+      "id": "medical-clinical-guidelines",
+      "name": "Clinical Guideline Indexer",
+      "description": "Knowledge Work: Processing medical research, clinical protocols indexing, and case summary generation.",
+      "industry": "Medical Practices",
+      "tags": [
+        "healthcare",
+        "protocols",
+        "indexing",
+        "clinical"
+      ],
+      "path": "healthcare/clinical-guidelines",
+      "company_size": 25
+    },
+    {
+      "id": "medical-inventory-qa",
+      "name": "Medical Inventory & Procurement QA",
+      "description": "Edge Operations: Purchasing medical supplies, shipping, receiving audits, and ISO compliance sterilization QA.",
+      "industry": "Medical Practices",
+      "tags": [
+        "healthcare",
+        "inventory",
+        "shipping",
+        "iso9000",
+        "procurement"
+      ],
+      "path": "healthcare/inventory-qa",
+      "company_size": 25
+    },
+    {
+      "id": "financial-policy-synthesizer",
+      "name": "Tax Law & Policy Synthesizer",
+      "description": "Knowledge Work: Financial research, tax law changes synthesis, policy auditing, and regulatory reporting.",
+      "industry": "Financial Services",
+      "tags": [
+        "finance",
+        "tax",
+        "policy",
+        "synthesis"
+      ],
+      "path": "financial-services/policy-synthesizer",
+      "company_size": 25
+    },
+    {
+      "id": "financial-vendor-reconciliation",
+      "name": "Vendor Invoice & Purchasing QA",
+      "description": "Edge Operations: Invoice processing, shipping validation, vendor ledger audits, and purchase reconciliation.",
+      "industry": "Financial Services",
+      "tags": [
+        "finance",
+        "invoices",
+        "reconciliation",
+        "purchasing",
+        "audit"
+      ],
+      "path": "financial-services/vendor-reconciliation",
+      "company_size": 25
+    },
+    {
+      "id": "marketing-seo-indexer",
+      "name": "SEO Content Strategy Indexer",
+      "description": "Knowledge Work: Web scraping, SEO keyword trend analysis, search intent mapping, and strategy synthesis.",
+      "industry": "Digital Marketing",
+      "tags": [
+        "marketing",
+        "seo",
+        "content-strategy",
+        "synthesis"
+      ],
+      "path": "digital-marketing/seo-indexer",
+      "company_size": 25
+    },
+    {
+      "id": "marketing-vendor-purchasing",
+      "name": "Ad Spend & Vendor Purchasing QA",
+      "description": "Edge Operations: Media buy procurement, invoice verification, ad network compliance, and ISO quality auditing.",
+      "industry": "Digital Marketing",
+      "tags": [
+        "marketing",
+        "adspend",
+        "purchasing",
+        "compliance",
+        "vendor-qa"
+      ],
+      "path": "digital-marketing/vendor-purchasing",
+      "company_size": 25
+    },
+    {
+      "id": "ecommerce-market-analysis",
+      "name": "Competitor & Market Trend Analyzer",
+      "description": "Knowledge Work: E-commerce catalog scraping, competitor pricing intelligence, and trend synthesis.",
+      "industry": "E-commerce",
+      "tags": [
+        "e-commerce",
+        "competitor-pricing",
+        "trends",
+        "market-analysis"
+      ],
+      "path": "e-commerce/market-analysis",
+      "company_size": 25
+    },
+    {
+      "id": "ecommerce-dispatch-qa",
+      "name": "Warehouse Dispatch & Shipping QA",
+      "description": "Edge Operations: Shipping dispatch, receiving validation, inventory auditing, and packaging quality control.",
+      "industry": "E-commerce",
+      "tags": [
+        "e-commerce",
+        "shipping",
+        "receiving",
+        "inventory",
+        "qa"
+      ],
+      "path": "e-commerce/dispatch-qa",
+      "company_size": 25
+    },
+    {
+      "id": "realestate-valuation-synthesizer",
+      "name": "Property Valuation & Appraisal Synthesizer",
+      "description": "Knowledge Work: Property data compilation, local market appraisal indexing, and trend report writing.",
+      "industry": "Real Estate",
+      "tags": [
+        "real-estate",
+        "valuation",
+        "appraisal",
+        "synthesis"
+      ],
+      "path": "real-estate/valuation-synthesizer",
+      "company_size": 25
+    },
+    {
+      "id": "realestate-maintenance-procurement",
+      "name": "Maintenance Procurement & Contractor QA",
+      "description": "Edge Operations: Facilities purchasing, material inventory, shipping parts, and contractor SLA quality audits.",
+      "industry": "Real Estate",
+      "tags": [
+        "real-estate",
+        "procurement",
+        "inventory",
+        "contractor-qa",
+        "maintenance"
+      ],
+      "path": "real-estate/maintenance-procurement",
+      "company_size": 25
+    },
+    {
+      "id": "consultancy-expert-synthesizer",
+      "name": "Expert Knowledge Harvester",
+      "description": "Knowledge Work: Client interview transcription analysis, expert feedback harvesting, and methodology synthesis.",
+      "industry": "Specialized Consultancies",
+      "tags": [
+        "consultancy",
+        "knowledge-management",
+        "synthesis",
+        "interviews"
+      ],
+      "path": "specialized-consultancies/expert-synthesizer",
+      "company_size": 25
+    },
+    {
+      "id": "consultancy-subcontractor-qa",
+      "name": "Subcontractor Procurement & QA",
+      "description": "Edge Operations: Consultant onboarding procurement, shipping materials, project timesheet QA, and ISO compliance.",
+      "industry": "Specialized Consultancies",
+      "tags": [
+        "consultancy",
+        "procurement",
+        "timesheet-qa",
+        "iso9000"
+      ],
+      "path": "specialized-consultancies/subcontractor-qa",
+      "company_size": 25
+    },
+    {
+      "id": "logistics-route-optimization",
+      "name": "Route & Transit Strategy Analyzer",
+      "description": "Knowledge Work: Freight data analysis, carrier performance indexing, transit delay prediction, and strategic synthesis.",
+      "industry": "Logistics & Supply Chain",
+      "tags": [
+        "logistics",
+        "route-planning",
+        "transit-data",
+        "synthesis"
+      ],
+      "path": "logistics-supply-chain/route-optimization",
+      "company_size": 25
+    },
+    {
+      "id": "logistics-dock-shipping",
+      "name": "Loading Dock Shipping & Receiving QA",
+      "description": "Edge Operations: Freight loading, receiving, container seals inspections, inventory logging, and ISO 9000 audits.",
+      "industry": "Logistics & Supply Chain",
+      "tags": [
+        "logistics",
+        "shipping",
+        "receiving",
+        "iso9000",
+        "warehouse"
+      ],
+      "path": "logistics-supply-chain/dock-shipping",
+      "company_size": 25
+    },
+    {
+      "id": "engineering-spec-compliance",
+      "name": "Engineering Spec & Code Compliance Auditor",
+      "description": "Knowledge Work: Reviewing structural specifications, municipal building codes indexing, and safety compliance audits.",
+      "industry": "Engineering & Architecture",
+      "tags": [
+        "engineering",
+        "compliance",
+        "building-codes",
+        "auditing"
+      ],
+      "path": "engineering-architecture/spec-compliance",
+      "company_size": 25
+    },
+    {
+      "id": "engineering-parts-procurement",
+      "name": "CAD Material Purchasing & ISO 9000 QA",
+      "description": "Edge Operations: Raw materials purchasing, parts receiving, supplier testing certs, and metallurgical quality QA.",
+      "industry": "Engineering & Architecture",
+      "tags": [
+        "engineering",
+        "procurement",
+        "inventory",
+        "iso9000",
+        "materials"
+      ],
+      "path": "engineering-architecture/parts-procurement",
+      "company_size": 25
+    },
+    {
+      "id": "edtech-curriculum-synthesizer",
+      "name": "EdTech Curriculum & Course Indexer",
+      "description": "Knowledge Work: Educational standards mapping, syllabus content synthesis, and training guideline indexing.",
+      "industry": "EdTech & Training",
+      "tags": [
+        "education",
+        "curriculum",
+        "syllabus",
+        "indexing"
+      ],
+      "path": "edtech-training/curriculum-synthesizer",
+      "company_size": 25
+    },
+    {
+      "id": "edtech-license-procurement",
+      "name": "Software License Procurement & Asset Audit",
+      "description": "Edge Operations: SaaS license purchasing, hardware cataloging, asset shipping, and software inventory audits.",
+      "industry": "EdTech & Training",
+      "tags": [
+        "education",
+        "procurement",
+        "inventory",
+        "saas-licensing",
+        "software-asset"
+      ],
+      "path": "edtech-training/license-procurement",
+      "company_size": 25
+    },
+    {
+      "id": "development-docs-synthesizer",
+      "name": "Tech Spec & API Documentation Indexer",
+      "description": "Knowledge Work: Parsing codebase schemas, indexing API documentation, and tech spec synthesis.",
+      "industry": "Software Development",
+      "tags": [
+        "development",
+        "api",
+        "documentation",
+        "synthesis"
+      ],
+      "path": "development/docs-synthesizer",
+      "company_size": 25
+    },
+    {
+      "id": "development-qa-iso9000",
+      "name": "Release Quality Assurance & ISO 9000",
+      "description": "Edge Operations: Software release QA, test compliance auditing, security asset shipping, and patch management.",
+      "industry": "Software Development",
+      "tags": [
+        "development",
+        "qa",
+        "iso9000",
+        "release-management",
+        "security"
+      ],
+      "path": "development/qa-iso9000",
+      "company_size": 25
+    },
+    {
+      "id": "manufacturing-design-synthesizer",
+      "name": "CAD Design Specification Auditor",
+      "description": "Knowledge Work: Reviewing product designs, indexing mechanical blueprints, and material compliance audits.",
+      "industry": "Manufacturing",
+      "tags": [
+        "manufacturing",
+        "cad",
+        "specifications",
+        "synthesis"
+      ],
+      "path": "manufacturing/design-synthesizer",
+      "company_size": 25
+    },
+    {
+      "id": "manufacturing-iso9000-qa",
+      "name": "Factory Floor ISO 9000 QA & Inventory",
+      "description": "Edge Operations: Materials receiving, shipping finished goods, parts inventory audits, and ISO 9000 quality checks.",
+      "industry": "Manufacturing",
+      "tags": [
+        "manufacturing",
+        "iso9000",
+        "qa",
+        "inventory",
+        "shipping"
+      ],
+      "path": "manufacturing/iso9000-qa",
+      "company_size": 25
+    },
+    {
+      "id": "food-recipe-compliance",
+      "name": "Recipe & Safety Compliance Auditor",
+      "description": "Knowledge Work: Analyzing recipe regulations, health guidelines indexing, and labeling audit reporting.",
+      "industry": "Food & Beverage",
+      "tags": [
+        "food",
+        "compliance",
+        "safety",
+        "recipe-standards"
+      ],
+      "path": "food/recipe-compliance",
+      "company_size": 25
+    },
+    {
+      "id": "food-inventory-receiving",
+      "name": "Kitchen Inventory Receiving & Supplier QA",
+      "description": "Edge Operations: Purchasing ingredients, temperature shipping checks, receiving logs, and supplier quality audits.",
+      "industry": "Food & Beverage",
+      "tags": [
+        "food",
+        "inventory",
+        "shipping",
+        "supplier-qa",
+        "receiving"
+      ],
+      "path": "food/inventory-receiving",
+      "company_size": 25
+    },
+    {
+      "id": "chemical-sds-synthesizer",
+      "name": "Safety Data Sheet (SDS) Policy Indexer",
+      "description": "Knowledge Work: SDS sheet parsing, OSHA hazard mapping, and health regulations synthesis.",
+      "industry": "Chemical Sector",
+      "tags": [
+        "chemical",
+        "sds",
+        "osha",
+        "compliance",
+        "safety"
+      ],
+      "path": "chemical/sds-synthesizer",
+      "company_size": 25
+    },
+    {
+      "id": "chemical-hazmat-shipping",
+      "name": "Hazmat Shipping, Receiving & ISO QA",
+      "description": "Edge Operations: Hazmat container shipping, receiving checks, containment inventory, and ISO 9000 compliance audits.",
+      "industry": "Chemical Sector",
+      "tags": [
+        "chemical",
+        "hazmat",
+        "shipping",
+        "receiving",
+        "iso9000",
+        "inventory"
+      ],
+      "path": "chemical/hazmat-shipping",
+      "company_size": 25
+    },
+    {
+      "id": "transportation-policy-compliance",
+      "name": "DOT Regulations Compliance Auditor",
+      "description": "Knowledge Work: Analyzing transit laws, DOT regulation changes indexing, and compliance reporting.",
+      "industry": "Transportation & Logistics",
+      "tags": [
+        "transportation",
+        "dot",
+        "compliance",
+        "auditing"
+      ],
+      "path": "transportation/policy-compliance",
+      "company_size": 25
+    },
+    {
+      "id": "transportation-fleet-purchasing",
+      "name": "Spare Parts Inventory & Fleet Purchasing QA",
+      "description": "Edge Operations: Parts procurement, fleet shipping logs, inventory management, and maintenance QA.",
+      "industry": "Transportation & Logistics",
+      "tags": [
+        "transportation",
+        "procurement",
+        "inventory",
+        "parts",
+        "maintenance-qa"
+      ],
+      "path": "transportation/fleet-purchasing",
+      "company_size": 25
+    },
+    {
+      "id": "pharma-research-synthesizer",
+      "name": "Drug Discovery & FDA Guidelines Indexer",
+      "description": "Knowledge Work: Clinical study parsing, FDA protocol mapping, and compliance synthesis.",
+      "industry": "Pharmaceuticals",
+      "tags": [
+        "pharma",
+        "fda",
+        "clinical",
+        "compliance",
+        "indexing"
+      ],
+      "path": "pharma/research-synthesizer",
+      "company_size": 25
+    },
+    {
+      "id": "pharma-coldchain-shipping",
+      "name": "Cold-Chain Shipping Receiving & GMP QA",
+      "description": "Edge Operations: Thermally managed shipping, clinical stock receiving, and GMP quality inspections.",
+      "industry": "Pharmaceuticals",
+      "tags": [
+        "pharma",
+        "coldchain",
+        "shipping",
+        "receiving",
+        "gmp",
+        "qa"
+      ],
+      "path": "pharma/coldchain-shipping",
+      "company_size": 25
+    },
+    {
+      "id": "agriculture-research-synthesizer",
+      "name": "Soil Science & Agronomy Database Indexer",
+      "description": "Knowledge Work: Soil telemetry data parsing, crop yields indexing, and agricultural research synthesis.",
+      "industry": "Agriculture & AgTech",
+      "tags": [
+        "agriculture",
+        "soil",
+        "agronomy",
+        "telemetry",
+        "synthesis"
+      ],
+      "path": "agriculture/research-synthesizer",
+      "company_size": 25
+    },
+    {
+      "id": "agriculture-grain-shipping",
+      "name": "Harvest Shipping & Equipment Parts Inventory",
+      "description": "Edge Operations: Bulk crop shipping logistics, receiving farming parts, and equipment maintenance QA.",
+      "industry": "Agriculture & AgTech",
+      "tags": [
+        "agriculture",
+        "shipping",
+        "inventory",
+        "logistics",
+        "maintenance-qa"
+      ],
+      "path": "agriculture/grain-shipping",
+      "company_size": 25
+    },
+    {
+      "id": "compliance-crosswalk-synthesizer",
+      "name": "SOC2/ISO Framework Crosswalk Synthesizer",
+      "description": "Knowledge Work: Regulatory framework mapping, control guidelines synthesis, and security standard crosswalk audits.",
+      "industry": "Governance & Compliance",
+      "tags": [
+        "compliance",
+        "soc2",
+        "iso27001",
+        "crosswalk",
+        "synthesis"
+      ],
+      "path": "compliance/crosswalk-synthesizer",
+      "company_size": 25
+    },
+    {
+      "id": "compliance-vendor-purchasing-qa",
+      "name": "Vendor Security Assessment & Procurement QA",
+      "description": "Edge Operations: Vendor onboarding security checks, compliance audits, and procurement security QA.",
+      "industry": "Governance & Compliance",
+      "tags": [
+        "compliance",
+        "vendor-assessment",
+        "procurement",
+        "security-qa",
+        "auditing"
+      ],
+      "path": "compliance/vendor-purchasing-qa",
+      "company_size": 25
+    },
+    {
+      "id": "security-threat-intelligence",
+      "name": "Threat Intel Feed Parser & Knowledge Base",
+      "description": "Knowledge Work: Scraping CVE bulletins, threat intel feed indexing, and security alert briefings synthesis.",
+      "industry": "Cybersecurity",
+      "tags": [
+        "security",
+        "threat-intel",
+        "cve",
+        "synthesis"
+      ],
+      "path": "security/threat-intelligence",
+      "company_size": 25
+    },
+    {
+      "id": "security-hardware-inventory",
+      "name": "Security Hardware Purchasing & Asset QA",
+      "description": "Edge Operations: Network hardware procurement, firewall shipping audits, asset receiving, and hardware QA.",
+      "industry": "Cybersecurity",
+      "tags": [
+        "security",
+        "hardware",
+        "procurement",
+        "asset-inventory",
+        "hardware-qa"
+      ],
+      "path": "security/hardware-inventory",
+      "company_size": 25
+    },
+    {
+      "id": "hr-policy-synthesizer",
+      "name": "Employee Handbook & Compliance Indexer",
+      "description": "Knowledge Work: Parsing labor laws, employee handbook updates indexing, and compliance guidelines synthesis.",
+      "industry": "Human Resources",
+      "tags": [
+        "hr",
+        "policy",
+        "compliance",
+        "employee-handbook"
+      ],
+      "path": "hr/policy-synthesizer",
+      "company_size": 25
+    },
+    {
+      "id": "hr-recruiter-purchasing",
+      "name": "Recruiting Tool Procurement & Contractor QA",
+      "description": "Edge Operations: Job board purchasing, external placement contractor QA, and invoice auditing.",
+      "industry": "Human Resources",
+      "tags": [
+        "hr",
+        "procurement",
+        "contractor-qa",
+        "recruiting-tools"
+      ],
+      "path": "hr/recruiter-purchasing",
+      "company_size": 25
+    },
+    {
+      "id": "education-accreditation-synthesizer",
+      "name": "Accreditation & Curriculum Audit Synthesizer",
+      "description": "Knowledge Work: Academic standards audits, accreditation compliance indexing, and curriculum synthesis.",
+      "industry": "Education",
+      "tags": [
+        "education",
+        "accreditation",
+        "curriculum",
+        "compliance"
+      ],
+      "path": "education/accreditation-synthesizer",
+      "company_size": 25
+    },
+    {
+      "id": "education-supplies-purchasing",
+      "name": "School Supplies Purchasing & Textbook Inventory",
+      "description": "Edge Operations: Textbook procurement, classroom supplies shipping, receiving audits, and inventory QA.",
+      "industry": "Education",
+      "tags": [
+        "education",
+        "procurement",
+        "inventory",
+        "textbooks",
+        "supplies"
+      ],
+      "path": "education/supplies-purchasing",
+      "company_size": 25
+    },
+    {
+      "id": "utilities-maintenance-synthesizer",
+      "name": "Grid Maintenance Manuals & SOP Indexer",
+      "description": "Knowledge Work: Processing telemetry manuals, emergency utility plans indexing, and maintenance reports synthesis.",
+      "industry": "Critical Infrastructure",
+      "tags": [
+        "utilities",
+        "grid-maintenance",
+        "telemetry",
+        "synthesis"
+      ],
+      "path": "utilities/maintenance-synthesizer",
+      "company_size": 25
+    },
+    {
+      "id": "utilities-scada-qa",
+      "name": "SCADA Device Shipping, Receiving & Hardware QA",
+      "description": "Edge Operations: Grid sensor procurement, SCADA equipment shipping logs, receiving inspections, and hardware QA.",
+      "industry": "Critical Infrastructure",
+      "tags": [
+        "utilities",
+        "scada",
+        "shipping",
+        "receiving",
+        "hardware-qa",
+        "procurement"
+      ],
+      "path": "utilities/scada-qa",
+      "company_size": 25
+    },
+    {
+      "id": "creative-script-synthesizer",
+      "name": "Script & Localization Knowledge Indexer",
+      "description": "Knowledge Work: Script parsing, dialog semantic mapping, cultural adaptation databases indexing, and localization synthesis.",
+      "industry": "Media & Creative",
+      "tags": [
+        "creative",
+        "scripts",
+        "localization",
+        "indexing",
+        "synthesis"
+      ],
+      "path": "creative/script-synthesizer",
+      "company_size": 25
+    },
+    {
+      "id": "creative-equipment-procurement",
+      "name": "Studio Equipment Purchasing & Asset Inventory",
+      "description": "Edge Operations: Camera/lens procurement, studio shipping logs, asset receiving, and hardware QA.",
+      "industry": "Media & Creative",
+      "tags": [
+        "creative",
+        "procurement",
+        "inventory",
+        "hardware-qa",
+        "cameras"
+      ],
+      "path": "creative/equipment-procurement",
+      "company_size": 25
     }
   ]
 }

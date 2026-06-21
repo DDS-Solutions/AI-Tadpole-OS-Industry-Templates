@@ -1,0 +1,35 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Recipe & Safety Compliance Auditor",
+  "version": "1.0.0",
+  "description": "Knowledge Work: Analyzing recipe regulations, health guidelines indexing, and labeling audit reporting.",
+  "industry": "food-beverage",
+  "tags": [
+    "food",
+    "compliance",
+    "safety",
+    "recipe-standards"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "regulation_parser",
+      "path": "agents/regulation_parser.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "compliance_reporter",
+      "path": "agents/compliance_reporter.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/label_sop.md"
+  ]
+}

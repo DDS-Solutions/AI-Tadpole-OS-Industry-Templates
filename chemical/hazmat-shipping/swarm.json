@@ -1,0 +1,37 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Hazmat Shipping, Receiving & ISO QA",
+  "version": "1.0.0",
+  "description": "Edge Operations: Hazmat container shipping, receiving checks, containment inventory, and ISO 9000 compliance audits.",
+  "industry": "chemical-sector",
+  "tags": [
+    "chemical",
+    "hazmat",
+    "shipping",
+    "receiving",
+    "iso9000",
+    "inventory"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "hazmat_dispatcher",
+      "path": "agents/hazmat_dispatcher.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "containment_qa",
+      "path": "agents/containment_qa.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/hazmat_receiving_sop.md"
+  ]
+}

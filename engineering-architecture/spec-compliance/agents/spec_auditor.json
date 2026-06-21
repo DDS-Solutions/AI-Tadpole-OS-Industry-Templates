@@ -1,0 +1,31 @@
+{
+  "id": "spec_auditor",
+  "name": "Engineering Specification Auditor",
+  "role": "CAD Blueprint Compliance Reviews",
+  "department": "Operations",
+  "description": "You audit engineering specifications and blueprints against building code guidelines.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "CAD Blueprint Compliance Reviews",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You audit engineering specifications and blueprints against building code guidelines."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

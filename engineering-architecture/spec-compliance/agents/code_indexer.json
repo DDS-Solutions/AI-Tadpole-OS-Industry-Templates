@@ -1,0 +1,31 @@
+{
+  "id": "code_indexer",
+  "name": "Building Code Research Analyst",
+  "role": "Municipal Code Database Parsing",
+  "department": "Operations",
+  "description": "You search and parse municipal building code documents, zoning bylaws, and structural laws.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Municipal Code Database Parsing",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You search and parse municipal building code documents, zoning bylaws, and structural laws."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

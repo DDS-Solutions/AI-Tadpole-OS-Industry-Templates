@@ -1,0 +1,35 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Tax Law & Policy Synthesizer",
+  "version": "1.0.0",
+  "description": "Knowledge Work: Financial research, tax law changes synthesis, policy auditing, and regulatory reporting.",
+  "industry": "financial-services",
+  "tags": [
+    "finance",
+    "tax",
+    "policy",
+    "synthesis"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "tax_law_expert",
+      "path": "agents/tax_law_expert.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "policy_auditor",
+      "path": "agents/policy_auditor.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/policy_sop.md"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Harvest Shipping & Equipment Parts Inventory",
+  "version": "1.0.0",
+  "description": "Edge Operations: Bulk crop shipping logistics, receiving farming parts, and equipment maintenance QA.",
+  "industry": "agriculture-agtech",
+  "tags": [
+    "agriculture",
+    "shipping",
+    "inventory",
+    "logistics",
+    "maintenance-qa"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "harvest_dispatcher",
+      "path": "agents/harvest_dispatcher.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "parts_inventory_clerk",
+      "path": "agents/parts_inventory_clerk.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/grain_shipping_sop.md"
+  ]
+}

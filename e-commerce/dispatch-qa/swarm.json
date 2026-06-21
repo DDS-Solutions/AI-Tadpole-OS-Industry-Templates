@@ -1,0 +1,36 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Warehouse Dispatch & Shipping QA",
+  "version": "1.0.0",
+  "description": "Edge Operations: Shipping dispatch, receiving validation, inventory auditing, and packaging quality control.",
+  "industry": "e-commerce",
+  "tags": [
+    "e-commerce",
+    "shipping",
+    "receiving",
+    "inventory",
+    "qa"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "logistics_clerk",
+      "path": "agents/logistics_clerk.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "packaging_qa",
+      "path": "agents/packaging_qa.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/dispatch_sop.md"
+  ]
+}

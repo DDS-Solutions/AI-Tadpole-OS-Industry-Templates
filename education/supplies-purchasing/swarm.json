@@ -1,0 +1,36 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "School Supplies Purchasing & Textbook Inventory",
+  "version": "1.0.0",
+  "description": "Edge Operations: Textbook procurement, classroom supplies shipping, receiving audits, and inventory QA.",
+  "industry": "education",
+  "tags": [
+    "education",
+    "procurement",
+    "inventory",
+    "textbooks",
+    "supplies"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "textbook_purchaser",
+      "path": "agents/textbook_purchaser.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "classroom_supplies_qa",
+      "path": "agents/classroom_supplies_qa.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/supplies_receiving_sop.md"
+  ]
+}

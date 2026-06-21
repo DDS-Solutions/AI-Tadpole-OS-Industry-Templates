@@ -1,0 +1,35 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Legal Precedent Synthesizer",
+  "version": "1.0.0",
+  "description": "Knowledge Work: Automated analysis of legal precedents, case law synthesis, and document drafting.",
+  "industry": "legal-services",
+  "tags": [
+    "law",
+    "precedents",
+    "synthesis",
+    "knowledge"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "precedent_expert",
+      "path": "agents/precedent_expert.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "qa_compliance",
+      "path": "agents/qa_compliance.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/precedent_sop.md"
+  ]
+}

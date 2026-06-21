@@ -1,0 +1,35 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Competitor & Market Trend Analyzer",
+  "version": "1.0.0",
+  "description": "Knowledge Work: E-commerce catalog scraping, competitor pricing intelligence, and trend synthesis.",
+  "industry": "e-commerce",
+  "tags": [
+    "e-commerce",
+    "competitor-pricing",
+    "trends",
+    "market-analysis"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "catalog_scraper",
+      "path": "agents/catalog_scraper.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "trend_synthesizer",
+      "path": "agents/trend_synthesizer.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/market_analysis_sop.md"
+  ]
+}

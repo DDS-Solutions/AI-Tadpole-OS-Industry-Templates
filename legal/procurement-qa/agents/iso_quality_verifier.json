@@ -1,0 +1,31 @@
+{
+  "id": "iso_quality_verifier",
+  "name": "Vendor ISO Compliance Specialist",
+  "role": "ISO 9000 & SLA Compliance Verification",
+  "department": "Operations",
+  "description": "You verify vendor practices and materials against ISO 9000 quality management standards.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "ISO 9000 & SLA Compliance Verification",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You verify vendor practices and materials against ISO 9000 quality management standards."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

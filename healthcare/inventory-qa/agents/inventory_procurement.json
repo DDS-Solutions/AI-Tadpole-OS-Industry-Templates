@@ -1,0 +1,31 @@
+{
+  "id": "inventory_procurement",
+  "name": "Medical Purchasing Officer",
+  "role": "Supply Chain & Order Management",
+  "department": "Operations",
+  "description": "You manage medical supply inventory levels, generate purchase orders, and coordinate shipments.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Supply Chain & Order Management",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You manage medical supply inventory levels, generate purchase orders, and coordinate shipments."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

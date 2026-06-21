@@ -1,0 +1,31 @@
+{
+  "id": "scada_qa_inspector",
+  "name": "SCADA Hardware Inspector",
+  "role": "Hardware Integrity Verification",
+  "department": "Operations",
+  "description": "You inspect arriving SCADA relays, verify encryption chips, and audit manufacturer testing logs.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Hardware Integrity Verification",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You inspect arriving SCADA relays, verify encryption chips, and audit manufacturer testing logs."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

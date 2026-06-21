@@ -1,0 +1,31 @@
+{
+  "id": "curriculum_indexer",
+  "name": "Syllabus Indexing Specialist",
+  "role": "Curriculum Schema Alignment",
+  "department": "Operations",
+  "description": "You analyze syllabi, video lectures text, and generate structured educational taxonomies.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Curriculum Schema Alignment",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You analyze syllabi, video lectures text, and generate structured educational taxonomies."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Cold-Chain Shipping Receiving & GMP QA",
+  "version": "1.0.0",
+  "description": "Edge Operations: Thermally managed shipping, clinical stock receiving, and GMP quality inspections.",
+  "industry": "pharmaceuticals",
+  "tags": [
+    "pharma",
+    "coldchain",
+    "shipping",
+    "receiving",
+    "gmp",
+    "qa"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "coldchain_dispatcher",
+      "path": "agents/coldchain_dispatcher.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "gmp_qa_inspector",
+      "path": "agents/gmp_qa_inspector.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/coldchain_receiving_sop.md"
+  ]
+}

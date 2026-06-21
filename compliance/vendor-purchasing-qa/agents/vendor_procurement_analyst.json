@@ -1,0 +1,31 @@
+{
+  "id": "vendor_procurement_analyst",
+  "name": "Procurement Security Officer",
+  "role": "Vendor Risk Assessment",
+  "department": "Operations",
+  "description": "You audit security declarations, SOC2 reports, and liability insurances of new vendor applicants.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Vendor Risk Assessment",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You audit security declarations, SOC2 reports, and liability insurances of new vendor applicants."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

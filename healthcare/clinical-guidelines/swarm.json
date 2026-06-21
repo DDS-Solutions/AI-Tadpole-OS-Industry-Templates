@@ -1,0 +1,35 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Clinical Guideline Indexer",
+  "version": "1.0.0",
+  "description": "Knowledge Work: Processing medical research, clinical protocols indexing, and case summary generation.",
+  "industry": "medical-practices",
+  "tags": [
+    "healthcare",
+    "protocols",
+    "indexing",
+    "clinical"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "protocol_indexer",
+      "path": "agents/protocol_indexer.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "medical_synthesis",
+      "path": "agents/medical_synthesis.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/guideline_sop.md"
+  ]
+}

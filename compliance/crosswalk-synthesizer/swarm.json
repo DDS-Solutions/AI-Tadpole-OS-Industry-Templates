@@ -1,0 +1,36 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "SOC2/ISO Framework Crosswalk Synthesizer",
+  "version": "1.0.0",
+  "description": "Knowledge Work: Regulatory framework mapping, control guidelines synthesis, and security standard crosswalk audits.",
+  "industry": "governance-compliance",
+  "tags": [
+    "compliance",
+    "soc2",
+    "iso27001",
+    "crosswalk",
+    "synthesis"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "framework_mapper",
+      "path": "agents/framework_mapper.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "crosswalk_analyst",
+      "path": "agents/crosswalk_analyst.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/crosswalk_sop.md"
+  ]
+}

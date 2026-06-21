@@ -1,0 +1,35 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "DOT Regulations Compliance Auditor",
+  "version": "1.0.0",
+  "description": "Knowledge Work: Analyzing transit laws, DOT regulation changes indexing, and compliance reporting.",
+  "industry": "transportation-logistics",
+  "tags": [
+    "transportation",
+    "dot",
+    "compliance",
+    "auditing"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "transit_law_analyst",
+      "path": "agents/transit_law_analyst.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "fleet_auditor",
+      "path": "agents/fleet_auditor.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/dot_compliance_sop.md"
+  ]
+}

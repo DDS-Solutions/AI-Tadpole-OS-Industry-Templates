@@ -1,0 +1,36 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Drug Discovery & FDA Guidelines Indexer",
+  "version": "1.0.0",
+  "description": "Knowledge Work: Clinical study parsing, FDA protocol mapping, and compliance synthesis.",
+  "industry": "pharmaceuticals",
+  "tags": [
+    "pharma",
+    "fda",
+    "clinical",
+    "compliance",
+    "indexing"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "clinical_research_indexer",
+      "path": "agents/clinical_research_indexer.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "fda_compliance_specialist",
+      "path": "agents/fda_compliance_specialist.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/fda_review_sop.md"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Threat Intel Feed Parser & Knowledge Base",
+  "version": "1.0.0",
+  "description": "Knowledge Work: Scraping CVE bulletins, threat intel feed indexing, and security alert briefings synthesis.",
+  "industry": "cybersecurity",
+  "tags": [
+    "security",
+    "threat-intel",
+    "cve",
+    "synthesis"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "threat_feed_scraper",
+      "path": "agents/threat_feed_scraper.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "intel_briefer",
+      "path": "agents/intel_briefer.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/threat_intel_sop.md"
+  ]
+}

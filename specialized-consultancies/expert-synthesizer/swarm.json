@@ -1,0 +1,35 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Expert Knowledge Harvester",
+  "version": "1.0.0",
+  "description": "Knowledge Work: Client interview transcription analysis, expert feedback harvesting, and methodology synthesis.",
+  "industry": "specialized-consultancies",
+  "tags": [
+    "consultancy",
+    "knowledge-management",
+    "synthesis",
+    "interviews"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "interview_analyzer",
+      "path": "agents/interview_analyzer.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "methodology_synthesizer",
+      "path": "agents/methodology_synthesizer.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/synthesis_sop.md"
+  ]
+}

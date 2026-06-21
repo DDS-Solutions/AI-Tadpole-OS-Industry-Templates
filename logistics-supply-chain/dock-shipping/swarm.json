@@ -1,0 +1,36 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Loading Dock Shipping & Receiving QA",
+  "version": "1.0.0",
+  "description": "Edge Operations: Freight loading, receiving, container seals inspections, inventory logging, and ISO 9000 audits.",
+  "industry": "logistics-supply-chain",
+  "tags": [
+    "logistics",
+    "shipping",
+    "receiving",
+    "iso9000",
+    "warehouse"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "shipping_coordinator",
+      "path": "agents/shipping_coordinator.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "manifest_qa",
+      "path": "agents/manifest_qa.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/dock_receiving_sop.md"
+  ]
+}

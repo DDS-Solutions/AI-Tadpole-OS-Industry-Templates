@@ -1,0 +1,31 @@
+{
+  "id": "service_qa_auditor",
+  "name": "Consulting Service QA Auditor",
+  "role": "Client Deliverable ISO Compliance",
+  "department": "Operations",
+  "description": "You verify timesheet logs and consultancies deliverables against client SLAs and ISO quality standar",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Client Deliverable ISO Compliance",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You verify timesheet logs and consultancies deliverables against client SLAs and ISO quality standards."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "SCADA Device Shipping, Receiving & Hardware QA",
+  "version": "1.0.0",
+  "description": "Edge Operations: Grid sensor procurement, SCADA equipment shipping logs, receiving inspections, and hardware QA.",
+  "industry": "critical-infrastructure",
+  "tags": [
+    "utilities",
+    "scada",
+    "shipping",
+    "receiving",
+    "hardware-qa",
+    "procurement"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "scada_purchaser",
+      "path": "agents/scada_purchaser.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "scada_qa_inspector",
+      "path": "agents/scada_qa_inspector.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/scada_receiving_sop.md"
+  ]
+}

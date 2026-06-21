@@ -1,0 +1,35 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Legal Vendor Procurement & QA",
+  "version": "1.0.0",
+  "description": "Edge Operations: Purchasing audits, contract lifecycle QA, and vendor compliance assessment.",
+  "industry": "legal-services",
+  "tags": [
+    "law",
+    "purchasing",
+    "qa",
+    "vendor-compliance"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "procurement_auditor",
+      "path": "agents/procurement_auditor.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "iso_quality_verifier",
+      "path": "agents/iso_quality_verifier.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/procurement_sop.md"
+  ]
+}

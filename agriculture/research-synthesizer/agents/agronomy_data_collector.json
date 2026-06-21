@@ -1,0 +1,31 @@
+{
+  "id": "agronomy_data_collector",
+  "name": "Soil Telemetry Indexer",
+  "role": "Telemetry Data Parsing",
+  "department": "Operations",
+  "description": "You process agricultural sensor logs, soil moisture readings, and regional weather maps.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Telemetry Data Parsing",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You process agricultural sensor logs, soil moisture readings, and regional weather maps."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

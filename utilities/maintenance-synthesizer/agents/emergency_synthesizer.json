@@ -1,0 +1,31 @@
+{
+  "id": "emergency_synthesizer",
+  "name": "Grid Emergency Planner",
+  "role": "Utility SOP Synthesis",
+  "department": "Operations",
+  "description": "You compile utility diagnostic procedures and write grid repair manuals.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Utility SOP Synthesis",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You compile utility diagnostic procedures and write grid repair manuals."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

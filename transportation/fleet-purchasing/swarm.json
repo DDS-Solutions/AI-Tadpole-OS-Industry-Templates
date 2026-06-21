@@ -1,0 +1,36 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Spare Parts Inventory & Fleet Purchasing QA",
+  "version": "1.0.0",
+  "description": "Edge Operations: Parts procurement, fleet shipping logs, inventory management, and maintenance QA.",
+  "industry": "transportation-logistics",
+  "tags": [
+    "transportation",
+    "procurement",
+    "inventory",
+    "parts",
+    "maintenance-qa"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "fleet_purchasing_agent",
+      "path": "agents/fleet_purchasing_agent.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "parts_qa_inspector",
+      "path": "agents/parts_qa_inspector.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/parts_sop.md"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Security Hardware Purchasing & Asset QA",
+  "version": "1.0.0",
+  "description": "Edge Operations: Network hardware procurement, firewall shipping audits, asset receiving, and hardware QA.",
+  "industry": "cybersecurity",
+  "tags": [
+    "security",
+    "hardware",
+    "procurement",
+    "asset-inventory",
+    "hardware-qa"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "hardware_purchaser",
+      "path": "agents/hardware_purchaser.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "asset_qa_auditor",
+      "path": "agents/asset_qa_auditor.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/hardware_receiving_sop.md"
+  ]
+}

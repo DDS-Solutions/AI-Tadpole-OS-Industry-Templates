@@ -1,0 +1,36 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Maintenance Procurement & Contractor QA",
+  "version": "1.0.0",
+  "description": "Edge Operations: Facilities purchasing, material inventory, shipping parts, and contractor SLA quality audits.",
+  "industry": "real-estate",
+  "tags": [
+    "real-estate",
+    "procurement",
+    "inventory",
+    "contractor-qa",
+    "maintenance"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "facility_buyer",
+      "path": "agents/facility_buyer.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "contractor_qa",
+      "path": "agents/contractor_qa.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/maintenance_sop.md"
+  ]
+}

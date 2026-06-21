@@ -1,0 +1,35 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Route & Transit Strategy Analyzer",
+  "version": "1.0.0",
+  "description": "Knowledge Work: Freight data analysis, carrier performance indexing, transit delay prediction, and strategic synthesis.",
+  "industry": "logistics-supply-chain",
+  "tags": [
+    "logistics",
+    "route-planning",
+    "transit-data",
+    "synthesis"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "freight_data_analyst",
+      "path": "agents/freight_data_analyst.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "network_optimizer",
+      "path": "agents/network_optimizer.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/route_analysis_sop.md"
+  ]
+}

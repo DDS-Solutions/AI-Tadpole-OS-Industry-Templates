@@ -1,0 +1,35 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Tech Spec & API Documentation Indexer",
+  "version": "1.0.0",
+  "description": "Knowledge Work: Parsing codebase schemas, indexing API documentation, and tech spec synthesis.",
+  "industry": "software-development",
+  "tags": [
+    "development",
+    "api",
+    "documentation",
+    "synthesis"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "spec_parser",
+      "path": "agents/spec_parser.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "docs_compiler",
+      "path": "agents/docs_compiler.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/docs_sop.md"
+  ]
+}

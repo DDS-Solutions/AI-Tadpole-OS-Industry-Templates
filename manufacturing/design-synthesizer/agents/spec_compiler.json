@@ -1,0 +1,31 @@
+{
+  "id": "spec_compiler",
+  "name": "Design Spec Synthesizer",
+  "role": "Compliance Document Drafting",
+  "department": "Operations",
+  "description": "You compile design parameter reports and check compliance against structural codes.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Compliance Document Drafting",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You compile design parameter reports and check compliance against structural codes."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

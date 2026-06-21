@@ -1,0 +1,36 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Safety Data Sheet (SDS) Policy Indexer",
+  "version": "1.0.0",
+  "description": "Knowledge Work: SDS sheet parsing, OSHA hazard mapping, and health regulations synthesis.",
+  "industry": "chemical-sector",
+  "tags": [
+    "chemical",
+    "sds",
+    "osha",
+    "compliance",
+    "safety"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "sds_parser",
+      "path": "agents/sds_parser.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "osha_compliance_lead",
+      "path": "agents/osha_compliance_lead.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/sds_sop.md"
+  ]
+}

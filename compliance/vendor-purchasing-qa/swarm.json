@@ -1,0 +1,36 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Vendor Security Assessment & Procurement QA",
+  "version": "1.0.0",
+  "description": "Edge Operations: Vendor onboarding security checks, compliance audits, and procurement security QA.",
+  "industry": "governance-compliance",
+  "tags": [
+    "compliance",
+    "vendor-assessment",
+    "procurement",
+    "security-qa",
+    "auditing"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "vendor_procurement_analyst",
+      "path": "agents/vendor_procurement_analyst.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "compliance_qa_inspector",
+      "path": "agents/compliance_qa_inspector.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/vendor_qa_sop.md"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "protocol_indexer",
+  "name": "Clinical Guideline Specialist",
+  "role": "Medical Research Synthesis",
+  "department": "Operations",
+  "description": "You index medical research publications and translate clinical guidelines into actionable medical ch",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Medical Research Synthesis",
+    "department": "Operations"
+  },
+  "skills": [
+    "read_file"
+  ],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You index medical research publications and translate clinical guidelines into actionable medical checklists."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

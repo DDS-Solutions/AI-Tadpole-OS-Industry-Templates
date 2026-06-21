@@ -1,0 +1,36 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Kitchen Inventory Receiving & Supplier QA",
+  "version": "1.0.0",
+  "description": "Edge Operations: Purchasing ingredients, temperature shipping checks, receiving logs, and supplier quality audits.",
+  "industry": "food-beverage",
+  "tags": [
+    "food",
+    "inventory",
+    "shipping",
+    "supplier-qa",
+    "receiving"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "kitchen_purchaser",
+      "path": "agents/kitchen_purchaser.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "reception_qa",
+      "path": "agents/reception_qa.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/receiving_sop.md"
+  ]
+}

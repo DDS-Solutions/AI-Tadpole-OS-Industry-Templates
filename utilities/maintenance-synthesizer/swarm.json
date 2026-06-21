@@ -1,0 +1,35 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Grid Maintenance Manuals & SOP Indexer",
+  "version": "1.0.0",
+  "description": "Knowledge Work: Processing telemetry manuals, emergency utility plans indexing, and maintenance reports synthesis.",
+  "industry": "critical-infrastructure",
+  "tags": [
+    "utilities",
+    "grid-maintenance",
+    "telemetry",
+    "synthesis"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "telemetry_manual_indexer",
+      "path": "agents/telemetry_manual_indexer.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "emergency_synthesizer",
+      "path": "agents/emergency_synthesizer.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/utility_telemetry_sop.md"
+  ]
+}

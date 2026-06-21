@@ -1,0 +1,36 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Software License Procurement & Asset Audit",
+  "version": "1.0.0",
+  "description": "Edge Operations: SaaS license purchasing, hardware cataloging, asset shipping, and software inventory audits.",
+  "industry": "edtech-training",
+  "tags": [
+    "education",
+    "procurement",
+    "inventory",
+    "saas-licensing",
+    "software-asset"
+  ],
+  "defaults": {
+    "model": "gemini-pro-latest",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "license_purchaser",
+      "path": "agents/license_purchaser.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "software_asset_auditor",
+      "path": "agents/software_asset_auditor.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/asset_sop.md"
+  ]
+}
