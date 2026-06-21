@@ -112,7 +112,11 @@ We welcome contributions from industry experts! If you have built an incredibly 
 1. Fork this repository.
 2. Create a new folder under your relevant industry (or create a new industry).
 3. Ensure your template passes the `SWARM_TEMPLATE_SCHEMA.md` requirements.
-4. Submit a Pull Request!
+4. Run the local validator script to audit your template structure:
+   ```bash
+   python validate.py
+   ```
+5. Submit a Pull Request! *(Our CI/CD pipeline runs this validation on every PR to prevent template regression).*
 
 ---
 *Built for [AI-Tadpole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS).*
