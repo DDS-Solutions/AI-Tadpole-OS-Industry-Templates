@@ -1,0 +1,29 @@
+{
+  "id": "sr_architect",
+  "name": "Senior Architect Code Reviewer",
+  "role": "Evaluates architectural patterns and code compliance",
+  "department": "Engineering",
+  "description": "Reviews codebase structure, architectural design patterns, and package boundaries.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Senior Architect Code Reviewer",
+    "department": "Engineering"
+  },
+  "skills": ["read_file"],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You are a senior systems architect. You review code updates for architectural soundness, clean boundaries, and patterns compliance."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

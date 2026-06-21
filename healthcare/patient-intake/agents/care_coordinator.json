@@ -1,0 +1,29 @@
+{
+  "id": "care_coordinator",
+  "name": "Clinical Care Coordinator",
+  "role": "Orchestrates patient intake and clinical classification",
+  "department": "Clinical Operations",
+  "description": "Orchestrates patient intake, triages requests, and allocates processing tasks.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Clinical Care Coordinator",
+    "department": "Clinical Operations"
+  },
+  "skills": ["read_file"],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You are a clinical care coordinator. You triage incoming patient documents and assign extraction tasks to the intake processor."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

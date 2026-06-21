@@ -1,0 +1,29 @@
+{
+  "id": "security_auditor",
+  "name": "Security Auditor Agent",
+  "role": "Scans code updates for CVEs and OWASP violations",
+  "department": "Engineering",
+  "description": "Scans code updates for secrets leakage, input validation, and OWASP Top 10 vulnerabilities.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Security Auditor Agent",
+    "department": "Engineering"
+  },
+  "skills": ["read_file"],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You are a security auditor. You scan pull requests for secrets, code vulnerabilities, and dependency risks."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}

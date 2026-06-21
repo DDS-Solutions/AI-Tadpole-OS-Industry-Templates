@@ -1,0 +1,29 @@
+{
+  "id": "intake_processor",
+  "name": "Patient Intake Processor",
+  "role": "Extracts clinical metrics and data from raw text",
+  "department": "Clinical Operations",
+  "description": "Extracts structured demographic and medical history data from intake documents.",
+  "status": "ready",
+  "tokensUsed": 0,
+  "costUsd": 0.0,
+  "metadata": {
+    "role": "Patient Intake Processor",
+    "department": "Clinical Operations"
+  },
+  "skills": ["read_file"],
+  "workflows": [],
+  "tokenUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "You are a patient intake processor. You extract structured demographics, medical histories, and symptoms from patient charts."
+  },
+  "model_id": "gemini-pro-latest",
+  "budget_usd": 150.0,
+  "budgetUsd": 150.0
+}
