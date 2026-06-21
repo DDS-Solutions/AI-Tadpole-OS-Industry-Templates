@@ -1,0 +1,860 @@
+[
+  {
+    "id": "legal-contract-review",
+    "name": "Legal Contract Auditor",
+    "description": "AI-driven contract analysis, litigation forecasting, and automated discovery.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "legal/contract-review",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "healthcare-patient-intake",
+    "name": "Patient Intake Automation",
+    "description": "Process clinical data and automate patient intake workflows.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "healthcare/patient-intake",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "development-code-reviewer",
+    "name": "Sr. Architect Reviewer",
+    "description": "Automated code review and architectural auditing from a senior perspective.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "development/code-reviewer",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "bookkeeping-audit",
+    "name": "SMB Bookkeeping Swarm",
+    "description": "Automated daily reconciliation, tax optimization, and digital audit trails.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "financial-services/bookkeeping-audit",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "full-funnel-automation",
+    "name": "Marketing Funnel Pilot",
+    "description": "Automated content generation, ad spend optimization, and journey analytics.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "digital-marketing/full-funnel-automation",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "lead-transaction-management",
+    "name": "Real Estate Closer",
+    "description": "Automated lead nurturing, MLS syndication, and escrow timeline tracking.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "real-estate/lead-transaction",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "manufacturing-job-shop-25",
+    "name": "Job Shop (25 Seats)",
+    "description": "Optimized production scheduling and material tracking for small-scale manufacturing.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "manufacturing/job-shop-25",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "manufacturing-medium-plant-50",
+    "name": "Medium Plant (50 Seats)",
+    "description": "Predictive maintenance and supply chain orchestration for medium-sized facilities.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "manufacturing/medium-plant-50",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "manufacturing-smart-factory-100",
+    "name": "Smart Factory (100 Seats)",
+    "description": "Enterprise-level ERP integration and digital twin synchronization across sites.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "manufacturing/smart-factory-100",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "food-restaurant-ops",
+    "name": "Food & Beverage Operations",
+    "description": "Automate kitchen inventory, menu performance analytics, and supplier ordering workflows.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "food/restaurant-ops",
+    "required_models": [
+      "gemini-1.5-flash"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "chemical-process-safety",
+    "name": "Chemical Safety Auditor",
+    "description": "Automate chemical inventory, Safety Data Sheet (SDS) compliance auditing, and safety checklists.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "chemical/process-safety",
+    "required_models": [
+      "gemini-1.5-flash"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "transportation-fleet-logistics",
+    "name": "Fleet Logistics Swarm",
+    "description": "Fleet scheduling, route optimization, maintenance tracking, and fuel efficiency analytics.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "transportation/fleet-logistics",
+    "required_models": [
+      "gemini-1.5-flash"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "pharma-clinical-trials",
+    "name": "Clinical Trial Manager",
+    "description": "Automate clinical trial protocol mapping, trial candidate documentation, and adverse event logging.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "pharma/clinical-trials",
+    "required_models": [
+      "gemini-1.5-flash"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "agriculture-precision-farming",
+    "name": "Precision Agriculture Swarm",
+    "description": "Crop yield forecasting, soil health telemetry analysis, and irrigation optimization.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "agriculture/precision-farming",
+    "required_models": [
+      "gemini-1.5-flash"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "compliance-regulatory-audit",
+    "name": "Regulatory Compliance Swarm",
+    "description": "Continuous security posture assessment, SOC2/ISO readiness checks, and regulatory compliance mapping.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "compliance/regulatory-audit",
+    "required_models": [
+      "gemini-1.5-flash"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "security-incident-response",
+    "name": "Incident Response Swarm",
+    "description": "Designed for security log auditing, incident triage, and automated mitigation recommendation.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "security/incident-response",
+    "required_models": [
+      "gemini-1.5-flash"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "hr-recruiting-triage",
+    "name": "Recruiting Triage Swarm",
+    "description": "Designed for parsing candidate resumes, screening against role criteria, and coordinating onboarding files.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "hr/recruiting-triage",
+    "required_models": [
+      "gemini-1.5-flash"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "education-curriculum-planner",
+    "name": "Curriculum Planner Swarm",
+    "description": "Designed for curriculum audit mapping, lesson plan alignment, and student analytics reviews.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "education/curriculum-planner",
+    "required_models": [
+      "gemini-1.5-flash"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "utilities-grid-telemetry",
+    "name": "Grid Telemetry Swarm",
+    "description": "Designed for grid status logs auditing, alarm triage, and utility crew scheduling.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "utilities/grid-telemetry",
+    "required_models": [
+      "gemini-1.5-flash"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "creative-asset-pipeline",
+    "name": "Creative Asset Pipeline Swarm",
+    "description": "Designed for creative asset verification, size budget checks, and dialog localization tracking.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "creative/asset-pipeline",
+    "required_models": [
+      "gemini-1.5-flash"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "legal-precedent-synthesis",
+    "name": "Legal Precedent Synthesizer",
+    "description": "Knowledge Work: Automated analysis of legal precedents, case law synthesis, and document drafting.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "legal/precedent-synthesis",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "legal-procurement-qa",
+    "name": "Legal Vendor Procurement & QA",
+    "description": "Edge Operations: Purchasing audits, contract lifecycle QA, and vendor compliance assessment.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "legal/procurement-qa",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "medical-clinical-guidelines",
+    "name": "Clinical Guideline Indexer",
+    "description": "Knowledge Work: Processing medical research, clinical protocols indexing, and case summary generation.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "healthcare/clinical-guidelines",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "medical-inventory-qa",
+    "name": "Medical Inventory & Procurement QA",
+    "description": "Edge Operations: Purchasing medical supplies, shipping, receiving audits, and ISO compliance sterilization QA.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "healthcare/inventory-qa",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "financial-policy-synthesizer",
+    "name": "Tax Law & Policy Synthesizer",
+    "description": "Knowledge Work: Financial research, tax law changes synthesis, policy auditing, and regulatory reporting.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "financial-services/policy-synthesizer",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "financial-vendor-reconciliation",
+    "name": "Vendor Invoice & Purchasing QA",
+    "description": "Edge Operations: Invoice processing, shipping validation, vendor ledger audits, and purchase reconciliation.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "financial-services/vendor-reconciliation",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "marketing-seo-indexer",
+    "name": "SEO Content Strategy Indexer",
+    "description": "Knowledge Work: Web scraping, SEO keyword trend analysis, search intent mapping, and strategy synthesis.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "digital-marketing/seo-indexer",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "marketing-vendor-purchasing",
+    "name": "Ad Spend & Vendor Purchasing QA",
+    "description": "Edge Operations: Media buy procurement, invoice verification, ad network compliance, and ISO quality auditing.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "digital-marketing/vendor-purchasing",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "ecommerce-market-analysis",
+    "name": "Competitor & Market Trend Analyzer",
+    "description": "Knowledge Work: E-commerce catalog scraping, competitor pricing intelligence, and trend synthesis.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "e-commerce/market-analysis",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "ecommerce-dispatch-qa",
+    "name": "Warehouse Dispatch & Shipping QA",
+    "description": "Edge Operations: Shipping dispatch, receiving validation, inventory auditing, and packaging quality control.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "e-commerce/dispatch-qa",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "realestate-valuation-synthesizer",
+    "name": "Property Valuation & Appraisal Synthesizer",
+    "description": "Knowledge Work: Property data compilation, local market appraisal indexing, and trend report writing.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "real-estate/valuation-synthesizer",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "realestate-maintenance-procurement",
+    "name": "Maintenance Procurement & Contractor QA",
+    "description": "Edge Operations: Facilities purchasing, material inventory, shipping parts, and contractor SLA quality audits.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "real-estate/maintenance-procurement",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "consultancy-expert-synthesizer",
+    "name": "Expert Knowledge Harvester",
+    "description": "Knowledge Work: Client interview transcription analysis, expert feedback harvesting, and methodology synthesis.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "specialized-consultancies/expert-synthesizer",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "consultancy-subcontractor-qa",
+    "name": "Subcontractor Procurement & QA",
+    "description": "Edge Operations: Consultant onboarding procurement, shipping materials, project timesheet QA, and ISO compliance.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "specialized-consultancies/subcontractor-qa",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "logistics-route-optimization",
+    "name": "Route & Transit Strategy Analyzer",
+    "description": "Knowledge Work: Freight data analysis, carrier performance indexing, transit delay prediction, and strategic synthesis.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "logistics-supply-chain/route-optimization",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "logistics-dock-shipping",
+    "name": "Loading Dock Shipping & Receiving QA",
+    "description": "Edge Operations: Freight loading, receiving, container seals inspections, inventory logging, and ISO 9000 audits.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "logistics-supply-chain/dock-shipping",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "engineering-spec-compliance",
+    "name": "Engineering Spec & Code Compliance Auditor",
+    "description": "Knowledge Work: Reviewing structural specifications, municipal building codes indexing, and safety compliance audits.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "engineering-architecture/spec-compliance",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "engineering-parts-procurement",
+    "name": "CAD Material Purchasing & ISO 9000 QA",
+    "description": "Edge Operations: Raw materials purchasing, parts receiving, supplier testing certs, and metallurgical quality QA.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "engineering-architecture/parts-procurement",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "edtech-curriculum-synthesizer",
+    "name": "EdTech Curriculum & Course Indexer",
+    "description": "Knowledge Work: Educational standards mapping, syllabus content synthesis, and training guideline indexing.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "edtech-training/curriculum-synthesizer",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "edtech-license-procurement",
+    "name": "Software License Procurement & Asset Audit",
+    "description": "Edge Operations: SaaS license purchasing, hardware cataloging, asset shipping, and software inventory audits.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "edtech-training/license-procurement",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "development-docs-synthesizer",
+    "name": "Tech Spec & API Documentation Indexer",
+    "description": "Knowledge Work: Parsing codebase schemas, indexing API documentation, and tech spec synthesis.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "development/docs-synthesizer",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "development-qa-iso9000",
+    "name": "Release Quality Assurance & ISO 9000",
+    "description": "Edge Operations: Software release QA, test compliance auditing, security asset shipping, and patch management.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "development/qa-iso9000",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "manufacturing-design-synthesizer",
+    "name": "CAD Design Specification Auditor",
+    "description": "Knowledge Work: Reviewing product designs, indexing mechanical blueprints, and material compliance audits.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "manufacturing/design-synthesizer",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "manufacturing-iso9000-qa",
+    "name": "Factory Floor ISO 9000 QA & Inventory",
+    "description": "Edge Operations: Materials receiving, shipping finished goods, parts inventory audits, and ISO 9000 quality checks.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "manufacturing/iso9000-qa",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "food-recipe-compliance",
+    "name": "Recipe & Safety Compliance Auditor",
+    "description": "Knowledge Work: Analyzing recipe regulations, health guidelines indexing, and labeling audit reporting.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "food/recipe-compliance",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "food-inventory-receiving",
+    "name": "Kitchen Inventory Receiving & Supplier QA",
+    "description": "Edge Operations: Purchasing ingredients, temperature shipping checks, receiving logs, and supplier quality audits.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "food/inventory-receiving",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "chemical-sds-synthesizer",
+    "name": "Safety Data Sheet (SDS) Policy Indexer",
+    "description": "Knowledge Work: SDS sheet parsing, OSHA hazard mapping, and health regulations synthesis.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "chemical/sds-synthesizer",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "chemical-hazmat-shipping",
+    "name": "Hazmat Shipping, Receiving & ISO QA",
+    "description": "Edge Operations: Hazmat container shipping, receiving checks, containment inventory, and ISO 9000 compliance audits.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "chemical/hazmat-shipping",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "transportation-policy-compliance",
+    "name": "DOT Regulations Compliance Auditor",
+    "description": "Knowledge Work: Analyzing transit laws, DOT regulation changes indexing, and compliance reporting.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "transportation/policy-compliance",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "transportation-fleet-purchasing",
+    "name": "Spare Parts Inventory & Fleet Purchasing QA",
+    "description": "Edge Operations: Parts procurement, fleet shipping logs, inventory management, and maintenance QA.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "transportation/fleet-purchasing",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "pharma-research-synthesizer",
+    "name": "Drug Discovery & FDA Guidelines Indexer",
+    "description": "Knowledge Work: Clinical study parsing, FDA protocol mapping, and compliance synthesis.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "pharma/research-synthesizer",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "pharma-coldchain-shipping",
+    "name": "Cold-Chain Shipping Receiving & GMP QA",
+    "description": "Edge Operations: Thermally managed shipping, clinical stock receiving, and GMP quality inspections.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "pharma/coldchain-shipping",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "agriculture-research-synthesizer",
+    "name": "Soil Science & Agronomy Database Indexer",
+    "description": "Knowledge Work: Soil telemetry data parsing, crop yields indexing, and agricultural research synthesis.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "agriculture/research-synthesizer",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "agriculture-grain-shipping",
+    "name": "Harvest Shipping & Equipment Parts Inventory",
+    "description": "Edge Operations: Bulk crop shipping logistics, receiving farming parts, and equipment maintenance QA.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "agriculture/grain-shipping",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "compliance-crosswalk-synthesizer",
+    "name": "SOC2/ISO Framework Crosswalk Synthesizer",
+    "description": "Knowledge Work: Regulatory framework mapping, control guidelines synthesis, and security standard crosswalk audits.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "compliance/crosswalk-synthesizer",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "compliance-vendor-purchasing-qa",
+    "name": "Vendor Security Assessment & Procurement QA",
+    "description": "Edge Operations: Vendor onboarding security checks, compliance audits, and procurement security QA.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "compliance/vendor-purchasing-qa",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "security-threat-intelligence",
+    "name": "Threat Intel Feed Parser & Knowledge Base",
+    "description": "Knowledge Work: Scraping CVE bulletins, threat intel feed indexing, and security alert briefings synthesis.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "security/threat-intelligence",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "security-hardware-inventory",
+    "name": "Security Hardware Purchasing & Asset QA",
+    "description": "Edge Operations: Network hardware procurement, firewall shipping audits, asset receiving, and hardware QA.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "security/hardware-inventory",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "hr-policy-synthesizer",
+    "name": "Employee Handbook & Compliance Indexer",
+    "description": "Knowledge Work: Parsing labor laws, employee handbook updates indexing, and compliance guidelines synthesis.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "hr/policy-synthesizer",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "hr-recruiter-purchasing",
+    "name": "Recruiting Tool Procurement & Contractor QA",
+    "description": "Edge Operations: Job board purchasing, external placement contractor QA, and invoice auditing.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "hr/recruiter-purchasing",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "education-accreditation-synthesizer",
+    "name": "Accreditation & Curriculum Audit Synthesizer",
+    "description": "Knowledge Work: Academic standards audits, accreditation compliance indexing, and curriculum synthesis.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "education/accreditation-synthesizer",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "education-supplies-purchasing",
+    "name": "School Supplies Purchasing & Textbook Inventory",
+    "description": "Edge Operations: Textbook procurement, classroom supplies shipping, receiving audits, and inventory QA.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "education/supplies-purchasing",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "utilities-maintenance-synthesizer",
+    "name": "Grid Maintenance Manuals & SOP Indexer",
+    "description": "Knowledge Work: Processing telemetry manuals, emergency utility plans indexing, and maintenance reports synthesis.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "utilities/maintenance-synthesizer",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "utilities-scada-qa",
+    "name": "SCADA Device Shipping, Receiving & Hardware QA",
+    "description": "Edge Operations: Grid sensor procurement, SCADA equipment shipping logs, receiving inspections, and hardware QA.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "utilities/scada-qa",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "creative-script-synthesizer",
+    "name": "Script & Localization Knowledge Indexer",
+    "description": "Knowledge Work: Script parsing, dialog semantic mapping, cultural adaptation databases indexing, and localization synthesis.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "creative/script-synthesizer",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  },
+  {
+    "id": "creative-equipment-procurement",
+    "name": "Studio Equipment Purchasing & Asset Inventory",
+    "description": "Edge Operations: Camera/lens procurement, studio shipping logs, asset receiving, and hardware QA.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "creative/equipment-procurement",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "read_file"
+    ]
+  }
+]
