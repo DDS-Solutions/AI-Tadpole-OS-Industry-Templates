@@ -75,6 +75,122 @@ const REGISTRY = [
   { id: "creative-asset-pipeline", name: "Creative Asset Pipeline Swarm", industry: "Media & Creative", path: "creative/asset-pipeline", tags: ["creative", "media", "assets"] },
 ];
 
+const INDUSTRY_CODES_MAP: Record<string, { code: string; label: string }[]> = {
+  'Legal Services': [
+    { code: 'NAICS 541110', label: '541110 - Offices of Lawyers' },
+    { code: 'SIC 8111', label: '8111 - Legal Services' }
+  ],
+  'Medical Practices': [
+    { code: 'NAICS 621111', label: '621111 - Offices of Physicians (except Mental Health)' },
+    { code: 'NAICS 621112', label: '621112 - Offices of Physicians, Mental Health Specialists' },
+    { code: 'SIC 8011', label: '8011 - Offices and Clinics of Doctors of Medicine' }
+  ],
+  'Financial Services': [
+    { code: 'NAICS 523930', label: '523930 - Investment Advice' },
+    { code: 'NAICS 541211', label: '541211 - Offices of Certified Public Accountants' },
+    { code: 'SIC 6282', label: '6282 - Investment Advice' },
+    { code: 'SIC 8721', label: '8721 - Accounting, Auditing, and Bookkeeping' }
+  ],
+  'Digital Marketing': [
+    { code: 'NAICS 541810', label: '541810 - Advertising Agencies' },
+    { code: 'NAICS 541812', label: '541812 - Digital Advertising Agencies' },
+    { code: 'SIC 7311', label: '7311 - Advertising Agencies' }
+  ],
+  'E-commerce': [
+    { code: 'NAICS 454110', label: '454110 - Electronic Shopping and Mail-Order Houses' },
+    { code: 'SIC 5961', label: '5961 - Catalog and Mail-Order Houses' }
+  ],
+  'Real Estate': [
+    { code: 'NAICS 531210', label: '531210 - Offices of Real Estate Agents and Brokers' },
+    { code: 'SIC 6531', label: '6531 - Real Estate Agents and Managers' }
+  ],
+  'Specialized Consultancies': [
+    { code: 'NAICS 541611', label: '541611 - Administrative & General Management Consulting' },
+    { code: 'NAICS 541690', label: '541690 - Other Scientific & Technical Consulting' },
+    { code: 'SIC 8742', label: '8742 - Management Consulting Services' }
+  ],
+  'Logistics & Supply Chain': [
+    { code: 'NAICS 541614', label: '541614 - Process, Physical Distribution, & Logistics Consulting' },
+    { code: 'NAICS 488510', label: '488510 - Freight Transportation Arrangement' },
+    { code: 'SIC 4731', label: '4731 - Arrangement of Transportation of Freight & Cargo' }
+  ],
+  'Engineering & Architecture': [
+    { code: 'NAICS 541330', label: '541330 - Engineering Services' },
+    { code: 'NAICS 541310', label: '541310 - Architectural Services' },
+    { code: 'SIC 8711', label: '8711 - Engineering Services' },
+    { code: 'SIC 8712', label: '8712 - Architectural Services' }
+  ],
+  'EdTech & Training': [
+    { code: 'NAICS 611710', label: '611710 - Educational Support Services' },
+    { code: 'NAICS 611420', label: '611420 - Computer Training' },
+    { code: 'SIC 8299', label: '8299 - Schools & Educational Services, NEC' }
+  ],
+  'Software Development': [
+    { code: 'NAICS 541511', label: '541511 - Custom Computer Programming Services' },
+    { code: 'NAICS 513210', label: '513210 - Software Publishers' },
+    { code: 'SIC 7371', label: '7371 - Computer Programming Services' },
+    { code: 'SIC 7372', label: '7372 - Prepackaged Software' }
+  ],
+  'Manufacturing': [
+    { code: 'NAICS 339999', label: '339999 - All Other Miscellaneous Manufacturing' },
+    { code: 'SIC 3999', label: '3999 - Manufacturing Industries, NEC' }
+  ],
+  'Food & Beverage': [
+    { code: 'NAICS 722511', label: '722511 - Full-Service Restaurants' },
+    { code: 'NAICS 311999', label: '311999 - All Other Miscellaneous Food Manufacturing' },
+    { code: 'SIC 5812', label: '5812 - Eating Places' },
+    { code: 'SIC 2099', label: '2099 - Food Preparations, NEC' }
+  ],
+  'Chemical Sector': [
+    { code: 'NAICS 325998', label: '325998 - All Other Miscellaneous Chemical Product Manufacturing' },
+    { code: 'SIC 2899', label: '2899 - Chemicals and Chemical Preparations, NEC' }
+  ],
+  'Transportation & Logistics': [
+    { code: 'NAICS 484121', label: '484121 - General Freight Trucking, Long-Distance' },
+    { code: 'NAICS 488510', label: '488510 - Freight Transportation Arrangement' },
+    { code: 'SIC 4213', label: '4213 - Trucking, Except Local' },
+    { code: 'SIC 4731', label: '4731 - Arrangement of Transportation of Freight & Cargo' }
+  ],
+  'Pharmaceuticals': [
+    { code: 'NAICS 325412', label: '325412 - Pharmaceutical Preparation Manufacturing' },
+    { code: 'SIC 2834', label: '2834 - Pharmaceutical Preparations' }
+  ],
+  'Agriculture & AgTech': [
+    { code: 'NAICS 111998', label: '111998 - All Other Miscellaneous Crop Farming' },
+    { code: 'NAICS 541715', label: '541715 - R&D in Physical, Engineering, & Life Sciences' },
+    { code: 'SIC 0191', label: '0191 - General Farms, Primarily Crop' }
+  ],
+  'Governance & Compliance': [
+    { code: 'NAICS 541611', label: '541611 - Administrative & General Management Consulting' },
+    { code: 'SIC 8742', label: '8742 - Management Consulting Services' }
+  ],
+  'Cybersecurity': [
+    { code: 'NAICS 541512', label: '541512 - Computer Systems Design Services' },
+    { code: 'NAICS 541690', label: '541690 - Other Scientific & Technical Consulting' },
+    { code: 'SIC 7373', label: '7373 - Computer Integrated Systems Design' },
+    { code: 'SIC 7379', label: '7379 - Computer Related Services, NEC' }
+  ],
+  'Human Resources': [
+    { code: 'NAICS 561311', label: '561311 - Employment Placement Agencies' },
+    { code: 'NAICS 541612', label: '541612 - Human Resources Consulting Services' },
+    { code: 'SIC 7361', label: '7361 - Employment Agencies' }
+  ],
+  'Education': [
+    { code: 'NAICS 611710', label: '611710 - Educational Support Services' },
+    { code: 'NAICS 611310', label: '611310 - Colleges, Universities, & Professional Schools' },
+    { code: 'SIC 8299', label: '8299 - Schools & Educational Services, NEC' }
+  ],
+  'Critical Infrastructure': [
+    { code: 'NAICS 221122', label: '221122 - Electric Power Distribution' },
+    { code: 'SIC 4911', label: '4911 - Electric Services' }
+  ],
+  'Media & Creative': [
+    { code: 'NAICS 512110', label: '512110 - Motion Picture & Video Production' },
+    { code: 'NAICS 711510', label: '711510 - Independent Artists, Writers, & Performers' },
+    { code: 'SIC 7812', label: '7812 - Motion Picture & Video Tape Production' }
+  ]
+};
+
 export default function App() {
   const [step, setStep] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
@@ -162,12 +278,13 @@ export default function App() {
     
     if (match) {
       setIsCustomIndustry(false);
+      const defaultCode = INDUSTRY_CODES_MAP[match.name]?.[0]?.code || ('NAICS ' + (Math.floor(Math.random() * 90000) + 10000));
       setCompanyInfo({
         ...companyInfo,
         mission: `To revolutionize ${companyInfo.description.toLowerCase()} through sovereign intelligence and automated ${match.name.toLowerCase()} flows.`,
         industry: match.name,
         industryPath: match.path,
-        industryCode: 'NAICS ' + (Math.floor(Math.random() * 90000) + 10000) // Mock code
+        industryCode: defaultCode
       });
       
       // Suggest industry-specific agent
@@ -371,10 +488,12 @@ export default function App() {
                       } else {
                         setIsCustomIndustry(false);
                         const match = dynamicIndustries.find(i => i.name === e.target.value);
+                        const defaultCode = e.target.value ? (INDUSTRY_CODES_MAP[e.target.value]?.[0]?.code || '') : '';
                         setCompanyInfo({
                           ...companyInfo,
                           industry: e.target.value,
-                          industryPath: match?.path || ''
+                          industryPath: match?.path || '',
+                          industryCode: defaultCode
                         });
                       }
                     }}
@@ -391,9 +510,15 @@ export default function App() {
                   <input 
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none transition-colors"
                     placeholder="e.g. 541511"
+                    list="industry-codes"
                     value={companyInfo.industryCode}
                     onChange={e => setCompanyInfo({...companyInfo, industryCode: e.target.value})}
                   />
+                  <datalist id="industry-codes">
+                    {(INDUSTRY_CODES_MAP[companyInfo.industry] || []).map(c => (
+                      <option key={c.code} value={c.code}>{c.label}</option>
+                    ))}
+                  </datalist>
                 </div>
               </div>
               
