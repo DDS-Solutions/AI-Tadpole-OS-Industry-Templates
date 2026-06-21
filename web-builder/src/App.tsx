@@ -1187,8 +1187,18 @@ export default function App() {
 
                     {/* Tags */}
                     <div>
-                      <span className="mono-label text-[10px] text-zinc-500 block mb-2">Tags</span>
-                      <div className="flex flex-wrap gap-2">
+                      <span className="mono-label text-[10px] text-zinc-500 block">Tags (comma-separated)</span>
+                      <input 
+                        className="w-full bg-zinc-950/60 border border-zinc-805 rounded-lg p-2.5 text-xs text-zinc-300 focus:border-cyber-green outline-none mt-1"
+                        style={{ borderColor: 'color-mix(in srgb, var(--color-border) 40%, transparent)' }}
+                        placeholder="e.g. law, audit, compliance"
+                        value={selectedTemplate.tags.join(', ')}
+                        onChange={e => {
+                          const tagList = e.target.value.split(',').map(t => t.trim()).filter(Boolean);
+                          handleUpdateSelectedTemplate('tags', tagList);
+                        }}
+                      />
+                      <div className="flex flex-wrap gap-2 mt-2">
                         {selectedTemplate.tags.map((tag: string, idx: number) => (
                           <span key={idx} className="text-[10px] text-zinc-400 bg-zinc-950 px-2 py-1 rounded-md border border-zinc-800">
                             #{tag}
