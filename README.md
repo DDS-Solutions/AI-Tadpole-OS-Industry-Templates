@@ -33,23 +33,24 @@ You can install these directly from your Tadpole OS dashboard!
 
 ## 📁 Repository Structure
 
-Templates are organized by industry for easy discovery. Each template folder contains a complete Swarm Profile, optional MCP tools, and institutional playbooks.
+The repository contains pre-configured templates across **23 industries**, with each industry hosting at least two specialized swarm types:
+1. **Knowledge Work Swarms**: Focused on research analysis, policy indexing, case law synthesis, and document auditing.
+2. **Edge Operations Swarms**: Focused on inventory management, shipping/receiving audits, purchasing/procurement, and ISO 9000 quality assurance.
 
 ```text
 /
 ├── digital-marketing/
-│   └── full-funnel-automation/ # A swarm designed for full-funnel optimization
-│       ├── swarm.json
-│       ├── agents/
-│       ├── workflows/
-│       ├── mcps.json
-│       ├── knowledge.json      # Playbook and SOP metadata index
-│       └── knowledge/          # Corporate SOPs and reference docs
-│           └── seo_sop.md
+│   ├── full-funnel-automation/    # A swarm designed for full-funnel marketing
+│   ├── seo-indexer/               # [Knowledge] Keyword trend & search intent indexing
+│   └── vendor-purchasing/         # [Edge Ops] Ad spend verification & procurement QA
 ├── legal/
-│   └── contract-review/       # A swarm designed for auditing NDAs
-└── development/
-    └── code-reviewer/         # A swarm that acts as a Sr. Architect
+│   ├── contract-review/           # A swarm designed for auditing NDAs
+│   ├── precedent-synthesis/       # [Knowledge] Case law precedent research & memorandum drafting
+│   └── procurement-qa/            # [Edge Ops] Vendor purchasing audits & SLA compliance
+├── manufacturing/
+│   ├── design-synthesizer/        # [Knowledge] CAD blueprint parsing & compliance reviews
+│   └── iso9000-qa/                # [Edge Ops] Floor inventory auditing & batch QA
+└── ... (covering 23 distinct sectors including Healthcare, Finance, HR, and Utilities)
 ```
 
 ## 🧠 Institutional Knowledge Integration (OKF/IKS)
