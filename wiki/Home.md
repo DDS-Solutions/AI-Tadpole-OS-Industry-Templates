@@ -40,6 +40,9 @@ Review the strict security parameters that safeguard local resources: sandbox sc
 ### 🛠️ [4. Developer & Contribution Guide](file:///wiki/Developer-Guide.md)
 Learn how to test your custom swarms locally using the `validate.py` validator script and deploy automated CI/CD workflows using GitHub Actions.
 
+### 🔌 [5. MCP Data Connectors & Integrations](file:///wiki/MCP-Connectors.md)
+Discover how to augment your local swarms with real-time external data access using Model Context Protocol (MCP) standard connectors, allowing secure zero-trust read/write capabilities across CRMs and internal APIs.
+
 ---
 
 ## 🎯 High-Performance Local AI Swarms

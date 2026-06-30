@@ -10,6 +10,7 @@ Don't want to start from scratch? Use our **[Swarm Architect](https://dds-soluti
 
 *   **Hybrid AI Profiler**: Suggests skills based on your company mission.
 *   **Agent Catalog**: Browse 200+ specialized AI agent roles across multiple departments to easily build your team.
+*   **MCP Integration**: Attach standard Model Context Protocol (MCP) data connectors to your Swarms.
 *   **One-Click Export**: Downloads a production-ready Swarm Archive (.zip).
 *   **Schema Verified**: Every template generated is guaranteed to pass the Tadpole OS validation.
 
@@ -97,6 +98,14 @@ Alternatively (or additionally), you can define a `knowledge.json` file in the r
 
 * **Automatic Previews**: The Template Store reads your `knowledge.json` metadata index, displaying a dedicated **Playbooks & Institutional Knowledge** panel in the preview modal. Users can review documentation URLs and descriptions prior to deployment.
 * **Resilient Degradation**: If vector memory or embedding generation is disabled (e.g., due to `PRIVACY_MODE=true` or missing API keys), the template installation logs a warning but proceeds with the deployment, ensuring zero downtime.
+
+## 🔌 MCP Data Connectors
+
+Tadpole OS Swarms can now seamlessly attach standard Model Context Protocol (MCP) data connectors. This allows your local intelligence swarm to dynamically query real-time external databases, CRM systems, and internal REST APIs without exposing any credentials.
+
+* **Blueprint Library**: Browse our `mcp-blueprints/` directory for pre-built Python and TypeScript FastMCP servers (e.g., `generic-crm`).
+* **Swarm Architect Integration**: When building a custom swarm, use **Phase 4: Data Connectors** in the Swarm Architect to attach MCPs to your swarm manifest.
+* **Auto-Discovery**: Attached MCPs are automatically booted and registered via stdio when the swarm initializes.
 
 ## 🛡️ The Sapphire Shield: Security First
 

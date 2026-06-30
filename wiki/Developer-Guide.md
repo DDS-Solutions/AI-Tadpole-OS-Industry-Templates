@@ -28,6 +28,7 @@ The script performs the following structural integrity checks:
 3. **Configuration Auditing**: Parses `swarm.json` to verify JSON syntax.
 4. **Roster Integration**: Scans all roster profiles under `/agents/` to ensure agent paths exist and parse as valid JSON.
 5. **Workflow Checks**: Checks that all workflows declared in `global_workflows` exist physically as `.md` files under the template `/workflows/` subdirectory.
+6. **MCP Registry Checks**: Scans `mcp_registry.json` and ensures all referenced `mcps.json` configurations are syntactically valid and exist in the filesystem.
 
 ---
 
