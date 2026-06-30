@@ -827,7 +827,7 @@ export default function App() {
                   onClick={() => setIsCatalogModalOpen(true)}
                   className="flex-1 sm:flex-initial bg-cyber-green/10 text-cyber-green hover:bg-cyber-green/20 px-4 py-2 rounded-lg border border-cyber-green/30 flex items-center justify-center gap-2 transition-all cursor-pointer focus-sovereign"
                 >
-                  <Search className="w-4 h-4" /> Browse Catalog
+                  <Search className="w-4 h-4" /> Browse Agent Catalog
                 </button>
                 <button 
                   onClick={handleCreateCustomAgent}
