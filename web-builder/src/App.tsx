@@ -1224,19 +1224,27 @@ export default function App() {
               );
             })()}
 
-            <div className="flex flex-col gap-4 items-center">
+            <div className="flex flex-col gap-4 items-center mt-8">
               <button 
                 onClick={handleExport}
                 className="bg-cyber-green text-zinc-950 font-black px-12 py-4 rounded-xl hover:scale-105 transition-all flex items-center gap-3 cursor-pointer shadow-[0_0_20px_rgba(34,197,94,0.3)]"
               >
                 <Download className="w-6 h-6" /> Export Swarm Archive
               </button>
-              <button 
-                onClick={() => { setStep(1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                className="text-zinc-500 hover:text-white transition-colors text-sm mt-4"
-              >
-                Re-configure Architecture
-              </button>
+              <div className="flex gap-8 items-center mt-4">
+                <button 
+                  onClick={() => { setStep(4); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  className="text-zinc-500 hover:text-white transition-colors text-sm cursor-pointer"
+                >
+                  &larr; Previous Step
+                </button>
+                <button 
+                  onClick={() => { setStep(1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  className="text-zinc-500 hover:text-white transition-colors text-sm cursor-pointer"
+                >
+                  Restart Configuration
+                </button>
+              </div>
             </div>
           </motion.div>
         )}
