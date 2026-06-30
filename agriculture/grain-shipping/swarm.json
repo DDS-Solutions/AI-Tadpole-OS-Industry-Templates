@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "harvest_dispatcher",
-      "path": "agents/harvest_dispatcher.json",
+      "id": "marketing-marketing-cross-border-ecommerce",
+      "path": "agents/marketing-marketing-cross-border-ecommerce.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "parts_inventory_clerk",
-      "path": "agents/parts_inventory_clerk.json",
+      "id": "design-design-brand-guardian",
+      "path": "agents/design-design-brand-guardian.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "engineering-engineering-devops-automator",
+      "path": "agents/engineering-engineering-devops-automator.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

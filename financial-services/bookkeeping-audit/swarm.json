@@ -18,5 +18,25 @@
     "audit-overseer"
   ],
   "required_mcps": "mcps.json",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "roster": [
+    {
+      "id": "finance-finance-bookkeeper-controller",
+      "path": "agents/finance-finance-bookkeeper-controller.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "finance-finance-financial-analyst",
+      "path": "agents/finance-finance-financial-analyst.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "finance-finance-tax-strategist",
+      "path": "agents/finance-finance-tax-strategist.json",
+      "supervisor": null,
+      "priority": "normal"
+    }
+  ]
 }

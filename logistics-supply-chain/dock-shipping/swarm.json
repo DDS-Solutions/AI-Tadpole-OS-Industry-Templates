@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "shipping_coordinator",
-      "path": "agents/shipping_coordinator.json",
+      "id": "gis-gis-qa-engineer",
+      "path": "agents/gis-gis-qa-engineer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "manifest_qa",
-      "path": "agents/manifest_qa.json",
+      "id": "marketing-marketing-cross-border-ecommerce",
+      "path": "agents/marketing-marketing-cross-border-ecommerce.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "security-security-compliance-auditor",
+      "path": "agents/security-security-compliance-auditor.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

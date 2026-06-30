@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "dialog_semantic_mapper",
-      "path": "agents/dialog_semantic_mapper.json",
+      "id": "engineering-engineering-database-optimizer",
+      "path": "agents/engineering-engineering-database-optimizer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "localization_synthesizer",
-      "path": "agents/localization_synthesizer.json",
+      "id": "paid-media-paid-media-auditor",
+      "path": "agents/paid-media-paid-media-auditor.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "paid-media-paid-media-creative-strategist",
+      "path": "agents/paid-media-paid-media-creative-strategist.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

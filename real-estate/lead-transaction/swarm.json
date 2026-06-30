@@ -18,5 +18,25 @@
     "client-concierge"
   ],
   "required_mcps": "mcps.json",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "roster": [
+    {
+      "id": "specialized-legal-document-review",
+      "path": "agents/specialized-legal-document-review.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "specialized-real-estate-buyer-seller",
+      "path": "agents/specialized-real-estate-buyer-seller.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "engineering-engineering-devops-automator",
+      "path": "agents/engineering-engineering-devops-automator.json",
+      "supervisor": null,
+      "priority": "normal"
+    }
+  ]
 }

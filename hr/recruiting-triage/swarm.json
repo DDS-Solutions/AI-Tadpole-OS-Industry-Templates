@@ -16,15 +16,21 @@
   },
   "roster": [
     {
-      "id": "resume_screener",
-      "path": "agents/resume_screener.json",
+      "id": "academic-academic-geographer",
+      "path": "agents/academic-academic-geographer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "onboarding_coordinator",
-      "path": "agents/onboarding_coordinator.json",
-      "supervisor": "resume_screener",
+      "id": "specialized-hr-onboarding",
+      "path": "agents/specialized-hr-onboarding.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "academic-academic-psychologist",
+      "path": "agents/academic-academic-psychologist.json",
+      "supervisor": null,
       "priority": "normal"
     }
   ],

@@ -17,15 +17,21 @@
   },
   "roster": [
     {
-      "id": "asset_verifier",
-      "path": "agents/asset_verifier.json",
+      "id": "paid-media-paid-media-auditor",
+      "path": "agents/paid-media-paid-media-auditor.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "localization_assistant",
-      "path": "agents/localization_assistant.json",
-      "supervisor": "asset_verifier",
+      "id": "paid-media-paid-media-creative-strategist",
+      "path": "agents/paid-media-paid-media-creative-strategist.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "finance-finance-investment-researcher",
+      "path": "agents/finance-finance-investment-researcher.json",
+      "supervisor": null,
       "priority": "normal"
     }
   ],

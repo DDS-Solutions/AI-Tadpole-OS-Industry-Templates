@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "interview_analyzer",
-      "path": "agents/interview_analyzer.json",
+      "id": "specialized-corporate-training-designer",
+      "path": "agents/specialized-corporate-training-designer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "methodology_synthesizer",
-      "path": "agents/methodology_synthesizer.json",
+      "id": "specialized-legal-billing-time-tracking",
+      "path": "agents/specialized-legal-billing-time-tracking.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "specialized-medical-billing-coding-specialist",
+      "path": "agents/specialized-medical-billing-coding-specialist.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

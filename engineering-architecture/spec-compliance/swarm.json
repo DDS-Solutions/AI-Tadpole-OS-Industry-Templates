@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "code_indexer",
-      "path": "agents/code_indexer.json",
+      "id": "specialized-specialized-civil-engineer",
+      "path": "agents/specialized-specialized-civil-engineer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "spec_auditor",
-      "path": "agents/spec_auditor.json",
+      "id": "engineering-engineering-cms-developer",
+      "path": "agents/engineering-engineering-cms-developer.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "security-security-architect",
+      "path": "agents/security-security-architect.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

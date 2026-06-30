@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "studio_buyer",
-      "path": "agents/studio_buyer.json",
+      "id": "paid-media-paid-media-creative-strategist",
+      "path": "agents/paid-media-paid-media-creative-strategist.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "camera_qa_auditor",
-      "path": "agents/camera_qa_auditor.json",
+      "id": "project-management-project-management-studio-producer",
+      "path": "agents/project-management-project-management-studio-producer.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "paid-media-paid-media-auditor",
+      "path": "agents/paid-media-paid-media-auditor.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

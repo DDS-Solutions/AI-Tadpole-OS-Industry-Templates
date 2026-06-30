@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "transit_law_analyst",
-      "path": "agents/transit_law_analyst.json",
+      "id": "support-support-legal-compliance-checker",
+      "path": "agents/support-support-legal-compliance-checker.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "fleet_auditor",
-      "path": "agents/fleet_auditor.json",
+      "id": "marketing-marketing-baidu-seo-specialist",
+      "path": "agents/marketing-marketing-baidu-seo-specialist.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "marketing-marketing-cross-border-ecommerce",
+      "path": "agents/marketing-marketing-cross-border-ecommerce.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

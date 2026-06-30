@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "materials_purchaser",
-      "path": "agents/materials_purchaser.json",
+      "id": "specialized-supply-chain-strategist",
+      "path": "agents/specialized-supply-chain-strategist.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "materials_qa",
-      "path": "agents/materials_qa.json",
+      "id": "engineering-engineering-backend-architect",
+      "path": "agents/engineering-engineering-backend-architect.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "engineering-engineering-cms-developer",
+      "path": "agents/engineering-engineering-cms-developer.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

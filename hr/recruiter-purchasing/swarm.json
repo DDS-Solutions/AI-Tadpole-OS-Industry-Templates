@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "hr_tools_purchaser",
-      "path": "agents/hr_tools_purchaser.json",
+      "id": "academic-academic-geographer",
+      "path": "agents/academic-academic-geographer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "agency_qa_specialist",
-      "path": "agents/agency_qa_specialist.json",
+      "id": "project-management-project-management-studio-operations",
+      "path": "agents/project-management-project-management-studio-operations.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "specialized-accounts-payable-agent",
+      "path": "agents/specialized-accounts-payable-agent.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

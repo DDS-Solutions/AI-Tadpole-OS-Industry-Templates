@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "blueprint_parser",
-      "path": "agents/blueprint_parser.json",
+      "id": "security-security-architect",
+      "path": "agents/security-security-architect.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "spec_compiler",
-      "path": "agents/spec_compiler.json",
+      "id": "security-security-compliance-auditor",
+      "path": "agents/security-security-compliance-auditor.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "testing-testing-accessibility-auditor",
+      "path": "agents/testing-testing-accessibility-auditor.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

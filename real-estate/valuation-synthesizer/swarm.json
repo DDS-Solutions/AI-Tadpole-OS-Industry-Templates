@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "market_data_harvester",
-      "path": "agents/market_data_harvester.json",
+      "id": "finance-finance-investment-researcher",
+      "path": "agents/finance-finance-investment-researcher.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "appraisal_compiler",
-      "path": "agents/appraisal_compiler.json",
+      "id": "marketing-marketing-china-market-localization-strategist",
+      "path": "agents/marketing-marketing-china-market-localization-strategist.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "engineering-engineering-ai-data-remediation-engineer",
+      "path": "agents/engineering-engineering-ai-data-remediation-engineer.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

@@ -16,10 +16,22 @@
   },
   "roster": [
     {
-      "id": "legal_eagle",
-      "path": "agents/legal_eagle.json",
+      "id": "specialized-legal-document-review",
+      "path": "agents/specialized-legal-document-review.json",
       "supervisor": null,
       "priority": "critical"
+    },
+    {
+      "id": "finance-finance-financial-analyst",
+      "path": "agents/finance-finance-financial-analyst.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "security-security-blockchain-security-auditor",
+      "path": "agents/security-security-blockchain-security-auditor.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

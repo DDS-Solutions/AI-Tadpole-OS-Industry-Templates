@@ -16,15 +16,21 @@
   },
   "roster": [
     {
-      "id": "care_coordinator",
-      "path": "agents/care_coordinator.json",
+      "id": "specialized-healthcare-customer-service",
+      "path": "agents/specialized-healthcare-customer-service.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "intake_processor",
-      "path": "agents/intake_processor.json",
-      "supervisor": "care_coordinator",
+      "id": "specialized-healthcare-marketing-compliance",
+      "path": "agents/specialized-healthcare-marketing-compliance.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "engineering-engineering-email-intelligence-engineer",
+      "path": "agents/engineering-engineering-email-intelligence-engineer.json",
+      "supervisor": null,
       "priority": "normal"
     }
   ],

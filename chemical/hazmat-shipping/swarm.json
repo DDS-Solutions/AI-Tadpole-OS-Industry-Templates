@@ -18,16 +18,22 @@
   },
   "roster": [
     {
-      "id": "hazmat_dispatcher",
-      "path": "agents/hazmat_dispatcher.json",
+      "id": "gis-gis-qa-engineer",
+      "path": "agents/gis-gis-qa-engineer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "containment_qa",
-      "path": "agents/containment_qa.json",
+      "id": "security-security-compliance-auditor",
+      "path": "agents/security-security-compliance-auditor.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "finance-finance-bookkeeper-controller",
+      "path": "agents/finance-finance-bookkeeper-controller.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

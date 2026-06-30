@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "dispatch_coordinator",
-      "path": "agents/dispatch_coordinator.json",
+      "id": "engineering-engineering-filament-optimization-specialist",
+      "path": "agents/engineering-engineering-filament-optimization-specialist.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "maintenance_tracker",
-      "path": "agents/maintenance_tracker.json",
-      "supervisor": "dispatch_coordinator",
-      "priority": "high"
+      "id": "marketing-marketing-cross-border-ecommerce",
+      "path": "agents/marketing-marketing-cross-border-ecommerce.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "marketing-marketing-short-video-editing-coach",
+      "path": "agents/marketing-marketing-short-video-editing-coach.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

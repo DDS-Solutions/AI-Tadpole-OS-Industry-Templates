@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "framework_mapper",
-      "path": "agents/framework_mapper.json",
+      "id": "security-security-compliance-auditor",
+      "path": "agents/security-security-compliance-auditor.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "crosswalk_analyst",
-      "path": "agents/crosswalk_analyst.json",
+      "id": "engineering-engineering-it-service-manager",
+      "path": "agents/engineering-engineering-it-service-manager.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "security-security-senior-secops",
+      "path": "agents/security-security-senior-secops.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

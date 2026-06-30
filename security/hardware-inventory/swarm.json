@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "hardware_purchaser",
-      "path": "agents/hardware_purchaser.json",
+      "id": "gis-gis-qa-engineer",
+      "path": "agents/gis-gis-qa-engineer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "asset_qa_auditor",
-      "path": "agents/asset_qa_auditor.json",
+      "id": "security-security-compliance-auditor",
+      "path": "agents/security-security-compliance-auditor.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "security-security-penetration-tester",
+      "path": "agents/security-security-penetration-tester.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

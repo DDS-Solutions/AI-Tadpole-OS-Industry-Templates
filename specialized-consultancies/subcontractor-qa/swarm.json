@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "resource_planner",
-      "path": "agents/resource_planner.json",
+      "id": "specialized-government-digital-presales-consultant",
+      "path": "agents/specialized-government-digital-presales-consultant.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "service_qa_auditor",
-      "path": "agents/service_qa_auditor.json",
+      "id": "specialized-hr-onboarding",
+      "path": "agents/specialized-hr-onboarding.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "specialized-recruitment-specialist",
+      "path": "agents/specialized-recruitment-specialist.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

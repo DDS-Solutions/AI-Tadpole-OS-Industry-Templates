@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "spec_parser",
-      "path": "agents/spec_parser.json",
+      "id": "engineering-engineering-backend-architect",
+      "path": "agents/engineering-engineering-backend-architect.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "docs_compiler",
-      "path": "agents/docs_compiler.json",
+      "id": "engineering-engineering-technical-writer",
+      "path": "agents/engineering-engineering-technical-writer.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "engineering-engineering-wechat-mini-program-developer",
+      "path": "agents/engineering-engineering-wechat-mini-program-developer.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

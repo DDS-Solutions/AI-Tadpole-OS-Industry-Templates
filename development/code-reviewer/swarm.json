@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "sr_architect",
-      "path": "agents/sr_architect.json",
+      "id": "security-security-appsec-engineer",
+      "path": "agents/security-security-appsec-engineer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "security_auditor",
-      "path": "agents/security_auditor.json",
-      "supervisor": "sr_architect",
-      "priority": "high"
+      "id": "engineering-engineering-backend-architect",
+      "path": "agents/engineering-engineering-backend-architect.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "engineering-engineering-software-architect",
+      "path": "agents/engineering-engineering-software-architect.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

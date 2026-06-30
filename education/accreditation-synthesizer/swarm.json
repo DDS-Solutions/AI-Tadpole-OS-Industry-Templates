@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "accreditation_law_analyst",
-      "path": "agents/accreditation_law_analyst.json",
+      "id": "finance-finance-bookkeeper-controller",
+      "path": "agents/finance-finance-bookkeeper-controller.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "curriculum_auditor",
-      "path": "agents/curriculum_auditor.json",
+      "id": "gis-gis-qa-engineer",
+      "path": "agents/gis-gis-qa-engineer.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "marketing-marketing-baidu-seo-specialist",
+      "path": "agents/marketing-marketing-baidu-seo-specialist.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

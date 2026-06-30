@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "safety_officer",
-      "path": "agents/safety_officer.json",
+      "id": "gis-gis-qa-engineer",
+      "path": "agents/gis-gis-qa-engineer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "compliance_liaison",
-      "path": "agents/compliance_liaison.json",
-      "supervisor": "safety_officer",
-      "priority": "high"
+      "id": "security-security-compliance-auditor",
+      "path": "agents/security-security-compliance-auditor.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "specialized-data-privacy-officer",
+      "path": "agents/specialized-data-privacy-officer.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

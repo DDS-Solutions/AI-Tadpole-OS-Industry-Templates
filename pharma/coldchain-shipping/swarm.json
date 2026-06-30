@@ -18,16 +18,22 @@
   },
   "roster": [
     {
-      "id": "coldchain_dispatcher",
-      "path": "agents/coldchain_dispatcher.json",
+      "id": "gis-gis-qa-engineer",
+      "path": "agents/gis-gis-qa-engineer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "gmp_qa_inspector",
-      "path": "agents/gmp_qa_inspector.json",
+      "id": "specialized-supply-chain-strategist",
+      "path": "agents/specialized-supply-chain-strategist.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "academic-academic-psychologist",
+      "path": "agents/academic-academic-psychologist.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

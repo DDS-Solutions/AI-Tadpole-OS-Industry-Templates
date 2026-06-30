@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "labor_law_indexer",
-      "path": "agents/labor_law_indexer.json",
+      "id": "specialized-hr-onboarding",
+      "path": "agents/specialized-hr-onboarding.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "handbook_updater",
-      "path": "agents/handbook_updater.json",
+      "id": "academic-academic-geographer",
+      "path": "agents/academic-academic-geographer.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "marketing-marketing-baidu-seo-specialist",
+      "path": "agents/marketing-marketing-baidu-seo-specialist.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

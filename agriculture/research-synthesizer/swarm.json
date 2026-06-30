@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "agronomy_data_collector",
-      "path": "agents/agronomy_data_collector.json",
+      "id": "design-design-ux-researcher",
+      "path": "agents/design-design-ux-researcher.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "yield_synthesizer",
-      "path": "agents/yield_synthesizer.json",
+      "id": "engineering-engineering-database-optimizer",
+      "path": "agents/engineering-engineering-database-optimizer.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "finance-finance-investment-researcher",
+      "path": "agents/finance-finance-investment-researcher.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

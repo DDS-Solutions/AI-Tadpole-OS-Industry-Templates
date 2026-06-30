@@ -18,5 +18,25 @@
     "erpsync-master"
   ],
   "required_mcps": "mcps.json",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "roster": [
+    {
+      "id": "gis-gis-bim-specialist",
+      "path": "agents/gis-gis-bim-specialist.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "engineering-engineering-feishu-integration-developer",
+      "path": "agents/engineering-engineering-feishu-integration-developer.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "engineering-engineering-solidity-smart-contract-engineer",
+      "path": "agents/engineering-engineering-solidity-smart-contract-engineer.json",
+      "supervisor": null,
+      "priority": "normal"
+    }
+  ]
 }

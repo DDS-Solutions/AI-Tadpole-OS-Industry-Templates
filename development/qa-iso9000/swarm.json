@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "release_qa",
-      "path": "agents/release_qa.json",
+      "id": "gis-gis-qa-engineer",
+      "path": "agents/gis-gis-qa-engineer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "iso_software_verifier",
-      "path": "agents/iso_software_verifier.json",
+      "id": "project-management-project-management-jira-workflow-steward",
+      "path": "agents/project-management-project-management-jira-workflow-steward.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "marketing-marketing-cross-border-ecommerce",
+      "path": "agents/marketing-marketing-cross-border-ecommerce.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

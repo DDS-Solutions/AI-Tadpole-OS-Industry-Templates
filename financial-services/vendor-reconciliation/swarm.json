@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "ledger_reconciler",
-      "path": "agents/ledger_reconciler.json",
+      "id": "finance-finance-bookkeeper-controller",
+      "path": "agents/finance-finance-bookkeeper-controller.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "purchasing_auditor",
-      "path": "agents/purchasing_auditor.json",
+      "id": "specialized-accounts-payable-agent",
+      "path": "agents/specialized-accounts-payable-agent.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "specialized-chief-financial-officer",
+      "path": "agents/specialized-chief-financial-officer.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

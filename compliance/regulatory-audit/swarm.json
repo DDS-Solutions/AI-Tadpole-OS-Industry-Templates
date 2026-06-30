@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "compliance_officer",
-      "path": "agents/compliance_officer.json",
+      "id": "security-security-compliance-auditor",
+      "path": "agents/security-security-compliance-auditor.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "security_inspector",
-      "path": "agents/security_inspector.json",
-      "supervisor": "compliance_officer",
-      "priority": "high"
+      "id": "finance-finance-bookkeeper-controller",
+      "path": "agents/finance-finance-bookkeeper-controller.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "gis-gis-qa-engineer",
+      "path": "agents/gis-gis-qa-engineer.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "protocol_indexer",
-      "path": "agents/protocol_indexer.json",
+      "id": "academic-academic-psychologist",
+      "path": "agents/academic-academic-psychologist.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "medical_synthesis",
-      "path": "agents/medical_synthesis.json",
+      "id": "marketing-marketing-baidu-seo-specialist",
+      "path": "agents/marketing-marketing-baidu-seo-specialist.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "specialized-healthcare-customer-service",
+      "path": "agents/specialized-healthcare-customer-service.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

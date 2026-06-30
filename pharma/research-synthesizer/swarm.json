@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "clinical_research_indexer",
-      "path": "agents/clinical_research_indexer.json",
+      "id": "specialized-healthcare-marketing-compliance",
+      "path": "agents/specialized-healthcare-marketing-compliance.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "fda_compliance_specialist",
-      "path": "agents/fda_compliance_specialist.json",
+      "id": "marketing-marketing-baidu-seo-specialist",
+      "path": "agents/marketing-marketing-baidu-seo-specialist.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "sales-sales-discovery-coach",
+      "path": "agents/sales-sales-discovery-coach.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

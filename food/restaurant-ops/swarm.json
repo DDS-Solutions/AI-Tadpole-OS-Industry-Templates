@@ -17,15 +17,21 @@
   },
   "roster": [
     {
-      "id": "kitchen_manager",
-      "path": "agents/kitchen_manager.json",
+      "id": "project-management-project-management-jira-workflow-steward",
+      "path": "agents/project-management-project-management-jira-workflow-steward.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "supplier_coordinator",
-      "path": "agents/supplier_coordinator.json",
-      "supervisor": "kitchen_manager",
+      "id": "specialized-chief-financial-officer",
+      "path": "agents/specialized-chief-financial-officer.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "specialized-operations-manager",
+      "path": "agents/specialized-operations-manager.json",
+      "supervisor": null,
       "priority": "normal"
     }
   ],

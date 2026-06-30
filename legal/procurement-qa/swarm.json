@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "procurement_auditor",
-      "path": "agents/procurement_auditor.json",
+      "id": "gis-gis-qa-engineer",
+      "path": "agents/gis-gis-qa-engineer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "iso_quality_verifier",
-      "path": "agents/iso_quality_verifier.json",
+      "id": "specialized-legal-document-review",
+      "path": "agents/specialized-legal-document-review.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "specialized-recruitment-specialist",
+      "path": "agents/specialized-recruitment-specialist.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

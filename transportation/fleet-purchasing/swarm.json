@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "fleet_purchasing_agent",
-      "path": "agents/fleet_purchasing_agent.json",
+      "id": "engineering-engineering-it-service-manager",
+      "path": "agents/engineering-engineering-it-service-manager.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "parts_qa_inspector",
-      "path": "agents/parts_qa_inspector.json",
+      "id": "marketing-marketing-cross-border-ecommerce",
+      "path": "agents/marketing-marketing-cross-border-ecommerce.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "marketing-marketing-private-domain-operator",
+      "path": "agents/marketing-marketing-private-domain-operator.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "license_purchaser",
-      "path": "agents/license_purchaser.json",
+      "id": "finance-finance-bookkeeper-controller",
+      "path": "agents/finance-finance-bookkeeper-controller.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "software_asset_auditor",
-      "path": "agents/software_asset_auditor.json",
+      "id": "marketing-marketing-livestream-commerce-coach",
+      "path": "agents/marketing-marketing-livestream-commerce-coach.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "project-management-project-management-jira-workflow-steward",
+      "path": "agents/project-management-project-management-jira-workflow-steward.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

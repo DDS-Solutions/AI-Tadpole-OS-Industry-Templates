@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "vendor_procurement_analyst",
-      "path": "agents/vendor_procurement_analyst.json",
+      "id": "gis-gis-qa-engineer",
+      "path": "agents/gis-gis-qa-engineer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "compliance_qa_inspector",
-      "path": "agents/compliance_qa_inspector.json",
+      "id": "security-security-compliance-auditor",
+      "path": "agents/security-security-compliance-auditor.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "specialized-operations-manager",
+      "path": "agents/specialized-operations-manager.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

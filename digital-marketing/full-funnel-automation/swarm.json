@@ -18,5 +18,25 @@
     "funnel-analyst"
   ],
   "required_mcps": "mcps.json",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "roster": [
+    {
+      "id": "marketing-marketing-aeo-foundations",
+      "path": "agents/marketing-marketing-aeo-foundations.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "marketing-marketing-ai-citation-strategist",
+      "path": "agents/marketing-marketing-ai-citation-strategist.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "marketing-marketing-bilibili-content-strategist",
+      "path": "agents/marketing-marketing-bilibili-content-strategist.json",
+      "supervisor": null,
+      "priority": "normal"
+    }
+  ]
 }

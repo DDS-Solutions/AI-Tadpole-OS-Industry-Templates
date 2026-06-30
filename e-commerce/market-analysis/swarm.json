@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "catalog_scraper",
-      "path": "agents/catalog_scraper.json",
+      "id": "product-product-trend-researcher",
+      "path": "agents/product-product-trend-researcher.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "trend_synthesizer",
-      "path": "agents/trend_synthesizer.json",
+      "id": "specialized-specialized-pricing-analyst",
+      "path": "agents/specialized-specialized-pricing-analyst.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "engineering-engineering-drupal-shopping-cart",
+      "path": "agents/engineering-engineering-drupal-shopping-cart.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

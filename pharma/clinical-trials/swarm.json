@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "protocol_auditor",
-      "path": "agents/protocol_auditor.json",
+      "id": "specialized-data-privacy-officer",
+      "path": "agents/specialized-data-privacy-officer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "safety_monitor",
-      "path": "agents/safety_monitor.json",
-      "supervisor": "protocol_auditor",
-      "priority": "critical"
+      "id": "specialized-healthcare-marketing-compliance",
+      "path": "agents/specialized-healthcare-marketing-compliance.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "specialized-hr-onboarding",
+      "path": "agents/specialized-hr-onboarding.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

@@ -18,5 +18,25 @@
     "quality-inspector"
   ],
   "required_mcps": "mcps.json",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "roster": [
+    {
+      "id": "engineering-engineering-incident-response-commander",
+      "path": "agents/engineering-engineering-incident-response-commander.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "engineering-engineering-sre",
+      "path": "agents/engineering-engineering-sre.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "academic-academic-historian",
+      "path": "agents/academic-academic-historian.json",
+      "supervisor": null,
+      "priority": "normal"
+    }
+  ]
 }

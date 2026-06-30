@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "floor_inventory_manager",
-      "path": "agents/floor_inventory_manager.json",
+      "id": "gis-gis-qa-engineer",
+      "path": "agents/gis-gis-qa-engineer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "iso_inspector",
-      "path": "agents/iso_inspector.json",
+      "id": "security-security-compliance-auditor",
+      "path": "agents/security-security-compliance-auditor.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "specialized-specialized-model-qa",
+      "path": "agents/specialized-specialized-model-qa.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

@@ -16,15 +16,21 @@
   },
   "roster": [
     {
-      "id": "curriculum_auditor",
-      "path": "agents/curriculum_auditor.json",
+      "id": "engineering-engineering-data-engineer",
+      "path": "agents/engineering-engineering-data-engineer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "progress_advisor",
-      "path": "agents/progress_advisor.json",
-      "supervisor": "curriculum_auditor",
+      "id": "finance-finance-bookkeeper-controller",
+      "path": "agents/finance-finance-bookkeeper-controller.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "gis-gis-bim-specialist",
+      "path": "agents/gis-gis-bim-specialist.json",
+      "supervisor": null,
       "priority": "normal"
     }
   ],

@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "precedent_expert",
-      "path": "agents/precedent_expert.json",
+      "id": "specialized-legal-document-review",
+      "path": "agents/specialized-legal-document-review.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "qa_compliance",
-      "path": "agents/qa_compliance.json",
+      "id": "security-security-architect",
+      "path": "agents/security-security-architect.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "specialized-healthcare-marketing-compliance",
+      "path": "agents/specialized-healthcare-marketing-compliance.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "freight_data_analyst",
-      "path": "agents/freight_data_analyst.json",
+      "id": "finance-finance-financial-analyst",
+      "path": "agents/finance-finance-financial-analyst.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "network_optimizer",
-      "path": "agents/network_optimizer.json",
+      "id": "finance-finance-fpa-analyst",
+      "path": "agents/finance-finance-fpa-analyst.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "specialized-business-strategist",
+      "path": "agents/specialized-business-strategist.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

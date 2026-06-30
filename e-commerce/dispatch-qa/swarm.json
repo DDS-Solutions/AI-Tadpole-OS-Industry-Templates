@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "logistics_clerk",
-      "path": "agents/logistics_clerk.json",
+      "id": "marketing-marketing-china-ecommerce-operator",
+      "path": "agents/marketing-marketing-china-ecommerce-operator.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "packaging_qa",
-      "path": "agents/packaging_qa.json",
+      "id": "marketing-marketing-cross-border-ecommerce",
+      "path": "agents/marketing-marketing-cross-border-ecommerce.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "marketing-marketing-livestream-commerce-coach",
+      "path": "agents/marketing-marketing-livestream-commerce-coach.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

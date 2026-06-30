@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "telemetry_manual_indexer",
-      "path": "agents/telemetry_manual_indexer.json",
+      "id": "design-design-brand-guardian",
+      "path": "agents/design-design-brand-guardian.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "emergency_synthesizer",
-      "path": "agents/emergency_synthesizer.json",
+      "id": "design-design-persona-walkthrough",
+      "path": "agents/design-design-persona-walkthrough.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "engineering-engineering-backend-architect",
+      "path": "agents/engineering-engineering-backend-architect.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

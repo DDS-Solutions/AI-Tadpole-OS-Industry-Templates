@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "seo_analyst",
-      "path": "agents/seo_analyst.json",
+      "id": "paid-media-paid-media-search-query-analyst",
+      "path": "agents/paid-media-paid-media-search-query-analyst.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "strategy_synthesizer",
-      "path": "agents/strategy_synthesizer.json",
+      "id": "marketing-marketing-baidu-seo-specialist",
+      "path": "agents/marketing-marketing-baidu-seo-specialist.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "marketing-marketing-seo-specialist",
+      "path": "agents/marketing-marketing-seo-specialist.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

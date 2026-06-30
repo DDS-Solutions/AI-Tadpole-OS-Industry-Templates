@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "alarm_monitor",
-      "path": "agents/alarm_monitor.json",
+      "id": "engineering-engineering-backend-architect",
+      "path": "agents/engineering-engineering-backend-architect.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "crew_scheduler",
-      "path": "agents/crew_scheduler.json",
-      "supervisor": "alarm_monitor",
-      "priority": "high"
+      "id": "engineering-engineering-data-engineer",
+      "path": "agents/engineering-engineering-data-engineer.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "engineering-engineering-devops-automator",
+      "path": "agents/engineering-engineering-devops-automator.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

@@ -17,15 +17,21 @@
   },
   "roster": [
     {
-      "id": "agronomist_bot",
-      "path": "agents/agronomist_bot.json",
+      "id": "finance-finance-financial-analyst",
+      "path": "agents/finance-finance-financial-analyst.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "irrigation_planner",
-      "path": "agents/irrigation_planner.json",
-      "supervisor": "agronomist_bot",
+      "id": "sales-sales-pipeline-analyst",
+      "path": "agents/sales-sales-pipeline-analyst.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "specialized-corporate-training-designer",
+      "path": "agents/specialized-corporate-training-designer.json",
+      "supervisor": null,
       "priority": "normal"
     }
   ],

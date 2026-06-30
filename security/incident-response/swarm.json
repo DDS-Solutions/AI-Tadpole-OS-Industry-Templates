@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "log_analyst",
-      "path": "agents/log_analyst.json",
+      "id": "security-security-incident-responder",
+      "path": "agents/security-security-incident-responder.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "mitigation_coordinator",
-      "path": "agents/mitigation_coordinator.json",
-      "supervisor": "log_analyst",
-      "priority": "high"
+      "id": "engineering-engineering-incident-response-commander",
+      "path": "agents/engineering-engineering-incident-response-commander.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "security-security-senior-secops",
+      "path": "agents/security-security-senior-secops.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

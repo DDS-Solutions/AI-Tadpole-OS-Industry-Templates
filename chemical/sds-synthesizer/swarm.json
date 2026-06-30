@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "sds_parser",
-      "path": "agents/sds_parser.json",
+      "id": "specialized-data-privacy-officer",
+      "path": "agents/specialized-data-privacy-officer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "osha_compliance_lead",
-      "path": "agents/osha_compliance_lead.json",
+      "id": "specialized-healthcare-marketing-compliance",
+      "path": "agents/specialized-healthcare-marketing-compliance.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "support-support-legal-compliance-checker",
+      "path": "agents/support-support-legal-compliance-checker.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

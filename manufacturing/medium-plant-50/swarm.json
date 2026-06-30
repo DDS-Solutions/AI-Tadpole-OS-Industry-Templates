@@ -18,5 +18,25 @@
     "plant-manager"
   ],
   "required_mcps": "mcps.json",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "roster": [
+    {
+      "id": "specialized-supply-chain-strategist",
+      "path": "agents/specialized-supply-chain-strategist.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "design-design-brand-guardian",
+      "path": "agents/design-design-brand-guardian.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "engineering-engineering-it-service-manager",
+      "path": "agents/engineering-engineering-it-service-manager.json",
+      "supervisor": null,
+      "priority": "normal"
+    }
+  ]
 }

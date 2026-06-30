@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "textbook_purchaser",
-      "path": "agents/textbook_purchaser.json",
+      "id": "gis-gis-qa-engineer",
+      "path": "agents/gis-gis-qa-engineer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "classroom_supplies_qa",
-      "path": "agents/classroom_supplies_qa.json",
+      "id": "specialized-specialized-model-qa",
+      "path": "agents/specialized-specialized-model-qa.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "engineering-engineering-devops-automator",
+      "path": "agents/engineering-engineering-devops-automator.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

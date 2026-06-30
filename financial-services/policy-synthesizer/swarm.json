@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "tax_law_expert",
-      "path": "agents/tax_law_expert.json",
+      "id": "finance-finance-tax-strategist",
+      "path": "agents/finance-finance-tax-strategist.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "policy_auditor",
-      "path": "agents/policy_auditor.json",
+      "id": "specialized-chief-financial-officer",
+      "path": "agents/specialized-chief-financial-officer.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "finance-finance-bookkeeper-controller",
+      "path": "agents/finance-finance-bookkeeper-controller.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

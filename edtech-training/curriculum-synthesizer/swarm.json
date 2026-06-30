@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "standards_mapper",
-      "path": "agents/standards_mapper.json",
+      "id": "specialized-corporate-training-designer",
+      "path": "agents/specialized-corporate-training-designer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "curriculum_indexer",
-      "path": "agents/curriculum_indexer.json",
+      "id": "support-support-legal-compliance-checker",
+      "path": "agents/support-support-legal-compliance-checker.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "design-design-visual-storyteller",
+      "path": "agents/design-design-visual-storyteller.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

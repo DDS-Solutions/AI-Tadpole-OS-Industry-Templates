@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "media_buyer",
-      "path": "agents/media_buyer.json",
+      "id": "gis-gis-qa-engineer",
+      "path": "agents/gis-gis-qa-engineer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "compliance_qa",
-      "path": "agents/compliance_qa.json",
+      "id": "marketing-marketing-cross-border-ecommerce",
+      "path": "agents/marketing-marketing-cross-border-ecommerce.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "paid-media-paid-media-ppc-strategist",
+      "path": "agents/paid-media-paid-media-ppc-strategist.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

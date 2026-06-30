@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "kitchen_purchaser",
-      "path": "agents/kitchen_purchaser.json",
+      "id": "gis-gis-qa-engineer",
+      "path": "agents/gis-gis-qa-engineer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "reception_qa",
-      "path": "agents/reception_qa.json",
+      "id": "specialized-specialized-model-qa",
+      "path": "agents/specialized-specialized-model-qa.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "specialized-supply-chain-strategist",
+      "path": "agents/specialized-supply-chain-strategist.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

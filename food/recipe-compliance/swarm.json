@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "regulation_parser",
-      "path": "agents/regulation_parser.json",
+      "id": "specialized-healthcare-marketing-compliance",
+      "path": "agents/specialized-healthcare-marketing-compliance.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "compliance_reporter",
-      "path": "agents/compliance_reporter.json",
+      "id": "support-support-legal-compliance-checker",
+      "path": "agents/support-support-legal-compliance-checker.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "finance-finance-bookkeeper-controller",
+      "path": "agents/finance-finance-bookkeeper-controller.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

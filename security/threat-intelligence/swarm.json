@@ -16,16 +16,22 @@
   },
   "roster": [
     {
-      "id": "threat_feed_scraper",
-      "path": "agents/threat_feed_scraper.json",
+      "id": "security-security-architect",
+      "path": "agents/security-security-architect.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "intel_briefer",
-      "path": "agents/intel_briefer.json",
+      "id": "security-security-threat-detection-engineer",
+      "path": "agents/security-security-threat-detection-engineer.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "security-security-appsec-engineer",
+      "path": "agents/security-security-appsec-engineer.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",

@@ -17,16 +17,22 @@
   },
   "roster": [
     {
-      "id": "facility_buyer",
-      "path": "agents/facility_buyer.json",
+      "id": "gis-gis-qa-engineer",
+      "path": "agents/gis-gis-qa-engineer.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "contractor_qa",
-      "path": "agents/contractor_qa.json",
+      "id": "engineering-engineering-it-service-manager",
+      "path": "agents/engineering-engineering-it-service-manager.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
+    },
+    {
+      "id": "marketing-marketing-livestream-commerce-coach",
+      "path": "agents/marketing-marketing-livestream-commerce-coach.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
