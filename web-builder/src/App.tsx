@@ -562,16 +562,17 @@ export default function App() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
+            data-tooltip="Phase 1: Configures your organization's metadata, NAICS/SIC industry code classification, and target directory paths."
             className="w-full sovereign-panel p-8"
           >
             <div className="flex items-center gap-2 mb-6 text-cyber-green">
               <Globe className="w-5 h-5" />
-              <h2 className="font-bold text-lg">Phase 1: The Pulse</h2>
+              <h2 className="font-bold text-lg" data-tooltip="The baseline settings of the swarm identity and directory path settings.">Phase 1: The Pulse</h2>
             </div>
             
             <div className="space-y-6">
               <div>
-                <label className="block text-xs font-mono uppercase text-zinc-500 mb-2">Company / Swarm Name</label>
+                <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="Specify the primary organization or business name associated with this multi-agent swarm blueprint.">Company / Swarm Name</label>
                 <input 
                   className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none transition-colors"
                   placeholder="e.g. My Enterprise Swarm"
@@ -579,11 +580,11 @@ export default function App() {
                   onChange={e => setCompanyInfo({...companyInfo, name: e.target.value})}
                 />
               </div>
-
+ 
               {isCustomIndustry && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-zinc-950 border border-zinc-800 rounded-lg">
                   <div>
-                    <label className="block text-xs font-mono uppercase text-zinc-500 mb-2">Custom Industry Name</label>
+                    <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="Set the custom industry sector label if not matching the pre-defined catalog options.">Custom Industry Name</label>
                     <input 
                       className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none transition-colors"
                       placeholder="e.g. Biotech Research"
@@ -601,7 +602,7 @@ export default function App() {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-mono uppercase text-zinc-500 mb-2">Custom Target Directory Path</label>
+                    <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="The relative directory name that will store agent configuration profiles inside the repository.">Custom Target Directory Path</label>
                     <input 
                       className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none transition-colors"
                       placeholder="e.g. biotech"
@@ -620,7 +621,7 @@ export default function App() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-xs font-mono uppercase text-zinc-500 mb-2">Industry / Sector</label>
+                  <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="Choose from pre-defined industry templates to populate standard playbook steps and agent configurations.">Industry / Sector</label>
                   <select 
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none"
                     value={isCustomIndustry ? "CUSTOM" : companyInfo.industry}
@@ -654,7 +655,7 @@ export default function App() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-mono uppercase text-zinc-500 mb-2">NAICS / SIC Code</label>
+                  <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="Standardized industry registry code (North American Industry Classification System) for template matching.">NAICS / SIC Code</label>
                   {(() => {
                     const codes = INDUSTRY_CODES_MAP[companyInfo.industry] || [];
                     const isCodeCustom = companyInfo.industryCode !== '' && !codes.some(c => c.code === companyInfo.industryCode);
@@ -709,14 +710,14 @@ export default function App() {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                   <label className="block text-xs font-mono uppercase text-zinc-500 mb-2">Target Repo Path</label>
+                   <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="The exact relative folder destination inside the cloned repository context.">Target Repo Path</label>
                    <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-zinc-400 flex items-center gap-2">
                      <Shield className="w-3 h-3 text-cyber-green" />
                      {companyInfo.industryPath || 'select-industry'}/
                    </div>
                 </div>
                 <div>
-                  <label className="block text-xs font-mono uppercase text-zinc-500 mb-2">Company Size</label>
+                  <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="Determines concurrent agent execution quotas and performance thresholds.">Company Size</label>
                   <select 
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none"
                     value={companyInfo.size}
@@ -730,7 +731,7 @@ export default function App() {
               </div>
               
               <div>
-                <label className="block text-xs font-mono uppercase text-zinc-500 mb-2">What does your company do?</label>
+                <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="Enter a paragraph explaining your core services, tools, or target workflows to calculate recommended agent catalog profiles.">What does your company do?</label>
                 <div className="relative">
                   <textarea 
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 min-h-[100px] focus:border-cyber-green outline-none"
@@ -748,7 +749,7 @@ export default function App() {
               </div>
 
               <div>
-                <label className="block text-xs font-mono uppercase text-zinc-500 mb-2">Mission Objective</label>
+                <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="The core mandate or strategic goal defining the swarm's overarching purpose.">Mission Objective</label>
                 <textarea 
                   className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 min-h-[60px] focus:border-cyber-green outline-none"
                   placeholder="The core goal of this swarm..."
@@ -776,12 +777,13 @@ export default function App() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
+            data-tooltip="Phase 2 Roster Board: Manage the team of AI agents, customize system instructions, and add specialists from the library."
             className="w-full sovereign-panel p-8"
           >
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
               <div className="flex items-center gap-2 text-cyber-green">
                 <Users className="w-5 h-5" />
-                <h2 className="font-bold text-lg">Phase 2: The Roster</h2>
+                <h2 className="font-bold text-lg" data-tooltip="Configure custom or catalog-vetted AI agent profiles.">Phase 2: The Roster</h2>
               </div>
               <div className="flex flex-wrap gap-3 w-full sm:w-auto">
                 <button 
@@ -803,6 +805,7 @@ export default function App() {
               {agents.map(agent => (
                 <div 
                   key={agent.id} 
+                  data-tooltip="Agent Roster Card: Click the sliders icon to customize identity, emoji, color, and system instructions."
                   className="bg-zinc-950/50 border rounded-xl p-5 relative group sovereign-transition flex flex-col justify-between min-h-[150px] overflow-hidden"
                   style={{ 
                     borderColor: agent.color ? `color-mix(in srgb, ${agent.color} 30%, var(--color-zinc-800))` : 'var(--color-zinc-800)'
@@ -849,19 +852,19 @@ export default function App() {
                     </div>
                     
                     <div>
-                      <span className="mono-label text-[9px] block mb-0.5">Role / Expertise</span>
+                      <span className="mono-label text-[9px] block mb-0.5 cursor-help" data-tooltip="The specific focus area or cognitive slot assigned to this agent in the swarm.">Role / Expertise</span>
                       <div className="text-xs text-neural-pulse font-medium line-clamp-1">{agent.role || 'Not specified'}</div>
                     </div>
 
                     {agent.description && (
-                      <div className="text-[10px] text-zinc-500 line-clamp-2 italic leading-relaxed">{agent.description}</div>
+                      <div className="text-[10px] text-zinc-550 line-clamp-2 italic leading-relaxed">{agent.description}</div>
                     )}
                   </div>
                   
                   {/* Footer showing Model details */}
                   <div className="mt-4 pt-2.5 border-t border-zinc-900/60 pl-2 flex justify-between items-center text-[9px] text-zinc-500 font-mono">
-                    <span>Model: {agent.model || 'gemini-1.5-flash'}</span>
-                    <span className="text-[9px] text-zinc-400 bg-zinc-900 px-1.5 py-0.5 rounded border border-zinc-800">
+                    <span className="cursor-help" data-tooltip="The LLM configuration pipeline assigned to run this agent.">Model: {agent.model || 'gemini-1.5-flash'}</span>
+                    <span className="text-[9px] text-zinc-400 bg-zinc-900 px-1.5 py-0.5 rounded border border-zinc-800 cursor-help" data-tooltip="Current character count of this agent's system prompt instructions.">
                       Prompt: {agent.prompt ? `${agent.prompt.length} chars` : 'Empty'}
                     </span>
                   </div>
@@ -893,12 +896,13 @@ export default function App() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
+            data-tooltip="Phase 3 Playbooks Setup: Define task execution procedures and ingest institutional knowledge structures."
             className="w-full sovereign-panel p-8"
           >
             <div className="flex justify-between items-center mb-8">
               <div className="flex items-center gap-2 text-cyber-green">
                 <Workflow className="w-5 h-5" />
-                <h2 className="font-bold text-lg">Phase 3: The Playbook</h2>
+                <h2 className="font-bold text-lg" data-tooltip="Set standard operating procedures and connect private Confluence/wiki documents.">Phase 3: The Playbook</h2>
               </div>
               <button 
                 onClick={addWorkflow}
@@ -910,7 +914,7 @@ export default function App() {
 
             <div className="space-y-4">
               {workflows.map(workflow => (
-                <div key={workflow.id} className="bg-zinc-950/50 border border-zinc-800 p-6 rounded-xl relative group">
+                <div key={workflow.id} data-tooltip="Playbook SOP Card: Configures task guidelines or institutional knowledge mappings." className="bg-zinc-950/50 border border-zinc-800 p-6 rounded-xl relative group">
                   <button 
                     onClick={() => removeWorkflow(workflow.id)}
                     className="absolute top-6 right-6 text-zinc-600 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
@@ -957,13 +961,13 @@ export default function App() {
                           }}
                           className="rounded border-zinc-850 bg-zinc-950 text-cyber-green focus:ring-0 focus:ring-offset-0"
                         />
-                        <span>Index into Institutional Knowledge Store (OKF/IKS)</span>
+                        <span data-tooltip="Ingest this markdown procedure directly into your agents' vector memory database upon loading.">Index into Institutional Knowledge Store (OKF/IKS)</span>
                       </label>
 
                       {workflow.isOkfPlaybook && (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-6 border-l border-zinc-800">
                           <div>
-                            <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1">External SOP / Confluence URL</label>
+                            <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1 cursor-help" data-tooltip="Link to external raw source material, Confluence wiki pages, or Google Docs.">External SOP / Confluence URL</label>
                             <input 
                               className="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-xs focus:border-cyber-green outline-none text-zinc-300"
                               placeholder="e.g. https://confluence.company.com/pages/..."
@@ -976,7 +980,7 @@ export default function App() {
                             />
                           </div>
                           <div>
-                            <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1">Topic</label>
+                            <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1 cursor-help" data-tooltip="Primary focus category (e.g. legal, compliance, operations) for sorting.">Topic</label>
                             <input 
                               className="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-xs focus:border-cyber-green outline-none text-zinc-300"
                               placeholder="e.g. marketing, compliance"
@@ -989,7 +993,7 @@ export default function App() {
                             />
                           </div>
                           <div>
-                            <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1">Concept Type</label>
+                            <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1 cursor-help" data-tooltip="Structural classification category (e.g. playbook, guideline, policy).">Concept Type</label>
                             <input 
                               className="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-xs focus:border-cyber-green outline-none text-zinc-300"
                               placeholder="e.g. playbook, guideline"
@@ -1002,7 +1006,7 @@ export default function App() {
                             />
                           </div>
                           <div>
-                            <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1">Tags (comma-separated)</label>
+                            <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1 cursor-help" data-tooltip="Keywords matching agent filters to trigger memory retrieval.">Tags (comma-separated)</label>
                             <input 
                               className="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-xs focus:border-cyber-green outline-none text-zinc-300"
                               placeholder="e.g. seo, advertising"
@@ -1039,18 +1043,19 @@ export default function App() {
             key="step4"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
+            data-tooltip="Phase 4 Forge Workspace: Inspect the compilation manifest, run security audits, and generate installation ZIP packages."
             className="w-full sovereign-panel p-12 text-center"
           >
             <div className="bg-cyber-green/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-cyber-green/30">
               <Cpu className="text-cyber-green w-8 h-8" />
             </div>
-            <h2 className="text-2xl font-bold mb-2">Ready for Intelligence Manifestation</h2>
+            <h2 className="text-2xl font-bold mb-2" data-tooltip="The swarm configuration is ready to build and compile.">Ready for Intelligence Manifestation</h2>
             <p className="text-zinc-500 max-w-md mx-auto mb-12">
               Your swarm configuration for <span className="text-white font-bold">{companyInfo.name}</span> is complete. 
               The package includes {agents.length} agents and {workflows.length} workflows.
             </p>
 
-            <div className="max-w-sm mx-auto p-4 bg-zinc-950 border border-zinc-800 rounded-xl text-left font-mono text-xs text-zinc-500 mb-12">
+            <div data-tooltip="Archive Manifest: List of configuration maps, agent prompt profiles, and SOP documents structured in the build." className="max-w-sm mx-auto p-4 bg-zinc-950 border border-zinc-800 rounded-xl text-left font-mono text-xs text-zinc-500 mb-12">
               <div className="mb-2">Manifest:</div>
               <ul className="space-y-1">
                 <li className="flex items-center gap-2"><div className="w-1 h-1 bg-cyber-green rounded-full" /> swarm.json</li>
@@ -1076,11 +1081,11 @@ export default function App() {
               const isSecure = allWarnings.length === 0;
 
               return (
-                <div className="max-w-md mx-auto mb-12 bg-zinc-950/80 border rounded-xl overflow-hidden text-left sovereign-transition" style={{ borderColor: isSecure ? '#10B981' : '#F59E0B' }}>
+                <div data-tooltip="Sovereign Shield Telemetry: Automatically scans prompt definitions to assess capability requests and approval boundaries." className="max-w-md mx-auto mb-12 bg-zinc-950/80 border rounded-xl overflow-hidden text-left sovereign-transition" style={{ borderColor: isSecure ? '#10B981' : '#F59E0B' }}>
                   <div className={`p-4 flex items-center gap-3 border-b ${isSecure ? 'bg-emerald-950/20 border-emerald-900/40' : 'bg-amber-950/20 border-amber-900/40'}`} style={{ borderColor: isSecure ? 'color-mix(in srgb, #10B981 30%, transparent)' : 'color-mix(in srgb, #F59E0B 30%, transparent)' }}>
                     <Shield className={`w-5 h-5 ${isSecure ? 'text-emerald-500' : 'text-amber-500'}`} />
                     <div>
-                      <h4 className="font-bold text-xs text-white uppercase tracking-wider">Sapphire Shield Security Audit</h4>
+                      <h4 className="font-bold text-xs text-white uppercase tracking-wider cursor-help" data-tooltip="Zero-Trust static analysis scanner checking for raw execution permissions.">Sapphire Shield Security Audit</h4>
                       <p className="text-[10px] text-zinc-550 font-mono mt-0.5">
                         {isSecure ? 'Sovereign Telemetry Level: Zero Privileges' : 'Active Warning: Approval Required'}
                       </p>
@@ -1138,11 +1143,11 @@ export default function App() {
 
       {/* Community Templates Library Card */}
       <section className="w-full mt-24 mb-12">
-        <div className="sovereign-panel p-6 flex flex-col min-h-[600px] border-zinc-800/50">
+        <div data-tooltip="Templates Registry: Public database of pre-packaged industrial multi-agent swarms." className="sovereign-panel p-6 flex flex-col min-h-[600px] border-zinc-800/50">
           {/* Card Header */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center pb-6 border-b border-zinc-800 gap-4 mb-6" style={{ borderColor: 'color-mix(in srgb, var(--color-border) 40%, transparent)' }}>
             <div>
-              <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+              <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2" data-tooltip="Browse community-contributed templates configured for various commercial business sectors.">
                 <Cpu className="w-5 h-5 text-cyber-green" /> Community Templates Library
               </h2>
               <p className="text-zinc-500 text-xs mt-1">Explore, edit, and select pre-configured agent swarms in the ecosystem</p>
@@ -1155,6 +1160,7 @@ export default function App() {
                 placeholder="Search library..."
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
+                data-tooltip="Search filters templates by business name, tags, and sector categories."
               />
             </div>
           </div>
@@ -1172,6 +1178,7 @@ export default function App() {
                     <div
                       key={template.id}
                       onClick={() => handleTemplateClick(template)}
+                      data-tooltip="Click to inspect this swarm template's roster and playbook SOP steps."
                       className={`p-4 rounded-xl border sovereign-transition cursor-pointer text-left ${
                         isSelected 
                           ? 'bg-zinc-900 border-cyber-green/50 text-white' 
@@ -1372,7 +1379,7 @@ export default function App() {
               <div className="flex flex-1 overflow-hidden">
                 {/* Left Panel: Departments */}
                 <div className="w-64 border-r border-zinc-855 overflow-y-auto custom-scrollbar bg-zinc-950/20 p-4 space-y-1" style={{ borderColor: 'color-mix(in srgb, var(--color-zinc-800) 40%, transparent)' }}>
-                  <div className="mono-label text-[9px] mb-2 px-2">Departments</div>
+                  <div className="mono-label text-[9px] mb-2 px-2 cursor-help" data-tooltip="Primary execution categories sorting our roster agent library.">Departments</div>
                   {departments.map(dept => {
                     const count = dept.id === 'all' 
                       ? catalog.length 
@@ -1426,7 +1433,7 @@ export default function App() {
 
                   return (
                     <>
-                      <div className="flex-1 overflow-y-auto custom-scrollbar p-6 grid grid-cols-1 sm:grid-cols-2 gap-3 bg-zinc-950/10 content-start">
+                      <div className="flex-1 overflow-y-auto custom-scrollbar green-scrollbar p-6 grid grid-cols-1 sm:grid-cols-2 gap-3 bg-zinc-950/10 content-start">
                         {isCatalogLoading ? (
                           <div className="col-span-full flex flex-col items-center justify-center py-20 text-zinc-500 font-mono text-xs">
                             <div className="w-5 h-5 border-2 border-zinc-805 border-t-cyber-green rounded-full animate-spin mb-3" />
