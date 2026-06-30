@@ -571,12 +571,22 @@ export default function App() {
             <p className="text-xs text-zinc-500 font-mono uppercase tracking-widest">Tadpole OS Engine</p>
           </div>
         </div>
-        <div className="flex gap-2">
-          {[1, 2, 3, 4].map(s => (
-            <div 
-              key={s} 
-              className={`w-8 h-1 rounded-full transition-colors ${s <= step ? 'bg-cyber-green' : 'bg-zinc-800'}`} 
-            />
+        <div className="flex gap-3">
+          {[
+            { id: 1, label: 'Pulse' },
+            { id: 2, label: 'Roster' },
+            { id: 3, label: 'Playbooks' },
+            { id: 4, label: 'Connectors' },
+            { id: 5, label: 'Forge' }
+          ].map(s => (
+            <div key={s.id} className="flex flex-col items-center gap-1.5">
+              <span className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${s.id <= step ? 'text-cyber-green' : 'text-zinc-600'}`}>
+                {s.label}
+              </span>
+              <div 
+                className={`w-12 h-1 rounded-full transition-colors ${s.id <= step ? 'bg-cyber-green shadow-[0_0_8px_rgba(34,197,94,0.5)]' : 'bg-zinc-800'}`} 
+              />
+            </div>
           ))}
         </div>
       </header>

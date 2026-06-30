@@ -1,0 +1,12 @@
+{
+  "connectors": [
+    {
+      "id": "generic-crm",
+      "name": "Generic CRM Connector",
+      "description": "A mock CRM Data Connector for Digital Twin testing.",
+      "category": "crm",
+      "path": "mcp-blueprints/generic-crm",
+      "version": "1.0.0"
+    }
+  ]
+}
