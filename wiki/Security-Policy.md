@@ -41,3 +41,20 @@ Incoming Template ---> Git Clone ---> Run skillspector on scripts
                                   |                     |
                            Copy to execution      Abort Installation
 ```
+
+---
+
+## 🔍 Visual Builder Telemetry Audit (Swarm Architect)
+
+To ensure zero-trust compliance prior to deployment, the **Swarm Architect Web Builder** runs a static security audit panel (**Sapphire Shield Security Audit**) on Step 4 (The Forge) before zipping the archive.
+
+### Prompt Scan Targets
+The auditing engine parses system prompts for capability requests matching these Tadpole OS boundaries:
+*   **`shell:execute` (Red Severity)**: Triggered by keywords like `execute`, `shell`, `bash`, `powershell`, `cmd.exe`, `terminal`, `command line`, `system call`.
+*   **`budget:spend` (Amber Severity)**: Triggered by keywords like `spend`, `budget`, `purchase`, `cost`, `payment`, `pay`, `charge api`, `financial authorization`.
+*   **`system:write` (Amber Severity)**: Triggered by keywords like `delete`, `wipe`, `remove file`, `overwrite`, `format disk`, `destroy`.
+
+### Builder Enforcement
+*   **Compliance Indicator**: If no warnings are detected, the builder displays: `🟢 Sovereign Shield Status: Zero Privileges. Runs directly without manual intervention.`
+*   **Override Warnings**: If matching keywords are found, the builder warns that: `⚠️ Overlord (Entity 0) Authorization will be required upon Swarm installation` and lists which specific agents requested the capabilities.
+

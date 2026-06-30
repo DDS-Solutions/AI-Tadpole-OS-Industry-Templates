@@ -45,10 +45,22 @@ cargo check --manifest-path server-rs/Cargo.toml
 cargo test --manifest-path server-rs/Cargo.toml
 ```
 
-### Frontend Checks
-Run the React/TypeScript vitest suite (which contains full template catalog mock tests):
+### Frontend Checks & Web Builder Development
+The visual **Swarm Architect Web Builder** is located inside `/web-builder`. To run the frontend locally, execute:
+
 ```bash
+# Navigate to the workspace and install packages
+cd web-builder
+npm install
+
+# Run Vite dev server locally
+npm run dev
+
+# Run Vitest unit tests (validates prompt scanner and search highlighting logic)
 npm run test
+
+# Build production assets
+npm run build
 ```
 
 ### Static Analysis & Graph Queries
