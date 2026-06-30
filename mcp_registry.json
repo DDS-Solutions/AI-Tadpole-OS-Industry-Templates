@@ -19,6 +19,15 @@
       "author": "Tadpole OS Core"
     },
     {
+      "id": "mcp-hardware-edge",
+      "name": "Hardware & Edge Device Blueprint",
+      "description": "Template MCP server for connecting to local serial interfaces (RS-232/USB scales) and Modbus TCP devices (thermal/pressure sensors).",
+      "category": "IoT & Edge",
+      "path": "mcp-blueprints/hardware-edge",
+      "version": "1.0.0",
+      "author": "Tadpole OS Core"
+    },
+    {
       "id": "mcp-local-log-scanner",
       "name": "Local Log Scanner & File Parser",
       "description": "Parses structured logs and local flat files for continuous state observation.",
