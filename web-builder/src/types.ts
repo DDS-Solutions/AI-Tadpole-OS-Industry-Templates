@@ -39,8 +39,8 @@ export interface CatalogAgent {
   prompt: string;
   description: string;
   vibe: string;
-  division: string;
-  divisionLabel: string;
+  department: string;
+  departmentLabel: string;
   color: string;
   emoji: string;
 }

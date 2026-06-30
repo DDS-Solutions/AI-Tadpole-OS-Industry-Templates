@@ -60,14 +60,14 @@ export default function App() {
   const [isCatalogLoading, setIsCatalogLoading] = useState(false);
   const [isCatalogModalOpen, setIsCatalogModalOpen] = useState(false);
   const [catalogSearch, setCatalogSearch] = useState('');
-  const [selectedCatalogDiv, setSelectedCatalogDiv] = useState('all');
+  const [selectedCatalogDept, setSelectedCatalogDept] = useState('all');
   const [selectedCatalogAgentId, setSelectedCatalogAgentId] = useState<string | null>(null);
 
   const [isEditorModalOpen, setIsEditorModalOpen] = useState(false);
   const [editingAgent, setEditingAgent] = useState<Agent | null>(null);
 
-  const divisions = [
-    { id: 'all', label: 'All Divisions', color: '#71717a' },
+  const departments = [
+    { id: 'all', label: 'All Departments', color: '#71717a' },
     { id: 'academic', label: 'Academic', color: '#8B5CF6' },
     { id: 'design', label: 'Design', color: '#EC4899' },
     { id: 'engineering', label: 'Engineering', color: '#3B82F6' },
@@ -224,7 +224,7 @@ export default function App() {
     // Score each catalog agent based on word matches
     const scoredAgents = catalog.map(agent => {
       let score = 0;
-      const searchSpace = `${agent.name} ${agent.vibe} ${agent.description} ${agent.divisionLabel}`.toLowerCase();
+      const searchSpace = `${agent.name} ${agent.vibe} ${agent.description} ${agent.departmentLabel}`.toLowerCase();
       
       tokens.forEach(token => {
         if (searchSpace.includes(token)) {
@@ -1351,7 +1351,7 @@ export default function App() {
                   <input
                     type="text"
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-lg py-2 pl-10 pr-4 text-xs focus:border-cyber-green outline-none text-zinc-300"
-                    placeholder="Search by role, capability, or division..."
+                    placeholder="Search by role, capability, or department..."
                     value={catalogSearch}
                     onChange={e => setCatalogSearch(e.target.value)}
                   />
@@ -1368,21 +1368,21 @@ export default function App() {
 
               {/* Body */}
               <div className="flex flex-1 overflow-hidden">
-                {/* Left Panel: Divisions */}
+                {/* Left Panel: Departments */}
                 <div className="w-64 border-r border-zinc-855 overflow-y-auto custom-scrollbar bg-zinc-950/20 p-4 space-y-1" style={{ borderColor: 'color-mix(in srgb, var(--color-zinc-800) 40%, transparent)' }}>
-                  <div className="mono-label text-[9px] mb-2 px-2">Divisions</div>
-                  {divisions.map(div => {
-                    const count = div.id === 'all' 
+                  <div className="mono-label text-[9px] mb-2 px-2">Departments</div>
+                  {departments.map(dept => {
+                    const count = dept.id === 'all' 
                       ? catalog.length 
-                      : catalog.filter(c => c.division === div.id).length;
+                      : catalog.filter(c => c.department === dept.id).length;
                     
-                    const isSelected = selectedCatalogDiv === div.id;
+                    const isSelected = selectedCatalogDept === dept.id;
                     
                     return (
                       <button
-                        key={div.id}
+                        key={dept.id}
                         onClick={() => {
-                          setSelectedCatalogDiv(div.id);
+                          setSelectedCatalogDept(dept.id);
                           setSelectedCatalogAgentId(null);
                         }}
                         className={`w-full text-left px-3 py-2 rounded-lg text-xs flex justify-between items-center transition-all cursor-pointer border ${
@@ -1394,9 +1394,9 @@ export default function App() {
                         <div className="flex items-center gap-2">
                           <span 
                             className="w-1.5 h-1.5 rounded-full" 
-                            style={{ backgroundColor: div.color }}
+                            style={{ backgroundColor: dept.color }}
                           />
-                          <span>{div.label}</span>
+                          <span>{dept.label}</span>
                         </div>
                         <span className="text-[9px] font-mono text-zinc-500 bg-zinc-950 px-1.5 py-0.25 rounded border border-zinc-800">
                           {count}
@@ -1409,14 +1409,14 @@ export default function App() {
                 {/* Middle Panel: Grid of filtered agents */}
                 {(() => {
                   const filtered = catalog.filter(agent => {
-                    const matchesDiv = selectedCatalogDiv === 'all' || agent.division === selectedCatalogDiv;
+                    const matchesDept = selectedCatalogDept === 'all' || agent.department === selectedCatalogDept;
                     const matchesSearch = !catalogSearch || 
                       agent.name.toLowerCase().includes(catalogSearch.toLowerCase()) ||
                       agent.description.toLowerCase().includes(catalogSearch.toLowerCase()) ||
                       agent.vibe.toLowerCase().includes(catalogSearch.toLowerCase()) ||
-                      agent.divisionLabel.toLowerCase().includes(catalogSearch.toLowerCase()) ||
+                      agent.departmentLabel.toLowerCase().includes(catalogSearch.toLowerCase()) ||
                       agent.prompt.toLowerCase().includes(catalogSearch.toLowerCase());
-                    return matchesDiv && matchesSearch;
+                    return matchesDept && matchesSearch;
                   });
 
                   const selectedAgent = catalog.find(c => c.id === selectedCatalogAgentId) || filtered[0];
@@ -1462,7 +1462,7 @@ export default function App() {
                                           backgroundColor: `color-mix(in srgb, ${agent.color} 5%, transparent)`
                                         }}
                                       >
-                                        {agent.divisionLabel}
+                                        {agent.departmentLabel}
                                       </span>
                                     </div>
                                     <p className="text-[10px] text-zinc-500 line-clamp-2 leading-relaxed">
@@ -1498,7 +1498,7 @@ export default function App() {
                                       backgroundColor: `color-mix(in srgb, ${selectedAgent.color} 5%, transparent)`
                                     }}
                                   >
-                                    {selectedAgent.divisionLabel}
+                                    {selectedAgent.departmentLabel}
                                   </span>
                                 </div>
                               </div>
