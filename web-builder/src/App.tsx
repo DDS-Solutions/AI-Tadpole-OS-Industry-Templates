@@ -67,23 +67,23 @@ export default function App() {
   const [editingAgent, setEditingAgent] = useState<Agent | null>(null);
 
   const departments = [
-    { id: 'all', label: 'All Departments', color: '#71717a' },
-    { id: 'academic', label: 'Academic', color: '#8B5CF6' },
-    { id: 'design', label: 'Design', color: '#EC4899' },
-    { id: 'engineering', label: 'Engineering', color: '#3B82F6' },
-    { id: 'finance', label: 'Finance', color: '#22C55E' },
-    { id: 'game-development', label: 'Game Development', color: '#A855F7' },
-    { id: 'gis', label: 'GIS', color: '#14B8A6' },
-    { id: 'marketing', label: 'Marketing', color: '#F97316' },
-    { id: 'paid-media', label: 'Paid Media', color: '#EAB308' },
-    { id: 'product', label: 'Product', color: '#D946EF' },
-    { id: 'project-management', label: 'Project Management', color: '#0EA5E9' },
-    { id: 'sales', label: 'Sales', color: '#10B981' },
-    { id: 'security', label: 'Security', color: '#EF4444' },
-    { id: 'spatial-computing', label: 'Spatial Computing', color: '#06B6D4' },
-    { id: 'specialized', label: 'Specialized', color: '#6366F1' },
-    { id: 'support', label: 'Support', color: '#84CC16' },
-    { id: 'testing', label: 'Testing', color: '#F59E0B' }
+    { id: 'all', label: 'All Departments', color: '#71717a', desc: 'Browse the complete index of sovereign agent personas.' },
+    { id: 'academic', label: 'Academic', color: '#8B5CF6', desc: 'Theoretical research, scientific computation, and deep knowledge analysis.' },
+    { id: 'design', label: 'Design', color: '#EC4899', desc: 'UI/UX, visual assets, creative generation, and frontend themes.' },
+    { id: 'engineering', label: 'Engineering', color: '#3B82F6', desc: 'Backend systems, database optimization, CI/CD, and software engineering.' },
+    { id: 'finance', label: 'Finance', color: '#22C55E', desc: 'Budget analysis, transactional auditing, resource projection, and ledger validation.' },
+    { id: 'game-development', label: 'Game Development', color: '#A855F7', desc: 'Physics engine, gameplay loops, asset pipeline, and logic scripting.' },
+    { id: 'gis', label: 'GIS', color: '#14B8A6', desc: 'Geospatial queries, mapping coordinates, coordinate transformation, and terrain analysis.' },
+    { id: 'marketing', label: 'Marketing', color: '#F97316', desc: 'Market positioning, campaign logic, copy creation, and funnel mapping.' },
+    { id: 'paid-media', label: 'Paid Media', color: '#EAB308', desc: 'Ad bidding simulation, conversion tracing, and cost-benefit analysis.' },
+    { id: 'product', label: 'Product', color: '#D946EF', desc: 'Product roadmap, user story mapping, and capability spec definitions.' },
+    { id: 'project-management', label: 'Project Management', color: '#0EA5E9', desc: 'Sprint scheduling, task matching, and milestone resolution.' },
+    { id: 'sales', label: 'Sales', color: '#10B981', desc: 'Lead scoring, conversion outreach simulation, and pitch refinement.' },
+    { id: 'security', label: 'Security', color: '#EF4444', desc: 'Prompt injection mitigation, vulnerability scanning, and permission gateways.' },
+    { id: 'spatial-computing', label: 'Spatial Computing', color: '#06B6D4', desc: 'AR/VR tracking systems, 3D math, and sensory coordinate translation.' },
+    { id: 'specialized', label: 'Specialized', color: '#6366F1', desc: 'Domain-expert roles tailored for atypical workflows.' },
+    { id: 'support', label: 'Support', color: '#84CC16', desc: 'Troubleshooting guides, ticket analysis, and user guide generation.' },
+    { id: 'testing', label: 'Testing', color: '#F59E0B', desc: 'Unit tests compilation, boundary validation, and QA logic audits.' }
   ];
 
   useEffect(() => {
@@ -1319,14 +1319,14 @@ export default function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/85 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-0 bg-zinc-950/95 backdrop-blur-md"
           >
             <motion.div
-              initial={{ scale: 0.95, y: 15 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.95, y: 15 }}
-              transition={{ type: "spring", stiffness: 350, damping: 25 }}
-              className="sovereign-panel w-full max-w-5xl h-[85vh] flex flex-col bg-zinc-900 border-zinc-800 p-0 overflow-hidden"
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ type: "tween", duration: 0.2 }}
+              className="w-full h-full flex flex-col bg-zinc-950 border-none p-0 overflow-hidden"
             >
               {/* Header */}
               <div className="flex justify-between items-center px-6 py-4 border-b border-zinc-850" style={{ borderColor: 'color-mix(in srgb, var(--color-zinc-800) 40%, transparent)' }}>
@@ -1334,10 +1334,11 @@ export default function App() {
                   <h3 className="text-lg font-bold text-white flex items-center gap-2">
                     <Sparkles className="w-5 h-5 text-cyber-green" /> Browse Agent Catalog
                   </h3>
-                  <p className="text-xs text-zinc-500 mt-0.5">Select a pre-configured expert persona to add to your Swarm Roster.</p>
+                  <p className="text-xs text-zinc-500 mt-0.5">Select a pre-configured expert department persona to add to your Swarm Roster.</p>
                 </div>
                 <button
                   onClick={() => setIsCatalogModalOpen(false)}
+                  data-tooltip="Exit Catalog Workspace"
                   className="p-1.5 text-zinc-500 hover:text-white rounded hover:bg-zinc-800 transition-all cursor-pointer"
                 >
                   <X className="w-5 h-5" />
@@ -1350,6 +1351,7 @@ export default function App() {
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
                   <input
                     type="text"
+                    data-tooltip="Search targets agent name, vibe, description, and system prompt text"
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-lg py-2 pl-10 pr-4 text-xs focus:border-cyber-green outline-none text-zinc-300"
                     placeholder="Search by role, capability, or department..."
                     value={catalogSearch}
@@ -1385,7 +1387,8 @@ export default function App() {
                           setSelectedCatalogDept(dept.id);
                           setSelectedCatalogAgentId(null);
                         }}
-                        className={`w-full text-left px-3 py-2 rounded-lg text-xs flex justify-between items-center transition-all cursor-pointer border ${
+                        data-tooltip={dept.desc}
+                        className={`tooltip-right w-full text-left px-3 py-2 rounded-lg text-xs flex justify-between items-center transition-all cursor-pointer border ${
                           isSelected
                             ? 'bg-zinc-800 text-white border-zinc-700 font-bold'
                             : 'text-zinc-400 hover:bg-zinc-900/50 hover:text-zinc-200 border-transparent'
@@ -1437,6 +1440,7 @@ export default function App() {
                                 <div
                                   key={agent.id}
                                   onClick={() => setSelectedCatalogAgentId(agent.id)}
+                                  data-tooltip="Click to preview agent details and prompt"
                                   className={`p-4 rounded-xl border sovereign-transition cursor-pointer flex flex-col justify-between text-left min-h-[110px] ${
                                     isSelected
                                       ? 'bg-zinc-800/80 border-cyber-green text-white shadow-md'
@@ -1480,7 +1484,7 @@ export default function App() {
                           </>
                         )}
                       </div>
-
+ 
                       {/* Right Panel: Detailed Agent Preview */}
                       <div className="w-96 border-l border-zinc-850 overflow-y-auto custom-scrollbar p-6 bg-zinc-950/30 flex flex-col justify-between" style={{ borderColor: 'color-mix(in srgb, var(--color-zinc-800) 40%, transparent)' }}>
                         {selectedAgent ? (
@@ -1502,14 +1506,14 @@ export default function App() {
                                   </span>
                                 </div>
                               </div>
-
+ 
                               <div>
                                 <span className="mono-label text-[9px] block text-zinc-500 mb-1">Vibe / Description</span>
                                 <p className="text-xs text-zinc-400 leading-relaxed italic">
                                   "{selectedAgent.vibe || selectedAgent.description}"
                                 </p>
                               </div>
-
+ 
                               <div className="pt-3 border-t border-zinc-900/60 flex flex-col flex-1 min-h-0">
                                 <div className="flex items-center gap-1.5 mb-2 text-zinc-550">
                                   <BookOpen className="w-3.5 h-3.5" />
@@ -1520,9 +1524,10 @@ export default function App() {
                                 </div>
                               </div>
                             </div>
-
+ 
                             <button
                               onClick={() => handleAddCatalogAgent(selectedAgent)}
+                              data-tooltip={`Import ${selectedAgent.name} into your active swarm roster`}
                               className="w-full bg-cyber-green text-zinc-950 font-bold text-xs py-3 rounded-lg hover:scale-102 transition-all cursor-pointer flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(34,197,94,0.15)]"
                               style={{
                                 backgroundColor: selectedAgent.color,
