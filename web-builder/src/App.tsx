@@ -9,197 +9,20 @@ import {
   Search,
   Zap,
   Globe,
-  Users
+  Users,
+  X,
+  Sliders,
+  BookOpen,
+  Sparkles
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import JSZip from 'jszip';
+import { highlightText, scanShieldCapabilities } from './utils';
 
-type Agent = {
-  id: string;
-  name: string;
-  role: string;
-  model: string;
-  prompt: string;
-};
+import type { Agent, WorkflowItem, TemplateItem, CatalogAgent } from './types';
+import { INDUSTRY_MAP, REGISTRY, INDUSTRY_CODES_MAP } from './constants';
 
-type WorkflowItem = {
-  id: string;
-  name: string;
-  description: string;
-  isOkfPlaybook?: boolean;
-  resourceUri?: string;
-  topic?: string;
-  conceptType?: string;
-  tags?: string;
-};
-
-const INDUSTRY_MAP = [
-  { name: 'Legal Services', path: 'legal', keywords: ['law', 'contract', 'litigation', 'legal'] },
-  { name: 'Medical Practices', path: 'healthcare', keywords: ['health', 'patient', 'medical', 'doctor', 'clinic'] },
-  { name: 'Financial Services', path: 'financial-services', keywords: ['money', 'bank', 'finance', 'tax', 'audit', 'accounting'] },
-  { name: 'Digital Marketing', path: 'digital-marketing', keywords: ['ads', 'marketing', 'social media', 'content', 'seo'] },
-  { name: 'E-commerce', path: 'e-commerce', keywords: ['store', 'shop', 'product', 'retail', 'sales'] },
-  { name: 'Real Estate', path: 'real-estate', keywords: ['house', 'property', 'realtor', 'escrow', 'mls'] },
-  { name: 'Manufacturing', path: 'manufacturing', keywords: ['factory', 'production', 'inventory', 'machine', 'order'] },
-  { name: 'Software Development', path: 'development', keywords: ['code', 'software', 'app', 'developer', 'api'] },
-  { name: 'Food & Beverage', path: 'food', keywords: ['food', 'restaurant', 'menu', 'kitchen', 'recipe', 'inventory'] },
-  { name: 'Chemical Sector', path: 'chemical', keywords: ['chemical', 'safety', 'sds', 'toxic', 'hazardous'] },
-  { name: 'Transportation & Logistics', path: 'transportation', keywords: ['transportation', 'fleet', 'delivery', 'route', 'truck', 'driver'] },
-  { name: 'Pharmaceuticals', path: 'pharma', keywords: ['pharma', 'clinical', 'trial', 'adverse', 'drug', 'protocol'] },
-  { name: 'Agriculture & AgTech', path: 'agriculture', keywords: ['agriculture', 'farm', 'soil', 'crop', 'irrigation', 'weather'] },
-  { name: 'Governance & Compliance', path: 'compliance', keywords: ['compliance', 'audit', 'soc2', 'iso', 'security', 'regulatory'] },
-  { name: 'Cybersecurity', path: 'security', keywords: ['security', 'cybersecurity', 'secops', 'log', 'firewall', 'threat', 'incident'] },
-  { name: 'Human Resources', path: 'hr', keywords: ['hr', 'recruiting', 'resume', 'onboarding', 'candidate', 'hiring', 'talent'] },
-  { name: 'Education', path: 'education', keywords: ['education', 'curriculum', 'lesson', 'student', 'grade', 'school', 'learn'] },
-  { name: 'Critical Infrastructure', path: 'utilities', keywords: ['utility', 'grid', 'power', 'telemetry', 'scada', 'substation', 'maintenance'] },
-  { name: 'Media & Creative', path: 'creative', keywords: ['media', 'creative', 'asset', 'game', 'dialog', 'narrative', 'localization'] },
-];
-
-type TemplateItem = {
-  id: string;
-  name: string;
-  description: string;
-  industry: string;
-  path: string;
-  tags: string[];
-  company_size?: number;
-};
-
-const REGISTRY: TemplateItem[] = [
-  { id: "legal-contract-review", name: "Legal Contract Auditor", description: "AI-driven contract analysis, litigation forecasting, and automated discovery.", industry: "Legal Services", path: "legal/contract-review", tags: ["law", "contracts"] },
-  { id: "healthcare-patient-intake", name: "Patient Intake Automation", description: "Process clinical data and automate patient intake workflows.", industry: "Medical Practices", path: "healthcare/patient-intake", tags: ["healthcare", "intake"] },
-  { id: "development-code-reviewer", name: "Sr. Architect Reviewer", description: "Automated code review and architectural auditing from a senior perspective.", industry: "Software Development", path: "development/code-reviewer", tags: ["development", "devops"] },
-  { id: "bookkeeping-audit", name: "SMB Bookkeeping Swarm", description: "Automated daily reconciliation, tax optimization, and digital audit trails.", industry: "Financial Services", path: "financial-services/bookkeeping-audit", tags: ["finance", "accounting"] },
-  { id: "full-funnel-automation", name: "Marketing Funnel Pilot", description: "Automated content generation, ad spend optimization, and journey analytics.", industry: "Digital Marketing", path: "digital-marketing/full-funnel-automation", tags: ["marketing", "ads"] },
-  { id: "lead-transaction-management", name: "Real Estate Closer", description: "Automated lead nurturing, MLS syndication, and escrow timeline tracking.", industry: "Real Estate", path: "real-estate/lead-transaction", tags: ["real-estate", "leads"] },
-  { id: "food-restaurant-ops", name: "Food & Beverage Operations", description: "Automate kitchen inventory, menu performance analytics, and supplier ordering workflows.", industry: "Food & Beverage", path: "food/restaurant-ops", tags: ["food", "restaurant", "inventory"] },
-  { id: "chemical-process-safety", name: "Chemical Safety Auditor", description: "Automate chemical inventory, Safety Data Sheet (SDS) compliance auditing, and safety checklists.", industry: "Chemical Sector", path: "chemical/process-safety", tags: ["chemical", "safety", "compliance"] },
-  { id: "transportation-fleet-logistics", name: "Fleet Logistics Swarm", description: "Fleet scheduling, route optimization, maintenance tracking, and fuel efficiency analytics.", industry: "Transportation & Logistics", path: "transportation/fleet-logistics", tags: ["transportation", "fleet", "logistics"] },
-  { id: "pharma-clinical-trials", name: "Clinical Trial Manager", description: "Automate clinical trial protocol mapping, trial candidate documentation, and adverse event logging.", industry: "Pharmaceuticals", path: "pharma/clinical-trials", tags: ["pharma", "clinical", "compliance"] },
-  { id: "agriculture-precision-farming", name: "Precision Agriculture Swarm", description: "Crop yield forecasting, soil health telemetry analysis, and irrigation optimization.", industry: "Agriculture & AgTech", path: "agriculture/precision-farming", tags: ["agriculture", "farming", "analytics"] },
-  { id: "compliance-regulatory-audit", name: "Regulatory Compliance Swarm", description: "Continuous security posture assessment, SOC2/ISO readiness checks, and regulatory compliance mapping.", industry: "Governance & Compliance", path: "compliance/regulatory-audit", tags: ["compliance", "audit", "security"] },
-  { id: "security-incident-response", name: "Incident Response Swarm", description: "Designed for security log auditing, incident triage, and automated mitigation recommendation.", industry: "Cybersecurity", path: "security/incident-response", tags: ["security", "secops", "incident"] },
-  { id: "hr-recruiting-triage", name: "Recruiting Triage Swarm", description: "Designed for parsing candidate resumes, screening against role criteria, and coordinating onboarding files.", industry: "Human Resources", path: "hr/recruiting-triage", tags: ["hr", "recruiting", "hiring"] },
-  { id: "education-curriculum-planner", name: "Curriculum Planner Swarm", description: "Designed for curriculum audit mapping, lesson plan alignment, and student analytics reviews.", industry: "Education", path: "education/curriculum-planner", tags: ["education", "curriculum", "school"] },
-  { id: "utilities-grid-telemetry", name: "Grid Telemetry Swarm", description: "Designed for grid status logs auditing, alarm triage, and utility crew scheduling.", industry: "Critical Infrastructure", path: "utilities/grid-telemetry", tags: ["utilities", "grid", "telemetry"] },
-  { id: "creative-asset-pipeline", name: "Creative Asset Pipeline Swarm", description: "Designed for creative asset verification, size budget checks, and dialog localization tracking.", industry: "Media & Creative", path: "creative/asset-pipeline", tags: ["creative", "media", "assets"] },
-];
-
-const INDUSTRY_CODES_MAP: Record<string, { code: string; label: string }[]> = {
-  'Legal Services': [
-    { code: 'NAICS 541110', label: '541110 - Offices of Lawyers' },
-    { code: 'SIC 8111', label: '8111 - Legal Services' }
-  ],
-  'Medical Practices': [
-    { code: 'NAICS 621111', label: '621111 - Offices of Physicians (except Mental Health)' },
-    { code: 'NAICS 621112', label: '621112 - Offices of Physicians, Mental Health Specialists' },
-    { code: 'SIC 8011', label: '8011 - Offices and Clinics of Doctors of Medicine' }
-  ],
-  'Financial Services': [
-    { code: 'NAICS 523930', label: '523930 - Investment Advice' },
-    { code: 'NAICS 541211', label: '541211 - Offices of Certified Public Accountants' },
-    { code: 'SIC 6282', label: '6282 - Investment Advice' },
-    { code: 'SIC 8721', label: '8721 - Accounting, Auditing, and Bookkeeping' }
-  ],
-  'Digital Marketing': [
-    { code: 'NAICS 541810', label: '541810 - Advertising Agencies' },
-    { code: 'NAICS 541812', label: '541812 - Digital Advertising Agencies' },
-    { code: 'SIC 7311', label: '7311 - Advertising Agencies' }
-  ],
-  'E-commerce': [
-    { code: 'NAICS 454110', label: '454110 - Electronic Shopping and Mail-Order Houses' },
-    { code: 'SIC 5961', label: '5961 - Catalog and Mail-Order Houses' }
-  ],
-  'Real Estate': [
-    { code: 'NAICS 531210', label: '531210 - Offices of Real Estate Agents and Brokers' },
-    { code: 'SIC 6531', label: '6531 - Real Estate Agents and Managers' }
-  ],
-  'Specialized Consultancies': [
-    { code: 'NAICS 541611', label: '541611 - Administrative & General Management Consulting' },
-    { code: 'NAICS 541690', label: '541690 - Other Scientific & Technical Consulting' },
-    { code: 'SIC 8742', label: '8742 - Management Consulting Services' }
-  ],
-  'Logistics & Supply Chain': [
-    { code: 'NAICS 541614', label: '541614 - Process, Physical Distribution, & Logistics Consulting' },
-    { code: 'NAICS 488510', label: '488510 - Freight Transportation Arrangement' },
-    { code: 'SIC 4731', label: '4731 - Arrangement of Transportation of Freight & Cargo' }
-  ],
-  'Engineering & Architecture': [
-    { code: 'NAICS 541330', label: '541330 - Engineering Services' },
-    { code: 'NAICS 541310', label: '541310 - Architectural Services' },
-    { code: 'SIC 8711', label: '8711 - Engineering Services' },
-    { code: 'SIC 8712', label: '8712 - Architectural Services' }
-  ],
-  'EdTech & Training': [
-    { code: 'NAICS 611710', label: '611710 - Educational Support Services' },
-    { code: 'NAICS 611420', label: '611420 - Computer Training' },
-    { code: 'SIC 8299', label: '8299 - Schools & Educational Services, NEC' }
-  ],
-  'Software Development': [
-    { code: 'NAICS 541511', label: '541511 - Custom Computer Programming Services' },
-    { code: 'NAICS 513210', label: '513210 - Software Publishers' },
-    { code: 'SIC 7371', label: '7371 - Computer Programming Services' },
-    { code: 'SIC 7372', label: '7372 - Prepackaged Software' }
-  ],
-  'Manufacturing': [
-    { code: 'NAICS 339999', label: '339999 - All Other Miscellaneous Manufacturing' },
-    { code: 'SIC 3999', label: '3999 - Manufacturing Industries, NEC' }
-  ],
-  'Food & Beverage': [
-    { code: 'NAICS 722511', label: '722511 - Full-Service Restaurants' },
-    { code: 'NAICS 311999', label: '311999 - All Other Miscellaneous Food Manufacturing' },
-    { code: 'SIC 5812', label: '5812 - Eating Places' },
-    { code: 'SIC 2099', label: '2099 - Food Preparations, NEC' }
-  ],
-  'Chemical Sector': [
-    { code: 'NAICS 325998', label: '325998 - All Other Miscellaneous Chemical Product Manufacturing' },
-    { code: 'SIC 2899', label: '2899 - Chemicals and Chemical Preparations, NEC' }
-  ],
-  'Transportation & Logistics': [
-    { code: 'NAICS 484121', label: '484121 - General Freight Trucking, Long-Distance' },
-    { code: 'NAICS 488510', label: '488510 - Freight Transportation Arrangement' },
-    { code: 'SIC 4213', label: '4213 - Trucking, Except Local' },
-    { code: 'SIC 4731', label: '4731 - Arrangement of Transportation of Freight & Cargo' }
-  ],
-  'Pharmaceuticals': [
-    { code: 'NAICS 325412', label: '325412 - Pharmaceutical Preparation Manufacturing' },
-    { code: 'SIC 2834', label: '2834 - Pharmaceutical Preparations' }
-  ],
-  'Agriculture & AgTech': [
-    { code: 'NAICS 111998', label: '111998 - All Other Miscellaneous Crop Farming' },
-    { code: 'NAICS 541715', label: '541715 - R&D in Physical, Engineering, & Life Sciences' },
-    { code: 'SIC 0191', label: '0191 - General Farms, Primarily Crop' }
-  ],
-  'Governance & Compliance': [
-    { code: 'NAICS 541611', label: '541611 - Administrative & General Management Consulting' },
-    { code: 'SIC 8742', label: '8742 - Management Consulting Services' }
-  ],
-  'Cybersecurity': [
-    { code: 'NAICS 541512', label: '541512 - Computer Systems Design Services' },
-    { code: 'NAICS 541690', label: '541690 - Other Scientific & Technical Consulting' },
-    { code: 'SIC 7373', label: '7373 - Computer Integrated Systems Design' },
-    { code: 'SIC 7379', label: '7379 - Computer Related Services, NEC' }
-  ],
-  'Human Resources': [
-    { code: 'NAICS 561311', label: '561311 - Employment Placement Agencies' },
-    { code: 'NAICS 541612', label: '541612 - Human Resources Consulting Services' },
-    { code: 'SIC 7361', label: '7361 - Employment Agencies' }
-  ],
-  'Education': [
-    { code: 'NAICS 611710', label: '611710 - Educational Support Services' },
-    { code: 'NAICS 611310', label: '611310 - Colleges, Universities, & Professional Schools' },
-    { code: 'SIC 8299', label: '8299 - Schools & Educational Services, NEC' }
-  ],
-  'Critical Infrastructure': [
-    { code: 'NAICS 221122', label: '221122 - Electric Power Distribution' },
-    { code: 'SIC 4911', label: '4911 - Electric Services' }
-  ],
-  'Media & Creative': [
-    { code: 'NAICS 512110', label: '512110 - Motion Picture & Video Production' },
-    { code: 'NAICS 711510', label: '711510 - Independent Artists, Writers, & Performers' },
-    { code: 'SIC 7812', label: '7812 - Motion Picture & Video Tape Production' }
-  ]
-};
+import AgentEditor from './components/Modals/AgentEditor';
 
 export default function App() {
   const [step, setStep] = useState(1);
@@ -230,10 +53,45 @@ export default function App() {
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null);
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateItem | null>(null);
   const [isLoadingSwarmDetails, setIsLoadingSwarmDetails] = useState(false);
-  const [loadedSwarmDetails, setLoadedSwarmDetails] = useState<{ roster: any[]; workflows: any[] } | null>(null);
+  const [loadedSwarmDetails, setLoadedSwarmDetails] = useState<{ roster: Agent[]; workflows: WorkflowItem[] } | null>(null);
+
+  // Catalog & Editor State
+  const [catalog, setCatalog] = useState<CatalogAgent[]>([]);
+  const [isCatalogLoading, setIsCatalogLoading] = useState(false);
+  const [isCatalogModalOpen, setIsCatalogModalOpen] = useState(false);
+  const [catalogSearch, setCatalogSearch] = useState('');
+  const [selectedCatalogDiv, setSelectedCatalogDiv] = useState('all');
+  const [selectedCatalogAgentId, setSelectedCatalogAgentId] = useState<string | null>(null);
+
+  const [isEditorModalOpen, setIsEditorModalOpen] = useState(false);
+  const [editingAgent, setEditingAgent] = useState<Agent | null>(null);
+
+  const divisions = [
+    { id: 'all', label: 'All Divisions', color: '#71717a' },
+    { id: 'academic', label: 'Academic', color: '#8B5CF6' },
+    { id: 'design', label: 'Design', color: '#EC4899' },
+    { id: 'engineering', label: 'Engineering', color: '#3B82F6' },
+    { id: 'finance', label: 'Finance', color: '#22C55E' },
+    { id: 'game-development', label: 'Game Development', color: '#A855F7' },
+    { id: 'gis', label: 'GIS', color: '#14B8A6' },
+    { id: 'marketing', label: 'Marketing', color: '#F97316' },
+    { id: 'paid-media', label: 'Paid Media', color: '#EAB308' },
+    { id: 'product', label: 'Product', color: '#D946EF' },
+    { id: 'project-management', label: 'Project Management', color: '#0EA5E9' },
+    { id: 'sales', label: 'Sales', color: '#10B981' },
+    { id: 'security', label: 'Security', color: '#EF4444' },
+    { id: 'spatial-computing', label: 'Spatial Computing', color: '#06B6D4' },
+    { id: 'specialized', label: 'Specialized', color: '#6366F1' },
+    { id: 'support', label: 'Support', color: '#84CC16' },
+    { id: 'testing', label: 'Testing', color: '#F59E0B' }
+  ];
 
   useEffect(() => {
-    fetch('./registry.json')
+    const controller = new AbortController();
+
+    setIsCatalogLoading(true);
+
+    fetch('./registry.json', { signal: controller.signal })
       .then(res => res.json())
       .then(data => {
         if (data && data.industries) {
@@ -248,7 +106,7 @@ export default function App() {
           setDynamicIndustries(registryIndustries);
         }
         if (data && data.templates) {
-          const registryTemplates = data.templates.map((t: any) => ({
+          const registryTemplates = data.templates.map((t: TemplateItem) => ({
             id: t.id,
             name: t.name,
             description: t.description || '',
@@ -260,20 +118,84 @@ export default function App() {
           setDynamicRegistry(registryTemplates);
         }
       })
-      .catch(err => console.error("Error loading registry.json:", err));
-  }, []);
+      .catch(err => {
+        if (err.name !== 'AbortError') {
+          console.error("Error loading registry.json:", err);
+        }
+      });
 
-  const addAgent = () => {
-    const id = Math.random().toString(36).substr(2, 9);
-    setAgents([...agents, { id, name: 'New Agent', role: '', model: 'gemini-pro-latest', prompt: '' }]);
-  };
+    fetch('./ai-tadpole-catalog.json', { signal: controller.signal })
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setCatalog(data);
+        }
+      })
+      .catch(err => {
+        if (err.name !== 'AbortError') {
+          console.error("Error loading ai-tadpole-catalog.json:", err);
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) {
+          setIsCatalogLoading(false);
+        }
+      });
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
 
   const removeAgent = (id: string) => {
     setAgents(agents.filter(a => a.id !== id));
   };
 
+  const handleCreateCustomAgent = () => {
+    const id = 'custom-' + crypto.randomUUID();
+    const newAgent: Agent = {
+      id,
+      name: 'Custom Agent',
+      role: 'Custom Specialist',
+      model: 'gemini-1.5-flash',
+      prompt: '# Custom Agent Personality\n\nYou are a specialized AI assistant...\n\n## 🧠 Your Identity & Memory\n- **Role**: Custom Specialist\n- **Personality**: Professional, analytical, proactive\n\n## 🎯 Your Core Mission\n- Execute tasks efficiently to support the swarm.\n\n## 🚨 Critical Rules You Must Follow\n- Adhere to the core system instructions.',
+      description: 'Custom AI agent defined from scratch.',
+      color: '#71717a',
+      emoji: '🤖',
+      vibe: 'Custom defined role.',
+      isCustom: true
+    };
+    setAgents([...agents, newAgent]);
+    setEditingAgent(newAgent);
+    setIsEditorModalOpen(true);
+  };
+
+  const handleAddCatalogAgent = (catalogAgent: CatalogAgent) => {
+    const id = catalogAgent.id.replace(/[^a-zA-Z0-9-]/g, '-') + '-' + crypto.randomUUID().slice(0, 8);
+    const newAgent: Agent = {
+      id,
+      name: catalogAgent.name,
+      role: catalogAgent.vibe || catalogAgent.description.slice(0, 50) || 'Specialist',
+      model: 'gemini-1.5-flash',
+      prompt: catalogAgent.prompt,
+      description: catalogAgent.description,
+      color: catalogAgent.color,
+      emoji: catalogAgent.emoji,
+      vibe: catalogAgent.vibe,
+      isCustom: false
+    };
+    setAgents([...agents, newAgent]);
+    setIsCatalogModalOpen(false);
+  };
+
+  const handleSaveAgent = (updatedAgent: Agent) => {
+    setAgents(agents.map(a => a.id === updatedAgent.id ? updatedAgent : a));
+    setIsEditorModalOpen(false);
+    setEditingAgent(null);
+  };
+
   const addWorkflow = () => {
-    const id = Math.random().toString(36).substr(2, 9);
+    const id = crypto.randomUUID();
     setWorkflows([...workflows, { 
       id, 
       name: 'New Workflow/Playbook', 
@@ -290,29 +212,83 @@ export default function App() {
     setWorkflows(workflows.filter(w => w.id !== id));
   };
 
+
+
   const handleAiAssist = () => {
     const desc = companyInfo.description.toLowerCase();
-    const match = dynamicIndustries.find(i => i.keywords.some(k => desc.includes(k)));
+    if (!desc || catalog.length === 0) return;
+
+    // Split user description into tokens and filter out short terms
+    const tokens = desc.split(/[^a-zA-Z0-9]+/).filter(t => t.length > 3);
     
-    if (match) {
-      setIsCustomIndustry(false);
-      setShowCustomCodeInput(false);
-      const defaultCode = INDUSTRY_CODES_MAP[match.name]?.[0]?.code || ('NAICS ' + (Math.floor(Math.random() * 90000) + 10000));
-      setCompanyInfo({
-        ...companyInfo,
-        mission: `To revolutionize ${companyInfo.description.toLowerCase()} through sovereign intelligence and automated ${match.name.toLowerCase()} flows.`,
-        industry: match.name,
-        industryPath: match.path,
-        industryCode: defaultCode
+    // Score each catalog agent based on word matches
+    const scoredAgents = catalog.map(agent => {
+      let score = 0;
+      const searchSpace = `${agent.name} ${agent.vibe} ${agent.description} ${agent.divisionLabel}`.toLowerCase();
+      
+      tokens.forEach(token => {
+        if (searchSpace.includes(token)) {
+          score += 1;
+        }
       });
       
-      // Suggest industry-specific agent
-      if (agents.length === 1 && agents[0].name === 'Lead Orchestrator') {
-        setAgents([
-          { id: '1', name: 'Lead Orchestrator', role: 'General Coordinator', model: 'gemini-pro-latest', prompt: 'Coordinate swarm operations...' },
-          { id: '2', name: `${match.name.split(' ')[0]} Expert`, role: `${match.name} Specialist`, model: 'gemini-pro-latest', prompt: `Execute high-fidelity ${match.name.toLowerCase()} tasks.` }
-        ]);
-      }
+      return { agent, score };
+    });
+
+    // Sort by score descending and filter those with score > 0
+    const matches = scoredAgents
+      .filter(item => item.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3)
+      .map(item => item.agent);
+
+    if (matches.length > 0) {
+      // Find matching industry sector
+      const matchSector = dynamicIndustries.find(i => i.keywords.some(k => desc.includes(k)));
+      const industryName = matchSector?.name || companyInfo.industry || 'Software Development';
+      const industryPath = matchSector?.path || companyInfo.industryPath || 'development';
+      const defaultCode = INDUSTRY_CODES_MAP[industryName]?.[0]?.code || ('NAICS ' + (Math.floor(Math.random() * 90000) + 10000));
+
+      setIsCustomIndustry(false);
+      setShowCustomCodeInput(false);
+      
+      setCompanyInfo({
+        ...companyInfo,
+        mission: `To revolutionize ${companyInfo.description.toLowerCase()} through sovereign intelligence and automated workflows.`,
+        industry: industryName,
+        industryPath: industryPath,
+        industryCode: defaultCode
+      });
+
+      // Map matching catalog agents to swarm agents
+      const suggestedSwarmAgents = matches.map((catAgent) => {
+        return {
+          id: catAgent.id.replace(/[^a-zA-Z0-9-]/g, '-') + '-' + crypto.randomUUID().slice(0, 8),
+          name: catAgent.name,
+          role: catAgent.vibe || catAgent.description.slice(0, 50) || 'Specialist',
+          model: 'gemini-1.5-flash',
+          prompt: catAgent.prompt,
+          description: catAgent.description,
+          color: catAgent.color,
+          emoji: catAgent.emoji,
+          vibe: catAgent.vibe,
+          isCustom: false
+        };
+      });
+
+      setAgents([
+        { 
+          id: '1', 
+          name: 'Lead Orchestrator', 
+          role: 'General Coordinator', 
+          model: 'gemini-pro-latest', 
+          prompt: 'Coordinate swarm operations...',
+          color: '#71717a',
+          emoji: '👑',
+          description: 'Orchestrates incoming tasks and matches roles.'
+        },
+        ...suggestedSwarmAgents
+      ]);
     }
   };
 
@@ -414,7 +390,7 @@ export default function App() {
 
       // Fetch agents details from swarmData.roster
       const rosterWithDetails = await Promise.all(
-        (swarmData.roster || []).map(async (agentRef: any) => {
+        (swarmData.roster || []).map(async (agentRef: { id: string; path: string; role: string }) => {
           try {
             const agentRes = await fetch(`${rawBase}/${agentRef.path}`);
             if (agentRes.ok) {
@@ -451,7 +427,7 @@ export default function App() {
               const name = nameMatch ? nameMatch[1].trim() : workflowPath.split('/').pop()?.replace('.md', '') || 'Workflow';
               const description = mdContent.replace(/^#.*$/m, '').trim();
               return {
-                id: Math.random().toString(36).substr(2, 9),
+                id: crypto.randomUUID(),
                 name,
                 description,
                 isOkfPlaybook: false
@@ -461,7 +437,7 @@ export default function App() {
             console.error("Error loading workflow details", e);
           }
           return {
-            id: Math.random().toString(36).substr(2, 9),
+            id: crypto.randomUUID(),
             name: workflowPath.split('/').pop()?.replace('.md', '') || 'Workflow',
             description: '',
             isOkfPlaybook: false
@@ -470,13 +446,13 @@ export default function App() {
       );
 
       // Fetch knowledge/ playbooks (from knowledge.json if it exists)
-      let okfPlaybooks: any[] = [];
+      let okfPlaybooks: WorkflowItem[] = [];
       try {
         const knowledgeRes = await fetch(`${rawBase}/knowledge.json`);
         if (knowledgeRes.ok) {
           const knowledgeData = await knowledgeRes.json();
-          okfPlaybooks = (knowledgeData || []).map((k: any) => ({
-            id: Math.random().toString(36).substr(2, 9),
+          okfPlaybooks = (knowledgeData || []).map((k: { title?: string; name?: string; text?: string; description?: string; resource_uri?: string; topic?: string; concept_type?: string; tags?: string }) => ({
+            id: crypto.randomUUID(),
             name: k.title || k.name || 'Knowledge Playbook',
             description: k.text || k.description || '',
             isOkfPlaybook: true,
@@ -502,13 +478,13 @@ export default function App() {
     }
   };
 
-  const handleTemplateClick = (template: any) => {
+  const handleTemplateClick = (template: TemplateItem) => {
     setSelectedTemplateId(template.id);
     setSelectedTemplate(template);
     fetchSwarmDetails(template.path);
   };
 
-  const handleUpdateSelectedTemplate = (key: string, value: any) => {
+  const handleUpdateSelectedTemplate = <K extends keyof TemplateItem>(key: K, value: TemplateItem[K]) => {
     if (!selectedTemplate) return;
     const updated = { ...selectedTemplate, [key]: value };
     setSelectedTemplate(updated);
@@ -784,8 +760,8 @@ export default function App() {
 
             <div className="mt-12 flex justify-end">
               <button 
-                onClick={() => setStep(2)}
-                disabled={!companyInfo.name}
+                onClick={() => { setStep(2); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                disabled={!companyInfo.name || !companyInfo.industry}
                 className="bg-neural-pulse text-zinc-950 font-bold px-8 py-3 rounded-lg hover:bg-white disabled:opacity-50 transition-all cursor-pointer"
               >
                 Next Architecture
@@ -802,61 +778,108 @@ export default function App() {
             exit={{ opacity: 0, x: -20 }}
             className="w-full sovereign-panel p-8"
           >
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
               <div className="flex items-center gap-2 text-cyber-green">
                 <Users className="w-5 h-5" />
                 <h2 className="font-bold text-lg">Phase 2: The Roster</h2>
               </div>
-              <button 
-                onClick={addAgent}
-                className="bg-cyber-green/10 text-cyber-green hover:bg-cyber-green/20 px-4 py-2 rounded-lg border border-cyber-green/30 flex items-center gap-2 transition-all"
-              >
-                <Plus className="w-4 h-4" /> Add Agent
-              </button>
+              <div className="flex flex-wrap gap-3 w-full sm:w-auto">
+                <button 
+                  onClick={() => setIsCatalogModalOpen(true)}
+                  className="flex-1 sm:flex-initial bg-cyber-green/10 text-cyber-green hover:bg-cyber-green/20 px-4 py-2 rounded-lg border border-cyber-green/30 flex items-center justify-center gap-2 transition-all cursor-pointer focus-sovereign"
+                >
+                  <Search className="w-4 h-4" /> Browse Catalog
+                </button>
+                <button 
+                  onClick={handleCreateCustomAgent}
+                  className="flex-1 sm:flex-initial bg-zinc-900 text-neural-pulse hover:bg-zinc-800 px-4 py-2 rounded-lg border border-zinc-800 flex items-center justify-center gap-2 transition-all cursor-pointer focus-sovereign"
+                >
+                  <Plus className="w-4 h-4" /> Add Custom Agent
+                </button>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {agents.map(agent => (
-                <div key={agent.id} className="bg-zinc-950/50 border border-zinc-800 p-4 rounded-xl relative group">
-                  <button 
-                    onClick={() => removeAgent(agent.id)}
-                    className="absolute top-4 right-4 text-zinc-600 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                  <div className="space-y-4">
-                    <input 
-                      className="bg-transparent border-b border-zinc-800 mb-2 w-full font-bold focus:border-cyber-green outline-none pb-1"
-                      value={agent.name}
-                      onChange={e => {
-                        const newAgents = [...agents];
-                        newAgents.find(a => a.id === agent.id)!.name = e.target.value;
-                        setAgents(newAgents);
-                      }}
-                    />
-                    <div>
-                      <label className="block text-[10px] font-mono text-zinc-600 uppercase">Role / Expertise</label>
-                      <input 
-                        className="bg-transparent text-sm w-full outline-none text-neural-pulse"
-                        placeholder="e.g. Legal Compliance"
-                        value={agent.role}
-                        onChange={e => {
-                          const newAgents = [...agents];
-                          newAgents.find(a => a.id === agent.id)!.role = e.target.value;
-                          setAgents(newAgents);
-                        }}
-                      />
+                <div 
+                  key={agent.id} 
+                  className="bg-zinc-950/50 border rounded-xl p-5 relative group sovereign-transition flex flex-col justify-between min-h-[150px] overflow-hidden"
+                  style={{ 
+                    borderColor: agent.color ? `color-mix(in srgb, ${agent.color} 30%, var(--color-zinc-800))` : 'var(--color-zinc-800)'
+                  }}
+                >
+                  {/* Left accent bar */}
+                  <div 
+                    className="absolute left-0 top-0 bottom-0 w-1"
+                    style={{ backgroundColor: agent.color || 'var(--color-zinc-700)' }}
+                  />
+                  
+                  <div className="space-y-3 pl-2">
+                    <div className="flex justify-between items-start gap-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl select-none">{agent.emoji || '🤖'}</span>
+                        <div>
+                          <div className="font-bold text-zinc-100 text-sm">{agent.name}</div>
+                          {agent.isCustom ? (
+                            <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-tighter">Custom Agent</span>
+                          ) : (
+                            <span className="text-[9px] font-mono text-cyber-green/80 uppercase tracking-tighter">Catalog Agent</span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button 
+                          onClick={() => {
+                            setEditingAgent(agent);
+                            setIsEditorModalOpen(true);
+                          }}
+                          className="p-1.5 text-zinc-400 hover:text-white rounded hover:bg-zinc-900 transition-colors cursor-pointer"
+                          title="Configure Agent Details"
+                        >
+                          <Sliders className="w-3.5 h-3.5" />
+                        </button>
+                        <button 
+                          onClick={() => removeAgent(agent.id)}
+                          className="p-1.5 text-zinc-400 hover:text-cyber-red rounded hover:bg-zinc-900 transition-colors cursor-pointer"
+                          title="Remove Agent"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </div>
+                    
+                    <div>
+                      <span className="mono-label text-[9px] block mb-0.5">Role / Expertise</span>
+                      <div className="text-xs text-neural-pulse font-medium line-clamp-1">{agent.role || 'Not specified'}</div>
+                    </div>
+
+                    {agent.description && (
+                      <div className="text-[10px] text-zinc-500 line-clamp-2 italic leading-relaxed">{agent.description}</div>
+                    )}
+                  </div>
+                  
+                  {/* Footer showing Model details */}
+                  <div className="mt-4 pt-2.5 border-t border-zinc-900/60 pl-2 flex justify-between items-center text-[9px] text-zinc-500 font-mono">
+                    <span>Model: {agent.model || 'gemini-1.5-flash'}</span>
+                    <span className="text-[9px] text-zinc-400 bg-zinc-900 px-1.5 py-0.5 rounded border border-zinc-800">
+                      Prompt: {agent.prompt ? `${agent.prompt.length} chars` : 'Empty'}
+                    </span>
                   </div>
                 </div>
               ))}
+              {agents.length === 0 && (
+                <div className="col-span-full py-12 text-center text-zinc-600 font-mono text-sm border border-dashed border-zinc-850 rounded-xl">
+                  Roster is empty. Browse the Catalog or add a Custom Agent to begin.
+                </div>
+              )}
             </div>
 
             <div className="mt-12 flex justify-between">
-              <button onClick={() => setStep(1)} className="text-zinc-500 hover:text-white transition-colors">Previous</button>
+              <button onClick={() => { setStep(1); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="text-zinc-500 hover:text-white transition-colors cursor-pointer">Previous</button>
               <button 
-                onClick={() => setStep(3)}
-                className="bg-neural-pulse text-zinc-950 font-bold px-8 py-3 rounded-lg hover:bg-white transition-all cursor-pointer"
+                onClick={() => { setStep(3); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                disabled={agents.length === 0}
+                className="bg-neural-pulse text-zinc-950 font-bold px-8 py-3 rounded-lg hover:bg-white disabled:opacity-50 transition-all cursor-pointer"
               >
                 Next Playbook
               </button>
@@ -1000,9 +1023,9 @@ export default function App() {
             </div>
 
             <div className="mt-12 flex justify-between">
-              <button onClick={() => setStep(2)} className="text-zinc-500 hover:text-white transition-colors">Previous</button>
+              <button onClick={() => { setStep(2); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="text-zinc-500 hover:text-white transition-colors">Previous</button>
               <button 
-                onClick={() => setStep(4)}
+                onClick={() => { setStep(4); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                 className="bg-neural-pulse text-zinc-950 font-bold px-8 py-3 rounded-lg hover:bg-white transition-all cursor-pointer"
               >
                 Next Forge
@@ -1036,6 +1059,65 @@ export default function App() {
               </ul>
             </div>
 
+            {/* Sapphire Shield Security Audit */}
+            {(() => {
+              const allWarnings: { agentName: string; emoji: string; capability: string; reason: string; severity: 'red' | 'amber' }[] = [];
+              agents.forEach(agent => {
+                const warnings = scanShieldCapabilities(agent.prompt || '');
+                warnings.forEach(w => {
+                  allWarnings.push({
+                    agentName: agent.name,
+                    emoji: agent.emoji || '🤖',
+                    ...w
+                  });
+                });
+              });
+
+              const isSecure = allWarnings.length === 0;
+
+              return (
+                <div className="max-w-md mx-auto mb-12 bg-zinc-950/80 border rounded-xl overflow-hidden text-left sovereign-transition" style={{ borderColor: isSecure ? '#10B981' : '#F59E0B' }}>
+                  <div className={`p-4 flex items-center gap-3 border-b ${isSecure ? 'bg-emerald-950/20 border-emerald-900/40' : 'bg-amber-950/20 border-amber-900/40'}`} style={{ borderColor: isSecure ? 'color-mix(in srgb, #10B981 30%, transparent)' : 'color-mix(in srgb, #F59E0B 30%, transparent)' }}>
+                    <Shield className={`w-5 h-5 ${isSecure ? 'text-emerald-500' : 'text-amber-500'}`} />
+                    <div>
+                      <h4 className="font-bold text-xs text-white uppercase tracking-wider">Sapphire Shield Security Audit</h4>
+                      <p className="text-[10px] text-zinc-550 font-mono mt-0.5">
+                        {isSecure ? 'Sovereign Telemetry Level: Zero Privileges' : 'Active Warning: Approval Required'}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="p-4 space-y-3 font-mono text-xs">
+                    {isSecure ? (
+                      <div className="text-zinc-400 leading-relaxed text-[11px]">
+                        🟢 All rostered agent prompts are compliant. This swarm requests no special runtime capabilities and will execute directly without manual Tadpole OS authorization overrides.
+                      </div>
+                    ) : (
+                      <>
+                        <div className="text-zinc-400 mb-2 leading-relaxed text-[11px]">
+                          ⚠️ The following agent prompts trigger security review boundaries and will request manual Overlord Authorization during Swarm installation:
+                        </div>
+                        <div className="space-y-2 max-h-[160px] overflow-y-auto custom-scrollbar pr-1">
+                          {allWarnings.map((w, idx) => (
+                            <div key={idx} className="p-2.5 rounded bg-zinc-900/80 border border-zinc-850/80 flex flex-col gap-1">
+                              <div className="flex justify-between items-center">
+                                <span className="font-bold text-[10px] text-zinc-200 flex items-center gap-1.5">
+                                  <span className="select-none">{w.emoji}</span> {w.agentName}
+                                </span>
+                                <span className={`text-[8px] px-1.5 py-0.25 rounded border uppercase tracking-tighter ${w.severity === 'red' ? 'text-rose-500 bg-rose-500/5 border-rose-500/20' : 'text-amber-500 bg-amber-500/5 border-amber-500/20'}`}>
+                                  {w.capability}
+                                </span>
+                              </div>
+                              <p className="text-[10px] text-zinc-500 leading-normal">{w.reason}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              );
+            })()}
+
             <div className="flex flex-col gap-4 items-center">
               <button 
                 onClick={handleExport}
@@ -1044,7 +1126,7 @@ export default function App() {
                 <Download className="w-6 h-6" /> Export Swarm Archive
               </button>
               <button 
-                onClick={() => setStep(1)}
+                onClick={() => { setStep(1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                 className="text-zinc-500 hover:text-white transition-colors text-sm mt-4"
               >
                 Re-configure Architecture
@@ -1230,7 +1312,263 @@ export default function App() {
         </div>
       </section>
 
-      <footer className="mt-12 text-zinc-600 text-[10px] font-mono tracking-widest uppercase">
+      {/* Agent Catalog Modal */}
+      <AnimatePresence>
+        {isCatalogModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/85 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 15 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 15 }}
+              transition={{ type: "spring", stiffness: 350, damping: 25 }}
+              className="sovereign-panel w-full max-w-5xl h-[85vh] flex flex-col bg-zinc-900 border-zinc-800 p-0 overflow-hidden"
+            >
+              {/* Header */}
+              <div className="flex justify-between items-center px-6 py-4 border-b border-zinc-850" style={{ borderColor: 'color-mix(in srgb, var(--color-zinc-800) 40%, transparent)' }}>
+                <div>
+                  <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 text-cyber-green" /> Browse Agent Catalog
+                  </h3>
+                  <p className="text-xs text-zinc-500 mt-0.5">Select a pre-configured expert persona to add to your Swarm Roster.</p>
+                </div>
+                <button
+                  onClick={() => setIsCatalogModalOpen(false)}
+                  className="p-1.5 text-zinc-500 hover:text-white rounded hover:bg-zinc-800 transition-all cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Search Bar */}
+              <div className="px-6 py-3 bg-zinc-950/40 border-b border-zinc-850 flex items-center gap-3" style={{ borderColor: 'color-mix(in srgb, var(--color-zinc-800) 30%, transparent)' }}>
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+                  <input
+                    type="text"
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg py-2 pl-10 pr-4 text-xs focus:border-cyber-green outline-none text-zinc-300"
+                    placeholder="Search by role, capability, or division..."
+                    value={catalogSearch}
+                    onChange={e => setCatalogSearch(e.target.value)}
+                  />
+                  {catalogSearch && (
+                    <button 
+                      onClick={() => setCatalogSearch('')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white text-xs cursor-pointer"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Body */}
+              <div className="flex flex-1 overflow-hidden">
+                {/* Left Panel: Divisions */}
+                <div className="w-64 border-r border-zinc-855 overflow-y-auto custom-scrollbar bg-zinc-950/20 p-4 space-y-1" style={{ borderColor: 'color-mix(in srgb, var(--color-zinc-800) 40%, transparent)' }}>
+                  <div className="mono-label text-[9px] mb-2 px-2">Divisions</div>
+                  {divisions.map(div => {
+                    const count = div.id === 'all' 
+                      ? catalog.length 
+                      : catalog.filter(c => c.division === div.id).length;
+                    
+                    const isSelected = selectedCatalogDiv === div.id;
+                    
+                    return (
+                      <button
+                        key={div.id}
+                        onClick={() => {
+                          setSelectedCatalogDiv(div.id);
+                          setSelectedCatalogAgentId(null);
+                        }}
+                        className={`w-full text-left px-3 py-2 rounded-lg text-xs flex justify-between items-center transition-all cursor-pointer border ${
+                          isSelected
+                            ? 'bg-zinc-800 text-white border-zinc-700 font-bold'
+                            : 'text-zinc-400 hover:bg-zinc-900/50 hover:text-zinc-200 border-transparent'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <span 
+                            className="w-1.5 h-1.5 rounded-full" 
+                            style={{ backgroundColor: div.color }}
+                          />
+                          <span>{div.label}</span>
+                        </div>
+                        <span className="text-[9px] font-mono text-zinc-500 bg-zinc-950 px-1.5 py-0.25 rounded border border-zinc-800">
+                          {count}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Middle Panel: Grid of filtered agents */}
+                {(() => {
+                  const filtered = catalog.filter(agent => {
+                    const matchesDiv = selectedCatalogDiv === 'all' || agent.division === selectedCatalogDiv;
+                    const matchesSearch = !catalogSearch || 
+                      agent.name.toLowerCase().includes(catalogSearch.toLowerCase()) ||
+                      agent.description.toLowerCase().includes(catalogSearch.toLowerCase()) ||
+                      agent.vibe.toLowerCase().includes(catalogSearch.toLowerCase()) ||
+                      agent.divisionLabel.toLowerCase().includes(catalogSearch.toLowerCase()) ||
+                      agent.prompt.toLowerCase().includes(catalogSearch.toLowerCase());
+                    return matchesDiv && matchesSearch;
+                  });
+
+                  const selectedAgent = catalog.find(c => c.id === selectedCatalogAgentId) || filtered[0];
+
+                  return (
+                    <>
+                      <div className="flex-1 overflow-y-auto custom-scrollbar p-6 grid grid-cols-1 sm:grid-cols-2 gap-3 bg-zinc-950/10 content-start">
+                        {isCatalogLoading ? (
+                          <div className="col-span-full flex flex-col items-center justify-center py-20 text-zinc-500 font-mono text-xs">
+                            <div className="w-5 h-5 border-2 border-zinc-805 border-t-cyber-green rounded-full animate-spin mb-3" />
+                            Loading AI-Tadpole catalog...
+                          </div>
+                        ) : (
+                          <>
+                            {filtered.map(agent => {
+                              const isSelected = selectedAgent?.id === agent.id;
+                              return (
+                                <div
+                                  key={agent.id}
+                                  onClick={() => setSelectedCatalogAgentId(agent.id)}
+                                  className={`p-4 rounded-xl border sovereign-transition cursor-pointer flex flex-col justify-between text-left min-h-[110px] ${
+                                    isSelected
+                                      ? 'bg-zinc-800/80 border-cyber-green text-white shadow-md'
+                                      : 'bg-zinc-950/40 border-zinc-800/60 text-zinc-400 hover:border-zinc-700 hover:bg-zinc-900/10'
+                                  }`}
+                                  style={{
+                                    borderColor: isSelected ? agent.color : undefined
+                                  }}
+                                >
+                                  <div>
+                                    <div className="flex justify-between items-start mb-1.5 gap-2">
+                                      <div className="flex items-center gap-1.5 min-w-0">
+                                        <span className="text-lg select-none">{agent.emoji || '🤖'}</span>
+                                        <h4 className="font-bold text-xs text-zinc-200 line-clamp-1">
+                                          {highlightText(agent.name, catalogSearch)}
+                                        </h4>
+                                      </div>
+                                      <span 
+                                        className="text-[8px] font-mono uppercase tracking-tighter px-1.5 py-0.25 rounded border shrink-0"
+                                        style={{ 
+                                          color: agent.color, 
+                                          borderColor: `color-mix(in srgb, ${agent.color} 30%, transparent)`,
+                                          backgroundColor: `color-mix(in srgb, ${agent.color} 5%, transparent)`
+                                        }}
+                                      >
+                                        {agent.divisionLabel}
+                                      </span>
+                                    </div>
+                                    <p className="text-[10px] text-zinc-500 line-clamp-2 leading-relaxed">
+                                      {highlightText(agent.description || agent.vibe, catalogSearch)}
+                                    </p>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                            {filtered.length === 0 && (
+                              <div className="col-span-full flex flex-col items-center justify-center py-20 text-zinc-600 font-mono text-xs">
+                                No agents found matching "{catalogSearch}"
+                              </div>
+                            )}
+                          </>
+                        )}
+                      </div>
+
+                      {/* Right Panel: Detailed Agent Preview */}
+                      <div className="w-96 border-l border-zinc-850 overflow-y-auto custom-scrollbar p-6 bg-zinc-950/30 flex flex-col justify-between" style={{ borderColor: 'color-mix(in srgb, var(--color-zinc-800) 40%, transparent)' }}>
+                        {selectedAgent ? (
+                          <div className="flex flex-col h-full justify-between gap-6">
+                            <div className="space-y-4">
+                              <div className="flex items-center gap-3">
+                                <span className="text-3xl p-2 bg-zinc-900 border border-zinc-800 rounded-xl select-none">{selectedAgent.emoji || '🤖'}</span>
+                                <div>
+                                  <h4 className="font-bold text-sm text-white">{selectedAgent.name}</h4>
+                                  <span 
+                                    className="text-[9px] font-mono px-2 py-0.5 rounded border inline-block mt-1"
+                                    style={{
+                                      color: selectedAgent.color,
+                                      borderColor: `color-mix(in srgb, ${selectedAgent.color} 20%, transparent)`,
+                                      backgroundColor: `color-mix(in srgb, ${selectedAgent.color} 5%, transparent)`
+                                    }}
+                                  >
+                                    {selectedAgent.divisionLabel}
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div>
+                                <span className="mono-label text-[9px] block text-zinc-500 mb-1">Vibe / Description</span>
+                                <p className="text-xs text-zinc-400 leading-relaxed italic">
+                                  "{selectedAgent.vibe || selectedAgent.description}"
+                                </p>
+                              </div>
+
+                              <div className="pt-3 border-t border-zinc-900/60 flex flex-col flex-1 min-h-0">
+                                <div className="flex items-center gap-1.5 mb-2 text-zinc-550">
+                                  <BookOpen className="w-3.5 h-3.5" />
+                                  <span className="mono-label text-[9px]">Base System Instructions</span>
+                                </div>
+                                <div className="bg-zinc-950 border border-zinc-850 rounded-lg p-3 text-[10px] font-mono text-zinc-400 overflow-y-auto max-h-[220px] leading-normal whitespace-pre-wrap select-text custom-scrollbar">
+                                  {selectedAgent.prompt}
+                                </div>
+                              </div>
+                            </div>
+
+                            <button
+                              onClick={() => handleAddCatalogAgent(selectedAgent)}
+                              className="w-full bg-cyber-green text-zinc-950 font-bold text-xs py-3 rounded-lg hover:scale-102 transition-all cursor-pointer flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(34,197,94,0.15)]"
+                              style={{
+                                backgroundColor: selectedAgent.color,
+                                color: '#09090b'
+                              }}
+                            >
+                              Add {selectedAgent.name} to Roster
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="flex-1 flex flex-col items-center justify-center text-center text-zinc-600 font-mono text-xs">
+                            Select an agent to see detailed specifications.
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  );
+                })()}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Agent Editor Modal */}
+      <AnimatePresence>
+        {isEditorModalOpen && editingAgent && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/85 backdrop-blur-sm"
+          >
+            <AgentEditor 
+              agent={editingAgent} 
+              onClose={() => {
+                setIsEditorModalOpen(false);
+                setEditingAgent(null);
+              }}
+              onSave={handleSaveAgent}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <footer className="mt-12 text-zinc-650 text-[10px] font-mono tracking-widest uppercase">
         Sovereign Reality Systems • 2026 • Verified SEC-ARA
       </footer>
     </div>
