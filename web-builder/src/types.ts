@@ -49,3 +49,12 @@ export interface SwarmDetails {
   roster: { id: string; path: string; role: string }[];
   global_workflows: string[];
 }
+
+export interface MCPConnector {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  path: string;
+  version: string;
+}

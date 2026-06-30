@@ -13,13 +13,14 @@ import {
   X,
   Sliders,
   BookOpen,
-  Sparkles
+  Sparkles,
+  Database
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import JSZip from 'jszip';
 import { highlightText, scanShieldCapabilities } from './utils';
 
-import type { Agent, WorkflowItem, TemplateItem, CatalogAgent } from './types';
+import type { Agent, WorkflowItem, TemplateItem, CatalogAgent, MCPConnector } from './types';
 import { INDUSTRY_MAP, REGISTRY, INDUSTRY_CODES_MAP } from './constants';
 
 import AgentEditor from './components/Modals/AgentEditor';
@@ -54,6 +55,10 @@ export default function App() {
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateItem | null>(null);
   const [isLoadingSwarmDetails, setIsLoadingSwarmDetails] = useState(false);
   const [loadedSwarmDetails, setLoadedSwarmDetails] = useState<{ roster: Agent[]; workflows: WorkflowItem[] } | null>(null);
+
+  // MCP Connectors State
+  const [mcpCatalog, setMcpCatalog] = useState<MCPConnector[]>([]);
+  const [selectedConnectors, setSelectedConnectors] = useState<string[]>([]);
 
   // Catalog & Editor State
   const [catalog, setCatalog] = useState<CatalogAgent[]>([]);
@@ -121,6 +126,19 @@ export default function App() {
       .catch(err => {
         if (err.name !== 'AbortError') {
           console.error("Error loading registry.json:", err);
+        }
+      });
+
+    fetch('./mcp_registry.json', { signal: controller.signal })
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.connectors) {
+          setMcpCatalog(data.connectors);
+        }
+      })
+      .catch(err => {
+        if (err.name !== 'AbortError') {
+          console.error("Error loading mcp_registry.json:", err);
         }
       });
 
@@ -300,7 +318,12 @@ export default function App() {
     const okfPlaybooks = workflows.filter(w => w.isOkfPlaybook);
 
     // swarm.json
-    const swarmJson = {
+    const required_mcps = selectedConnectors.map(id => {
+      const c = mcpCatalog.find(mc => mc.id === id);
+      return c ? `${c.path}/mcps.json` : '';
+    }).filter(Boolean);
+
+    const swarmJson: any = {
       $schema: "https://tadpoleos.dev/schemas/swarm-v1.json",
       name: `${companyInfo.name} Swarm`,
       version: "1.0.0",
@@ -314,6 +337,10 @@ export default function App() {
       })),
       global_workflows: standardWorkflows.map(w => `workflows/${w.id}.md`)
     };
+
+    if (required_mcps.length > 0) {
+      swarmJson.required_mcps = required_mcps;
+    }
     
     zip.file("swarm.json", JSON.stringify(swarmJson, null, 2));
     
@@ -1032,7 +1059,7 @@ export default function App() {
                 onClick={() => { setStep(4); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                 className="bg-neural-pulse text-zinc-950 font-bold px-8 py-3 rounded-lg hover:bg-white transition-all cursor-pointer"
               >
-                Next Forge
+                Next Data Connectors
               </button>
             </div>
           </motion.div>
@@ -1041,9 +1068,73 @@ export default function App() {
         {step === 4 && (
           <motion.div 
             key="step4"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            data-tooltip="Phase 4 Data Connectors: Attach MCP-compatible data connectors to provide swarms with real-time external data access."
+            className="w-full sovereign-panel p-8"
+          >
+            <div className="flex justify-between items-center mb-8">
+              <div className="flex items-center gap-2 text-cyber-green">
+                <Database className="w-5 h-5" />
+                <h2 className="font-bold text-lg" data-tooltip="Attach standalone MCP Data Connectors for digital twin syncing or external tool access.">Phase 4: Data Connectors (MCP)</h2>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {mcpCatalog.length === 0 ? (
+                <div className="col-span-full py-12 text-center text-zinc-600 font-mono text-sm border border-dashed border-zinc-850 rounded-xl">
+                  No MCP connectors available in registry.
+                </div>
+              ) : (
+                mcpCatalog.map(connector => {
+                  const isSelected = selectedConnectors.includes(connector.id);
+                  return (
+                    <div 
+                      key={connector.id} 
+                      onClick={() => {
+                        if (isSelected) {
+                          setSelectedConnectors(selectedConnectors.filter(id => id !== connector.id));
+                        } else {
+                          setSelectedConnectors([...selectedConnectors, connector.id]);
+                        }
+                      }}
+                      className={`p-5 rounded-xl border sovereign-transition cursor-pointer text-left relative ${
+                        isSelected 
+                          ? 'bg-zinc-900 border-cyber-green/50 text-white' 
+                          : 'bg-zinc-950/40 border-zinc-800 text-zinc-400 hover:border-zinc-700'
+                      }`}
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">{connector.category} v{connector.version}</span>
+                        {isSelected && <span className="w-2 h-2 bg-cyber-green rounded-full shadow-[0_0_8px_rgba(34,197,94,0.8)] animate-pulse" />}
+                      </div>
+                      <h4 className="font-bold text-sm text-zinc-100">{connector.name}</h4>
+                      <p className="text-xs text-zinc-500 mt-2 leading-relaxed">{connector.description}</p>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+
+            <div className="mt-12 flex justify-between">
+              <button onClick={() => { setStep(3); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="text-zinc-500 hover:text-white transition-colors cursor-pointer">Previous</button>
+              <button 
+                onClick={() => { setStep(5); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                className="bg-neural-pulse text-zinc-950 font-bold px-8 py-3 rounded-lg hover:bg-white transition-all cursor-pointer"
+              >
+                Next Forge
+              </button>
+            </div>
+          </motion.div>
+        )}
+
+        {step === 5 && (
+          <motion.div 
+            key="step5"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            data-tooltip="Phase 4 Forge Workspace: Inspect the compilation manifest, run security audits, and generate installation ZIP packages."
+            data-tooltip="Phase 5 Forge Workspace: Inspect the compilation manifest, run security audits, and generate installation ZIP packages."
             className="w-full sovereign-panel p-12 text-center"
           >
             <div className="bg-cyber-green/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-cyber-green/30">

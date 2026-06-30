@@ -96,5 +96,55 @@ def validate_templates():
     
     return errors == 0
 
+def validate_mcps():
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    mcp_registry_path = os.path.join(base_dir, "mcp_registry.json")
+    
+    if not os.path.exists(mcp_registry_path):
+        print(f"Error: mcp_registry.json not found at {mcp_registry_path}")
+        return False
+        
+    with open(mcp_registry_path, "r") as f:
+        registry = json.load(f)
+        
+    connectors = registry.get("connectors", [])
+    print(f"\nLoaded {len(connectors)} connectors from mcp_registry.json.\nStarting validation...\n")
+    
+    errors = 0
+    warnings = 0
+    
+    for c in connectors:
+        c_id = c.get("id")
+        c_name = c.get("name")
+        c_path = c.get("path")
+        
+        print(f"[{c_id}] Validating MCP '{c_name}' at '{c_path}'...")
+        
+        full_path = os.path.join(base_dir, c_path.replace("/", os.sep))
+        if not os.path.exists(full_path):
+            print(f"  -> ERROR: Directory does not exist: {c_path}")
+            errors += 1
+            continue
+            
+        mcps_json_path = os.path.join(full_path, "mcps.json")
+        if not os.path.exists(mcps_json_path):
+            print(f"  -> ERROR: mcps.json is missing in {c_path}")
+            errors += 1
+            
+        server_py_path = os.path.join(full_path, "server.py")
+        if not os.path.exists(server_py_path):
+            print(f"  -> ERROR: server.py is missing in {c_path}")
+            errors += 1
+            
+    print("\n" + "="*40)
+    print(f"MCP Validation Finished: {errors} Errors, {warnings} Warnings.")
+    print("="*40)
+    
+    return errors == 0
+
 if __name__ == "__main__":
-    validate_templates()
+    templates_valid = validate_templates()
+    mcps_valid = validate_mcps()
+    import sys
+    if not templates_valid or not mcps_valid:
+        sys.exit(1)
