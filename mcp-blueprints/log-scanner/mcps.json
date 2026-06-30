@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "log-scanner": {
+      "command": "python",
+      "args": ["server.py"],
+      "env": {}
+    }
+  }
+}

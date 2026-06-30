@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "smb-accounting": {
+      "command": "python",
+      "args": ["server.py"],
+      "env": {
+        "ACCOUNTING_API_KEY": "dummy_key"
+      }
+    }
+  }
+}
