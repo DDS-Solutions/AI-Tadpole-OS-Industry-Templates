@@ -27,6 +27,10 @@
 }
 
 @layer base {
+  html {
+    font-size: 110%;
+  }
+
   body {
     @apply bg-background text-neural-pulse antialiased selection:bg-cyber-green/30;
     font-family: var(--font-sans);
