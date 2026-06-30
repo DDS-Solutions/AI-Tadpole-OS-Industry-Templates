@@ -9,6 +9,7 @@ Official community repository for Tadpole OS. Download, share, and install indus
 Don't want to start from scratch? Use our **[Swarm Architect](https://dds-solutions.github.io/AI-Tadpole-OS-Industry-Templates/)** to visually design your intelligence roster, mission, and playbooks.
 
 *   **Hybrid AI Profiler**: Suggests skills based on your company mission.
+*   **Agent Catalog**: Browse 200+ specialized AI agent roles across multiple departments to easily build your team.
 *   **One-Click Export**: Downloads a production-ready Swarm Archive (.zip).
 *   **Schema Verified**: Every template generated is guaranteed to pass the Tadpole OS validation.
 
