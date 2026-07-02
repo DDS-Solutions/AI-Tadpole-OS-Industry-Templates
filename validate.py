@@ -9,7 +9,7 @@ def validate_templates():
         print(f"Error: registry.json not found at {registry_path}")
         return False
         
-    with open(registry_path, "r") as f:
+    with open(registry_path, "r", encoding="utf-8") as f:
         registry = json.load(f)
         
     templates = registry.get("templates", [])
@@ -41,7 +41,7 @@ def validate_templates():
             
         # 3. Read and validate swarm.json
         try:
-            with open(swarm_json_path, "r") as sf:
+            with open(swarm_json_path, "r", encoding="utf-8") as sf:
                 swarm = json.load(sf)
         except Exception as e:
             print(f"  -> ERROR: Failed to parse swarm.json in {t_path}: {e}")
@@ -76,7 +76,7 @@ def validate_templates():
             else:
                 # Validate agent JSON parsing
                 try:
-                    with open(full_agent_path, "r") as af:
+                    with open(full_agent_path, "r", encoding="utf-8") as af:
                         json.load(af)
                 except Exception as e:
                     print(f"  -> ERROR: Failed to parse agent JSON {t_path}/{agent_path}: {e}")
@@ -104,7 +104,7 @@ def validate_mcps():
         print(f"Error: mcp_registry.json not found at {mcp_registry_path}")
         return False
         
-    with open(mcp_registry_path, "r") as f:
+    with open(mcp_registry_path, "r", encoding="utf-8") as f:
         registry = json.load(f)
         
     connectors = registry.get("connectors", [])

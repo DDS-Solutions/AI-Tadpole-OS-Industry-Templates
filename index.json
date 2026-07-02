@@ -9,7 +9,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "read_file",
+      "run_command",
+      "write_to_file"
     ]
   },
   {
@@ -22,7 +24,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "run_command"
     ]
   },
   {
@@ -35,7 +39,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -48,7 +54,8 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "read_file",
+      "run_command"
     ]
   },
   {
@@ -61,6 +68,7 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
+      "grep_search",
       "read_file"
     ]
   },
@@ -74,7 +82,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -87,6 +97,7 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
+      "grep_search",
       "read_file"
     ]
   },
@@ -100,7 +111,8 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -113,7 +125,8 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -126,7 +139,8 @@
       "gemini-1.5-flash"
     ],
     "required_skills": [
-      "read_file"
+      "read_file",
+      "run_command"
     ]
   },
   {
@@ -139,6 +153,7 @@
       "gemini-1.5-flash"
     ],
     "required_skills": [
+      "grep_search",
       "read_file"
     ]
   },
@@ -152,7 +167,9 @@
       "gemini-1.5-flash"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -165,7 +182,9 @@
       "gemini-1.5-flash"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -178,7 +197,8 @@
       "gemini-1.5-flash"
     ],
     "required_skills": [
-      "read_file"
+      "read_file",
+      "run_command"
     ]
   },
   {
@@ -204,7 +224,10 @@
       "gemini-1.5-flash"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "run_command",
+      "write_to_file"
     ]
   },
   {
@@ -217,7 +240,8 @@
       "gemini-1.5-flash"
     ],
     "required_skills": [
-      "read_file"
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -230,7 +254,8 @@
       "gemini-1.5-flash"
     ],
     "required_skills": [
-      "read_file"
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -243,7 +268,9 @@
       "gemini-1.5-flash"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -256,7 +283,11 @@
       "gemini-1.5-flash"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "run_command",
+      "search_web",
+      "write_to_file"
     ]
   },
   {
@@ -269,7 +300,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -282,7 +315,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -295,7 +330,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "run_command"
     ]
   },
   {
@@ -308,6 +345,7 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
+      "grep_search",
       "read_file"
     ]
   },
@@ -321,7 +359,8 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "read_file",
+      "run_command"
     ]
   },
   {
@@ -334,7 +373,8 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "read_file",
+      "run_command"
     ]
   },
   {
@@ -347,6 +387,7 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
+      "grep_search",
       "read_file"
     ]
   },
@@ -360,7 +401,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -373,6 +416,7 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
+      "grep_search",
       "read_file"
     ]
   },
@@ -386,7 +430,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -399,7 +445,11 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "run_command",
+      "search_web",
+      "write_to_file"
     ]
   },
   {
@@ -412,6 +462,7 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
+      "grep_search",
       "read_file"
     ]
   },
@@ -425,7 +476,8 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -438,7 +490,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -451,7 +505,8 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "read_file",
+      "run_command"
     ]
   },
   {
@@ -464,7 +519,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -477,7 +534,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -490,7 +549,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -503,6 +564,7 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
+      "grep_search",
       "read_file"
     ]
   },
@@ -516,6 +578,7 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
+      "grep_search",
       "read_file"
     ]
   },
@@ -529,7 +592,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -542,7 +607,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -555,7 +622,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -581,6 +650,7 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
+      "grep_search",
       "read_file"
     ]
   },
@@ -594,7 +664,8 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -607,6 +678,7 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
+      "grep_search",
       "read_file"
     ]
   },
@@ -633,7 +705,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -646,7 +720,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -659,6 +735,7 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
+      "grep_search",
       "read_file"
     ]
   },
@@ -672,7 +749,8 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -685,7 +763,10 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "read_file",
+      "run_command",
+      "search_web",
+      "write_to_file"
     ]
   },
   {
@@ -698,7 +779,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -711,7 +794,8 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -737,7 +821,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -750,7 +836,10 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "run_command",
+      "write_to_file"
     ]
   },
   {
@@ -763,7 +852,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -789,6 +880,7 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
+      "grep_search",
       "read_file"
     ]
   },
@@ -802,6 +894,7 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
+      "grep_search",
       "read_file"
     ]
   },
@@ -815,7 +908,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -828,7 +923,10 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "run_command",
+      "write_to_file"
     ]
   },
   {
@@ -841,7 +939,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
-      "read_file"
+      "grep_search",
+      "read_file",
+      "write_to_file"
     ]
   },
   {
@@ -854,6 +954,7 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
+      "grep_search",
       "read_file"
     ]
   }

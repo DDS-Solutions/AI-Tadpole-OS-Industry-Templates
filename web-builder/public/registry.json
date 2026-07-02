@@ -45,7 +45,12 @@
         "auditing"
       ],
       "path": "legal/contract-review",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "read_file",
+        "run_command",
+        "write_to_file"
+      ]
     },
     {
       "id": "healthcare-patient-intake",
@@ -58,7 +63,12 @@
         "medical"
       ],
       "path": "healthcare/patient-intake",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "run_command"
+      ]
     },
     {
       "id": "development-code-reviewer",
@@ -71,7 +81,12 @@
         "code-review"
       ],
       "path": "development/code-reviewer",
-      "company_size": 50
+      "company_size": 50,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "bookkeeping-audit",
@@ -85,7 +100,11 @@
         "audit"
       ],
       "path": "financial-services/bookkeeping-audit",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "read_file",
+        "run_command"
+      ]
     },
     {
       "id": "full-funnel-automation",
@@ -99,7 +118,11 @@
         "automation"
       ],
       "path": "digital-marketing/full-funnel-automation",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file"
+      ]
     },
     {
       "id": "lead-transaction-management",
@@ -113,7 +136,12 @@
         "automation"
       ],
       "path": "real-estate/lead-transaction",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "manufacturing-job-shop-25",
@@ -126,7 +154,11 @@
         "inventory"
       ],
       "path": "manufacturing/job-shop-25",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file"
+      ]
     },
     {
       "id": "manufacturing-medium-plant-50",
@@ -139,7 +171,11 @@
         "supply-chain"
       ],
       "path": "manufacturing/medium-plant-50",
-      "company_size": 50
+      "company_size": 50,
+      "required_skills": [
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "manufacturing-smart-factory-100",
@@ -152,7 +188,11 @@
         "erp"
       ],
       "path": "manufacturing/smart-factory-100",
-      "company_size": 100
+      "company_size": 100,
+      "required_skills": [
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "food-restaurant-ops",
@@ -166,7 +206,11 @@
         "ordering"
       ],
       "path": "food/restaurant-ops",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "read_file",
+        "run_command"
+      ]
     },
     {
       "id": "chemical-process-safety",
@@ -179,7 +223,11 @@
         "compliance"
       ],
       "path": "chemical/process-safety",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file"
+      ]
     },
     {
       "id": "transportation-fleet-logistics",
@@ -192,7 +240,12 @@
         "logistics"
       ],
       "path": "transportation/fleet-logistics",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "pharma-clinical-trials",
@@ -205,7 +258,12 @@
         "compliance"
       ],
       "path": "pharma/clinical-trials",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "agriculture-precision-farming",
@@ -218,7 +276,11 @@
         "analytics"
       ],
       "path": "agriculture/precision-farming",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "read_file",
+        "run_command"
+      ]
     },
     {
       "id": "compliance-regulatory-audit",
@@ -231,7 +293,10 @@
         "security"
       ],
       "path": "compliance/regulatory-audit",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "read_file"
+      ]
     },
     {
       "id": "security-incident-response",
@@ -244,7 +309,13 @@
         "incident-response"
       ],
       "path": "security/incident-response",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "run_command",
+        "write_to_file"
+      ]
     },
     {
       "id": "hr-recruiting-triage",
@@ -257,7 +328,11 @@
         "onboarding"
       ],
       "path": "hr/recruiting-triage",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "education-curriculum-planner",
@@ -270,7 +345,11 @@
         "analytics"
       ],
       "path": "education/curriculum-planner",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "utilities-grid-telemetry",
@@ -284,7 +363,12 @@
         "scada"
       ],
       "path": "utilities/grid-telemetry",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "creative-asset-pipeline",
@@ -298,7 +382,14 @@
         "localization"
       ],
       "path": "creative/asset-pipeline",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "run_command",
+        "search_web",
+        "write_to_file"
+      ]
     },
     {
       "id": "legal-precedent-synthesis",
@@ -312,7 +403,12 @@
         "knowledge"
       ],
       "path": "legal/precedent-synthesis",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "legal-procurement-qa",
@@ -326,7 +422,12 @@
         "vendor-compliance"
       ],
       "path": "legal/procurement-qa",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "medical-clinical-guidelines",
@@ -340,7 +441,12 @@
         "clinical"
       ],
       "path": "healthcare/clinical-guidelines",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "run_command"
+      ]
     },
     {
       "id": "medical-inventory-qa",
@@ -355,7 +461,11 @@
         "procurement"
       ],
       "path": "healthcare/inventory-qa",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file"
+      ]
     },
     {
       "id": "financial-policy-synthesizer",
@@ -369,7 +479,11 @@
         "synthesis"
       ],
       "path": "financial-services/policy-synthesizer",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "read_file",
+        "run_command"
+      ]
     },
     {
       "id": "financial-vendor-reconciliation",
@@ -384,7 +498,11 @@
         "audit"
       ],
       "path": "financial-services/vendor-reconciliation",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "read_file",
+        "run_command"
+      ]
     },
     {
       "id": "marketing-seo-indexer",
@@ -398,7 +516,11 @@
         "synthesis"
       ],
       "path": "digital-marketing/seo-indexer",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file"
+      ]
     },
     {
       "id": "marketing-vendor-purchasing",
@@ -413,7 +535,12 @@
         "vendor-qa"
       ],
       "path": "digital-marketing/vendor-purchasing",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "ecommerce-market-analysis",
@@ -427,7 +554,11 @@
         "market-analysis"
       ],
       "path": "e-commerce/market-analysis",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file"
+      ]
     },
     {
       "id": "ecommerce-dispatch-qa",
@@ -442,7 +573,12 @@
         "qa"
       ],
       "path": "e-commerce/dispatch-qa",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "realestate-valuation-synthesizer",
@@ -456,7 +592,14 @@
         "synthesis"
       ],
       "path": "real-estate/valuation-synthesizer",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "run_command",
+        "search_web",
+        "write_to_file"
+      ]
     },
     {
       "id": "realestate-maintenance-procurement",
@@ -471,7 +614,11 @@
         "maintenance"
       ],
       "path": "real-estate/maintenance-procurement",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file"
+      ]
     },
     {
       "id": "consultancy-expert-synthesizer",
@@ -485,7 +632,11 @@
         "interviews"
       ],
       "path": "specialized-consultancies/expert-synthesizer",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "consultancy-subcontractor-qa",
@@ -499,7 +650,12 @@
         "iso9000"
       ],
       "path": "specialized-consultancies/subcontractor-qa",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "logistics-route-optimization",
@@ -513,7 +669,11 @@
         "synthesis"
       ],
       "path": "logistics-supply-chain/route-optimization",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "read_file",
+        "run_command"
+      ]
     },
     {
       "id": "logistics-dock-shipping",
@@ -528,7 +688,12 @@
         "warehouse"
       ],
       "path": "logistics-supply-chain/dock-shipping",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "engineering-spec-compliance",
@@ -542,7 +707,12 @@
         "auditing"
       ],
       "path": "engineering-architecture/spec-compliance",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "engineering-parts-procurement",
@@ -557,7 +727,12 @@
         "materials"
       ],
       "path": "engineering-architecture/parts-procurement",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "edtech-curriculum-synthesizer",
@@ -571,7 +746,11 @@
         "indexing"
       ],
       "path": "edtech-training/curriculum-synthesizer",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file"
+      ]
     },
     {
       "id": "edtech-license-procurement",
@@ -586,7 +765,11 @@
         "software-asset"
       ],
       "path": "edtech-training/license-procurement",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file"
+      ]
     },
     {
       "id": "development-docs-synthesizer",
@@ -600,7 +783,12 @@
         "synthesis"
       ],
       "path": "development/docs-synthesizer",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "development-qa-iso9000",
@@ -615,7 +803,12 @@
         "security"
       ],
       "path": "development/qa-iso9000",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "manufacturing-design-synthesizer",
@@ -629,7 +822,12 @@
         "synthesis"
       ],
       "path": "manufacturing/design-synthesizer",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "manufacturing-iso9000-qa",
@@ -644,7 +842,10 @@
         "shipping"
       ],
       "path": "manufacturing/iso9000-qa",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "read_file"
+      ]
     },
     {
       "id": "food-recipe-compliance",
@@ -658,7 +859,11 @@
         "recipe-standards"
       ],
       "path": "food/recipe-compliance",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file"
+      ]
     },
     {
       "id": "food-inventory-receiving",
@@ -673,7 +878,11 @@
         "receiving"
       ],
       "path": "food/inventory-receiving",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "chemical-sds-synthesizer",
@@ -688,7 +897,11 @@
         "safety"
       ],
       "path": "chemical/sds-synthesizer",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file"
+      ]
     },
     {
       "id": "chemical-hazmat-shipping",
@@ -704,7 +917,10 @@
         "inventory"
       ],
       "path": "chemical/hazmat-shipping",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "read_file"
+      ]
     },
     {
       "id": "transportation-policy-compliance",
@@ -718,7 +934,12 @@
         "auditing"
       ],
       "path": "transportation/policy-compliance",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "transportation-fleet-purchasing",
@@ -733,7 +954,12 @@
         "maintenance-qa"
       ],
       "path": "transportation/fleet-purchasing",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "pharma-research-synthesizer",
@@ -748,7 +974,11 @@
         "indexing"
       ],
       "path": "pharma/research-synthesizer",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file"
+      ]
     },
     {
       "id": "pharma-coldchain-shipping",
@@ -764,7 +994,11 @@
         "qa"
       ],
       "path": "pharma/coldchain-shipping",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "agriculture-research-synthesizer",
@@ -779,7 +1013,13 @@
         "synthesis"
       ],
       "path": "agriculture/research-synthesizer",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "read_file",
+        "run_command",
+        "search_web",
+        "write_to_file"
+      ]
     },
     {
       "id": "agriculture-grain-shipping",
@@ -794,7 +1034,12 @@
         "maintenance-qa"
       ],
       "path": "agriculture/grain-shipping",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "compliance-crosswalk-synthesizer",
@@ -809,7 +1054,11 @@
         "synthesis"
       ],
       "path": "compliance/crosswalk-synthesizer",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "compliance-vendor-purchasing-qa",
@@ -824,7 +1073,10 @@
         "auditing"
       ],
       "path": "compliance/vendor-purchasing-qa",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "read_file"
+      ]
     },
     {
       "id": "security-threat-intelligence",
@@ -838,7 +1090,12 @@
         "synthesis"
       ],
       "path": "security/threat-intelligence",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "security-hardware-inventory",
@@ -853,7 +1110,13 @@
         "hardware-qa"
       ],
       "path": "security/hardware-inventory",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "run_command",
+        "write_to_file"
+      ]
     },
     {
       "id": "hr-policy-synthesizer",
@@ -867,7 +1130,12 @@
         "employee-handbook"
       ],
       "path": "hr/policy-synthesizer",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "hr-recruiter-purchasing",
@@ -881,7 +1149,10 @@
         "recruiting-tools"
       ],
       "path": "hr/recruiter-purchasing",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "read_file"
+      ]
     },
     {
       "id": "education-accreditation-synthesizer",
@@ -895,7 +1166,11 @@
         "compliance"
       ],
       "path": "education/accreditation-synthesizer",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file"
+      ]
     },
     {
       "id": "education-supplies-purchasing",
@@ -910,7 +1185,11 @@
         "supplies"
       ],
       "path": "education/supplies-purchasing",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file"
+      ]
     },
     {
       "id": "utilities-maintenance-synthesizer",
@@ -924,7 +1203,12 @@
         "synthesis"
       ],
       "path": "utilities/maintenance-synthesizer",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "utilities-scada-qa",
@@ -940,7 +1224,13 @@
         "procurement"
       ],
       "path": "utilities/scada-qa",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "run_command",
+        "write_to_file"
+      ]
     },
     {
       "id": "creative-script-synthesizer",
@@ -955,7 +1245,12 @@
         "synthesis"
       ],
       "path": "creative/script-synthesizer",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_to_file"
+      ]
     },
     {
       "id": "creative-equipment-procurement",
@@ -970,7 +1265,11 @@
         "cameras"
       ],
       "path": "creative/equipment-procurement",
-      "company_size": 25
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file"
+      ]
     }
   ]
 }
