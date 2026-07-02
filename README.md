@@ -20,7 +20,12 @@ Don't want to start from scratch? Use our **[Swarm Architect](https://dds-soluti
 
 AI-Tadpole-OS operates via "**Swarms**" — interconnected graphs of AI agents, specific skills, and Markdown-based standard operating procedures (workflows). 
 
-Instead of configuring dozens of AI agents up manually, you can download a complete Swarm Template tailored exactly to your industry (e.g., Legal, Healthcare, Development).
+Tadpole OS Swarms utilize a native **capability-based architecture**:
+1. **Slim Agent Profiles**: Agents are model-agnostic, featuring a compact personality prompt (Max 800 characters) and referencing their capabilities (skills and workflows).
+2. **Deterministic Workflows**: Multi-step SOP playbooks are written as standalone Markdown documents inside `/workflows/` using strict step headers (`## Step [Name]`).
+3. **Decoupled Skills**: Tooling permissions (e.g., `read_file`, `grep_search`) are declared in the agent's `skills` array.
+
+Instead of configuring dozens of AI agents manually, you can download a complete Swarm Template tailored exactly to your industry (e.g., Legal, Healthcare, Development) and get it running immediately.
 
 ## 🚀 How to Install a Template
 
@@ -39,20 +44,17 @@ The repository contains pre-configured templates across **23 industries**, with 
 1. **Knowledge Work Swarms**: Focused on research analysis, policy indexing, case law synthesis, and document auditing.
 2. **Edge Operations Swarms**: Focused on inventory management, shipping/receiving audits, purchasing/procurement, and ISO 9000 quality assurance.
 
+Each template is structured as:
 ```text
-/
-├── digital-marketing/
-│   ├── full-funnel-automation/    # A swarm designed for full-funnel marketing
-│   ├── seo-indexer/               # [Knowledge] Keyword trend & search intent indexing
-│   └── vendor-purchasing/         # [Edge Ops] Ad spend verification & procurement QA
-├── legal/
-│   ├── contract-review/           # A swarm designed for auditing NDAs
-│   ├── precedent-synthesis/       # [Knowledge] Case law precedent research & memorandum drafting
-│   └── procurement-qa/            # [Edge Ops] Vendor purchasing audits & SLA compliance
-├── manufacturing/
-│   ├── design-synthesizer/        # [Knowledge] CAD blueprint parsing & compliance reviews
-│   └── iso9000-qa/                # [Edge Ops] Floor inventory auditing & batch QA
-└── ... (covering 23 distinct sectors including Healthcare, Finance, HR, and Utilities)
+<industry>/<template>/
+├── swarm.json          # Swarm metadata and roster IDs
+├── mcps.json           # MCP connector configurations
+├── agents/             # Slim agent JSON files (~1.5KB)
+│   └── *.json          # No massive system_prompt; references workflows/ & skills/
+├── skills/             # Schema definitions for custom skills (optional)
+│   └── *.json
+└── workflows/          # Executable markdown SOPs (with strict ## step headers)
+    └── *.md
 ```
 
 ## 🧠 Institutional Knowledge Integration (OKF/IKS)
@@ -121,9 +123,13 @@ We welcome contributions from industry experts! If you have built an incredibly 
 
 1. Fork this repository.
 2. Create a new folder under your relevant industry (or create a new industry).
-3. Ensure your template passes the `SWARM_TEMPLATE_SCHEMA.md` requirements.
-4. Run the local validator script to audit your template structure:
+3. Ensure your template passes the [TEMPLATE_SPEC.md](file:///c:/Users/Home%20Office_PC/.gemini/antigravity/playground/tadpole-os-industry-templates/TEMPLATE_SPEC.md) requirements.
+4. Run the local validators to audit your template structure:
    ```bash
+   # Run the native specification validator
+   python scripts/validate_template.py
+   
+   # Run the global repository validator
    python validate.py
    ```
 5. Submit a Pull Request! *(Our CI/CD pipeline runs this validation on every PR to prevent template regression).*

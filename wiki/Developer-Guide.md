@@ -18,16 +18,25 @@ To ensure your swarm template complies with Tadpole OS specifications and will i
 ### Run Validation
 From the root of the repository, execute:
 ```bash
+# Run the native specification validator
+python scripts/validate_template.py
+
+# Run the global repository validator
 python validate.py
 ```
 
 ### Validation Scope
-The script performs the following structural integrity checks:
+The validation suite performs the following structural integrity checks:
 1. **Schema Compliance**: Validates `registry.json` and updates `index.json`.
 2. **Directory Resolution**: Confirms all templates declared in `registry.json` exist physically.
 3. **Configuration Auditing**: Parses `swarm.json` to verify JSON syntax.
-4. **Roster Integration**: Scans all roster profiles under `/agents/` to ensure agent paths exist and parse as valid JSON.
-5. **Workflow Checks**: Checks that all workflows declared in `global_workflows` exist physically as `.md` files under the template `/workflows/` subdirectory.
+4. **Agent Profile Checks**: 
+   - Scans all roster profiles under `/agents/` to ensure agent paths exist and parse as valid JSON.
+   - Asserts that agent profile JSONs strictly adhere to native properties (`id`, `name`, `role`, `department`, `description`, `model_config`, `skills`, `workflows`).
+   - Asserts that the system prompt inside `model_config` is under 800 characters.
+5. **Workflow Checks**: 
+   - Checks that all workflows declared in `global_workflows` or inside agent profiles exist physically as `.md` files under the template `/workflows/` subdirectory.
+   - Verifies that all workflow files contain valid step headers matching `## Step [Name]`.
 6. **MCP Registry Checks**: Scans `mcp_registry.json` and ensures all referenced `mcps.json` configurations are syntactically valid and exist in the filesystem.
 
 ---

@@ -73,3 +73,12 @@ Every template directory must host a `swarm.json` config. This file serves as th
   "global_workflows": ["workflows/step_by_step_sop.md"]
 }
 ```
+
+---
+
+## 🧠 Capability-Based Agent Profiles & Workflows
+
+With the transition to the native Tadpole OS capability-based architecture:
+* **Decoupled Instructions**: The agents' monolithic prompts have been separated into a slim personality definition (under `agents/*.json`) and a structured markdown SOP playbook (under `workflows/*.md`).
+* **Strict Workflow Execution**: Workflows contain strict `## Step [Name]` headers that the Tadpole OS step-engine reads and executes sequentially.
+* **Declarative Skills**: Capabilities like `read_file` or `grep_search` are explicitly declared in the agent's `skills` array, ensuring granular tool tracking and zero-trust verification.
