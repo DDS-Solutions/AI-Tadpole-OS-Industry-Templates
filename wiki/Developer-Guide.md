@@ -73,6 +73,31 @@ npm run test
 npm run build
 ```
 
+### 📁 Web Builder Directory Structure
+
+The frontend application uses a modular architecture to separate state coordination, step panels, modals, and file IO helper functions:
+
+```text
+web-builder/src/
+├── App.tsx               # Central React state coordinator
+├── main.tsx              # Entry point & React DOM bindings
+├── types.ts              # Common interfaces (Agent, Workflow, MCP)
+├── utils.tsx             # Text highlighting & capability scanners
+├── utils/
+│   └── fileHelpers.ts    # ZIP assembly (JSZip) & template loaders
+├── components/
+│   ├── Modals/
+│   │   ├── AgentEditor.tsx   # Agent configuration editor modal
+│   │   ├── McpEditor.tsx     # Custom MCP connector editor modal
+│   │   └── CatalogDrawer.tsx # Sliding sidebar for catalog search
+│   └── Steps/
+│       ├── Step1_CompanyMission.tsx # Pulse (Phase 1 Settings)
+│       ├── Step2_Roster.tsx         # Roster (Phase 2 Agent Grid)
+│       ├── Step3_Playbooks.tsx      # Playbook (Phase 3 Workflow SOPs)
+│       ├── Step4_Connectors.tsx     # Connectors (Phase 4 MCP list)
+│       └── Step5_Forge.tsx          # Forge (Phase 5 Build Manifest & Export)
+```
+
 ### Static Analysis & Graph Queries
 Audit codebase dependencies and observability status using the built-in Cargo graph tools:
 ```bash

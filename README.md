@@ -134,5 +134,8 @@ We welcome contributions from industry experts! If you have built an incredibly 
    ```
 5. Submit a Pull Request! *(Our CI/CD pipeline runs this validation on every PR to prevent template regression).*
 
+> [!NOTE]
+> If you are contributing changes to the **Swarm Architect Web Builder** React application under `/web-builder/`, please consult the modular frontend architecture in the [Developer Guide wiki page](file:///c:/Users/Home%20Office_PC/.gemini/antigravity/playground/tadpole-os-industry-templates/wiki/Developer-Guide.md) and ensure that all unit tests (`npm run test`) pass.
+
 ---
 *Built for [AI-Tadpole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS).*
