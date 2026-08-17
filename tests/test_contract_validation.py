@@ -20,8 +20,10 @@ from validate_template import (
     validate_knowledge_payload,
     validate_mcp_payload,
     validate_package_file,
+    validate_package_tree,
     validate_workflow_content,
 )
+from verify_compatibility_lock import generate_lock_data, verify_lockfile
 
 
 class ConsumerContractTests(unittest.TestCase):
@@ -175,6 +177,31 @@ class ConsumerContractTests(unittest.TestCase):
     def test_knowledge_requires_text_and_topic(self):
         self.assertEqual([], validate_knowledge_payload([{"text": "Body", "topic": "legal"}]))
         self.assertNotEqual([], validate_knowledge_payload([{"topic": "legal"}]))
+
+    def test_package_tree_isolation_in_temp_directory(self):
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmproot = Path(tmpdir)
+            (tmproot / "agents").mkdir()
+            (tmproot / "agents" / "agent.json").write_text("{}", encoding="utf-8")
+            (tmproot / "skills").mkdir()
+            (tmproot / "skills" / "server.py").write_text("print('ok')", encoding="utf-8")
+
+            # Valid tree
+            errors = validate_package_tree(tmproot, TEMPLATE_FILE_SUFFIXES, executable_subdir="skills")
+            self.assertEqual([], errors)
+
+            # Invalid: python script placed directly outside skills/
+            (tmproot / "bad_script.py").write_text("print('bad')", encoding="utf-8")
+            errors = validate_package_tree(tmproot, TEMPLATE_FILE_SUFFIXES, executable_subdir="skills")
+            self.assertTrue(any("prohibited file type" in error for error in errors))
+
+    def test_compatibility_lockfile_integrity_and_drift_detection(self):
+        self.assertTrue(verify_lockfile())
+        lock_data = generate_lock_data()
+        self.assertEqual("1.0.0", lock_data["version"])
+        self.assertIn("scripts/validate_template.py", lock_data["critical_contract_files"])
 
 
 if __name__ == "__main__":
