@@ -24,7 +24,7 @@ graph TD
 
 ## 🏢 Roster Design: Knowledge Work vs. Edge Operations
 
-For each of the 23 industries represented in the catalog, swarms are categorized into one of two archetypes:
+Across the 25 industries represented in the catalog, swarms use one of two core archetypes. Field Services and Wholesale & Distribution also include compact three-agent starter teams for businesses with up to 25 seats:
 
 ### 1. Knowledge Work Swarms (Cognitive Layer)
 - **Focus**: High-context information retrieval, document audits, policy synthesis, case law precedent research, and regulatory reporting.
@@ -35,6 +35,12 @@ For each of the 23 industries represented in the catalog, swarms are categorized
 - **Focus**: Supply chain tracking, inventory receiving audits, parts procurement QA, ISO 9000 compliance logs, and dock shipping coordination.
 - **Roster Characteristics**: Highly-optimized, low-latency model allocations (e.g., `gemini-1.5-flash`, local `phi-3`) combined with automated verification scripts.
 - **Example**: `manufacturing-iso9000-qa` or `ecommerce-dispatch-qa`.
+
+### Small-Business Operations Starters (25 Seats or Fewer)
+
+- **Field Services**: Dispatch coordination, estimate and work-order preparation, customer follow-up, and daily exception review for home services, repair, and maintenance businesses.
+- **Wholesale & Distribution**: B2B quote preparation, account operations, inventory replenishment planning, and order-fulfillment exception handling.
+- **Human control**: All six agents can prepare operational drafts, but every file-writing capability is marked for oversight. People retain approval of schedules, quotes, pricing, purchase orders, inventory release, shipments, and outbound customer messages.
 
 ---
 

@@ -24,7 +24,9 @@
     "Human Resources",
     "Education",
     "Critical Infrastructure",
-    "Media & Creative"
+    "Media & Creative",
+    "Field Services",
+    "Wholesale & Distribution"
   ],
   "company_sizes": [
     25,
@@ -1304,6 +1306,49 @@
         "grep_search",
         "read_file",
         "shell",
+        "write_file"
+      ]
+    },
+    {
+      "id": "field-service-operations-25",
+      "name": "Small Field Service Operations (25 Seats)",
+      "description": "Dispatch, estimate and work-order preparation, customer follow-up, and daily exception review for small appointment-based field-service teams.",
+      "industry": "Field Services",
+      "tags": [
+        "field-service",
+        "dispatch",
+        "estimates",
+        "work-orders",
+        "customer-care",
+        "small-business"
+      ],
+      "path": "field-services/operations-25",
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
+        "write_file"
+      ]
+    },
+    {
+      "id": "wholesale-b2b-operations-25",
+      "name": "Small Wholesale B2B Operations (25 Seats)",
+      "description": "Quote preparation, account follow-up, replenishment planning, and fulfillment exception control for small wholesalers and distributors.",
+      "industry": "Wholesale & Distribution",
+      "tags": [
+        "wholesale",
+        "b2b",
+        "sales-operations",
+        "purchasing",
+        "inventory",
+        "fulfillment",
+        "small-business"
+      ],
+      "path": "wholesale-distribution/b2b-operations-25",
+      "company_size": 25,
+      "required_skills": [
+        "grep_search",
+        "read_file",
         "write_file"
       ]
     }

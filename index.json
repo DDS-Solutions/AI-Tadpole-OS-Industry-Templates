@@ -989,5 +989,35 @@
       "shell",
       "write_file"
     ]
+  },
+  {
+    "id": "field-service-operations-25",
+    "name": "Small Field Service Operations (25 Seats)",
+    "description": "Dispatch, estimate and work-order preparation, customer follow-up, and daily exception review for small appointment-based field-service teams.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "field-services/operations-25",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "grep_search",
+      "read_file",
+      "write_file"
+    ]
+  },
+  {
+    "id": "wholesale-b2b-operations-25",
+    "name": "Small Wholesale B2B Operations (25 Seats)",
+    "description": "Quote preparation, account follow-up, replenishment planning, and fulfillment exception control for small wholesalers and distributors.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "wholesale-distribution/b2b-operations-25",
+    "required_models": [
+      "gemini-pro-latest"
+    ],
+    "required_skills": [
+      "grep_search",
+      "read_file",
+      "write_file"
+    ]
   }
 ]

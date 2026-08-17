@@ -49,7 +49,7 @@ The engine clones the registry, copies agent profiles into its agent configurati
 
 ## 📁 Repository Structure
 
-The repository contains pre-configured templates across **23 industries**, with each industry hosting at least two specialized swarm types:
+The repository contains pre-configured templates across **25 industries**. Most industries provide both knowledge-work and edge-operations swarms; the Field Services and Wholesale & Distribution starters provide compact three-agent teams designed specifically for businesses with up to 25 seats:
 1. **Knowledge Work Swarms**: Focused on research analysis, policy indexing, case law synthesis, and document auditing.
 2. **Edge Operations Swarms**: Focused on inventory management, shipping/receiving audits, purchasing/procurement, and ISO 9000 quality assurance.
 

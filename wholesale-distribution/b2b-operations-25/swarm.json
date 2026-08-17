@@ -1,0 +1,16 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Small Wholesale B2B Operations (25 Seats)",
+  "version": "1.0.0",
+  "description": "A compact quote-to-fulfillment team for wholesalers and distributors serving business accounts with up to 25 seats.",
+  "industry": "wholesale-distribution",
+  "tags": ["wholesale", "b2b", "sales-operations", "purchasing", "inventory", "fulfillment", "small-business"],
+  "defaults": {"model": "gemini-pro-latest", "temperature": 0.2},
+  "roster": [
+    {"id": "wholesale-b2b-account-operations", "path": "agents/wholesale-b2b-account-operations.json", "supervisor": null, "priority": "critical"},
+    {"id": "wholesale-inventory-replenishment-planner", "path": "agents/wholesale-inventory-replenishment-planner.json", "supervisor": "wholesale-b2b-account-operations", "priority": "normal"},
+    {"id": "wholesale-order-fulfillment-coordinator", "path": "agents/wholesale-order-fulfillment-coordinator.json", "supervisor": "wholesale-b2b-account-operations", "priority": "normal"}
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": ["workflows/wholesale_quote_to_fulfillment.md"]
+}
