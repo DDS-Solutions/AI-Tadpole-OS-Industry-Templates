@@ -28,7 +28,9 @@ This matrix records the private upstream contract audited before registry or Swa
 | `knowledge.json` | With vector memory enabled, entries deserialize as `AddKnowledgeRequest`; `text` and `topic` are required. Individual ingestion failures are warnings. | Require non-empty `text` and `topic`. |
 | `knowledge/*.md` | Markdown bodies are ingested with optional frontmatter metadata. | Include real playbook content, not dangling references. |
 | `skills/*` security gate | Supported top-level source is scanned with SkillSpector before copy. A reported score of 50+ aborts. Scan-call errors are logged and can continue; earlier writes are not rolled back. | Allow reviewed executable source only under `skills/`; run registry validation, Bandit, and malware scanning before publication. |
-| Install result | Agent persistence, MCP parsing/writes, and knowledge ingestion can fail or skip while the endpoint returns success. | A successful HTTP response is not proof of complete installation. CI validation is mandatory. |
+| Registry lockfile | `compatibility.lock.json` pins the upstream revision and cryptographic SHA-256 hashes of critical contract files. CI fails on unverified drift. | Keep `compatibility.lock.json` synchronized via `python scripts/verify_compatibility_lock.py --generate`. |
+| Smoke testing | `testing/smoke-test` serves as the canonical reference template validating catalog parsing, idle availability, workflow extraction, and MCP execution isolation. | Maintain `testing/smoke-test` and `tests/test_smoke_template.py` as mandatory CI gates. |
+| Install result | Agent persistence, MCP parsing/writes, and knowledge ingestion can fail or skip while the endpoint returns success. | A successful HTTP response is not proof of complete installation. CI validation is mandatory. Upstream should adopt structured `installation_receipt.json`. |
 
 ## Upstream source anchors
 
@@ -51,8 +53,8 @@ This matrix records the private upstream contract audited before registry or Swa
 | Builder put bundled MCP servers under a path deleted after install. | Builder incompatibility | Export source under `skills/` and reference its copied `execution/` path. |
 | Runtime does not apply MCP config `env`, use `mcp_tools` as a filter, or fully discover external tools. | Upstream defect | Document accurately; do not manufacture a registry-only authorization claim. |
 | Installer workflow destination differs from deterministic loader source. | Upstream defect | Preserve parser-compatible workflow content and track upstream. |
-| Installer can partially install and still report success. | Upstream reliability/security defect | Keep publication gates blocking and require an upstream stage/validate/commit transaction. |
-| MCP npm dependencies are mutable or may be placeholders. | Dependency provenance gap | Verify and pin each connector independently before production use. |
+| Installer can partially install and still report success. | Upstream reliability/security defect | Keep publication gates blocking and require an upstream stage/validate/commit transaction with structured receipts. |
+| MCP npm dependencies are mutable or may be placeholders. | Dependency provenance gap | Verify and pin each connector independently before production use. Enriched `mcp_registry.json` with review dates and integrity hashes. |
 
 ## Re-audit trigger
 

@@ -143,14 +143,21 @@ not consume.
   `d328fcd43eca185f4672be313774b81982253973`.
 - Phase 1: local consumer-wire, invalid-fixture, archive-content, MCP, OKF, and
   workflow round-trip characterization tests are in place.
-- Phase 2: all registered agents and parser-incompatible workflows are migrated;
-  validation has zero errors. Six preserved legacy workflow files remain
-  intentionally reported as unreferenced warnings.
-- Phase 3: builder agent, workflow, MCP archive, OKF, selector, and stale-request
+- Phase 2: all registered agents, MCP configurations, and workflow SOPs are migrated;
+  validation achieves **0 errors and 0 warnings** (all 6 legacy workflows registered into `swarm.json`).
+- Phase 3: builder agent, workflow, MCP archive, OKF, capability chips, selector, and stale-request
   defects are repaired and covered by tests. Full MCP execution and
   deterministic workflow execution remain blocked by consumer install-path
   behavior documented in `COMPATIBILITY_MATRIX.md`.
 - Phase 4: consumer contract migration is additive/idempotent, and the legacy
   roster replacement utility is staging-only.
-- Phase 5: validation, migration checks, Python tests, builder lint/tests/build,
-  and broad security scanning are CI gates.
+- Phase 5: validation, lockfile drift verification, Python unit/smoke tests, builder lint/tests/build,
+  whole-repo Bandit analysis, and broad security scanning with immutable Action commit SHAs are CI gates.
+
+## Representative Migration Sample Audit
+
+| Category | Representative Profile | Capabilities (`skills`) | Oversight Flag | Workflow Binding | MCP Tools |
+| --- | --- | --- | --- | --- | --- |
+| **Read-Only / Research** | `pharma/clinical-trials/agents/specialized-data-privacy-officer.json` | `["read_file", "grep_search"]` | `false` | `clinical_privacy_sop` | `[]` |
+| **Mutating / File Ops** | `development/full-stack-sprint/agents/engineering-engineering-database-optimizer.json` | `["read_file", "write_file"]` | `true` (forced) | `db_migration_sop` | `[]` |
+| **Execution / Shell** | `testing/smoke-test/agents/operator.json` | `["read_file", "write_file", "execute_shell", "shell"]` | `true` (forced) | `operator_sop` | `["smoke:healthcheck"]` |
