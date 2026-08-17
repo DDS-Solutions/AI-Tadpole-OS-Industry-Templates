@@ -2,15 +2,6 @@ name: Sapphire Shield Security Scan
 
 on:
   pull_request:
-    paths:
-      - 'templates/**'
-      - 'legal/**'
-      - 'healthcare/**'
-      - 'development/**'
-      - 'financial-services/**'
-      - 'digital-marketing/**'
-      - 'real-estate/**'
-      - 'manufacturing/**'
 
 jobs:
   malware-scan:

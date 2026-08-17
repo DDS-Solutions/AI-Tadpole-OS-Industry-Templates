@@ -29,10 +29,20 @@ jobs:
           cache-dependency-path: web-builder/package-lock.json
 
       - name: Install dependencies
-        run: cd web-builder && npm install
+        working-directory: web-builder
+        run: npm ci
+
+      - name: Lint
+        working-directory: web-builder
+        run: npm run lint
+
+      - name: Test archive contracts
+        working-directory: web-builder
+        run: npm run test
 
       - name: Build
-        run: cd web-builder && npm run build
+        working-directory: web-builder
+        run: npm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
