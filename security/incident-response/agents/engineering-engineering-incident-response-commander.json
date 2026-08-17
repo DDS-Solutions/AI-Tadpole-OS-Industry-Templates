@@ -16,5 +16,7 @@
   "workflows": [
     "incident_response_commander"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

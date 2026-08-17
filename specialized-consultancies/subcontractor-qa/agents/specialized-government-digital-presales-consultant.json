@@ -15,5 +15,7 @@
   "workflows": [
     "government_digital_presales_consultant"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

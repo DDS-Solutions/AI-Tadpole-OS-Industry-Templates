@@ -15,5 +15,7 @@
   "workflows": [
     "sales_sales_discovery_coach"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

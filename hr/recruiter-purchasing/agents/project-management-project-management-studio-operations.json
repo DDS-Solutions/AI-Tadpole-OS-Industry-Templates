@@ -15,5 +15,7 @@
   "workflows": [
     "project_management_project_management_studio_operations"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

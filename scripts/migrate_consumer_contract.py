@@ -1,4 +1,4 @@
-"""Safely align registry assets with the pinned AI-Tadpole-OS wire contract.
+"""Safely align registry assets with the pinned Tadpole-OS wire contract.
 
 The migration is additive and idempotent. It never deletes templates or agent
 files. Run without ``--apply`` to preview changes; CI uses ``--check`` to ensure
@@ -16,6 +16,17 @@ from typing import Any
 
 DEFAULT_PROVIDER = "google"
 DEFAULT_MODEL_ID = "gemini-pro-latest"
+LEGACY_SKILL_REPLACEMENTS = {
+    "write_to_file": ("write_file",),
+    "run_command": ("execute_shell", "shell"),
+}
+DANGEROUS_SKILLS = frozenset({
+    "delete_file",
+    "execute_shell",
+    "shell",
+    "terminal",
+    "write_file",
+})
 EXECUTABLE_HEADING = re.compile(r"^#{2,3}\s+\S", re.MULTILINE)
 NUMBERED_INSTRUCTION = re.compile(r"^(\s*)(\d+)[.)]\s+(.+)$")
 
@@ -23,7 +34,16 @@ NUMBERED_INSTRUCTION = re.compile(r"^(\s*)(\d+)[.)]\s+(.+)$")
 def migrated_agent(agent: dict[str, Any], default_model: str) -> dict[str, Any]:
     """Return a consumer-compatible copy while preserving existing fields."""
     result = dict(agent)
-    result.setdefault("status", "ready")
+    if result.get("status") in (None, "", "ready"):
+        result["status"] = "idle"
+
+    result["skills"] = migrated_skills(result.get("skills", []))
+    result.setdefault("workflows", [])
+    result.setdefault("mcp_tools", [])
+    result["requires_oversight"] = bool(
+        result.get("requires_oversight")
+        or DANGEROUS_SKILLS.intersection(result["skills"])
+    )
 
     config = dict(result.get("model_config") or {})
     model_id = (
@@ -37,6 +57,17 @@ def migrated_agent(agent: dict[str, Any], default_model: str) -> dict[str, Any]:
     config.setdefault("model_id", model_id)
     result["model_config"] = config
     return result
+
+
+def migrated_skills(skills: Any) -> list[str]:
+    """Replace legacy capability labels with Tadpole-OS runtime identifiers."""
+    migrated: list[str] = []
+    for skill in skills if isinstance(skills, list) else []:
+        replacements = LEGACY_SKILL_REPLACEMENTS.get(skill, (skill,))
+        for replacement in replacements:
+            if replacement not in migrated:
+                migrated.append(replacement)
+    return migrated
 
 
 def migrated_workflow(content: str) -> str:
@@ -76,10 +107,28 @@ def json_text(value: Any) -> str:
 
 
 def collect_changes(root: Path) -> list[tuple[Path, str]]:
-    registry = json.loads((root / "registry.json").read_text(encoding="utf-8"))
+    registry_path = root / "registry.json"
+    index_path = root / "index.json"
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    index = json.loads(index_path.read_text(encoding="utf-8"))
     changes: list[tuple[Path, str]] = []
 
-    for template in registry["templates"]:
+    migrated_registry = dict(registry)
+    migrated_registry["templates"] = [
+        {**template, "required_skills": migrated_skills(template.get("required_skills", []))}
+        for template in registry["templates"]
+    ]
+    if migrated_registry != registry:
+        changes.append((registry_path, json_text(migrated_registry)))
+
+    migrated_index = [
+        {**template, "required_skills": migrated_skills(template.get("required_skills", []))}
+        for template in index
+    ]
+    if migrated_index != index:
+        changes.append((index_path, json_text(migrated_index)))
+
+    for template in migrated_registry["templates"]:
         template_root = root / Path(template["path"])
         swarm_path = template_root / "swarm.json"
         swarm = json.loads(swarm_path.read_text(encoding="utf-8"))

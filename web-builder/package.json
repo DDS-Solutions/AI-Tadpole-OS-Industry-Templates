@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node -e \"const fs = require('fs'); fs.copyFileSync('../registry.json', './public/registry.json'); fs.copyFileSync('../mcp_registry.json', './public/mcp_registry.json');\" && vite",
-    "build": "node -e \"const fs = require('fs'); fs.copyFileSync('../registry.json', './public/registry.json'); fs.copyFileSync('../mcp_registry.json', './public/mcp_registry.json');\" && tsc -b && vite build",
+    "sync-catalog": "node scripts/sync-catalog.mjs",
+    "dev": "npm run sync-catalog && vite",
+    "build": "npm run sync-catalog && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run"

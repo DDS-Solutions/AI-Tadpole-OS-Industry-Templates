@@ -15,5 +15,7 @@
   "workflows": [
     "academic_academic_historian"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

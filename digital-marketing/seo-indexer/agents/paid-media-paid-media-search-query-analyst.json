@@ -16,5 +16,7 @@
   "workflows": [
     "paid_media_paid_media_search_query_analyst"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

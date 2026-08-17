@@ -1,9 +1,9 @@
 # Developer & Contribution Guide
 
-This page explains how developers can build, validate, and submit custom swarm templates without drifting from the AI-Tadpole-OS consumer contract.
+This page explains how developers can build, validate, and submit custom swarm templates without drifting from the private Tadpole-OS source contract.
 
 > [!IMPORTANT]
-> Any schema, validator, archive, workflow, MCP, knowledge, or migration change must begin with a cross-repository contract audit. Pin the reviewed AI-Tadpole-OS revision and update [`COMPATIBILITY_MATRIX.md`](../COMPATIBILITY_MATRIX.md) when the accepted contract changes.
+> Any schema, validator, archive, workflow, MCP, knowledge, security, or migration change must begin with a read-only audit of private `DDS-Solutions/TadPole-OS`. Pin the reviewed private commit and update [`COMPATIBILITY_MATRIX.md`](../COMPATIBILITY_MATRIX.md).
 
 ---
 
@@ -35,17 +35,18 @@ python -m unittest discover -s tests -p "test_*.py"
 The validation suite is read-only and performs the following integrity checks:
 1. **Catalog Parity**: Confirms `registry.json` and `index.json` agree on unique template IDs and paths.
 2. **Directory Resolution**: Confirms all templates declared in `registry.json` exist physically.
-3. **Configuration Auditing**: Parses `swarm.json`, rejects unsafe paths, and checks roster and global-workflow references.
-4. **Agent Profile Checks**: 
+3. **Package Security Boundary**: Rejects symbolic links, unapproved or binary files, non-UTF-8 content, files over 1 MB, and high-confidence embedded credential patterns.
+4. **Configuration Auditing**: Parses `swarm.json`, rejects unsafe paths, and checks roster and global-workflow references.
+5. **Agent Profile Checks**:
    - Scans every profile under `/agents/`, because the consumer installs all JSON files in that directory—not only roster entries.
-   - Requires non-empty `id`, `name`, `role`, `department`, `description`, and `status` strings.
+   - Requires non-empty `id`, `name`, `role`, `department`, and `description`, plus native `status: "idle"`.
    - Requires `model_config.provider`, `model_config.model_id`, and `model_config.system_prompt`, with a maximum 800-character prompt.
-   - Validates `skills` and `workflows` arrays and confirms every workflow reference exists.
-5. **Workflow Checks**: 
+   - Validates `skills`, `workflows`, `mcp_tools`, and `requires_oversight`; rejects legacy tool IDs, incomplete shell markers, and unprotected mutation/shell declarations.
+6. **Workflow Checks**:
    - Checks global, agent-owned, and otherwise present workflow files.
    - Requires at least one consumer-visible `##` or `###` heading. `## Step N: Name` is preferred but is not the only syntax the pinned parser accepts.
    - Reports unreferenced files as warnings.
-6. **MCP and Knowledge Checks**: Validates the root `{ "mcpServers": {} }` shape, server commands/arguments/environment values, blueprint files, and required `knowledge.json` text/topic fields.
+7. **MCP and Knowledge Checks**: Validates the root `{ "mcpServers": {} }` shape, approved runtime commands, shell-safe arguments, local credential placeholders, blueprint files, and required `knowledge.json` text/topic fields.
 
 The legacy `validate.py` entry point delegates to the same contract validator; it no longer maintains a second set of rules.
 
@@ -53,7 +54,7 @@ The legacy `validate.py` entry point delegates to the same contract validator; i
 
 ## 💻 Engine Auditing Commands
 
-If you are developing features directly on the **AI-Tadpole-OS** engine (`server-rs` or React dashboard) and testing template integration, utilize these commands:
+If you are developing directly on the private **Tadpole-OS** engine (`server-rs` or React dashboard), use its repository instructions and keep registry audits read-only unless upstream changes are separately authorized:
 
 ### Backend Checks
 Verify backend Rust compilation and run backend test suites:
@@ -132,6 +133,6 @@ The templates repository uses `.github/workflows/validate-templates.yml` as the 
 - **Registry job**: Runs the migration check, complete validator, and Python characterization tests.
 - **Builder job**: Uses the lockfile with `npm ci`, then runs lint, archive/round-trip tests, and the production build.
 - **Deployment**: Repeats builder lint/tests/build before publishing GitHub Pages.
-- **Security scan**: Runs for every pull request rather than a partial list of industry directories.
+- **Security scan**: Runs on pull requests and pushes to `main`; it repeats the blocking package policy, runs adversarial tests, scans connector and template-skill Python with pinned Bandit 1.9.4, and scans the repository with ClamAV.
 
-Pull requests also include a checklist requiring the reviewed AI-Tadpole-OS commit and compatibility notes.
+Pull requests also include a checklist requiring the reviewed private Tadpole-OS commit and compatibility notes.

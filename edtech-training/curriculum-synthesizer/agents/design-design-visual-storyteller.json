@@ -16,5 +16,7 @@
   "workflows": [
     "design_design_visual_storyteller"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

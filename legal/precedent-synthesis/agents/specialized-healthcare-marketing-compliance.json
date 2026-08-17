@@ -16,5 +16,7 @@
   "workflows": [
     "healthcare_marketing_compliance"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

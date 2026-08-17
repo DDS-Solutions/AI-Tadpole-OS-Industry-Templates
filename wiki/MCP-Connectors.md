@@ -36,11 +36,11 @@ When configuring your swarm using the visual **Swarm Architect** (`/web-builder`
 
 - merges selected server definitions into a root `mcps.json`;
 - sets manifest metadata to `"required_mcps": "mcps.json"`;
-- bundles relative Python server sources and available requirements files under `mcp-blueprints/`; and
+- places bundled Python source under template `skills/` and rewrites its argument to the post-install `execution/<connector>-server.py` path; and
 - rejects missing connector definitions or duplicate MCP server names.
 
 ### Manual Configuration
-If you are writing a template manually, place the accepted MCP configuration at the template root. The current AI-Tadpole-OS installer reads this exact file and does not follow repository-relative `required_mcps` paths:
+If you are writing a template manually, place the accepted MCP configuration at the template root. The pinned private Tadpole-OS installer reads this exact file and does not follow repository-relative `required_mcps` paths:
 
 ```json
 {
@@ -58,7 +58,7 @@ If you are writing a template manually, place the accepted MCP configuration at 
   "mcpServers": {
     "generic-crm": {
       "command": "python",
-      "args": ["mcp-blueprints/generic-crm/server.py"],
+      "args": ["execution/mcp-generic-crm-server.py"],
       "env": {
         "CRM_API_KEY": "CONFIGURE_LOCALLY"
       }
@@ -69,12 +69,15 @@ If you are writing a template manually, place the accepted MCP configuration at 
 
 `required_mcps` remains useful portable manifest metadata, but it is not an installation mechanism in the pinned consumer.
 
+Place the corresponding reviewed source at `skills/mcp-generic-crm-server.py`. The installer scans it, then copies it to `execution/mcp-generic-crm-server.py` before deleting the clone.
+
 ## 🔒 Security Model
 
-In alignment with the Sapphire Shield policy, MCP servers are intended to run locally.
+In alignment with the Sapphire Shield policy, MCP servers are intended to run locally and require operator review.
 - MCP server configuration uses a command and string argument list suitable for stdio startup.
-- Environment variables and credentials must be provided manually by the system administrator during installation.
-- Overlord Approval boundaries are strictly enforced for write/mutation endpoints.
+- Sensitive environment values in this registry must be explicit placeholders. The pinned MCP client parses but does not apply config `env`; set real values in the Tadpole OS process environment.
+- The registry validator allows only reviewed runtime commands and rejects shell control syntax and inline interpreter execution.
+- Tadpole OS authorization is not inferred from a connector description or the builder's prompt keyword advisory. Write/mutation access must be constrained by the deployed connector and consumer runtime configuration.
 
 > [!WARNING]
-> The current remote installer deletes its temporary repository clone after merging MCP configuration. Commands that point to server files inside that clone therefore lose their backing files. Exported archives are self-contained, but end-to-end remote installation of file-backed connectors requires an upstream consumer fix that retains or relocates those assets.
+> Swarm Architect now routes bundled source through `skills/` so the installer retains it in `execution/`. This does not install Python/npm dependencies, apply MCP config `env`, make `mcp_tools` an active authorization filter, or repair the pinned runtime's incomplete external-tool discovery. Those remain operator/upstream responsibilities.

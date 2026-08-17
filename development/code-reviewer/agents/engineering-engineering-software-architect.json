@@ -11,10 +11,12 @@
   },
   "skills": [
     "read_file",
-    "write_to_file"
+    "write_file"
   ],
   "workflows": [
     "software_architect"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": true
 }

@@ -16,5 +16,7 @@
   "workflows": [
     "marketing_marketing_china_ecommerce_operator"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

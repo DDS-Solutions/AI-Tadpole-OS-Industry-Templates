@@ -15,5 +15,7 @@
   "workflows": [
     "sales_sales_pipeline_analyst"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

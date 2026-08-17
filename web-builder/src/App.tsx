@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import type { Agent, WorkflowItem, TemplateItem, CatalogAgent, MCPConnector } from './types';
+import type { Agent, WorkflowItem, TemplateItem, CatalogAgent, MCPConnector, SwarmDetails } from './types';
 import { INDUSTRY_MAP, REGISTRY, INDUSTRY_CODES_MAP } from './constants';
 
 import McpEditor from './components/Modals/McpEditor';
@@ -43,7 +43,7 @@ export default function App() {
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null);
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateItem | null>(null);
   const [isLoadingSwarmDetails, setIsLoadingSwarmDetails] = useState(false);
-  const [loadedSwarmDetails, setLoadedSwarmDetails] = useState<{ roster: Agent[]; workflows: WorkflowItem[] } | null>(null);
+  const [loadedSwarmDetails, setLoadedSwarmDetails] = useState<SwarmDetails | null>(null);
   const swarmRequestController = useRef<AbortController | null>(null);
   const swarmRequestSequence = useRef(0);
 
@@ -79,7 +79,7 @@ export default function App() {
     { id: 'product', label: 'Product', color: '#D946EF', desc: 'Product roadmap, user story mapping, and capability spec definitions.' },
     { id: 'project-management', label: 'Project Management', color: '#0EA5E9', desc: 'Sprint scheduling, task matching, and milestone resolution.' },
     { id: 'sales', label: 'Sales', color: '#10B981', desc: 'Lead scoring, conversion outreach simulation, and pitch refinement.' },
-    { id: 'security', label: 'Security', color: '#EF4444', desc: 'Prompt injection mitigation, vulnerability scanning, and permission gateways.' },
+    { id: 'security', label: 'Security', color: '#EF4444', desc: 'Threat analysis, vulnerability review, and permission planning.' },
     { id: 'spatial-computing', label: 'Spatial Computing', color: '#06B6D4', desc: 'AR/VR tracking systems, 3D math, and sensory coordinate translation.' },
     { id: 'specialized', label: 'Specialized', color: '#6366F1', desc: 'Domain-expert roles tailored for atypical workflows.' },
     { id: 'support', label: 'Support', color: '#84CC16', desc: 'Troubleshooting guides, ticket analysis, and user guide generation.' },

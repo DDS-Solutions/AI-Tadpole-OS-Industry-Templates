@@ -24,16 +24,38 @@ export default function Step5_Forge({
   onPrevious,
   onReset
 }: Step5Props) {
+  const dangerousSkills = new Set(['write_file', 'delete_file', 'execute_shell', 'shell', 'terminal']);
+  const oversightAgents = agents.filter(agent => (
+    agent.requiresOversight || (agent.skills || []).some(skill => dangerousSkills.has(skill))
+  )).length;
+  const capabilityCount = new Set(agents.flatMap(agent => agent.skills || [])).size;
+  const declaredMcpTools = new Set(agents.flatMap(agent => agent.mcpTools || [])).size;
+
   return (
     <motion.div 
       key="step5"
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      data-tooltip="Phase 5 Forge Workspace: Inspect the compilation manifest, run security audits, and generate installation ZIP packages."
+      data-tooltip="Phase 5 Forge Workspace: Inspect the compilation manifest, review prompt capability hints, and generate installation ZIP packages."
       className="w-full sovereign-panel p-12 text-center"
     >
       <div className="bg-cyber-green/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-cyber-green/30">
         <Cpu className="text-cyber-green w-8 h-8" />
+      </div>
+
+      <div className="max-w-md mx-auto mb-8 grid grid-cols-3 gap-3 text-left">
+        <div className="rounded-lg border border-zinc-800 bg-zinc-950/70 p-3">
+          <div className="text-[9px] uppercase font-mono text-zinc-600">Capabilities</div>
+          <div className="text-lg font-bold text-zinc-200 mt-1">{capabilityCount}</div>
+        </div>
+        <div className="rounded-lg border border-zinc-800 bg-zinc-950/70 p-3">
+          <div className="text-[9px] uppercase font-mono text-zinc-600">MCP Declarations</div>
+          <div className="text-lg font-bold text-zinc-200 mt-1">{declaredMcpTools}</div>
+        </div>
+        <div className="rounded-lg border border-zinc-800 bg-zinc-950/70 p-3">
+          <div className="text-[9px] uppercase font-mono text-zinc-600">Oversight Agents</div>
+          <div className="text-lg font-bold text-zinc-200 mt-1">{oversightAgents}</div>
+        </div>
       </div>
       <h2 className="text-2xl font-bold mb-2" data-tooltip="The swarm configuration is ready to build and compile.">Ready for Intelligence Manifestation</h2>
       <p className="text-zinc-500 max-w-md mx-auto mb-12 text-sm leading-relaxed">
@@ -50,7 +72,7 @@ export default function Step5_Forge({
         </ul>
       </div>
 
-      {/* Sapphire Shield Security Audit */}
+      {/* Advisory prompt review. Enforcement happens in repository and consumer gates. */}
       {(() => {
         const allWarnings: { agentName: string; emoji: string; capability: string; reason: string; severity: 'red' | 'amber' }[] = [];
         agents.forEach(agent => {
@@ -64,28 +86,28 @@ export default function Step5_Forge({
           });
         });
 
-        const isSecure = allWarnings.length === 0;
+        const isClear = allWarnings.length === 0;
 
         return (
-          <div data-tooltip="Sovereign Shield Telemetry: Automatically scans prompt definitions to assess capability requests and approval boundaries." className="max-w-md mx-auto mb-12 bg-zinc-950/80 border rounded-xl overflow-hidden text-left sovereign-transition font-mono text-xs" style={{ borderColor: isSecure ? '#10B981' : '#F59E0B' }}>
-            <div className={`p-4 flex items-center gap-3 border-b ${isSecure ? 'bg-emerald-950/20 border-emerald-900/40' : 'bg-amber-950/20 border-amber-900/40'}`} style={{ borderColor: isSecure ? 'color-mix(in srgb, #10B981 30%, transparent)' : 'color-mix(in srgb, #F59E0B 30%, transparent)' }}>
-              <Shield className={`w-5 h-5 ${isSecure ? 'text-emerald-500' : 'text-amber-500'}`} />
+          <div data-tooltip="Advisory keyword review of prompt text. This does not prove safety or grant runtime authorization." className="max-w-md mx-auto mb-12 bg-zinc-950/80 border rounded-xl overflow-hidden text-left sovereign-transition font-mono text-xs" style={{ borderColor: isClear ? '#10B981' : '#F59E0B' }}>
+            <div className={`p-4 flex items-center gap-3 border-b ${isClear ? 'bg-emerald-950/20 border-emerald-900/40' : 'bg-amber-950/20 border-amber-900/40'}`} style={{ borderColor: isClear ? 'color-mix(in srgb, #10B981 30%, transparent)' : 'color-mix(in srgb, #F59E0B 30%, transparent)' }}>
+              <Shield className={`w-5 h-5 ${isClear ? 'text-emerald-500' : 'text-amber-500'}`} />
               <div>
-                <h4 className="font-bold text-xs text-white uppercase tracking-wider cursor-help" data-tooltip="Zero-Trust static analysis scanner checking for raw execution permissions.">Sapphire Shield Security Audit</h4>
+                <h4 className="font-bold text-xs text-white uppercase tracking-wider cursor-help" data-tooltip="A keyword-based prompt review; repository and Tadpole OS checks remain required.">Prompt Capability Advisory</h4>
                 <p className="text-[10px] text-zinc-550 font-mono mt-0.5 font-normal">
-                  {isSecure ? 'Sovereign Telemetry Level: Zero Privileges' : 'Active Warning: Approval Required'}
+                  {isClear ? 'No capability keywords detected' : 'Manual security review recommended'}
                 </p>
               </div>
             </div>
             <div className="p-4 space-y-3 font-mono text-xs leading-normal">
-              {isSecure ? (
+              {isClear ? (
                 <div className="text-zinc-400 leading-relaxed text-[11px]">
-                  🟢 All rostered agent prompts are compliant. This swarm requests no special runtime capabilities and will execute directly without manual Tadpole OS authorization overrides.
+                  🟢 No configured capability keywords were found. This is an advisory result, not proof that the archive is safe or permission-free. Repository validation and Tadpole OS runtime controls still apply.
                 </div>
               ) : (
                 <>
                   <div className="text-zinc-400 mb-2 leading-relaxed text-[11px]">
-                    ⚠️ The following agent prompts trigger security review boundaries and will request manual Overlord Authorization during Swarm installation:
+                    ⚠️ The following prompts contain capability-related keywords. Review the archive and configure explicit Tadpole OS permissions before use; this advisory does not itself trigger or guarantee an authorization prompt.
                   </div>
                   <div className="space-y-2 max-h-[160px] overflow-y-auto custom-scrollbar pr-1">
                     {allWarnings.map((w, idx) => (

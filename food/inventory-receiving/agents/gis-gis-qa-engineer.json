@@ -15,5 +15,7 @@
   "workflows": [
     "gis_gis_qa_engineer"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

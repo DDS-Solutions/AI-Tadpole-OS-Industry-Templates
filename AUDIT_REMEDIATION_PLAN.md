@@ -1,35 +1,35 @@
 # Cross-Repository Audit Remediation Plan
 
-This repository supplies the industry templates and Swarm Architect used by
-[AI-Tadpole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS). Compatibility
-with that consumer is the primary constraint for every remediation described
-below.
+This repository supplies the industry templates and Swarm Architect used by the
+public [AI-Tadpole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS)
+distribution. Private `DDS-Solutions/TadPole-OS` is the authoritative source
+contract for every remediation described below.
 
 > **Compatibility rule:** Any implementation work must start with a
 > cross-repository contract audit. Do not change this registry's manifests,
 > generated archives, validators, or migration scripts until the corresponding
-> AI-Tadpole-OS loader, installer, runtime types, and compatibility tests have
-> been inspected. This prevents a locally reasonable change from breaking the
-> consuming application.
+> private Tadpole-OS loader, installer, runtime types, security gates, and tests
+> have been inspected read-only. This prevents a locally reasonable change from
+> breaking the consuming application.
 
 ## Source-of-truth order
 
 When the two repositories disagree, resolve the discrepancy explicitly rather
 than silently choosing one representation:
 
-1. AI-Tadpole-OS runtime loaders, installers, and their tests.
+1. Private Tadpole-OS runtime loaders, installers, security gates, and tests.
 2. Versioned schemas or shared fixtures accepted by both repositories.
 3. `TEMPLATE_SPEC.md` and the validators in this repository.
 4. Existing templates, which may represent intentional legacy compatibility or
    untracked schema drift.
 
-Record the AI-Tadpole-OS commit or release used for every compatibility review.
+Record the private Tadpole-OS commit used for every compatibility review. Use the public repository only as a downstream comparison.
 
 ## Phase 0: Establish the integration contract
 
 Before editing production behavior:
 
-- Locate the AI-Tadpole-OS code paths that download, validate, install, and boot
+- Locate the private Tadpole-OS code paths that download, validate, install, and boot
   templates.
 - Trace the accepted shapes for `swarm.json`, agent profiles, workflow Markdown,
   `mcps.json`, and OKF/IKS knowledge assets.
@@ -40,10 +40,10 @@ Before editing production behavior:
   mismatch, an intentional legacy format, or a registry-only defect.
 
 **Gate:** Publish a compatibility matrix that links each field and file type to
-the accepting AI-Tadpole-OS code and pins the reviewed consumer revision.
+the accepting private Tadpole-OS code and pins the reviewed upstream revision.
 
-**Status (2026-08-17):** Complete for consumer revision
-`275baff9505321c4f5b60cab26a7d57f9ff05a49`. See
+**Status (2026-08-17):** Complete for private upstream revision
+`d328fcd43eca185f4672be313774b81982253973`. See
 [`COMPATIBILITY_MATRIX.md`](COMPATIBILITY_MATRIX.md).
 
 ## Phase 1: Add contract characterization tests
@@ -55,7 +55,7 @@ the accepting AI-Tadpole-OS code and pins the reviewed consumer revision.
   complete contents and references.
 - Add round-trip tests: import a repository template, export it, then verify that
   agents, workflows, connectors, and knowledge assets retain their meaning.
-- Where practical, run the AI-Tadpole-OS validator or installer against these
+- Where practical, run the Tadpole-OS validator or installer against these
   fixtures in CI. Otherwise, maintain a versioned contract fixture shared by
   both repositories.
 
@@ -81,7 +81,7 @@ consumer compatibility suite, with intentional legacy exceptions documented.
 
 ## Phase 3: Repair Swarm Architect import and export
 
-- Generate agent profiles in the exact shape consumed by AI-Tadpole-OS.
+- Generate agent profiles in the exact shape consumed by private Tadpole-OS.
 - Enforce consumer limits and required metadata before export.
 - Preserve agent-owned and global workflow relationships during import and
   round-trip export.
@@ -95,8 +95,8 @@ consumer compatibility suite, with intentional legacy exceptions documented.
 - Cancel or identity-guard overlapping template requests so stale responses
   cannot populate a newly selected template.
 
-**Gate:** A generated archive installs successfully into the pinned
-AI-Tadpole-OS revision and survives the round-trip tests from Phase 1.
+**Gate:** A generated archive installs successfully into the pinned private
+Tadpole-OS revision and survives the round-trip tests from Phase 1.
 
 ## Phase 4: Make migrations safe
 
@@ -139,8 +139,8 @@ not consume.
 
 ## Implementation status (2026-08-17)
 
-- Phase 0: complete at consumer revision
-  `275baff9505321c4f5b60cab26a7d57f9ff05a49`.
+- Phase 0: complete at private upstream revision
+  `d328fcd43eca185f4672be313774b81982253973`.
 - Phase 1: local consumer-wire, invalid-fixture, archive-content, MCP, OKF, and
   workflow round-trip characterization tests are in place.
 - Phase 2: all registered agents and parser-incompatible workflows are migrated;

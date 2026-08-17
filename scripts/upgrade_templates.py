@@ -46,7 +46,7 @@ def agent_payload(agent: dict[str, Any]) -> dict[str, Any]:
         "role": agent.get("role") or agent["name"],
         "department": agent.get("departmentLabel", "Operations"),
         "description": agent["description"],
-        "status": "ready",
+        "status": "idle",
         "model_config": {
             "provider": "google",
             "model_id": "gemini-pro-latest",
@@ -54,6 +54,8 @@ def agent_payload(agent: dict[str, Any]) -> dict[str, Any]:
         },
         "skills": ["read_file"],
         "workflows": [],
+        "mcp_tools": [],
+        "requires_oversight": False,
     }
 
 

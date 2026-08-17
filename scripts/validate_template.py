@@ -1,4 +1,4 @@
-"""Validate registry assets against the pinned AI-Tadpole-OS contract."""
+"""Validate registry assets against the pinned private Tadpole-OS contract."""
 
 from __future__ import annotations
 
@@ -19,6 +19,37 @@ REQUIRED_AGENT_STRINGS = (
     "status",
 )
 EXECUTABLE_HEADING = re.compile(r"^#{2,3}\s+\S", re.MULTILINE)
+MAX_PACKAGE_FILE_BYTES = 1_000_000
+TEMPLATE_FILE_SUFFIXES = frozenset({".json", ".md"})
+TEMPLATE_SKILL_FILE_SUFFIXES = frozenset({".json", ".py", ".js", ".ts"})
+CONNECTOR_FILE_SUFFIXES = frozenset({".json", ".py", ".js", ".ts", ".txt"})
+ALLOWED_MCP_COMMANDS = frozenset({"node", "npx", "python", "python3"})
+LEGACY_SKILLS = frozenset({"run_command", "write_to_file"})
+DANGEROUS_SKILLS = frozenset({
+    "delete_file",
+    "execute_shell",
+    "shell",
+    "terminal",
+    "write_file",
+})
+SENSITIVE_ENV_NAME = re.compile(
+    r"(?:KEY|TOKEN|SECRET|PASSWORD|CREDENTIAL|CONNECTION_STRING|CONN_STR)",
+    re.IGNORECASE,
+)
+SAFE_PLACEHOLDER = re.compile(
+    r"(?:YOUR_[A-Z0-9_]+|CONFIGURE_LOCALLY|REPLACE_ME|CHANGEME|"
+    r"DUMMY(?:_[A-Z0-9_]+)?|\$\{[A-Z0-9_]+\}|<[^>]+>)",
+    re.IGNORECASE,
+)
+SHELL_CONTROL = re.compile(r"(?:\r|\n|&&|\|\||[;|<>`])")
+SECRET_PATTERNS = (
+    ("private key", re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----")),
+    ("AWS access key", re.compile(r"\b(?:AKIA|ASIA)[A-Z0-9]{16}\b")),
+    ("GitHub token", re.compile(r"\b(?:gh[pousr]_[A-Za-z0-9]{36,}|github_pat_[A-Za-z0-9_]{20,})\b")),
+    ("Google API key", re.compile(r"\bAIza[0-9A-Za-z_-]{35}\b")),
+    ("Slack token", re.compile(r"\bxox[baprs]-[A-Za-z0-9-]{10,}\b")),
+    ("Stripe secret key", re.compile(r"\bsk_(?:live|test)_[0-9A-Za-z]{20,}\b")),
+)
 
 
 @dataclass
@@ -52,6 +83,63 @@ def safe_relative_path(root: Path, relative: Any) -> Path | None:
     return candidate
 
 
+def detect_embedded_secrets(content: str) -> list[str]:
+    """Return high-confidence secret types without echoing secret material."""
+    return [label for label, pattern in SECRET_PATTERNS if pattern.search(content)]
+
+
+def validate_package_file(
+    relative: str,
+    suffix: str,
+    size: int,
+    raw: bytes,
+    allowed_suffixes: frozenset[str],
+) -> list[str]:
+    errors: list[str] = []
+    if suffix.lower() not in allowed_suffixes:
+        return [f"{relative} uses a prohibited file type ({suffix or 'no extension'})"]
+    if size > MAX_PACKAGE_FILE_BYTES:
+        return [
+            f"{relative} exceeds the {MAX_PACKAGE_FILE_BYTES}-byte package limit ({size} bytes)"
+        ]
+    if b"\x00" in raw:
+        return [f"{relative} contains binary data"]
+    try:
+        content = raw.decode("utf-8")
+    except UnicodeDecodeError:
+        return [f"{relative} is not valid UTF-8 text"]
+    for secret_type in detect_embedded_secrets(content):
+        errors.append(f"{relative} contains a likely {secret_type}")
+    return errors
+
+
+def validate_package_tree(
+    package_root: Path,
+    allowed_suffixes: frozenset[str],
+    executable_subdir: str | None = None,
+) -> list[str]:
+    """Enforce the source-only package boundary before a template is published."""
+    errors: list[str] = []
+    for path in sorted(package_root.rglob("*")):
+        relative = path.relative_to(package_root).as_posix()
+        if path.is_symlink():
+            errors.append(f"{relative} must not be a symbolic link")
+            continue
+        if not path.is_file():
+            continue
+        try:
+            size = path.stat().st_size
+            raw = path.read_bytes()
+        except OSError as exc:
+            errors.append(f"{relative} cannot be inspected: {exc}")
+            continue
+        suffixes = allowed_suffixes
+        if executable_subdir and relative.startswith(f"{executable_subdir}/"):
+            suffixes = TEMPLATE_SKILL_FILE_SUFFIXES
+        errors.extend(validate_package_file(relative, path.suffix, size, raw, suffixes))
+    return errors
+
+
 def validate_agent_payload(agent: Any) -> list[str]:
     errors: list[str] = []
     if not isinstance(agent, dict):
@@ -60,6 +148,9 @@ def validate_agent_payload(agent: Any) -> list[str]:
     for key in REQUIRED_AGENT_STRINGS:
         if not isinstance(agent.get(key), str) or not agent[key].strip():
             errors.append(f"{key} must be a non-empty string")
+
+    if agent.get("status") != "idle":
+        errors.append('status must be "idle" for an installable registry agent')
 
     model_config = agent.get("model_config")
     if not isinstance(model_config, dict):
@@ -73,10 +164,23 @@ def validate_agent_payload(agent: Any) -> list[str]:
         if isinstance(prompt, str) and len(prompt) > 800:
             errors.append(f"model_config.system_prompt exceeds 800 characters ({len(prompt)})")
 
-    for key in ("skills", "workflows"):
+    for key in ("skills", "workflows", "mcp_tools"):
         value = agent.get(key, [])
         if not isinstance(value, list) or not all(isinstance(item, str) and item for item in value):
             errors.append(f"{key} must be an array of non-empty strings")
+
+    skills = agent.get("skills", [])
+    if isinstance(skills, list):
+        for legacy_skill in sorted(LEGACY_SKILLS.intersection(skills)):
+            errors.append(f"skills contains legacy Tadpole capability: {legacy_skill}")
+        if "execute_shell" in skills and not ({"shell", "terminal"} & set(skills)):
+            errors.append("execute_shell requires the shell or terminal capability marker")
+
+    if not isinstance(agent.get("requires_oversight"), bool):
+        errors.append("requires_oversight must be a boolean")
+    elif isinstance(skills, list) and DANGEROUS_SKILLS.intersection(skills):
+        if not agent["requires_oversight"]:
+            errors.append("dangerous mutation or shell capabilities require oversight")
     return errors
 
 
@@ -103,16 +207,41 @@ def validate_mcp_payload(config: Any) -> list[str]:
         if not isinstance(server, dict):
             errors.append(f"{prefix} must be an object")
             continue
-        if not isinstance(server.get("command"), str) or not server["command"].strip():
+        command = server.get("command")
+        if not isinstance(command, str) or not command.strip():
             errors.append(f"{prefix}.command must be a non-empty string")
+        elif command.strip().lower() not in ALLOWED_MCP_COMMANDS:
+            errors.append(
+                f"{prefix}.command must use an approved executable: "
+                f"{', '.join(sorted(ALLOWED_MCP_COMMANDS))}"
+            )
         args = server.get("args")
         if not isinstance(args, list) or not all(isinstance(arg, str) for arg in args):
             errors.append(f"{prefix}.args must be an array of strings")
+        else:
+            for index, arg in enumerate(args):
+                if SHELL_CONTROL.search(arg):
+                    errors.append(f"{prefix}.args[{index}] contains shell control syntax")
+            normalized_command = command.strip().lower() if isinstance(command, str) else ""
+            if normalized_command in {"python", "python3"} and any(
+                arg in {"-c", "-m"} for arg in args
+            ):
+                errors.append(f"{prefix}.args must reference a reviewed source file, not inline/module execution")
+            if normalized_command == "node" and any(
+                arg in {"-e", "--eval", "-p", "--print"} for arg in args
+            ):
+                errors.append(f"{prefix}.args must reference a reviewed source file, not inline execution")
         env = server.get("env", {})
         if not isinstance(env, dict) or not all(
             isinstance(key, str) and isinstance(value, str) for key, value in env.items()
         ):
             errors.append(f"{prefix}.env must be an object of string values")
+        else:
+            for key, value in env.items():
+                if SENSITIVE_ENV_NAME.search(key) and not SAFE_PLACEHOLDER.fullmatch(value.strip()):
+                    errors.append(
+                        f"{prefix}.env.{key} must be an explicit local-configuration placeholder"
+                    )
     return errors
 
 
@@ -171,6 +300,13 @@ def validate_template(root: Path, template: dict[str, Any], report: ValidationRe
     if not template_root.is_dir():
         report.error(context, f"directory does not exist: {template.get('path')}")
         return
+
+    for message in validate_package_tree(
+        template_root,
+        TEMPLATE_FILE_SUFFIXES,
+        executable_subdir="skills",
+    ):
+        report.error(context, message)
 
     swarm_path = template_root / "swarm.json"
     try:
@@ -318,6 +454,8 @@ def validate_mcp_registry(root: Path, report: ValidationReport) -> None:
         if connector_root is None or not connector_root.is_dir():
             report.error(context, "path is invalid or missing")
             continue
+        for message in validate_package_tree(connector_root, CONNECTOR_FILE_SUFFIXES):
+            report.error(context, message)
         config_path = connector_root / "mcps.json"
         try:
             config = load_json(config_path)

@@ -1,8 +1,8 @@
 import JSZip from 'jszip';
-import type { Agent, WorkflowItem, MCPConnector, MCPConfig, MCPServerConfig } from '../types';
+import type { Agent, WorkflowItem, MCPConnector, MCPConfig, MCPServerConfig, SwarmDetails } from '../types';
 
-
-export const REGISTRY_RAW_BASE = 'https://raw.githubusercontent.com/DDS-Solutions/AI-TadPole-OS-Industry-Templates/main';
+const REGISTRY_RAW_BASE = 'https://raw.githubusercontent.com/DDS-Solutions/AI-TadPole-OS-Industry-Templates/main';
+const CONNECTOR_ASSET_BASE = '.';
 
 interface CompanyInfo {
   name: string;
@@ -29,6 +29,8 @@ interface AgentPayload {
   system_prompt?: string;
   skills?: string[];
   workflows?: string[];
+  mcp_tools?: string[];
+  requires_oversight?: boolean;
   model_config?: {
     provider?: string;
     model_id?: string;
@@ -67,6 +69,19 @@ const inferProvider = (modelId: string): string => {
   throw new Error(`Choose an explicit provider for unrecognized model "${modelId}".`);
 };
 
+const LEGACY_SKILLS = new Set(['run_command', 'write_to_file']);
+const DANGEROUS_SKILLS = new Set(['delete_file', 'execute_shell', 'shell', 'terminal', 'write_file']);
+
+const validatedSkills = (skills: string[] | undefined): string[] => {
+  const normalized = Array.from(new Set((skills || ['read_file']).map(skill => skill.trim()).filter(Boolean)));
+  const legacy = normalized.find(skill => LEGACY_SKILLS.has(skill));
+  if (legacy) throw new Error(`Replace legacy capability "${legacy}" with a Tadpole OS runtime tool ID.`);
+  if (normalized.includes('execute_shell') && !normalized.some(skill => skill === 'shell' || skill === 'terminal')) {
+    throw new Error('execute_shell requires the shell or terminal capability marker.');
+  }
+  return normalized;
+};
+
 const workflowMarkdown = (workflow: WorkflowItem): string => {
   const body = workflow.description.trim();
   const executableBody = /^#{2,3}\s+\S/m.test(body)
@@ -87,25 +102,26 @@ const loadConnectorAssets = async (
 ): Promise<MCPConfig> => {
   const connectorPath = safeRepoPath(connector.path);
   const config = connector.config || await (
-    await responseOrThrow(`${REGISTRY_RAW_BASE}/${connectorPath}/mcps.json`, `${connector.name} MCP configuration`)
+    await responseOrThrow(`${CONNECTOR_ASSET_BASE}/${connectorPath}/mcps.json`, `${connector.name} MCP configuration`)
   ).json() as MCPConfig;
   if (!config || typeof config !== 'object' || !config.mcpServers || typeof config.mcpServers !== 'object') {
     throw new Error(`${connector.name} does not provide a valid mcpServers configuration.`);
   }
 
   const connectorId = safeFileId(connector.id);
-  const archiveRoot = `mcp-blueprints/${connectorId}`;
+  const installedServerPath = `execution/${connectorId}-server.py`;
+  const archiveServerPath = `skills/${connectorId}-server.py`;
   const rewritten: Record<string, MCPServerConfig> = {};
   let needsServerSource = false;
 
   for (const [serverName, server] of Object.entries(config.mcpServers)) {
-    if (!server || typeof server.command !== 'string' || !Array.isArray(server.args)) {
-      throw new Error(`${connector.name} has an invalid server definition for ${serverName}.`);
+    if (!server || typeof server !== 'object' || !Array.isArray(server.args)) {
+      throw new Error(`MCP server "${serverName}" is missing a valid arguments array.`);
     }
     const args = server.args.map(arg => {
       if (arg === 'server.py' || arg === './server.py') {
         needsServerSource = true;
-        return `${archiveRoot}/server.py`;
+        return installedServerPath;
       }
       return arg;
     });
@@ -114,14 +130,9 @@ const loadConnectorAssets = async (
 
   if (needsServerSource) {
     const source = await (
-      await responseOrThrow(`${REGISTRY_RAW_BASE}/${connectorPath}/server.py`, `${connector.name} server source`)
+      await responseOrThrow(`${CONNECTOR_ASSET_BASE}/${connectorPath}/server.py`, `${connector.name} server source`)
     ).text();
-    zip.file(`${archiveRoot}/server.py`, source);
-
-    const requirementsResponse = await fetch(`${REGISTRY_RAW_BASE}/${connectorPath}/requirements.txt`);
-    if (requirementsResponse.ok) {
-      zip.file(`${archiveRoot}/requirements.txt`, await requirementsResponse.text());
-    }
+    zip.file(archiveServerPath, source);
   }
   return { mcpServers: rewritten };
 };
@@ -133,30 +144,37 @@ export const buildSwarmZip = async (
   selectedConnectors: string[],
   mcpCatalog: MCPConnector[],
 ): Promise<JSZip> => {
-  if (!companyInfo.name.trim()) throw new Error('A swarm name is required.');
-  if (!agents.length) throw new Error('Add at least one agent before export.');
-
   const zip = new JSZip();
+  const agentIds = new Set<string>();
+  const workflowIds = new Set<string>();
+
+  for (const agent of agents) {
+    const id = safeFileId(agent.id);
+    if (agentIds.has(id)) {
+      throw new Error(`Agent IDs collide: "${id}".`);
+    }
+    agentIds.add(id);
+  }
+
   const standardWorkflows = workflows.filter(workflow => !workflow.isOkfPlaybook);
   const okfPlaybooks = workflows.filter(workflow => workflow.isOkfPlaybook);
-  const normalizedWorkflowIds = standardWorkflows.map(workflow => safeFileId(workflow.id));
-  const workflowIds = new Set(normalizedWorkflowIds);
-  if (workflowIds.size !== normalizedWorkflowIds.length) {
-    throw new Error('Workflow IDs collide after file-name normalization.');
+
+  for (const workflow of standardWorkflows) {
+    const workflowId = safeFileId(workflow.id);
+    if (workflowIds.has(workflowId)) {
+      throw new Error(`Workflow IDs collide: "${workflowId}".`);
+    }
+    workflowIds.add(workflowId);
   }
 
-  const normalizedAgentIds = agents.map(agent => safeFileId(agent.id));
-  if (new Set(normalizedAgentIds).size !== normalizedAgentIds.length) {
-    throw new Error('Agent IDs collide after file-name normalization.');
-  }
-
-  const roster = agents.map(agent => {
-    const id = safeFileId(agent.id);
-    return { id, path: `agents/${id}.json`, role: agent.role };
-  });
   const parsedSize = Number.parseInt(companyInfo.size, 10);
+  const roster = agents.map(agent => ({
+    id: safeFileId(agent.id),
+    path: `agents/${safeFileId(agent.id)}.json`,
+    role: agent.role.trim() || 'Specialist',
+  }));
+
   const swarmJson = {
-    $schema: 'https://tadpoleos.dev/schemas/swarm-v1.json',
     name: `${companyInfo.name} Swarm`,
     version: '1.0.0',
     description: companyInfo.mission,
@@ -178,20 +196,26 @@ export const buildSwarmZip = async (
     if (missingWorkflow) {
       throw new Error(`${agent.name} references missing workflow "${missingWorkflow}".`);
     }
+    const skills = validatedSkills(agent.skills);
     const payload = {
       id,
       name: agent.name.trim(),
       role: agent.role.trim(),
       department: (agent.department || 'Operations').trim(),
       description: (agent.description || `${agent.role} agent`).trim(),
-      status: agent.status || 'ready',
+      status: 'idle',
       model_config: {
         provider: agent.provider || inferProvider(modelId),
         model_id: modelId,
         system_prompt: agent.prompt.trim(),
       },
-      skills: agent.skills || ['read_file'],
+      skills,
       workflows: agentWorkflows,
+      mcp_tools: Array.from(new Set((agent.mcpTools || []).map(tool => tool.trim()).filter(Boolean))),
+      requires_oversight: Boolean(
+        agent.requiresOversight
+        || skills.some(skill => DANGEROUS_SKILLS.has(skill))
+      ),
     };
     if (!payload.name || !payload.role || !payload.department || !payload.description || !payload.model_config.system_prompt) {
       throw new Error(`${agent.name || agent.id} is missing required agent metadata.`);
@@ -285,7 +309,7 @@ const workflowPathForId = (workflowId: string): string => {
 export const fetchSwarmDetailsFromRepo = async (
   templatePath: string,
   signal?: AbortSignal,
-): Promise<{ roster: Agent[]; workflows: WorkflowItem[] }> => {
+): Promise<SwarmDetails> => {
   const rawBase = `${REGISTRY_RAW_BASE}/${safeRepoPath(templatePath)}`;
   const response = await fetch(`${rawBase}/swarm.json`, { signal });
   if (!response.ok) throw new Error('Failed to fetch swarm.json');
@@ -304,12 +328,14 @@ export const fetchSwarmDetailsFromRepo = async (
       role: details.role || reference.role || '',
       department: details.department || 'Operations',
       description: details.description || `${details.role || reference.role || 'Specialist'} agent`,
-      status: details.status || 'ready',
+      status: details.status || 'idle',
       provider: details.model_config?.provider || inferProvider(modelId),
       model: modelId,
       prompt: details.model_config?.system_prompt || details.system_prompt || '',
       skills: details.skills || [],
       workflows: details.workflows || [],
+      mcpTools: details.mcp_tools || [],
+      requiresOversight: details.requires_oversight || false,
       emoji: details.emoji || '🤖',
       color: details.color || '#3B82F6',
       vibe: details.vibe || '',

@@ -15,5 +15,7 @@
   "workflows": [
     "corporate_training_designer"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

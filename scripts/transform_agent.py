@@ -120,9 +120,8 @@ def discover_skills(prompt_text, existing_skills):
     # Skill patterns mapping
     patterns = {
         "grep_search": [r"\bgrep\b", r"\bripgrep\b", r"\bsearch\b"],
-        "write_to_file": [r"\bwrite\b", r"\bcreate file\b", r"\bgenerate file\b", r"\bsave file\b"],
-        "replace_file_content": [r"\bedit file\b", r"\breplace content\b", r"\bmodify file\b", r"\breplace_file_content\b"],
-        "run_command": [r"\bcommand line\b", r"\bexecute command\b", r"\brun command\b", r"\bterminal\b", r"\bshell\b"],
+        "write_file": [r"\bwrite\b", r"\bcreate file\b", r"\bgenerate file\b", r"\bsave file\b", r"\bedit file\b", r"\breplace content\b", r"\bmodify file\b"],
+        "execute_shell": [r"\bcommand line\b", r"\bexecute command\b", r"\brun command\b", r"\bterminal\b", r"\bshell\b"],
         "search_web": [r"\bweb search\b", r"\bsearch the web\b", r"\bgoogle search\b", r"\bsearch_web\b", r"\bscrape\b", r"\bscraping\b"]
     }
     
@@ -130,6 +129,8 @@ def discover_skills(prompt_text, existing_skills):
         for regex in regexes:
             if re.search(regex, text_lower):
                 skills.add(skill)
+                if skill == "execute_shell":
+                    skills.add("shell")
                 break
                 
     return sorted(list(skills))
@@ -292,14 +293,19 @@ def main():
                 "role": agent.get("role", agent["name"]),
                 "department": agent.get("department", "Operations"),
                 "description": agent.get("description", ""),
-                "status": agent.get("status", "ready"),
+                "status": "idle",
                 "model_config": {
                     "provider": model_config.get("provider", "google"),
                     "model_id": model_config.get("model_id", "gemini-pro-latest"),
                     "system_prompt": slim_prompt
                 },
                 "skills": skills,
-                "workflows": [wf_id]
+                "workflows": [wf_id],
+                "mcp_tools": agent.get("mcp_tools", []),
+                "requires_oversight": bool(
+                    {"write_file", "delete_file", "execute_shell", "shell", "terminal"}
+                    .intersection(skills)
+                )
             }
             
             with open(agent_file, "w", encoding="utf-8") as f:

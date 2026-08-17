@@ -16,5 +16,7 @@
   "workflows": [
     "testing_testing_accessibility_auditor"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }
