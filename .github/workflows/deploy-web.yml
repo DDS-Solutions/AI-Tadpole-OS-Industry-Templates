@@ -2,7 +2,7 @@ name: Deploy Swarm Architect
 
 on:
   push:
-    branches: ["main", "security-hardening"]
+    branches: ["main"]
     paths:
       - 'web-builder/**'
       - 'registry.json'

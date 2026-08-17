@@ -2,9 +2,9 @@ name: Sapphire Shield Security Scan
 
 on:
   push:
-    branches: [ main, security-hardening ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, security-hardening ]
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:

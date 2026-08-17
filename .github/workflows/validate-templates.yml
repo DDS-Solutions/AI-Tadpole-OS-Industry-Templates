@@ -2,9 +2,9 @@ name: Validate Swarm Templates
 
 on:
   push:
-    branches: [ main, security-hardening ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, security-hardening ]
+    branches: [ main ]
 
 jobs:
   validate:
