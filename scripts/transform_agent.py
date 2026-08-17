@@ -292,7 +292,10 @@ def main():
                 "role": agent.get("role", agent["name"]),
                 "department": agent.get("department", "Operations"),
                 "description": agent.get("description", ""),
+                "status": agent.get("status", "ready"),
                 "model_config": {
+                    "provider": model_config.get("provider", "google"),
+                    "model_id": model_config.get("model_id", "gemini-pro-latest"),
                     "system_prompt": slim_prompt
                 },
                 "skills": skills,

@@ -1,113 +1,142 @@
-import os
+"""Stage catalog-based roster upgrades without mutating registered templates.
+
+This legacy utility previously deleted every live ``agents`` directory before
+writing replacement profiles. It now writes complete template copies beneath a
+caller-selected staging directory. Review and validate staged output before any
+manual promotion.
+"""
+
+from __future__ import annotations
+
+import argparse
 import json
 import re
 import shutil
+from pathlib import Path
+from typing import Any
 
-def get_words(text):
-    if not text: return set()
-    words = re.findall(r'\w+', text.lower())
-    # remove common stop words
+
+def get_words(text: str) -> set[str]:
+    words = re.findall(r"\w+", text.lower())
     stop = {"and", "the", "to", "of", "for", "in", "a", "with", "is", "on"}
-    return set(w for w in words if w not in stop)
+    return {word for word in words if word not in stop}
 
-def main():
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    registry_path = os.path.join(base_dir, "registry.json")
-    catalog_path = os.path.join(base_dir, "web-builder", "public", "ai-tadpole-catalog.json")
-    
-    with open(registry_path, "r", encoding="utf-8") as f:
-        registry = json.load(f)
-        
-    with open(catalog_path, "r", encoding="utf-8") as f:
-        catalog = json.load(f)
-        
-    templates = registry.get("templates", [])
-    
-    # Pre-compute words for catalog
+
+def selected_agents(template: dict[str, Any], catalog: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    template_text = " ".join(
+        [
+            template["name"],
+            template.get("description", ""),
+            *template.get("tags", []),
+            template.get("industry", ""),
+        ]
+    )
+    template_words = get_words(template_text)
+    return sorted(
+        catalog,
+        key=lambda agent: len(template_words.intersection(agent["_words"])),
+        reverse=True,
+    )[:3]
+
+
+def agent_payload(agent: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "id": agent["id"],
+        "name": agent["name"],
+        "role": agent.get("role") or agent["name"],
+        "department": agent.get("departmentLabel", "Operations"),
+        "description": agent["description"],
+        "status": "ready",
+        "model_config": {
+            "provider": "google",
+            "model_id": "gemini-pro-latest",
+            "system_prompt": agent["prompt"][:800],
+        },
+        "skills": ["read_file"],
+        "workflows": [],
+    }
+
+
+def ensure_safe_staging_root(repository_root: Path, output: Path) -> Path:
+    resolved_repository = repository_root.resolve()
+    resolved_output = output.resolve()
+    if resolved_output == resolved_repository or resolved_output in resolved_repository.parents:
+        raise ValueError("The staging directory cannot be the repository or one of its parents.")
+    return resolved_output
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--check", action="store_true", help="preview selected roster IDs without writing")
+    parser.add_argument("--output", type=Path, help="directory for complete staged template copies")
+    parser.add_argument("--template", action="append", dest="template_ids", help="limit staging to a template ID")
+    args = parser.parse_args()
+    if not args.check and args.output is None:
+        parser.error("--output is required unless --check is used")
+
+    root = Path(__file__).resolve().parents[1]
+    registry = json.loads((root / "registry.json").read_text(encoding="utf-8"))
+    catalog_path = root / "web-builder" / "public" / "ai-tadpole-catalog.json"
+    catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
     for agent in catalog:
-        text = agent["name"] + " " + agent["description"] + " " + agent.get("departmentLabel", "")
-        agent["_words"] = get_words(text)
-        
-    for t in templates:
-        t_path = os.path.join(base_dir, t["path"].replace("/", os.sep))
-        swarm_file = os.path.join(t_path, "swarm.json")
-        agents_dir = os.path.join(t_path, "agents")
-        
-        if not os.path.exists(swarm_file):
-            print(f"Skipping {t['name']}, no swarm.json found.")
-            continue
-            
-        t_text = t["name"] + " " + t["description"] + " " + " ".join(t.get("tags", [])) + " " + t["industry"]
-        t_words = get_words(t_text)
-        
-        # Score agents
-        for agent in catalog:
-            agent["_score"] = len(t_words.intersection(agent["_words"]))
-            
-        # Sort by score desc
-        sorted_agents = sorted(catalog, key=lambda x: x["_score"], reverse=True)
-        top_agents = sorted_agents[:3]
-        
-        # Clear existing agents
-        if os.path.exists(agents_dir):
-            shutil.rmtree(agents_dir)
-        os.makedirs(agents_dir, exist_ok=True)
-        
-        new_roster = []
-        for i, agent in enumerate(top_agents):
-            agent_id = agent["id"]
-            # Save the new Tadpole OS agent format
-            new_agent = {
-                "id": agent_id,
-                "name": agent["name"],
-                "role": agent["name"],
-                "department": agent.get("departmentLabel", "Operations"),
-                "description": agent["description"],
-                "status": "ready",
-                "tokensUsed": 0,
-                "costUsd": 0.0,
-                "metadata": {
-                    "role": agent["name"],
-                    "department": agent.get("departmentLabel", "Operations")
-                },
-                "skills": ["read_file"],
-                "workflows": [],
-                "tokenUsage": {
-                    "inputTokens": 0,
-                    "outputTokens": 0,
-                    "totalTokens": 0
-                },
-                "model_config": {
-                    "provider": "google",
-                    "model_id": "gemini-pro-latest",
-                    "system_prompt": agent["prompt"]
-                },
-                "model_id": "gemini-pro-latest",
-                "budget_usd": 150.0,
-                "budgetUsd": 150.0
-            }
-            
-            agent_file = os.path.join(agents_dir, f"{agent_id}.json")
-            with open(agent_file, "w", encoding="utf-8") as f:
-                json.dump(new_agent, f, indent=2)
-                
-            new_roster.append({
-                "id": agent_id,
-                "path": f"agents/{agent_id}.json",
-                "supervisor": None,
-                "priority": "critical" if i == 0 else "normal"
-            })
-            
-        # Update swarm.json
-        with open(swarm_file, "r", encoding="utf-8") as f:
-            swarm_data = json.load(f)
-            
-        swarm_data["roster"] = new_roster
-        
-        with open(swarm_file, "w", encoding="utf-8") as f:
-            json.dump(swarm_data, f, indent=2)
-            
-        print(f"Upgraded template '{t['name']}' with {len(new_roster)} agents.")
+        agent["_words"] = get_words(
+            " ".join([agent["name"], agent["description"], agent.get("departmentLabel", "")])
+        )
 
-if __name__ == '__main__':
-    main()
+    templates = [
+        template
+        for template in registry["templates"]
+        if not args.template_ids or template["id"] in set(args.template_ids)
+    ]
+    if args.template_ids and len(templates) != len(set(args.template_ids)):
+        known = {template["id"] for template in templates}
+        missing = sorted(set(args.template_ids) - known)
+        raise ValueError(f"Unknown template ID(s): {', '.join(missing)}")
+
+    staging_root = ensure_safe_staging_root(root, args.output) if args.output else None
+    for template in templates:
+        chosen = selected_agents(template, catalog)
+        print(f"{template['id']}: {', '.join(agent['id'] for agent in chosen)}")
+        if args.check:
+            continue
+
+        source_root = (root / template["path"]).resolve()
+        target_root = (staging_root / template["path"]).resolve()
+        target_root.relative_to(staging_root)
+        if target_root.exists():
+            raise FileExistsError(
+                f"Staging target already exists: {target_root}. Choose an empty output directory."
+            )
+        shutil.copytree(source_root, target_root)
+
+        staged_agents = target_root / "agents"
+        shutil.rmtree(staged_agents)
+        staged_agents.mkdir()
+        roster: list[dict[str, Any]] = []
+        for index, agent in enumerate(chosen):
+            payload = agent_payload(agent)
+            (staged_agents / f"{payload['id']}.json").write_text(
+                json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
+                encoding="utf-8",
+            )
+            roster.append(
+                {
+                    "id": payload["id"],
+                    "path": f"agents/{payload['id']}.json",
+                    "supervisor": None,
+                    "priority": "critical" if index == 0 else "normal",
+                }
+            )
+        swarm_path = target_root / "swarm.json"
+        swarm = json.loads(swarm_path.read_text(encoding="utf-8"))
+        swarm["roster"] = roster
+        swarm_path.write_text(json.dumps(swarm, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+    if staging_root:
+        print(f"Staged {len(templates)} template(s) under {staging_root}")
+        print("Registered templates were not modified.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
