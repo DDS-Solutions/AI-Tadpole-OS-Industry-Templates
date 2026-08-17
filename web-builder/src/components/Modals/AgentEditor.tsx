@@ -186,7 +186,7 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
         <div>
           <div className="flex justify-between items-center mb-2">
             <label className="block text-[10px] font-mono text-zinc-500 uppercase">
-              Tadpole OS Runtime Capabilities
+              AI-Tadpole-OS Runtime Capabilities
             </label>
             <span className="text-[10px] text-zinc-500">
               {selectedSkills.length} capability{selectedSkills.length === 1 ? '' : 'ies'} active

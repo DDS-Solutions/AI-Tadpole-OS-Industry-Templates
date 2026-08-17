@@ -1,5 +1,5 @@
 # Full-Funnel Campaign Launch Workflow
-*Optimized for Tadpole OS*
+*Optimized for AI-Tadpole-OS*
 
 ## Objective
 To take a marketing idea from concept to live ads with automated tracking in under 60 minutes.

@@ -1,6 +1,6 @@
 # Institutional Knowledge & Playbook Ingestion (OKF)
 
-When vector memory and an embedding provider are available, Tadpole OS swarms can ingest corporate standard operating procedures (SOPs) and knowledge documents into the local **Open Knowledge Foundation (OKF)** store during installation.
+When vector memory and an embedding provider are available, AI-Tadpole-OS swarms can ingest corporate standard operating procedures (SOPs) and knowledge documents into the local **Open Knowledge Foundation (OKF)** store during installation.
 
 ---
 
@@ -25,7 +25,7 @@ description: "SOP for receiving incoming parts and verifying chemical batch shee
 3. If container temperature is out of bounds, quarantine the batch.
 ```
 
-The Tadpole OS server extracts supported frontmatter and ingests the Markdown body as the knowledge text. The body must contain the actual playbook; a reference such as `/workflows/example.md` is not resolved into that file's contents.
+The AI-Tadpole-OS server extracts supported frontmatter and ingests the Markdown body as the knowledge text. The body must contain the actual playbook; a reference such as `/workflows/example.md` is not resolved into that file's contents.
 
 ### Format B: Structured JSON (`knowledge.json`)
 For legacy systems, databases, or third-party catalog integration, you can provide a `knowledge.json` file in the template root directory containing an array of knowledge requests:
@@ -50,7 +50,7 @@ Every entry must contain non-empty `text` and `topic` strings. Other metadata fi
 
 ## ⚡ Ingestion Pipeline Mechanics
 
-During template installation, the Tadpole OS backend runs the following ingestion workflow:
+During template installation, the AI-Tadpole-OS backend runs the following ingestion workflow:
 
 ```mermaid
 graph TD

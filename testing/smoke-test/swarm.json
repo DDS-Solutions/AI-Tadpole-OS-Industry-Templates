@@ -4,7 +4,7 @@
   "industry": "Governance & Compliance",
   "company_size": "SMB (<25 Employees)",
   "description": "Deterministic reference swarm verifying end-to-end installation, idle availability, workflow parsing, knowledge ingestion, and MCP execution isolation.",
-  "author": "Tadpole OS QA Team",
+  "author": "AI-Tadpole-OS QA Team",
   "tags": [
     "testing",
     "smoke-test",

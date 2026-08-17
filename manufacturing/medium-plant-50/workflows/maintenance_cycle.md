@@ -1,5 +1,5 @@
 # Predictive Maintenance & Asset Lifecycle Workflow
-*Optimized for Tadpole OS*
+*Optimized for AI-Tadpole-OS*
 
 ## Objective
 To eliminate unplanned downtime by predicting asset failures and scheduling proactive maintenance.

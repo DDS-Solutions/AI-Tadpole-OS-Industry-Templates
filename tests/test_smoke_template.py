@@ -1,4 +1,4 @@
-"""End-to-end simulated lifecycle and contract smoke tests for Tadpole OS."""
+"""End-to-end simulated lifecycle and contract smoke tests for AI-Tadpole-OS."""
 
 from __future__ import annotations
 

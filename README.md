@@ -1,7 +1,7 @@
 
-# Tadpole OS Swarm Templates
+# AI-Tadpole-OS Swarm Templates
 
-Official community repository for Tadpole OS. Download, share, and install industry-specific AI Swarm templates to power up your local intelligence engine.
+Official community repository for AI-Tadpole-OS. Download, share, and install industry-specific AI Swarm templates to power up your local intelligence engine.
 
 ---
 
@@ -15,7 +15,7 @@ Don't want to start from scratch? Use our **[Swarm Architect](https://dds-soluti
 *   **Unified State & Bidirectional Switching**: Switch between Guided and Advanced modes at any time without losing configuration state.
 *   **Draft Recovery**: Non-sensitive blueprint state is persisted automatically to browser local storage, with clear session recovery and discard controls.
 *   **Curated 223-Agent Catalog**: All catalog personas feature validated `runtimePrompt` definitions (&le; 800 chars) with explicit domain guardrails and human review requirements.
-*   **Tadpole OS Contract Validation**: Live continuous checking guarantees model inference compatibility, capability safety, workflow reference integrity, and agent-level `requires_oversight` enforcement.
+*   **AI-Tadpole-OS Contract Validation**: Live continuous checking guarantees model inference compatibility, capability safety, workflow reference integrity, and agent-level `requires_oversight` enforcement.
 
 ---
 
@@ -23,7 +23,7 @@ Don't want to start from scratch? Use our **[Swarm Architect](https://dds-soluti
 
 AI-Tadpole-OS operates via "**Swarms**" — interconnected graphs of AI agents, specific skills, and Markdown-based standard operating procedures (workflows).
 
-Tadpole OS Swarms utilize a native **capability-based architecture**:
+AI-Tadpole-OS Swarms utilize a native **capability-based architecture**:
 1. **Slim Agent Profiles**: Agents declare an explicit provider/model, a compact personality prompt (maximum 800 characters), native `idle` status, exact capability IDs, MCP declarations, workflows, and oversight intent.
 2. **Executable Workflows**: Multi-step SOP playbooks are standalone Markdown documents inside `/workflows/`. The current consumer accepts `##` or `###` execution headings; `## Step N: Name` remains the preferred registry style.
 3. **Decoupled Skills**: Runtime capability IDs (for example `read_file`, `grep_search`, and `write_file`) are declared in `skills`; legacy `run_command` and `write_to_file` are rejected.
@@ -40,7 +40,7 @@ Instead of configuring dozens of AI agents manually, you can download a complete
 
 ## 🚀 How to Install a Template
 
-You can install these directly from your Tadpole OS dashboard!
+You can install these directly from your AI-Tadpole-OS dashboard!
 
 1. Open your **AI-Tadpole-OS Dashboard**.
 2. Navigate to **Settings** -> **System Configuration**.
@@ -70,7 +70,7 @@ Each template is structured as:
 
 ## 🧠 Institutional Knowledge Integration (OKF/IKS)
 
-When the consumer's vector-memory feature and embedding provider are available, Tadpole OS Swarms can ingest institutional knowledge, playbooks, and corporate SOPs into the local **Open Knowledge Foundation (OKF)** store during installation.
+When the consumer's vector-memory feature and embedding provider are available, AI-Tadpole-OS Swarms can ingest institutional knowledge, playbooks, and corporate SOPs into the local **Open Knowledge Foundation (OKF)** store during installation.
 
 ### Bundling Formats
 
@@ -114,7 +114,7 @@ Alternatively (or additionally), you can define a `knowledge.json` file in the r
 
 ## 🔌 MCP Data Connectors
 
-Tadpole OS Swarms can package standard Model Context Protocol (MCP) connector configurations for external databases, CRM systems, and internal REST APIs. Credentials remain local and must not be committed to templates.
+AI-Tadpole-OS Swarms can package standard Model Context Protocol (MCP) connector configurations for external databases, CRM systems, and internal REST APIs. Credentials remain local and must not be committed to templates.
 
 * **Blueprint Library**: Browse our `mcp-blueprints/` directory for pre-built Python MCP server examples (e.g., `generic-crm`).
 * **Swarm Architect Integration**: Phase 4 emits root `mcps.json`. Bundled Python source is placed in `skills/`, while its MCP argument points at the post-install `execution/` path so it survives clone cleanup.
@@ -122,12 +122,12 @@ Tadpole OS Swarms can package standard Model Context Protocol (MCP) connector co
 
 ## 🛡️ The Sapphire Shield: Enforced Boundaries
 
-Security claims are split by layer so an advisory builder message is not mistaken for a Tadpole OS authorization decision.
+Security claims are split by layer so an advisory builder message is not mistaken for a AI-Tadpole-OS authorization decision.
 
 * **Registry Admission Gate**: Registered packages use UTF-8 JSON/Markdown, with reviewed executable source allowed only under template `skills/` or registry `mcp-blueprints/`. The 1 MB limit, link/type/content, credential, command, shell, inline execution, and placeholder rules are blocking.
 * **Reviewed Source**: CI runs contract/adversarial tests, pinned Bandit over connector and template-skill Python, and ClamAV over the repository.
 * **Builder Archive Gate**: Export rejects unsafe paths, normalized filename collisions, missing references, invalid profiles, and conflicting MCP server names. Connector assets come from the same deployed builder release rather than the moving `main` branch.
-* **Prompt Advisory**: The builder's prompt keyword review is a review aid only. A clear result does not prove safety or zero privileges, and a warning does not itself trigger Tadpole OS approval.
+* **Prompt Advisory**: The builder's prompt keyword review is a review aid only. A clear result does not prove safety or zero privileges, and a warning does not itself trigger AI-Tadpole-OS approval.
 * **Consumer Boundary**: The pinned private Tadpole-OS installer has path/overwrite guards plus a `skills/` scan, but installation is not transactional and scan-call errors can continue without rollback. Treat complete authorization, receipts, and rollback as upstream work.
 
 See [wiki/Security-Policy.md](wiki/Security-Policy.md) for the exact enforced controls and remaining upstream gaps.

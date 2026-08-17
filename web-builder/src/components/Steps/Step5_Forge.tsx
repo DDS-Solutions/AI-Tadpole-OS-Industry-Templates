@@ -58,7 +58,7 @@ export default function Step5_Forge({
         </div>
       </div>
       <h2 className="text-2xl font-bold mb-1" data-tooltip="The swarm configuration is ready to build and compile.">Phase 5: Validate & Export</h2>
-      <p className="text-xs font-mono text-zinc-500 mb-6">Forge diagnostics & Tadpole OS package compilation</p>
+      <p className="text-xs font-mono text-zinc-500 mb-6">Forge diagnostics & AI-Tadpole-OS package compilation</p>
       <p className="text-zinc-400 max-w-md mx-auto mb-8 text-sm leading-relaxed">
         Your swarm configuration for <span className="text-white font-bold">{companyInfo.name}</span> is ready for validation.
         The package includes {agents.length} agents and {workflows.length} workflows.
@@ -94,7 +94,7 @@ export default function Step5_Forge({
             <div className={`p-4 flex items-center gap-3 border-b ${isClear ? 'bg-emerald-950/20 border-emerald-900/40' : 'bg-amber-950/20 border-amber-900/40'}`} style={{ borderColor: isClear ? 'color-mix(in srgb, #10B981 30%, transparent)' : 'color-mix(in srgb, #F59E0B 30%, transparent)' }}>
               <Shield className={`w-5 h-5 ${isClear ? 'text-emerald-500' : 'text-amber-500'}`} />
               <div>
-                <h4 className="font-bold text-xs text-white uppercase tracking-wider cursor-help" data-tooltip="A keyword-based prompt review; repository and Tadpole OS checks remain required.">Prompt Capability Advisory</h4>
+                <h4 className="font-bold text-xs text-white uppercase tracking-wider cursor-help" data-tooltip="A keyword-based prompt review; repository and AI-Tadpole-OS checks remain required.">Prompt Capability Advisory</h4>
                 <p className="text-[10px] text-zinc-550 font-mono mt-0.5 font-normal">
                   {isClear ? 'No capability keywords detected' : 'Manual security review recommended'}
                 </p>
@@ -103,12 +103,12 @@ export default function Step5_Forge({
             <div className="p-4 space-y-3 font-mono text-xs leading-normal">
               {isClear ? (
                 <div className="text-zinc-400 leading-relaxed text-[11px]">
-                  🟢 No configured capability keywords were found. This is an advisory result, not proof that the archive is safe or permission-free. Repository validation and Tadpole OS runtime controls still apply.
+                  🟢 No configured capability keywords were found. This is an advisory result, not proof that the archive is safe or permission-free. Repository validation and AI-Tadpole-OS runtime controls still apply.
                 </div>
               ) : (
                 <>
                   <div className="text-zinc-400 mb-2 leading-relaxed text-[11px]">
-                    ⚠️ The following prompts contain capability-related keywords. Review the archive and configure explicit Tadpole OS permissions before use; this advisory does not itself trigger or guarantee an authorization prompt.
+                    ⚠️ The following prompts contain capability-related keywords. Review the archive and configure explicit AI-Tadpole-OS permissions before use; this advisory does not itself trigger or guarantee an authorization prompt.
                   </div>
                   <div className="space-y-2 max-h-[160px] overflow-y-auto custom-scrollbar pr-1">
                     {allWarnings.map((w, idx) => (

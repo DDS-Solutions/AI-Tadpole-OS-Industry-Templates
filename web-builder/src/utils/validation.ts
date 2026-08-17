@@ -157,7 +157,7 @@ export function validateSwarm(
         severity: 'error',
         section: 'agents',
         itemId: agent.id,
-        message: `Agent "${agent.name || cleanId}" system prompt is ${prompt.length} characters (maximum allowed by Tadpole OS is 800).`,
+        message: `Agent "${agent.name || cleanId}" system prompt is ${prompt.length} characters (maximum allowed by AI-Tadpole-OS is 800).`,
         suggestedAction: 'Shorten the prompt to focus strictly on role, mission, and guardrails.',
       });
     }
@@ -172,7 +172,7 @@ export function validateSwarm(
           section: 'agents',
           itemId: agent.id,
           message: `Agent "${agent.name}" declares unsupported legacy capability "${skill}".`,
-          suggestedAction: 'Replace with a native Tadpole OS tool ID (e.g. read_file, write_file, execute_shell, search_web).',
+          suggestedAction: 'Replace with a native AI-Tadpole-OS tool ID (e.g. read_file, write_file, execute_shell, search_web).',
         });
       } else if (!VALID_RUNTIME_CAPABILITIES.has(skill)) {
         issues.push({
@@ -309,7 +309,7 @@ export function validateSwarm(
         severity: 'info',
         section: 'connectors',
         itemId: connectorId,
-        message: `Connector "${conn.name}" requires environment variables (${varNames}) configured in Tadpole OS.`,
+        message: `Connector "${conn.name}" requires environment variables (${varNames}) configured in AI-Tadpole-OS.`,
       });
     }
   }

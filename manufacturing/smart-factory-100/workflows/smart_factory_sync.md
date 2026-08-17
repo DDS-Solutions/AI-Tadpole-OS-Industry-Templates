@@ -1,5 +1,5 @@
 # Smart Factory Enterprise Synchronization Workflow
-*Optimized for Tadpole OS*
+*Optimized for AI-Tadpole-OS*
 
 ## Objective
 To maintain a high-frequency, low-latency synchronization between the physical factory floor and the enterprise ERP/Digital Twin systems.

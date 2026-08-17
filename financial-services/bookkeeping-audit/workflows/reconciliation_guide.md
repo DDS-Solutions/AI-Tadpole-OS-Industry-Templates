@@ -1,5 +1,5 @@
 # Daily Reconciliation Workflow
-*Optimized for Tadpole OS*
+*Optimized for AI-Tadpole-OS*
 
 ## Objective
 To ensure that all bank transactions match internal records and are correctly categorized in the general ledger.

@@ -2,7 +2,7 @@
 
 The **Model Context Protocol (MCP)** provides a standardized way for AI agents to connect with and ingest external data sources securely.
 
-In Tadpole OS, you can attach community-vetted or custom MCP servers to any intelligence swarm to give it secure real-time read/write access to CRMs, databases, SaaS applications, and internal APIs.
+In AI-Tadpole-OS, you can attach community-vetted or custom MCP servers to any intelligence swarm to give it secure real-time read/write access to CRMs, databases, SaaS applications, and internal APIs.
 
 ---
 
@@ -75,9 +75,9 @@ Place the corresponding reviewed source at `skills/mcp-generic-crm-server.py`. T
 
 In alignment with the Sapphire Shield policy, MCP servers are intended to run locally and require operator review.
 - MCP server configuration uses a command and string argument list suitable for stdio startup.
-- Sensitive environment values in this registry must be explicit placeholders. The pinned MCP client parses but does not apply config `env`; set real values in the Tadpole OS process environment.
+- Sensitive environment values in this registry must be explicit placeholders. The pinned MCP client parses but does not apply config `env`; set real values in the AI-Tadpole-OS process environment.
 - The registry validator allows only reviewed runtime commands and rejects shell control syntax and inline interpreter execution.
-- Tadpole OS authorization is not inferred from a connector description or the builder's prompt keyword advisory. Write/mutation access must be constrained by the deployed connector and consumer runtime configuration.
+- AI-Tadpole-OS authorization is not inferred from a connector description or the builder's prompt keyword advisory. Write/mutation access must be constrained by the deployed connector and consumer runtime configuration.
 
 > [!WARNING]
 > Swarm Architect now routes bundled source through `skills/` so the installer retains it in `execution/`. This does not install Python/npm dependencies, apply MCP config `env`, make `mcp_tools` an active authorization filter, or repair the pinned runtime's incomplete external-tool discovery. Those remain operator/upstream responsibilities.

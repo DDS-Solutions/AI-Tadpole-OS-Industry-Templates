@@ -1,5 +1,5 @@
 # Real Estate Lead Nurture Workflow
-*Optimized for Tadpole OS*
+*Optimized for AI-Tadpole-OS*
 
 ## Objective
 To convert cold leads into active property viewing appointments through automated, personalized engagement.

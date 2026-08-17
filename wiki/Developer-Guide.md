@@ -9,7 +9,7 @@ This page explains how developers can build, validate, and submit custom swarm t
 
 ## 🛠️ Testing Templates Locally
 
-Use the local validation suite to confirm that a template matches the pinned Tadpole OS contract before attempting installation.
+Use the local validation suite to confirm that a template matches the pinned AI-Tadpole-OS contract before attempting installation.
 
 ### Prerequisites
 - Python 3.8 or higher.

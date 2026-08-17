@@ -1,4 +1,4 @@
-"""Canonical capability catalog and security classifications for Tadpole OS agents."""
+"""Canonical capability catalog and security classifications for AI-Tadpole-OS agents."""
 
 from __future__ import annotations
 

@@ -40,7 +40,7 @@ export default function Step3_BusinessConnections({
         </div>
         <h2 className="text-2xl font-bold text-white">Connect business tools & review governance</h2>
         <p className="text-sm text-zinc-400 mt-1">
-          Connect verified tool connectors and review how Tadpole OS enforces human-in-the-loop safeguards for your team.
+          Connect verified tool connectors and review how AI-Tadpole-OS enforces human-in-the-loop safeguards for your team.
         </p>
       </div>
 
@@ -53,7 +53,7 @@ export default function Step3_BusinessConnections({
               {selectedConnectors.length} connected
             </span>
           </h3>
-          <span className="text-xs text-zinc-500 font-mono">Tadpole OS MCP Connectors</span>
+          <span className="text-xs text-zinc-500 font-mono">AI-Tadpole-OS MCP Connectors</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -120,11 +120,11 @@ export default function Step3_BusinessConnections({
         <div>
           <h3 className="text-base font-semibold text-white flex items-center gap-2">
             <Shield className="w-4 h-4 text-cyber-green" />
-            <span>How Tadpole OS Enforces Human Approval</span>
+            <span>How AI-Tadpole-OS Enforces Human Approval</span>
           </h3>
           <p className="text-xs text-zinc-400 mt-1 flex items-center gap-1.5">
             <Info className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
-            Tadpole OS enforces human-in-the-loop safety at the agent level (<code className="text-cyber-green font-mono text-[11px]">requires_oversight</code>).
+            AI-Tadpole-OS enforces human-in-the-loop safety at the agent level (<code className="text-cyber-green font-mono text-[11px]">requires_oversight</code>).
           </p>
         </div>
 

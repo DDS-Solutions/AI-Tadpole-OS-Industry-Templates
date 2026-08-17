@@ -1,12 +1,12 @@
 # Swarm Blueprints & Roster Hierarchies
 
-Tadpole OS coordinates parallel multi-agent swarms using a structured organizational hierarchy. This page explains how rosters, authority levels, and industries are mapped within swarm blueprints.
+AI-Tadpole-OS coordinates parallel multi-agent swarms using a structured organizational hierarchy. This page explains how rosters, authority levels, and industries are mapped within swarm blueprints.
 
 ---
 
 ## 📡 Agent Authority & Roster Levels
 
-In any swarm blueprint (`swarm.json`), agents are assigned distinct roles and capabilities. The Tadpole OS runtime automatically maps these roles to the following authority framework:
+In any swarm blueprint (`swarm.json`), agents are assigned distinct roles and capabilities. The AI-Tadpole-OS runtime automatically maps these roles to the following authority framework:
 
 ```mermaid
 graph TD
@@ -84,7 +84,7 @@ Every template directory must host a `swarm.json` config. It is the registry's p
 
 ## 🧠 Capability-Based Agent Profiles & Workflows
 
-With the transition to the native Tadpole OS capability-based architecture:
+With the transition to the native AI-Tadpole-OS capability-based architecture:
 * **Decoupled Instructions**: The agents' monolithic prompts have been separated into a slim personality definition (under `agents/*.json`) and a structured markdown SOP playbook (under `workflows/*.md`).
 * **Required Runtime Identity**: Every profile supplies non-empty `id`, `name`, `role`, `department`, `description`, and `status` values. Registry agents begin with the upstream-native `status: "idle"`.
 * **Explicit Model Configuration**: `model_config` contains `provider`, `model_id`, and a system prompt of at most 800 characters. An explicit provider prevents unknown model strings from falling back to the wrong provider.
@@ -125,7 +125,7 @@ The visual Swarm Architect builder provides two tailored workflows that share an
 Designed for rapid blueprinting without technical jargon:
 - **Step 1 (Business Brief)**: Company name, size, industry, and multi-goal selection (e.g., scheduling, quoting, customer follow-up, inventory management).
 - **Step 2 (Team Recommendations)**: Round-robin goal distribution generates a tailored specialist team with explicit operational boundaries (*What it reads, What it prepares, What requires human approval*), scaled to organization size.
-- **Step 3 (Connections & Governance)**: Plain-language connector cards and read-only explanations of how Tadpole OS enforces human-in-the-loop oversight at runtime.
+- **Step 3 (Connections & Governance)**: Plain-language connector cards and read-only explanations of how AI-Tadpole-OS enforces human-in-the-loop oversight at runtime.
 - **Step 4 (Review & Export)**: Live validation metrics and one-click consumer-compatible `.zip` archive download.
 
 ### 2. Advanced Setup (Developers & Administrators)

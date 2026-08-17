@@ -55,13 +55,13 @@ export default function ModeSelector({
       <div className="text-center space-y-3">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-800/80 border border-zinc-700 text-zinc-300 text-xs font-mono">
           <Sparkles className="w-3.5 h-3.5 text-cyber-green" />
-          <span>Tadpole OS Swarm Architect</span>
+          <span>AI-Tadpole-OS Swarm Architect</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
           Choose your setup experience
         </h1>
         <p className="text-zinc-400 text-sm sm:text-base max-w-2xl mx-auto">
-          Design, review, and export production-ready multi-agent AI swarms compatible with Tadpole OS runtime.
+          Design, review, and export production-ready multi-agent AI swarms compatible with AI-Tadpole-OS runtime.
         </p>
       </div>
 

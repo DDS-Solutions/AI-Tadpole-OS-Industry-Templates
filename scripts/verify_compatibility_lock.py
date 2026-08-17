@@ -1,4 +1,4 @@
-"""Compatibility lockfile generator and drift verifier for Tadpole OS contracts."""
+"""Compatibility lockfile generator and drift verifier for AI-Tadpole-OS contracts."""
 
 from __future__ import annotations
 

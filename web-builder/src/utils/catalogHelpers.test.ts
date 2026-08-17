@@ -45,7 +45,7 @@ describe('catalogHelpers', () => {
     departmentLabel: 'Support',
   };
 
-  it('converts catalog agent to runtime agent adhering to Tadpole OS constraints', () => {
+  it('converts catalog agent to runtime agent adhering to AI-Tadpole-OS constraints', () => {
     const runtimeAgent = catalogAgentToRuntimeAgent(sampleCatalogAgent);
     expect(runtimeAgent.id).toBe('project-management-field-service-dispatch-coordinator');
     expect(runtimeAgent.name).toBe('Field Service Dispatch Coordinator');

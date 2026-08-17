@@ -55,7 +55,7 @@ export default function Step4_GuidedReview({
         </div>
         <h2 className="text-2xl font-bold text-white">Review your AI team blueprint</h2>
         <p className="text-sm text-zinc-400 mt-1">
-          Verify configuration, inspect readiness status, and download your production-ready Tadpole OS package.
+          Verify configuration, inspect readiness status, and download your production-ready AI-Tadpole-OS package.
         </p>
       </div>
 
@@ -266,9 +266,9 @@ export default function Step4_GuidedReview({
       {/* Primary Action Area */}
       <div className="p-6 rounded-2xl bg-zinc-900/60 border border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
-          <h3 className="text-base font-bold text-white">Download Tadpole OS Swarm Archive</h3>
+          <h3 className="text-base font-bold text-white">Download AI-Tadpole-OS Swarm Archive</h3>
           <p className="text-xs text-zinc-400 mt-0.5">
-            Generates a standard <span className="font-mono text-cyber-green">.zip</span> package ready for import into Tadpole OS.
+            Generates a standard <span className="font-mono text-cyber-green">.zip</span> package ready for import into AI-Tadpole-OS.
           </p>
         </div>
 
@@ -282,7 +282,7 @@ export default function Step4_GuidedReview({
           }`}
         >
           <Download className="w-4 h-4" />
-          {isExporting ? 'Packaging Swarm...' : 'Download Tadpole OS Swarm'}
+          {isExporting ? 'Packaging Swarm...' : 'Download AI-Tadpole-OS Swarm'}
         </button>
       </div>
 

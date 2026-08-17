@@ -7,9 +7,9 @@
       "category": "CRM & SaaS",
       "path": "mcp-blueprints/generic-crm",
       "version": "1.0.0",
-      "author": "Tadpole OS Core",
+      "author": "AI-Tadpole-OS Core",
       "status": "verified",
-      "maintainer": "Tadpole OS Security Team",
+      "maintainer": "AI-Tadpole-OS Security Team",
       "last_reviewed": "2026-08-17",
       "required_env": {
         "CRM_API_KEY": {
@@ -26,9 +26,9 @@
       "category": "Accounting",
       "path": "mcp-blueprints/smb-accounting",
       "version": "1.0.0",
-      "author": "Tadpole OS Core",
+      "author": "AI-Tadpole-OS Core",
       "status": "verified",
-      "maintainer": "Tadpole OS Security Team",
+      "maintainer": "AI-Tadpole-OS Security Team",
       "last_reviewed": "2026-08-17",
       "required_env": {
         "ACCOUNTING_API_KEY": {
@@ -45,9 +45,9 @@
       "category": "IoT & Edge",
       "path": "mcp-blueprints/hardware-edge",
       "version": "1.0.0",
-      "author": "Tadpole OS Core",
+      "author": "AI-Tadpole-OS Core",
       "status": "verified",
-      "maintainer": "Tadpole OS Security Team",
+      "maintainer": "AI-Tadpole-OS Security Team",
       "last_reviewed": "2026-08-17",
       "required_env": {
         "SCALE_COM_PORT": {
@@ -78,7 +78,7 @@
       "version": "1.1.2",
       "author": "Community",
       "status": "reviewed",
-      "maintainer": "Tadpole OS Community Working Group",
+      "maintainer": "AI-Tadpole-OS Community Working Group",
       "last_reviewed": "2026-08-17",
       "required_env": {},
       "integrity_hash": "sha256:0480073b9d20f65a555b5560a0b3565871aafde0faa7e1f613ea291115693e62"

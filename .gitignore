@@ -1,4 +1,4 @@
-# Tadpole OS Template Store .gitignore
+# AI-Tadpole-OS Template Store .gitignore
 # ------------------------------------
 
 # Operating System Files
@@ -30,7 +30,7 @@ __pycache__/
 venv/
 .env
 
-# Tadpole OS Specific 🚨 Security 🚨
+# AI-Tadpole-OS Specific 🚨 Security 🚨
 # NEVER commit the actual database if a user accidentally drags it in
 *.db
 *.sqlite

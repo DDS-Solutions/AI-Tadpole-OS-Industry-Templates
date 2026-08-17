@@ -63,7 +63,7 @@ const LEGACY_SKILLS = new Set(['run_command', 'write_to_file']);
 const validatedSkills = (skills: string[] | undefined): string[] => {
   const normalized = Array.from(new Set((skills || ['read_file']).map(skill => skill.trim()).filter(Boolean)));
   const legacy = normalized.find(skill => LEGACY_SKILLS.has(skill));
-  if (legacy) throw new Error(`Replace legacy capability "${legacy}" with a Tadpole OS runtime tool ID.`);
+  if (legacy) throw new Error(`Replace legacy capability "${legacy}" with a AI-Tadpole-OS runtime tool ID.`);
   for (const skill of normalized) {
     if (!VALID_RUNTIME_CAPABILITIES.has(skill)) {
       throw new Error(`Unrecognized capability "${skill}". Use recognized tool IDs.`);

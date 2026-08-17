@@ -1,6 +1,6 @@
-# Tadpole OS Sovereign Swarm Templates Wiki
+# AI-Tadpole-OS Sovereign Swarm Templates Wiki
 
-Welcome to the official documentation wiki for the **Tadpole OS Swarm Templates Ecosystem**. This documentation is optimized for system administrators, AI engineering teams, and autonomous AI agents seeking to discover, configure, and install specialized local multi-agent swarms.
+Welcome to the official documentation wiki for the **AI-Tadpole-OS Swarm Templates Ecosystem**. This documentation is optimized for system administrators, AI engineering teams, and autonomous AI agents seeking to discover, configure, and install specialized local multi-agent swarms.
 
 ---
 
@@ -33,13 +33,13 @@ To navigate the wiki, use the structured indices below:
 Start here before implementation work. Review the pinned private Tadpole-OS source revision, public downstream relationship, operational behavior, and known upstream limitations.
 
 ### 🌟 [2. Swarm Blueprints Overview](Swarm-Blueprints.md)
-Discover the structural mechanics of Tadpole OS swarms. Understand the hierarchical mapping (Executive, Management, Specialist) and how the 23 pre-configured industries partition cognitive and operational swarms.
+Discover the structural mechanics of AI-Tadpole-OS swarms. Understand the hierarchical mapping (Executive, Management, Specialist) and how the 23 pre-configured industries partition cognitive and operational swarms.
 
 ### 🧠 [3. Playbooks & OKF Knowledge Ingestion](Knowledge-Ingestion.md)
 Learn how to inject corporate standard operating procedures, manuals, and institutional knowledge directly into your agents using Markdown SOPs (with YAML frontmatter) or structured `knowledge.json` files.
 
 ### 🛡️ [4. The Sapphire Shield Security Boundaries](Security-Policy.md)
-Review what the registry, builder, CI, and pinned Tadpole OS consumer actually enforce, plus the upstream gaps that remain.
+Review what the registry, builder, CI, and pinned AI-Tadpole-OS consumer actually enforce, plus the upstream gaps that remain.
 
 ### 🛠️ [5. Developer & Contribution Guide](Developer-Guide.md)
 Learn how to audit the consumer contract, validate custom swarms, exercise archive fixtures, and use the automated CI/CD gates.
@@ -51,7 +51,7 @@ Discover how to augment local swarms with Model Context Protocol (MCP) connector
 
 ## 🎯 High-Performance Local AI Swarms
 
-Tadpole OS supports computational sovereignty by allowing orchestration and storage to run on private hardware. With an appropriately local configuration, companies gain:
+AI-Tadpole-OS supports computational sovereignty by allowing orchestration and storage to run on private hardware. With an appropriately local configuration, companies gain:
 - **Controlled Data Boundaries**: Operators can keep customer transactions and internal records inside their managed environment.
 - **Real-Time Execution**: Low-latency multi-agent collaboration bypassing external network dependencies.
 - **Resource Adaptability**: Automated routing matching complex planning slots to massive local models and specialist slots to efficient edge models.

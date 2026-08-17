@@ -479,7 +479,7 @@ export default function App() {
               <h1 className="text-xl font-bold tracking-tight text-white">Swarm Architect</h1>
               <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800 text-cyber-green font-semibold">v1.0</span>
             </div>
-            <p className="text-xs text-zinc-500 font-mono uppercase tracking-widest">Tadpole OS Engine</p>
+            <p className="text-xs text-zinc-500 font-mono uppercase tracking-widest">AI-Tadpole-OS Engine</p>
           </div>
         </div>
 
@@ -880,7 +880,7 @@ export default function App() {
       </Suspense>
 
       <footer className="mt-16 text-zinc-600 text-[10px] font-mono tracking-widest uppercase text-center flex flex-col items-center gap-2">
-        <div>Tadpole OS Swarm Architect • Guided & Advanced Multi-Agent Blueprint Builder</div>
+        <div>AI-Tadpole-OS Swarm Architect • Guided & Advanced Multi-Agent Blueprint Builder</div>
         <button
           onClick={handleStartOver}
           className="text-zinc-600 hover:text-red-400 transition-colors flex items-center gap-1 cursor-pointer font-sans normal-case text-xs"

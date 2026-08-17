@@ -29,7 +29,7 @@ Before changing a schema, validator, archive, migration, workflow, MCP layout, k
 
 - Deterministic workflow execution reads `data/workflows`, while installation copies template workflows to `directives`.
 - Installation is not transactional and can return success after skipped content.
-- MCP config `env` values are not applied to spawned clients; configure required variables in the Tadpole OS process environment.
+- MCP config `env` values are not applied to spawned clients; configure required variables in the AI-Tadpole-OS process environment.
 - `mcp_tools` is persisted but is not the current toolbelt's active MCP authorization filter.
 - External MCP discovery/execution and dependency installation remain upstream/operator responsibilities.
 

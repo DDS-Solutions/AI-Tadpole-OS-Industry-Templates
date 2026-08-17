@@ -54,7 +54,7 @@ These are not whole-installation guarantees:
 - Agents, workflows, knowledge, MCP configuration, nested files, and unsupported file types do not receive the same SkillSpector gate.
 - Agent persistence, MCP parsing/writes, and knowledge ingestion can be skipped while the endpoint returns success.
 - The temporary clone is deleted after installation.
-- MCP config `env` is parsed but not applied to the spawned process. Child connectors only inherit the Tadpole OS process environment.
+- MCP config `env` is parsed but not applied to the spawned process. Child connectors only inherit the AI-Tadpole-OS process environment.
 - Connector dependencies are not installed.
 - The current toolbelt does not use `mcp_tools` as the active authorization filter and does not fully discover external MCP tools.
 - Most static tool exposure is governed by runtime ACL/safe-mode logic rather than a strict one-to-one `skills` membership filter; filesystem and shell capability checks are special cases.

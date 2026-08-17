@@ -1,6 +1,6 @@
-# Tadpole OS Template Specification
+# AI-Tadpole-OS Template Specification
 
-This document details the directory layout, schema definitions, and format specifications for native templates in Tadpole OS.
+This document details the directory layout, schema definitions, and format specifications for native templates in AI-Tadpole-OS.
 
 > [!IMPORTANT]
 > This repository supports the public [AI-Tadpole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS) distribution. The private `DDS-Solutions/TadPole-OS` source is the authoritative runtime contract. Any schema, validator, archive, or migration change must begin with a read-only cross-repository audit and record the private upstream revision. The current pin is documented in [COMPATIBILITY_MATRIX.md](COMPATIBILITY_MATRIX.md).
@@ -69,7 +69,7 @@ The `swarm.json` configures the roster of agents and settings for the template.
 ---
 
 ## Agent Profile Specification (`agents/*.json`)
-Native Tadpole OS agents are model-agnostic and capability-driven. They must only define identity and reference the capabilities (skills and workflows) they possess.
+Native AI-Tadpole-OS agents are model-agnostic and capability-driven. They must only define identity and reference the capabilities (skills and workflows) they possess.
 
 ### Schema Properties
 - `id` (string, required): Unique identifier for the agent.
@@ -116,7 +116,7 @@ Native Tadpole OS agents are model-agnostic and capability-driven. They must onl
 ---
 
 ## Workflow Specification (`workflows/*.md`)
-Workflows represent executable Standard Operating Procedures (SOPs) written in markdown. The Tadpole OS workflow engine parses steps sequentially based on heading hierarchy.
+Workflows represent executable Standard Operating Procedures (SOPs) written in markdown. The AI-Tadpole-OS workflow engine parses steps sequentially based on heading hierarchy.
 
 ### Rules & Structure
 1. **Title**: The workflow must start with `# Workflow: [Name] SOP` (or equivalent title).
