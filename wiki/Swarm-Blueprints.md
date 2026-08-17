@@ -80,10 +80,10 @@ Every template directory must host a `swarm.json` config. It is the registry's p
 
 With the transition to the native Tadpole OS capability-based architecture:
 * **Decoupled Instructions**: The agents' monolithic prompts have been separated into a slim personality definition (under `agents/*.json`) and a structured markdown SOP playbook (under `workflows/*.md`).
-* **Required Runtime Identity**: Every profile supplies non-empty `id`, `name`, `role`, `department`, `description`, and `status` values. Registry agents begin with `status: "ready"`.
+* **Required Runtime Identity**: Every profile supplies non-empty `id`, `name`, `role`, `department`, `description`, and `status` values. Registry agents begin with the upstream-native `status: "idle"`.
 * **Explicit Model Configuration**: `model_config` contains `provider`, `model_id`, and a system prompt of at most 800 characters. An explicit provider prevents unknown model strings from falling back to the wrong provider.
 * **Workflow Execution Headings**: The pinned parser treats any `##` or `###` heading as a step boundary. The registry recommends `## Step N: Name` for clarity and portability.
-* **Declarative Skills**: Capabilities like `read_file` or `grep_search` are explicitly declared in the agent's `skills` array, ensuring granular tool tracking and zero-trust verification.
+* **Explicit Capability Intent**: Profiles include `skills`, `workflows`, `mcp_tools`, and `requires_oversight`. Use native `write_file`; shell agents require `execute_shell` plus `shell` and oversight. These declarations do not replace the runtime ACL.
 
 Example agent profile:
 
@@ -94,14 +94,16 @@ Example agent profile:
   "role": "Contract Reviewer",
   "department": "Legal Operations",
   "description": "Performs evidence-based first-pass contract review.",
-  "status": "ready",
+  "status": "idle",
   "model_config": {
     "provider": "google",
     "model_id": "gemini-pro-latest",
     "system_prompt": "Review contracts carefully and follow the associated workflow SOP."
   },
   "skills": ["read_file"],
-  "workflows": ["legal_review"]
+  "workflows": ["legal_review"],
+  "mcp_tools": [],
+  "requires_oversight": false
 }
 ```
 

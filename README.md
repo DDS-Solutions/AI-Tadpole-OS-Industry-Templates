@@ -10,7 +10,7 @@ Don't want to start from scratch? Use our **[Swarm Architect](https://dds-soluti
 
 *   **Hybrid AI Profiler**: Suggests skills based on your company mission.
 *   **Agent Catalog**: Browse 200+ specialized AI agent roles across multiple departments to easily build your team.
-*   **MCP Integration**: Attach Model Context Protocol (MCP) configurations and bundle their relative server assets.
+*   **MCP Integration**: Attach root MCP configurations and package reviewed server source into the installer's `skills/` → `execution/` path.
 *   **One-Click Export**: Downloads a consumer-contract-validated Swarm Archive (`.zip`).
 *   **Round-Trip Safe**: Preserves agent-owned and global workflows when importing and exporting registry templates.
 *   **Knowledge Ready**: Packages full OKF/IKS playbook text in both structured JSON and Markdown assets.
@@ -22,9 +22,9 @@ Don't want to start from scratch? Use our **[Swarm Architect](https://dds-soluti
 AI-Tadpole-OS operates via "**Swarms**" — interconnected graphs of AI agents, specific skills, and Markdown-based standard operating procedures (workflows). 
 
 Tadpole OS Swarms utilize a native **capability-based architecture**:
-1. **Slim Agent Profiles**: Agents declare an explicit provider/model, a compact personality prompt (maximum 800 characters), runtime identity/status fields, and their skills/workflows.
+1. **Slim Agent Profiles**: Agents declare an explicit provider/model, a compact personality prompt (maximum 800 characters), native `idle` status, exact capability IDs, MCP declarations, workflows, and oversight intent.
 2. **Executable Workflows**: Multi-step SOP playbooks are standalone Markdown documents inside `/workflows/`. The current consumer accepts `##` or `###` execution headings; `## Step N: Name` remains the preferred registry style.
-3. **Decoupled Skills**: Tooling permissions (e.g., `read_file`, `grep_search`) are declared in the agent's `skills` array.
+3. **Decoupled Skills**: Runtime capability IDs (for example `read_file`, `grep_search`, and `write_file`) are declared in `skills`; legacy `run_command` and `write_to_file` are rejected.
 
 Instead of configuring dozens of AI agents manually, you can download a complete Swarm Template tailored exactly to your industry (e.g., Legal, Healthcare, Development) and get it running immediately.
 
@@ -60,8 +60,8 @@ Each template is structured as:
 ├── mcps.json           # Root MCP config: { "mcpServers": { ... } }
 ├── agents/             # Slim agent JSON files (~1.5KB)
 │   └── *.json          # No massive system_prompt; references workflows/ & skills/
-├── skills/             # Schema definitions for custom skills (optional)
-│   └── *.json
+├── skills/             # Reviewed installable source (optional)
+│   └── *.{json,py,js,ts}
 └── workflows/          # Markdown SOPs with at least one ## or ### heading
     └── *.md
 ```
@@ -115,23 +115,27 @@ Alternatively (or additionally), you can define a `knowledge.json` file in the r
 Tadpole OS Swarms can package standard Model Context Protocol (MCP) connector configurations for external databases, CRM systems, and internal REST APIs. Credentials remain local and must not be committed to templates.
 
 * **Blueprint Library**: Browse our `mcp-blueprints/` directory for pre-built Python MCP server examples (e.g., `generic-crm`).
-* **Swarm Architect Integration**: Phase 4 emits a root `mcps.json`, merges selected server definitions, and bundles relative Python server assets in the exported archive.
-* **Current Consumer Boundary**: AI-Tadpole-OS reads only `<template>/mcps.json`; it does not follow `swarm.json.required_mcps` paths. Its remote installer currently deletes the temporary clone after merging MCP configuration, so file-backed MCP servers still require an upstream retention or relocation fix for end-to-end execution.
+* **Swarm Architect Integration**: Phase 4 emits root `mcps.json`. Bundled Python source is placed in `skills/`, while its MCP argument points at the post-install `execution/` path so it survives clone cleanup.
+* **Current Consumer Boundary**: The private pinned upstream reads only `<template>/mcps.json`. It does not apply MCP config `env` values to child processes, install connector dependencies, use `mcp_tools` as its active filter, or fully discover external tools. Configure environment/dependencies locally and treat MCP usability/authorization as runtime work.
 
-## 🛡️ The Sapphire Shield: Security First
+## 🛡️ The Sapphire Shield: Enforced Boundaries
 
-Tadpole OS implements a Zero-Trust Template architecture known as the **Sapphire Shield**.
+Security claims are split by layer so an advisory builder message is not mistaken for a Tadpole OS authorization decision.
 
-* **No Compiled Binaries**: Templates may include declarative JSON, Markdown, and reviewed script sources, but must not package compiled binaries or credentials.
-* **Overlord Approval**: If a template you download requests dangerous capabilities (e.g., `shell:execute` or `budget:spend`), the Tadpole OS engine will freeze the swarm and require manual human approval via the React Dashboard before it is allowed to execute.
-* **Bring Your Own Keys**: Templates will *never* contain API keys. If a swarm requires a connection to Jira or Salesforce, you will be prompted to enter your own local credentials upon installation.
+* **Registry Admission Gate**: Registered packages use UTF-8 JSON/Markdown, with reviewed executable source allowed only under template `skills/` or registry `mcp-blueprints/`. The 1 MB limit, link/type/content, credential, command, shell, inline execution, and placeholder rules are blocking.
+* **Reviewed Source**: CI runs contract/adversarial tests, pinned Bandit over connector and template-skill Python, and ClamAV over the repository.
+* **Builder Archive Gate**: Export rejects unsafe paths, normalized filename collisions, missing references, invalid profiles, and conflicting MCP server names. Connector assets come from the same deployed builder release rather than the moving `main` branch.
+* **Prompt Advisory**: The builder's prompt keyword review is a review aid only. A clear result does not prove safety or zero privileges, and a warning does not itself trigger Tadpole OS approval.
+* **Consumer Boundary**: The pinned private Tadpole-OS installer has path/overwrite guards plus a `skills/` scan, but installation is not transactional and scan-call errors can continue without rollback. Treat complete authorization, receipts, and rollback as upstream work.
+
+See [wiki/Security-Policy.md](wiki/Security-Policy.md) for the exact enforced controls and remaining upstream gaps.
 
 ## 🤝 Contributing to the Ecosystem
 
 We welcome contributions from industry experts! If you have built an incredibly efficient Swarm for your specific business niche, share it with the community.
 
 > [!IMPORTANT]
-> This registry primarily supports [AI-Tadpole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS). Any implementation work that changes schemas, validators, generated archives, MCP packaging, workflows, or migrations must start with a cross-repository contract audit. Verify the consuming AI-Tadpole-OS loader and installer first, and record the consumer revision tested, so a local cleanup does not break runtime compatibility. See the [Cross-Repository Audit Remediation Plan](AUDIT_REMEDIATION_PLAN.md).
+> This registry supports [AI-Tadpole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS), but private `DDS-Solutions/TadPole-OS` is the authoritative source contract. Any implementation changing schemas, validators, archives, MCP packaging, workflows, security claims, or migrations must start with a read-only cross-repository contract audit and record the private upstream commit. See the [Cross-Repository Audit Remediation Plan](AUDIT_REMEDIATION_PLAN.md).
 
 The current compatibility review is pinned in [COMPATIBILITY_MATRIX.md](COMPATIBILITY_MATRIX.md). Update that matrix whenever the reviewed consumer revision or accepted contract changes.
 

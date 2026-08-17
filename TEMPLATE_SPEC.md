@@ -3,7 +3,7 @@
 This document details the directory layout, schema definitions, and format specifications for native templates in Tadpole OS.
 
 > [!IMPORTANT]
-> This repository supports [AI-Tadpole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS), whose runtime loaders and installers are the authoritative integration contract. Any schema, validator, archive, or migration change must begin with a cross-repository contract audit so this registry is not changed away from what the consuming application accepts. Follow the [Cross-Repository Audit Remediation Plan](AUDIT_REMEDIATION_PLAN.md) and record the AI-Tadpole-OS revision used for compatibility verification.
+> This repository supports the public [AI-Tadpole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS) distribution. The private `DDS-Solutions/TadPole-OS` source is the authoritative runtime contract. Any schema, validator, archive, or migration change must begin with a read-only cross-repository audit and record the private upstream revision. The current pin is documented in [COMPATIBILITY_MATRIX.md](COMPATIBILITY_MATRIX.md).
 
 ---
 
@@ -16,11 +16,24 @@ Each template directory (e.g., `legal/contract-review/`) must follow this struct
 ├── mcps.json           # MCP connector configurations
 ├── agents/             # Slim capability-driven agent JSON files
 │   └── *.json          # No massive system_prompt; references workflows/ & skills/
-├── skills/             # Schema definitions for custom skills (optional)
-│   └── *.json
+├── skills/             # Reviewed installable skill/MCP source (optional)
+│   └── *.{json,py,js,ts}
 └── workflows/          # Executable markdown SOP files
     └── *.md
 ```
+
+---
+
+## Package Security Boundary
+
+Registered template directories are source-only data packages:
+
+- UTF-8 `.json` and `.md` are allowed throughout a template. Reviewed `.py`, `.js`, and `.ts` source is allowed only directly under `skills/`, which the upstream installer scans and copies to `execution/`.
+- Symbolic links, binary or unapproved file types, embedded binary data, files over 1 MB, and high-confidence credential patterns are rejected.
+- Sensitive values in `mcps.json` must be placeholders for local configuration. MCP commands are restricted to reviewed runtimes, and arguments must not use shell control syntax or inline interpreter execution.
+- Passing these checks establishes registry admission only. It does not grant runtime permissions or repair the pinned consumer's non-transactional installer.
+
+See [The Sapphire Shield Security Boundaries](wiki/Security-Policy.md) for the layer-by-layer policy.
 
 ---
 
@@ -64,13 +77,15 @@ Native Tadpole OS agents are model-agnostic and capability-driven. They must onl
 - `role` (string, required): Role title.
 - `department` (string, required): Department category.
 - `description` (string, required): A brief description of the agent's function.
-- `status` (string, required): Initial runtime state. Registry templates use `"ready"`.
+- `status` (string, required): Initial runtime state. Installable registry agents use the upstream-native `"idle"` state.
 - `model_config` (object, required):
   - `provider` (string, required): Consumer model provider (for example, `"google"`).
   - `model_id` (string, required by this registry): Explicit provider model ID.
   - `system_prompt` (string, required): Personality and high-level role definition (Max 800 characters). Must refer to the associated workflow SOP.
-- `skills` (array of strings): List of capability/tool IDs (e.g., `["read_file", "grep_search"]`).
+- `skills` (array of strings): Exact Tadpole capability/tool IDs (e.g., `["read_file", "grep_search"]`). Use `write_file`, not legacy `write_to_file`. Shell-capable agents declare both `execute_shell` and the required `shell` marker.
 - `workflows` (array of strings): List of referenced workflow IDs (e.g., `["legal_document_review"]`).
+- `mcp_tools` (array of strings, required by this registry): Forward-compatible MCP tool declarations. The pinned runtime persists this field but does not currently use it as the active MCP authorization filter.
+- `requires_oversight` (boolean, required by this registry): Whether the runtime must route tool calls through operator oversight. It must be `true` for declared write, delete, or shell capabilities.
 
 ### Example
 ```json
@@ -80,7 +95,7 @@ Native Tadpole OS agents are model-agnostic and capability-driven. They must onl
   "role": "Legal Document Review Specialist",
   "department": "Legal Operations",
   "description": "Meticulous first-pass contract analysis and compliance validation specialist.",
-  "status": "ready",
+  "status": "idle",
   "model_config": {
     "provider": "google",
     "model_id": "gemini-pro-latest",
@@ -92,7 +107,9 @@ Native Tadpole OS agents are model-agnostic and capability-driven. They must onl
   ],
   "workflows": [
     "legal_document_review"
-  ]
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
 }
 ```
 

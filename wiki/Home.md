@@ -18,7 +18,7 @@ Don't want to start from scratch? Use our **[Swarm Architect](https://dds-soluti
 
 *   **Hybrid AI Profiler**: Suggests skills based on your company mission.
 *   **Agent Catalog**: Browse 200+ specialized AI agent roles across multiple departments to easily build your team.
-*   **Contract-Aware Export**: Generates the required agent wire format and root MCP configuration.
+*   **Contract-Aware Export**: Generates native `idle` agents with exact capability, MCP, workflow, model, and oversight fields plus root MCP configuration.
 *   **Round-Trip Coverage**: Preserves global and agent-owned workflows and packages full OKF content.
 *   **Safety Checks**: Rejects unsafe repository paths, normalized filename collisions, missing workflow references, and overlong prompts.
 
@@ -30,7 +30,7 @@ Don't want to start from scratch? Use our **[Swarm Architect](https://dds-soluti
 To navigate the wiki, use the structured indices below:
 
 ### 📌 [1. Consumer Compatibility Contract](Compatibility-Contract.md)
-Start here before implementation work. Review the pinned AI-Tadpole-OS revision, operational file behavior, known upstream limitations, and contributor audit gate.
+Start here before implementation work. Review the pinned private Tadpole-OS source revision, public downstream relationship, operational behavior, and known upstream limitations.
 
 ### 🌟 [2. Swarm Blueprints Overview](Swarm-Blueprints.md)
 Discover the structural mechanics of Tadpole OS swarms. Understand the hierarchical mapping (Executive, Management, Specialist) and how the 23 pre-configured industries partition cognitive and operational swarms.
@@ -38,14 +38,14 @@ Discover the structural mechanics of Tadpole OS swarms. Understand the hierarchi
 ### 🧠 [3. Playbooks & OKF Knowledge Ingestion](Knowledge-Ingestion.md)
 Learn how to inject corporate standard operating procedures, manuals, and institutional knowledge directly into your agents using Markdown SOPs (with YAML frontmatter) or structured `knowledge.json` files.
 
-### 🛡️ [4. The Sapphire Shield & Zero-Trust Security](Security-Policy.md)
-Review the strict security parameters that safeguard local resources: sandbox scopes, approval-gated capabilities, and the `skillspector` code scanner.
+### 🛡️ [4. The Sapphire Shield Security Boundaries](Security-Policy.md)
+Review what the registry, builder, CI, and pinned Tadpole OS consumer actually enforce, plus the upstream gaps that remain.
 
 ### 🛠️ [5. Developer & Contribution Guide](Developer-Guide.md)
 Learn how to audit the consumer contract, validate custom swarms, exercise archive fixtures, and use the automated CI/CD gates.
 
 ### 🔌 [6. MCP Data Connectors & Integrations](MCP-Connectors.md)
-Discover how to augment your local swarms with real-time external data access using Model Context Protocol (MCP) standard connectors, allowing secure zero-trust read/write capabilities across CRMs and internal APIs.
+Discover how to augment local swarms with Model Context Protocol (MCP) connectors, including credential placeholders, reviewed source requirements, and current installer limitations.
 
 ---
 
