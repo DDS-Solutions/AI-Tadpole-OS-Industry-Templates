@@ -1,3 +1,4 @@
+
 # Tadpole OS Swarm Templates
 
 Official community repository for Tadpole OS. Download, share, and install industry-specific AI Swarm templates to power up your local intelligence engine.
@@ -6,20 +7,21 @@ Official community repository for Tadpole OS. Download, share, and install indus
 
 ## 🛠️ Build Your Own Swarm
 
-Don't want to start from scratch? Use our **[Swarm Architect](https://dds-solutions.github.io/AI-Tadpole-OS-Industry-Templates/)** to visually design your intelligence roster, mission, and playbooks.
+Don't want to start from scratch? Use our **[Swarm Architect](https://dds-solutions.github.io/AI-Tadpole-OS-Industry-Templates/)** to design, review, and export production-ready multi-agent swarms.
 
-*   **Hybrid AI Profiler**: Suggests skills based on your company mission.
-*   **Agent Catalog**: Browse 200+ specialized AI agent roles across multiple departments to easily build your team.
-*   **MCP Integration**: Attach root MCP configurations and package reviewed server source into the installer's `skills/` → `execution/` path.
-*   **One-Click Export**: Downloads a consumer-contract-validated Swarm Archive (`.zip`).
-*   **Round-Trip Safe**: Preserves agent-owned and global workflows when importing and exporting registry templates.
-*   **Knowledge Ready**: Packages full OKF/IKS playbook text in both structured JSON and Markdown assets.
+*   **Dual-Experience Builder**:
+    *   **Guided Setup (Business Owners & Operators)**: A 4-step plain-language workflow. Describe your business and goals, receive a deterministic recommended team with clear operational boundaries (*What it reads, What it prepares, What requires approval*), connect verified business tools, review governance, and export a ready-to-run package.
+    *   **Advanced Setup (Developers & Administrators)**: Granular technical control over agent runtime prompts, model configurations, capabilities (`read_file`, `write_file`, `grep_search`, `execute_shell`, `search_web`), raw/structured playbook editors, MCP server parameters, and live contract diagnostics.
+*   **Unified State & Bidirectional Switching**: Switch between Guided and Advanced modes at any time without losing configuration state.
+*   **Draft Recovery**: Non-sensitive blueprint state is persisted automatically to browser local storage, with clear session recovery and discard controls.
+*   **Curated 223-Agent Catalog**: All catalog personas feature validated `runtimePrompt` definitions (&le; 800 chars) with explicit domain guardrails and human review requirements.
+*   **Tadpole OS Contract Validation**: Live continuous checking guarantees model inference compatibility, capability safety, workflow reference integrity, and agent-level `requires_oversight` enforcement.
 
 ---
 
 ## 🌟 What is a Swarm Template?
 
-AI-Tadpole-OS operates via "**Swarms**" — interconnected graphs of AI agents, specific skills, and Markdown-based standard operating procedures (workflows). 
+AI-Tadpole-OS operates via "**Swarms**" — interconnected graphs of AI agents, specific skills, and Markdown-based standard operating procedures (workflows).
 
 Tadpole OS Swarms utilize a native **capability-based architecture**:
 1. **Slim Agent Profiles**: Agents declare an explicit provider/model, a compact personality prompt (maximum 800 characters), native `idle` status, exact capability IDs, MCP declarations, workflows, and oversight intent.

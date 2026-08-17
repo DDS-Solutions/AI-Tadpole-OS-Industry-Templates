@@ -1,38 +1,57 @@
-import { useState, useEffect, useRef } from 'react';
-import { 
-  Shield, 
-  Cpu, 
+import { useState, useEffect, useRef, useMemo, lazy, Suspense } from 'react';
+import {
+  Shield,
+  Cpu,
   Search,
-  Download
+  Download,
+  Sparkles,
+  Terminal,
+  Layers,
+  BookmarkCheck,
+  AlertCircle,
+  RotateCcw
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import type { Agent, WorkflowItem, TemplateItem, CatalogAgent, MCPConnector, SwarmDetails } from './types';
+import type { Agent, WorkflowItem, TemplateItem, CatalogAgent, MCPConnector, SwarmDetails, CompanyInfo, ExperienceMode } from './types';
 import { INDUSTRY_MAP, REGISTRY, INDUSTRY_CODES_MAP } from './constants';
 
-import McpEditor from './components/Modals/McpEditor';
-import AgentEditor from './components/Modals/AgentEditor';
-import CatalogDrawer from './components/Modals/CatalogDrawer';
-import Step1_CompanyMission from './components/Steps/Step1_CompanyMission';
-import Step2_Roster from './components/Steps/Step2_Roster';
-import Step3_Playbooks from './components/Steps/Step3_Playbooks';
-import Step4_Connectors from './components/Steps/Step4_Connectors';
-import Step5_Forge from './components/Steps/Step5_Forge';
+import ModeSelector from './components/ModeSelector';
 import { exportSwarmZip, fetchSwarmDetailsFromRepo } from './utils/fileHelpers';
+import { catalogAgentToRuntimeAgent, recommendTeam } from './utils/catalogHelpers';
+import { validateSwarm } from './utils/validation';
+import { saveDraft, loadDraft, clearDraft, type SavedDraft } from './utils/draftStorage';
+
+// Lazy load dialogs & steps for optimal bundle splitting
+const GuidedWizard = lazy(() => import('./components/Guided/GuidedWizard'));
+const Step1_CompanyMission = lazy(() => import('./components/Steps/Step1_CompanyMission'));
+const Step2_Roster = lazy(() => import('./components/Steps/Step2_Roster'));
+const Step3_Playbooks = lazy(() => import('./components/Steps/Step3_Playbooks'));
+const Step4_Connectors = lazy(() => import('./components/Steps/Step4_Connectors'));
+const Step5_Forge = lazy(() => import('./components/Steps/Step5_Forge'));
+const CatalogDrawer = lazy(() => import('./components/Modals/CatalogDrawer'));
+const AgentEditor = lazy(() => import('./components/Modals/AgentEditor'));
+const McpEditor = lazy(() => import('./components/Modals/McpEditor'));
 
 export default function App() {
+  const [experienceMode, setExperienceMode] = useState<ExperienceMode>('guided');
+  const [hasSelectedMode, setHasSelectedMode] = useState(false);
+  const [showTemplatesLibrary, setShowTemplatesLibrary] = useState(false);
+  const [savedDraftState, setSavedDraftState] = useState<SavedDraft | null>(() => loadDraft());
+
   const [step, setStep] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
-  
+
   // Custom State Inputs
-  const [companyInfo, setCompanyInfo] = useState({
+  const [companyInfo, setCompanyInfo] = useState<CompanyInfo>({
     name: '',
     size: '25',
     description: '',
     mission: '',
     industry: '',
     industryPath: '',
-    industryCode: ''
+    industryCode: '',
+    goals: ['scheduling', 'quoting', 'customer-follow-up'],
   });
 
   const [isCustomIndustry, setIsCustomIndustry] = useState(false);
@@ -44,6 +63,7 @@ export default function App() {
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateItem | null>(null);
   const [isLoadingSwarmDetails, setIsLoadingSwarmDetails] = useState(false);
   const [loadedSwarmDetails, setLoadedSwarmDetails] = useState<SwarmDetails | null>(null);
+  const [swarmLoadError, setSwarmLoadError] = useState<string | null>(null);
   const swarmRequestController = useRef<AbortController | null>(null);
   const swarmRequestSequence = useRef(0);
 
@@ -66,6 +86,10 @@ export default function App() {
   const [dynamicIndustries, setDynamicIndustries] = useState<typeof INDUSTRY_MAP>(INDUSTRY_MAP);
   const [dynamicRegistry, setDynamicRegistry] = useState<TemplateItem[]>(REGISTRY);
 
+  const [isExporting, setIsExporting] = useState(false);
+  const [exportError, setExportError] = useState<string | null>(null);
+  const [draftToast, setDraftToast] = useState<string | null>(null);
+
   const departments = [
     { id: 'all', label: 'All Departments', color: '#71717a', desc: 'Browse the complete index of sovereign agent personas.' },
     { id: 'academic', label: 'Academic', color: '#8B5CF6', desc: 'Theoretical research, scientific computation, and deep knowledge analysis.' },
@@ -86,6 +110,7 @@ export default function App() {
     { id: 'testing', label: 'Testing', color: '#F59E0B', desc: 'Unit tests compilation, boundary validation, and QA logic audits.' }
   ];
 
+  // Initial load
   useEffect(() => {
     const controller = new AbortController();
     fetch('./registry.json', { signal: controller.signal })
@@ -145,22 +170,62 @@ export default function App() {
     };
   }, []);
 
+  // Compute live continuous validation
+  const validationIssues = useMemo(() => {
+    return validateSwarm(companyInfo, agents, workflows, selectedConnectors, mcpCatalog);
+  }, [companyInfo, agents, workflows, selectedConnectors, mcpCatalog]);
+
+  // Draft autosave effect
+  useEffect(() => {
+    if (hasSelectedMode && (companyInfo.name || agents.length > 0)) {
+      saveDraft(experienceMode, companyInfo, agents, workflows, selectedConnectors);
+    }
+  }, [hasSelectedMode, experienceMode, companyInfo, agents, workflows, selectedConnectors]);
+
+  const handleResumeDraft = () => {
+    if (!savedDraftState) return;
+    setExperienceMode(savedDraftState.experienceMode || 'guided');
+    setCompanyInfo(savedDraftState.companyInfo);
+    setAgents(savedDraftState.agents);
+    setWorkflows(savedDraftState.workflows || []);
+    setSelectedConnectors(savedDraftState.selectedConnectors || []);
+    setHasSelectedMode(true);
+    setSavedDraftState(null);
+  };
+
+  const handleDiscardDraft = () => {
+    clearDraft();
+    setSavedDraftState(null);
+  };
+
+  const handleSelectMode = (mode: ExperienceMode) => {
+    setExperienceMode(mode);
+    setHasSelectedMode(true);
+  };
+
   const removeAgent = (id: string) => {
     setAgents(agents.filter(a => a.id !== id));
   };
 
   const handleCreateCustomAgent = () => {
-    const id = 'custom-' + crypto.randomUUID();
+    const id = 'custom-' + crypto.randomUUID().slice(0, 8);
     const newAgent: Agent = {
       id,
-      name: 'Custom Agent',
-      role: 'Custom Specialist',
-      model: 'gemini-1.5-flash',
-      prompt: '# Custom Agent Personality\n\nYou are a specialized AI assistant...\n\n## 🧠 Your Identity & Memory\n- **Role**: Custom Specialist\n- **Personality**: Professional, analytical, proactive\n\n## 🎯 Your Core Mission\n- Execute tasks efficiently to support the swarm.\n\n## 🚨 Critical Rules You Must Follow\n- Adhere to the core system instructions.',
+      name: 'Custom Specialist',
+      role: 'Domain Specialist',
+      department: 'Operations',
+      status: 'idle',
+      provider: 'google',
+      model: 'gemini-pro-latest',
+      prompt: 'You serve as a custom domain specialist. Work strictly within approved context and factual records. Require human review and approval before final decisions.',
       description: 'Custom AI agent defined from scratch.',
       color: '#71717a',
       emoji: '🤖',
       vibe: 'Custom defined role.',
+      skills: ['read_file'],
+      workflows: [],
+      mcpTools: [],
+      requiresOversight: false,
       isCustom: true
     };
     setAgents([...agents, newAgent]);
@@ -169,20 +234,10 @@ export default function App() {
   };
 
   const handleAddCatalogAgent = (catalogAgent: CatalogAgent) => {
-    const id = catalogAgent.id.replace(/[^a-zA-Z0-9-]/g, '-') + '-' + crypto.randomUUID().slice(0, 8);
-    const newAgent: Agent = {
-      id,
-      name: catalogAgent.name,
-      role: catalogAgent.vibe || catalogAgent.description.slice(0, 50) || 'Specialist',
-      model: 'gemini-1.5-flash',
-      prompt: catalogAgent.prompt,
-      description: catalogAgent.description,
-      color: catalogAgent.color,
-      emoji: catalogAgent.emoji,
-      vibe: catalogAgent.vibe,
-      isCustom: false
-    };
-    setAgents([...agents, newAgent]);
+    const runtimeAgent = catalogAgentToRuntimeAgent(catalogAgent, {
+      id: catalogAgent.id.replace(/[^a-zA-Z0-9-]/g, '-') + '-' + crypto.randomUUID().slice(0, 6),
+    });
+    setAgents([...agents, runtimeAgent]);
     setIsCatalogModalOpen(false);
   };
 
@@ -223,11 +278,11 @@ export default function App() {
   };
 
   const addWorkflow = () => {
-    const id = crypto.randomUUID();
-    setWorkflows([...workflows, { 
-      id, 
-      name: 'New Workflow/Playbook', 
-      description: '',
+    const id = crypto.randomUUID().slice(0, 8);
+    setWorkflows([...workflows, {
+      id,
+      name: 'New Workflow SOP',
+      description: '## Step 1: Execution\nExecute procedure in accordance with corporate policies.',
       isOkfPlaybook: false,
       resourceUri: '',
       topic: companyInfo.industry.toLowerCase() || 'general',
@@ -241,77 +296,32 @@ export default function App() {
   };
 
   const handleAiAssist = () => {
-    const desc = companyInfo.description.toLowerCase();
-    if (!desc || catalog.length === 0) return;
+    const recommended = recommendTeam(
+      companyInfo.goals || [],
+      companyInfo.industry,
+      companyInfo.size,
+      catalog
+    );
 
-    const tokens = desc.split(/[^a-zA-Z0-9]+/).filter(t => t.length > 3);
-    const scoredAgents = catalog.map(agent => {
-      let score = 0;
-      const searchSpace = `${agent.name} ${agent.vibe} ${agent.description} ${agent.departmentLabel}`.toLowerCase();
-      tokens.forEach(token => {
-        if (searchSpace.includes(token)) score += 1;
-      });
-      return { agent, score };
-    });
-
-    const matches = scoredAgents
-      .filter(item => item.score > 0)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 3)
-      .map(item => item.agent);
-
-    if (matches.length > 0) {
-      const matchSector = dynamicIndustries.find(i => i.keywords.some(k => desc.includes(k)));
-      const industryName = matchSector?.name || companyInfo.industry || 'Software Development';
-      const industryPath = matchSector?.path || companyInfo.industryPath || 'development';
-      const defaultCode = INDUSTRY_CODES_MAP[industryName]?.[0]?.code || ('NAICS ' + (Math.floor(Math.random() * 90000) + 10000));
-
-      setIsCustomIndustry(false);
-      setShowCustomCodeInput(false);
-      
-      setCompanyInfo({
-        ...companyInfo,
-        mission: `To revolutionize ${companyInfo.description.toLowerCase()} through sovereign intelligence and automated workflows.`,
-        industry: industryName,
-        industryPath: industryPath,
-        industryCode: defaultCode
-      });
-
-      const suggestedSwarmAgents = matches.map((catAgent) => ({
-        id: catAgent.id.replace(/[^a-zA-Z0-9-]/g, '-') + '-' + crypto.randomUUID().slice(0, 8),
-        name: catAgent.name,
-        role: catAgent.vibe || catAgent.description.slice(0, 50) || 'Specialist',
-        model: 'gemini-1.5-flash',
-        prompt: catAgent.prompt,
-        description: catAgent.description,
-        color: catAgent.color,
-        emoji: catAgent.emoji,
-        vibe: catAgent.vibe,
-        isCustom: false
+    if (recommended.length > 0) {
+      setAgents(recommended.map(r => r.agent));
+      setCompanyInfo(prev => ({
+        ...prev,
+        mission: `To revolutionize ${prev.industry || 'operations'} through sovereign multi-agent intelligence and automated workflows.`
       }));
-
-      setAgents([
-        { 
-          id: '1', 
-          name: 'Lead Orchestrator', 
-          role: 'General Coordinator', 
-          model: 'gemini-pro-latest', 
-          prompt: 'Coordinate swarm operations...',
-          color: '#71717a',
-          emoji: '👑',
-          description: 'Orchestrates incoming tasks and matches roles.'
-        },
-        ...suggestedSwarmAgents
-      ]);
     }
   };
 
   const handleExport = async () => {
+    setExportError(null);
+    setIsExporting(true);
     try {
       await exportSwarmZip(companyInfo, agents, workflows, selectedConnectors, mcpCatalog);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
-      window.alert(`Unable to export this swarm: ${message}`);
+      setExportError(message);
+    } finally {
+      setIsExporting(false);
     }
   };
 
@@ -322,6 +332,7 @@ export default function App() {
     const requestSequence = ++swarmRequestSequence.current;
     setIsLoadingSwarmDetails(true);
     setLoadedSwarmDetails(null);
+    setSwarmLoadError(null);
     try {
       const details = await fetchSwarmDetailsFromRepo(templatePath, controller.signal);
       if (requestSequence !== swarmRequestSequence.current) return;
@@ -334,7 +345,8 @@ export default function App() {
       if (err instanceof DOMException && err.name === 'AbortError') return;
       console.error("Error fetching swarm details:", err);
       if (requestSequence === swarmRequestSequence.current) {
-        setLoadedSwarmDetails({ roster: [], workflows: [] });
+        setSwarmLoadError(err instanceof Error ? err.message : 'Failed to fetch template blueprint from repository.');
+        setLoadedSwarmDetails(null);
       }
     } finally {
       if (requestSequence === swarmRequestSequence.current) {
@@ -357,7 +369,9 @@ export default function App() {
   };
 
   const handleLoadSwarmIntoBuilder = () => {
-    if (!selectedTemplate) return;
+    if (!selectedTemplate || !loadedSwarmDetails?.roster || loadedSwarmDetails.roster.length === 0) {
+      return;
+    }
 
     const match = dynamicIndustries.find(i => i.name === selectedTemplate.industry);
     setCompanyInfo({
@@ -367,367 +381,512 @@ export default function App() {
       industry: selectedTemplate.industry,
       industryPath: match?.path || selectedTemplate.path.split('/')[0] || '',
       industryCode: INDUSTRY_CODES_MAP[selectedTemplate.industry]?.[0]?.code || '',
-      size: (selectedTemplate.company_size || 25).toString()
+      size: (selectedTemplate.company_size || 25).toString(),
+      goals: selectedTemplate.tags || []
     });
 
-    if (loadedSwarmDetails?.roster && loadedSwarmDetails.roster.length > 0) {
-      setAgents(loadedSwarmDetails.roster);
-    } else {
-      setAgents([
-        { id: '1', name: 'Lead Orchestrator', role: 'General Coordinator', model: 'gemini-pro-latest', prompt: 'Coordinate swarm operations...' }
-      ]);
-    }
+    setAgents(loadedSwarmDetails.roster);
+    setWorkflows(loadedSwarmDetails.workflows || []);
 
-    if (loadedSwarmDetails?.workflows && loadedSwarmDetails.workflows.length > 0) {
-      setWorkflows(loadedSwarmDetails.workflows);
-    } else {
-      setWorkflows([
-        { id: '1', name: 'Standard Triage', description: 'Analyze incoming data and route to appropriate agent.' }
-      ]);
-    }
-
+    setHasSelectedMode(true);
+    setShowTemplatesLibrary(false);
     setStep(1);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const filteredTemplates = dynamicRegistry.filter(t => 
-    t.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+  const handleManualSaveDraft = () => {
+    saveDraft(experienceMode, companyInfo, agents, workflows, selectedConnectors);
+    setDraftToast('Draft saved locally!');
+    setTimeout(() => setDraftToast(null), 3000);
+  };
+
+  const handleStartOver = () => {
+    if (window.confirm('Are you sure you want to reset the builder? This will clear your current blueprint draft.')) {
+      clearDraft();
+      setCompanyInfo({
+        name: '',
+        size: '25',
+        description: '',
+        mission: '',
+        industry: '',
+        industryPath: '',
+        industryCode: '',
+        goals: ['scheduling', 'quoting', 'customer-follow-up'],
+      });
+      setAgents([]);
+      setWorkflows([]);
+      setSelectedConnectors([]);
+      setHasSelectedMode(false);
+      setStep(1);
+    }
+  };
+
+  const filteredTemplates = dynamicRegistry.filter(t =>
+    t.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     t.industry.toLowerCase().includes(searchTerm.toLowerCase()) ||
     t.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
+  // If user has not chosen mode yet, render ModeSelector
+  if (!hasSelectedMode && !showTemplatesLibrary) {
+    return (
+      <div className="min-h-screen p-4 md:p-8 flex flex-col items-center justify-center max-w-5xl mx-auto">
+        <ModeSelector
+          templateCount={dynamicRegistry.length}
+          onSelectMode={handleSelectMode}
+          onBrowseTemplates={() => setShowTemplatesLibrary(true)}
+          savedDraft={savedDraftState}
+          onResumeDraft={handleResumeDraft}
+          onDiscardDraft={handleDiscardDraft}
+        />
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen p-4 md:p-8 flex flex-col items-center max-w-5xl mx-auto animate-fade-in">
-      {/* Header */}
-      <header className="w-full flex justify-between items-center mb-12">
+    <div className="min-h-screen p-4 md:p-8 flex flex-col items-center max-w-5xl mx-auto animate-fadeIn">
+      {/* Toast */}
+      {draftToast && (
+        <div className="fixed top-5 right-5 z-50 px-4 py-2 rounded-xl bg-cyber-green text-zinc-950 text-xs font-bold shadow-lg flex items-center gap-2 animate-bounce">
+          <BookmarkCheck className="w-4 h-4" /> {draftToast}
+        </div>
+      )}
+
+      {/* Export Error Alert Banner */}
+      {exportError && (
+        <div className="w-full mb-6 p-4 rounded-xl bg-red-950/80 border border-red-800 text-red-200 text-xs flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+            <span><strong>Export Blocked:</strong> {exportError}</span>
+          </div>
+          <button
+            onClick={() => setExportError(null)}
+            className="text-red-400 hover:text-white font-mono uppercase text-[10px] cursor-pointer"
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
+
+      {/* Persistent Header with Segmented Mode Switcher */}
+      <header className="w-full flex flex-col sm:flex-row justify-between items-center gap-4 mb-8 pb-6 border-b border-zinc-850">
         <div className="flex items-center gap-3">
-          <div className="bg-cyber-green/20 p-2 rounded-xl border border-cyber-green/30">
+          <div className="bg-cyber-green/20 p-2.5 rounded-xl border border-cyber-green/30">
             <Shield className="text-cyber-green w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-xl font-bold tracking-tight">Swarm Architect</h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl font-bold tracking-tight text-white">Swarm Architect</h1>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800 text-cyber-green font-semibold">v1.0</span>
+            </div>
             <p className="text-xs text-zinc-500 font-mono uppercase tracking-widest">Tadpole OS Engine</p>
           </div>
         </div>
-        <div className="flex gap-3">
-          {[
-            { id: 1, label: 'Pulse' },
-            { id: 2, label: 'Roster' },
-            { id: 3, label: 'Playbooks' },
-            { id: 4, label: 'Connectors' },
-            { id: 5, label: 'Forge' }
-          ].map(s => (
-            <div key={s.id} className="flex flex-col items-center gap-1.5">
-              <span className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${s.id <= step ? 'text-cyber-green' : 'text-zinc-650'}`}>
-                {s.label}
-              </span>
-              <div 
-                className={`w-12 h-1 rounded-full transition-colors ${s.id <= step ? 'bg-cyber-green shadow-[0_0_8px_rgba(34,197,94,0.5)]' : 'bg-zinc-800'}`} 
-              />
-            </div>
-          ))}
+
+        {/* Persistent Mode Switcher */}
+        <div className="flex items-center gap-3">
+          <div className="p-1 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center gap-1">
+            <button
+              onClick={() => setExperienceMode('guided')}
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+                experienceMode === 'guided'
+                  ? 'bg-cyber-green text-zinc-950 shadow-sm'
+                  : 'text-zinc-400 hover:text-zinc-200'
+              }`}
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              Guided Setup
+            </button>
+            <button
+              onClick={() => setExperienceMode('advanced')}
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+                experienceMode === 'advanced'
+                  ? 'bg-zinc-800 text-white border border-zinc-700 shadow-sm'
+                  : 'text-zinc-400 hover:text-zinc-200'
+              }`}
+            >
+              <Terminal className="w-3.5 h-3.5" />
+              Advanced Setup
+            </button>
+          </div>
+
+          <button
+            onClick={() => setShowTemplatesLibrary(!showTemplatesLibrary)}
+            className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-white transition-colors cursor-pointer"
+            title={`Browse ${dynamicRegistry.length} pre-built industry templates`}
+          >
+            <Layers className="w-4 h-4" />
+          </button>
         </div>
       </header>
 
-      {/* Steps Panels */}
-      <AnimatePresence mode="wait">
-        {step === 1 && (
-          <Step1_CompanyMission
+      {/* Main Experience Router */}
+      <Suspense fallback={<div className="w-full py-16 text-center text-zinc-500 font-mono text-xs animate-pulse">Loading experience...</div>}>
+        {experienceMode === 'guided' && !showTemplatesLibrary ? (
+          <GuidedWizard
             companyInfo={companyInfo}
             setCompanyInfo={setCompanyInfo}
-            dynamicIndustries={dynamicIndustries}
-            dynamicRegistry={dynamicRegistry}
-            selectedTemplateId={selectedTemplateId}
-            setSelectedTemplateId={setSelectedTemplateId}
-            isCustomIndustry={isCustomIndustry}
-            setIsCustomIndustry={setIsCustomIndustry}
-            customIndustryName={customIndustryName}
-            setCustomIndustryName={setCustomIndustryName}
-            customIndustryPath={customIndustryPath}
-            setCustomIndustryPath={setCustomIndustryPath}
-            showCustomCodeInput={showCustomCodeInput}
-            setShowCustomCodeInput={setShowCustomCodeInput}
-            onAiAssist={handleAiAssist}
-            onLoadSwarmDetails={(path) => { void fetchSwarmDetails(path, true); }}
-            onNext={() => { setStep(2); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-          />
-        )}
-
-        {step === 2 && (
-          <Step2_Roster
             agents={agents}
-            onRemoveAgent={removeAgent}
-            onEditAgent={(agent) => { setEditingAgent(agent); setIsEditorModalOpen(true); }}
-            onOpenCatalog={() => setIsCatalogModalOpen(true)}
-            onCreateCustomAgent={handleCreateCustomAgent}
-            onPrevious={() => { setStep(1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-            onNext={() => { setStep(3); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-          />
-        )}
-
-        {step === 3 && (
-          <Step3_Playbooks
+            setAgents={setAgents}
             workflows={workflows}
-            setWorkflows={setWorkflows}
-            companyInfo={companyInfo}
-            onAddWorkflow={addWorkflow}
-            onRemoveWorkflow={removeWorkflow}
-            onPrevious={() => { setStep(2); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-            onNext={() => { setStep(4); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-          />
-        )}
-
-        {step === 4 && (
-          <Step4_Connectors
+            dynamicIndustries={dynamicIndustries}
             mcpCatalog={mcpCatalog}
             selectedConnectors={selectedConnectors}
             setSelectedConnectors={setSelectedConnectors}
-            onAddNewMcp={handleAddNewMcp}
-            onEditMcp={(connector) => { setEditingMcp(connector); setIsMcpEditorModalOpen(true); }}
-            onDeleteMcp={handleDeleteMcp}
-            onPrevious={() => { setStep(3); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-            onNext={() => { setStep(5); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-          />
-        )}
-
-        {step === 5 && (
-          <Step5_Forge
-            companyInfo={companyInfo}
-            agents={agents}
-            workflows={workflows}
+            catalog={catalog}
+            onOpenCatalogModal={() => setIsCatalogModalOpen(true)}
+            validationIssues={validationIssues}
+            isExporting={isExporting}
             onExport={handleExport}
-            onPrevious={() => { setStep(4); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-            onReset={() => { setStep(1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+            onSaveDraft={handleManualSaveDraft}
+            onSwitchToAdvanced={() => setExperienceMode('advanced')}
+            onStartOver={handleStartOver}
           />
-        )}
-      </AnimatePresence>
-
-      {/* Community Templates Library Card */}
-      <section className="w-full mt-24 mb-12">
-        <div data-tooltip="Templates Registry: Public database of pre-packaged industrial multi-agent swarms." className="sovereign-panel p-6 flex flex-col min-h-[600px] border-zinc-800/50">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center pb-6 border-b border-zinc-800 gap-4 mb-6" style={{ borderColor: 'color-mix(in srgb, var(--color-border) 40%, transparent)' }}>
-            <div>
-              <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2" data-tooltip="Browse community-contributed templates configured for various commercial business sectors.">
-                <Cpu className="w-5 h-5 text-cyber-green" /> Community Templates Library
-              </h2>
-              <p className="text-zinc-500 text-xs mt-1">Explore, edit, and select pre-configured agent swarms in the ecosystem</p>
+        ) : experienceMode === 'advanced' && !showTemplatesLibrary ? (
+          <div className="w-full space-y-6">
+            {/* Advanced Progress Header */}
+            <div className="flex justify-center gap-3 mb-4">
+              {[
+                { id: 1, label: 'Identity' },
+                { id: 2, label: 'Agents' },
+                { id: 3, label: 'Workflows' },
+                { id: 4, label: 'Connections' },
+                { id: 5, label: 'Validate & Export' }
+              ].map(s => (
+                <button
+                  key={s.id}
+                  onClick={() => setStep(s.id)}
+                  className="flex flex-col items-center gap-1.5 cursor-pointer group"
+                >
+                  <span className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${s.id === step ? 'text-cyber-green font-bold' : 'text-zinc-500 group-hover:text-zinc-300'}`}>
+                    {s.label}
+                  </span>
+                  <div
+                    className={`w-12 sm:w-16 h-1 rounded-full transition-colors ${s.id <= step ? 'bg-cyber-green shadow-[0_0_8px_rgba(34,197,94,0.5)]' : 'bg-zinc-800'}`}
+                  />
+                </button>
+              ))}
             </div>
-            <div className="relative w-full md:w-80">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-              <input 
-                className="w-full bg-zinc-950 border border-zinc-800 rounded-full py-2 pl-10 pr-4 text-sm focus:border-cyber-green outline-none text-zinc-300"
-                placeholder="Search library..."
-                value={searchTerm}
-                onChange={e => setSearchTerm(e.target.value)}
-                data-tooltip="Search filters templates by business name, tags, and sector categories."
-              />
-            </div>
-          </div>
 
-          <div className="flex flex-col lg:flex-row gap-6 flex-1 min-h-[480px]">
-            <div className="w-full lg:w-2/5 pr-0 lg:pr-6 max-h-[500px] overflow-y-auto custom-scrollbar flex flex-col gap-2" style={{ borderRight: '1px solid color-mix(in srgb, var(--color-border) 45%, transparent)' }}>
-              {filteredTemplates.length === 0 ? (
-                <div className="text-zinc-650 text-sm font-mono p-4 text-center">No templates match search criteria</div>
-              ) : (
-                filteredTemplates.map(template => {
-                  const isSelected = selectedTemplateId === template.id;
-                  return (
-                    <div
-                      key={template.id}
-                      onClick={() => handleTemplateClick(template)}
-                      data-tooltip="Click to inspect this swarm template's roster and playbook SOP steps."
-                      className={`p-4 rounded-xl border sovereign-transition cursor-pointer text-left ${
-                        isSelected 
-                          ? 'bg-zinc-900 border-cyber-green/50 text-white' 
-                          : 'bg-zinc-950/40 border-zinc-800 text-zinc-400 hover:border-zinc-700'
-                      }`}
-                    >
-                      <div className="flex justify-between items-start mb-2">
-                        <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">{template.industry}</span>
-                        {isSelected && <span className="w-1.5 h-1.5 bg-cyber-green rounded-full animate-pulse" />}
-                      </div>
-                      <h4 className="font-bold text-sm text-zinc-100">{template.name}</h4>
-                      <p className="text-xs text-zinc-500 line-clamp-1 mt-1">{template.description}</p>
-                    </div>
-                  );
-                })
+            <AnimatePresence mode="wait">
+              {step === 1 && (
+                <Step1_CompanyMission
+                  companyInfo={companyInfo}
+                  setCompanyInfo={setCompanyInfo}
+                  dynamicIndustries={dynamicIndustries}
+                  dynamicRegistry={dynamicRegistry}
+                  selectedTemplateId={selectedTemplateId}
+                  setSelectedTemplateId={setSelectedTemplateId}
+                  isCustomIndustry={isCustomIndustry}
+                  setIsCustomIndustry={setIsCustomIndustry}
+                  customIndustryName={customIndustryName}
+                  setCustomIndustryName={setCustomIndustryName}
+                  customIndustryPath={customIndustryPath}
+                  setCustomIndustryPath={setCustomIndustryPath}
+                  showCustomCodeInput={showCustomCodeInput}
+                  setShowCustomCodeInput={setShowCustomCodeInput}
+                  onAiAssist={handleAiAssist}
+                  onLoadSwarmDetails={(path) => { void fetchSwarmDetails(path, true); }}
+                  onNext={() => { setStep(2); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                />
               )}
+
+              {step === 2 && (
+                <Step2_Roster
+                  agents={agents}
+                  onRemoveAgent={removeAgent}
+                  onEditAgent={(agent) => { setEditingAgent(agent); setIsEditorModalOpen(true); }}
+                  onOpenCatalog={() => setIsCatalogModalOpen(true)}
+                  onCreateCustomAgent={handleCreateCustomAgent}
+                  onPrevious={() => { setStep(1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  onNext={() => { setStep(3); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                />
+              )}
+
+              {step === 3 && (
+                <Step3_Playbooks
+                  workflows={workflows}
+                  setWorkflows={setWorkflows}
+                  companyInfo={companyInfo}
+                  onAddWorkflow={addWorkflow}
+                  onRemoveWorkflow={removeWorkflow}
+                  onPrevious={() => { setStep(2); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  onNext={() => { setStep(4); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                />
+              )}
+
+              {step === 4 && (
+                <Step4_Connectors
+                  mcpCatalog={mcpCatalog}
+                  selectedConnectors={selectedConnectors}
+                  setSelectedConnectors={setSelectedConnectors}
+                  onAddNewMcp={handleAddNewMcp}
+                  onEditMcp={(connector) => { setEditingMcp(connector); setIsMcpEditorModalOpen(true); }}
+                  onDeleteMcp={handleDeleteMcp}
+                  onPrevious={() => { setStep(3); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  onNext={() => { setStep(5); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                />
+              )}
+
+              {step === 5 && (
+                <Step5_Forge
+                  companyInfo={companyInfo}
+                  agents={agents}
+                  workflows={workflows}
+                  onExport={handleExport}
+                  onPrevious={() => { setStep(4); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  onReset={handleStartOver}
+                />
+              )}
+            </AnimatePresence>
+          </div>
+        ) : null}
+      </Suspense>
+
+      {/* Community Templates Library Card / Drawer */}
+      {showTemplatesLibrary && (
+        <section className="w-full my-6 animate-fadeIn">
+          <div data-tooltip="Templates Registry: Public database of pre-packaged industrial multi-agent swarms." className="sovereign-panel p-6 flex flex-col min-h-[600px] border-zinc-800/80 bg-zinc-950">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center pb-6 border-b border-zinc-800 gap-4 mb-6">
+              <div>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                    <Cpu className="w-5 h-5 text-cyber-green" /> Pre-built Industry Templates
+                  </h2>
+                  <span className="px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-300 text-xs font-mono">
+                    {dynamicRegistry.length} templates
+                  </span>
+                </div>
+                <p className="text-zinc-400 text-xs mt-1">Explore, edit, and select pre-configured agent swarms in the ecosystem</p>
+              </div>
+              <div className="flex items-center gap-3 w-full md:w-auto">
+                <div className="relative w-full md:w-72">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+                  <input
+                    className="w-full bg-zinc-900 border border-zinc-800 rounded-full py-2 pl-10 pr-4 text-xs focus:border-cyber-green outline-none text-zinc-300"
+                    placeholder="Search templates..."
+                    value={searchTerm}
+                    onChange={e => setSearchTerm(e.target.value)}
+                  />
+                </div>
+                <button
+                  onClick={() => setShowTemplatesLibrary(false)}
+                  className="px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-zinc-400 hover:text-white text-xs font-mono cursor-pointer"
+                >
+                  Close
+                </button>
+              </div>
             </div>
 
-            <div className="w-full lg:w-3/5 flex flex-col gap-6 bg-zinc-950/20 p-6 rounded-xl border border-zinc-850/60 max-h-[500px] overflow-y-auto custom-scrollbar" style={{ borderColor: 'color-mix(in srgb, var(--color-border) 30%, transparent)' }}>
-              {selectedTemplate ? (
-                <div className="flex flex-col gap-6 h-full justify-between">
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <span className="mono-label text-[10px] text-zinc-500">Selected Swarm Template</span>
-                        <input
-                          className="bg-transparent text-lg font-bold text-white border-b border-zinc-800 hover:border-zinc-700 focus:border-cyber-green outline-none w-full pb-1 mt-1"
-                          value={selectedTemplate.name}
-                          onChange={e => handleUpdateSelectedTemplate('name', e.target.value)}
+            <div className="flex flex-col lg:flex-row gap-6 flex-1 min-h-[480px]">
+              <div className="w-full lg:w-2/5 pr-0 lg:pr-6 max-h-[500px] overflow-y-auto custom-scrollbar flex flex-col gap-2 border-r border-zinc-850">
+                {filteredTemplates.length === 0 ? (
+                  <div className="text-zinc-500 text-xs font-mono p-4 text-center">No templates match search criteria</div>
+                ) : (
+                  filteredTemplates.map(template => {
+                    const isSelected = selectedTemplateId === template.id;
+                    return (
+                      <div
+                        key={template.id}
+                        onClick={() => handleTemplateClick(template)}
+                        className={`p-4 rounded-xl border sovereign-transition cursor-pointer text-left ${
+                          isSelected
+                            ? 'bg-zinc-900 border-cyber-green/50 text-white'
+                            : 'bg-zinc-950/40 border-zinc-800 text-zinc-400 hover:border-zinc-700'
+                        }`}
+                      >
+                        <div className="flex justify-between items-start mb-1.5">
+                          <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">{template.industry}</span>
+                          {isSelected && <span className="w-1.5 h-1.5 bg-cyber-green rounded-full animate-pulse" />}
+                        </div>
+                        <h4 className="font-bold text-sm text-zinc-100">{template.name}</h4>
+                        <p className="text-xs text-zinc-400 line-clamp-1 mt-1">{template.description}</p>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+
+              <div className="w-full lg:w-3/5 flex flex-col gap-6 bg-zinc-900/30 p-6 rounded-xl border border-zinc-850 max-h-[500px] overflow-y-auto custom-scrollbar">
+                {selectedTemplate ? (
+                  <div className="flex flex-col gap-6 h-full justify-between">
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <span className="mono-label text-[10px] text-zinc-500">Selected Template</span>
+                          <input
+                            className="bg-transparent text-lg font-bold text-white border-b border-zinc-800 hover:border-zinc-700 focus:border-cyber-green outline-none w-full pb-1 mt-1"
+                            value={selectedTemplate.name}
+                            onChange={e => handleUpdateSelectedTemplate('name', e.target.value)}
+                          />
+                        </div>
+                        <div className="text-right ml-4">
+                          <span className="mono-label text-[10px] text-zinc-500 block">Industry</span>
+                          <span className="text-[10px] font-mono text-cyber-green uppercase tracking-tighter bg-cyber-green/5 px-2 py-0.5 rounded border border-cyber-green/10 inline-block mt-1">
+                            {selectedTemplate.industry}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div>
+                        <span className="mono-label text-[10px] text-zinc-500">Description</span>
+                        <textarea
+                          className="w-full bg-zinc-950/60 border border-zinc-800 rounded-lg p-3 text-xs text-zinc-300 focus:border-cyber-green outline-none min-h-[60px] resize-y mt-1"
+                          value={selectedTemplate.description}
+                          onChange={e => handleUpdateSelectedTemplate('description', e.target.value)}
                         />
                       </div>
-                      <div className="text-right ml-4">
-                        <span className="mono-label text-[10px] text-zinc-500 block">Industry</span>
-                        <span className="text-[10px] font-mono text-cyber-green uppercase tracking-tighter bg-cyber-green/5 px-2 py-0.5 rounded border border-cyber-green/10 inline-block mt-1">
-                          {selectedTemplate.industry}
-                        </span>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <span className="mono-label text-[10px] text-zinc-500">Repository Path</span>
+                          <div className="bg-zinc-950/60 border border-zinc-800 rounded-lg p-2.5 text-xs text-zinc-400 font-mono mt-1">
+                            {selectedTemplate.path}
+                          </div>
+                        </div>
+                        <div>
+                          <span className="mono-label text-[10px] text-zinc-500">Default Company Size</span>
+                          <div className="bg-zinc-950/60 border border-zinc-800 rounded-lg p-2.5 text-xs text-zinc-400 font-mono mt-1">
+                            {selectedTemplate.company_size || 25} Seats
+                          </div>
+                        </div>
                       </div>
-                    </div>
 
-                    <div>
-                      <span className="mono-label text-[10px] text-zinc-500">Description</span>
-                      <textarea
-                        className="w-full bg-zinc-950/60 border border-zinc-855 rounded-lg p-3 text-xs text-zinc-300 focus:border-cyber-green outline-none min-h-[60px] resize-y mt-1"
-                        value={selectedTemplate.description}
-                        onChange={e => handleUpdateSelectedTemplate('description', e.target.value)}
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <span className="mono-label text-[10px] text-zinc-500">Path</span>
-                        <div className="bg-zinc-950/60 border border-zinc-800 rounded-lg p-2.5 text-xs text-zinc-400 font-mono mt-1" style={{ borderColor: 'color-mix(in srgb, var(--color-border) 40%, transparent)' }}>
-                          {selectedTemplate.path}
-                        </div>
-                      </div>
-                      <div>
-                        <span className="mono-label text-[10px] text-zinc-500">Default Company Size</span>
-                        <div className="bg-zinc-950/60 border border-zinc-800 rounded-lg p-2.5 text-xs text-zinc-400 font-mono mt-1" style={{ borderColor: 'color-mix(in srgb, var(--color-border) 40%, transparent)' }}>
-                          {selectedTemplate.company_size || 25} Seats
-                        </div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <span className="mono-label text-[10px] text-zinc-500 block mb-2">Agents & Roster configuration</span>
-                      {isLoadingSwarmDetails ? (
-                        <div className="text-xs text-zinc-550 font-mono py-2 animate-pulse flex items-center gap-2">
-                          <div className="w-3.5 h-3.5 border-2 border-zinc-800 border-t-cyber-green rounded-full animate-spin" />
-                          Fetching roster details...
-                        </div>
-                      ) : (
-                        <div className="space-y-2">
-                          {loadedSwarmDetails?.roster && loadedSwarmDetails.roster.length > 0 ? (
-                            loadedSwarmDetails.roster.map((agent: Agent, idx: number) => (
-                              <div key={idx} className="bg-zinc-950/80 border border-zinc-850 p-3 rounded-lg flex justify-between items-center text-xs" style={{ borderColor: 'color-mix(in srgb, var(--color-border) 30%, transparent)' }}>
-                                <div className="text-left">
-                                  <div className="font-bold text-zinc-200">{agent.name || agent.id}</div>
-                                  <div className="text-zinc-500 font-mono text-[10px] mt-0.5">{agent.role || 'Agent Role'}</div>
+                        <span className="mono-label text-[10px] text-zinc-500 block mb-2">Agents & Roster configuration</span>
+                        {isLoadingSwarmDetails ? (
+                          <div className="text-xs text-zinc-400 font-mono py-2 animate-pulse flex items-center gap-2">
+                            <div className="w-3.5 h-3.5 border-2 border-zinc-800 border-t-cyber-green rounded-full animate-spin" />
+                            Fetching roster details from repository...
+                          </div>
+                        ) : swarmLoadError ? (
+                          <div className="p-3 rounded-lg bg-red-950/40 border border-red-900/60 text-red-300 text-xs space-y-2">
+                            <div className="flex items-center gap-1.5 font-semibold">
+                              <AlertCircle className="w-4 h-4 text-red-400" />
+                              <span>Failed to load blueprint</span>
+                            </div>
+                            <p className="text-[11px] text-red-300/80">{swarmLoadError}</p>
+                            <button
+                              onClick={() => fetchSwarmDetails(selectedTemplate.path)}
+                              className="px-3 py-1 rounded bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-zinc-300 text-[11px] font-mono cursor-pointer"
+                            >
+                              Retry Fetch
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="space-y-2">
+                            {loadedSwarmDetails?.roster && loadedSwarmDetails.roster.length > 0 ? (
+                              loadedSwarmDetails.roster.map((agent: Agent, idx: number) => (
+                                <div key={idx} className="bg-zinc-950 border border-zinc-800 p-3 rounded-lg flex justify-between items-center text-xs">
+                                  <div className="text-left">
+                                    <div className="font-bold text-zinc-200">{agent.name || agent.id}</div>
+                                    <div className="text-zinc-500 font-mono text-[10px] mt-0.5">{agent.role || 'Specialist'}</div>
+                                  </div>
+                                  <span className="text-[9px] font-mono text-zinc-400 bg-zinc-900 border border-zinc-800 px-1.5 py-0.5 rounded">
+                                    {agent.model || 'gemini-pro-latest'}
+                                  </span>
                                 </div>
-                                <span className="text-[9px] font-mono text-zinc-500 bg-zinc-900 border border-zinc-800 px-1.5 py-0.5 rounded">
-                                  {agent.model || 'gemini-pro-latest'}
-                                </span>
-                              </div>
-                            ))
-                          ) : (
-                            <div className="text-zinc-600 text-xs font-mono italic">No loaded roster details (click template or try checking connection)</div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-
-                    <div>
-                      <span className="mono-label text-[10px] text-zinc-500 block">Tags (comma-separated)</span>
-                      <input 
-                        className="w-full bg-zinc-950/60 border border-zinc-805 rounded-lg p-2.5 text-xs text-zinc-300 focus:border-cyber-green outline-none mt-1"
-                        style={{ borderColor: 'color-mix(in srgb, var(--color-border) 40%, transparent)' }}
-                        placeholder="e.g. law, audit, compliance"
-                        value={selectedTemplate.tags.join(', ')}
-                        onChange={e => {
-                          const tagList = e.target.value.split(',').map(t => t.trim()).filter(Boolean);
-                          handleUpdateSelectedTemplate('tags', tagList);
-                        }}
-                      />
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {selectedTemplate.tags.map((tag: string, idx: number) => (
-                          <span key={idx} className="text-[10px] text-zinc-400 bg-zinc-950 px-2 py-1 rounded-md border border-zinc-800">
-                            #{tag}
-                          </span>
-                        ))}
+                              ))
+                            ) : (
+                              <div className="text-zinc-500 text-xs font-mono italic">No loaded roster details</div>
+                            )}
+                          </div>
+                        )}
                       </div>
                     </div>
-                  </div>
 
-                  <div className="pt-4 border-t border-zinc-900 flex justify-end gap-3" style={{ borderColor: 'color-mix(in srgb, var(--color-border) 40%, transparent)' }}>
-                    <button
-                      onClick={handleLoadSwarmIntoBuilder}
-                      disabled={isLoadingSwarmDetails || !loadedSwarmDetails}
-                      className="bg-cyber-green text-zinc-950 font-bold text-xs px-5 py-2.5 rounded-lg hover:scale-102 transition-all cursor-pointer flex items-center gap-1.5 shadow-[0_0_12px_rgba(34,197,94,0.15)] disabled:opacity-50"
-                    >
-                      <Download className="w-3.5 h-3.5" /> Load into Swarm Architect
-                    </button>
+                    <div className="pt-4 border-t border-zinc-850 flex justify-end gap-3">
+                      <button
+                        onClick={handleLoadSwarmIntoBuilder}
+                        disabled={isLoadingSwarmDetails || !loadedSwarmDetails?.roster || loadedSwarmDetails.roster.length === 0 || !!swarmLoadError}
+                        className="bg-cyber-green text-zinc-950 font-bold text-xs px-5 py-2.5 rounded-lg hover:bg-cyber-green-light transition-all cursor-pointer flex items-center gap-1.5 shadow-md shadow-cyber-green/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <Download className="w-3.5 h-3.5" /> Load into Swarm Architect
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
-                  <Cpu className="w-10 h-10 text-zinc-700 mb-3" />
-                  <p className="text-zinc-500 text-sm">Select a template from the list to preview details, edit configuration, or load it into the workspace.</p>
-                </div>
-              )}
+                ) : (
+                  <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
+                    <Cpu className="w-10 h-10 text-zinc-700 mb-3" />
+                    <p className="text-zinc-500 text-sm">Select a template from the list to preview details or load it into Swarm Architect.</p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Catalog Modal */}
-      <AnimatePresence>
-        {isCatalogModalOpen && (
-          <CatalogDrawer
-            isOpen={isCatalogModalOpen}
-            onClose={() => setIsCatalogModalOpen(false)}
-            catalog={catalog}
-            isCatalogLoading={isCatalogLoading}
-            onAddCatalogAgent={handleAddCatalogAgent}
-            departments={departments}
-          />
-        )}
-      </AnimatePresence>
+      <Suspense fallback={null}>
+        <AnimatePresence>
+          {isCatalogModalOpen && (
+            <CatalogDrawer
+              isOpen={isCatalogModalOpen}
+              onClose={() => setIsCatalogModalOpen(false)}
+              catalog={catalog}
+              isCatalogLoading={isCatalogLoading}
+              onAddCatalogAgent={handleAddCatalogAgent}
+              departments={departments}
+            />
+          )}
+        </AnimatePresence>
+      </Suspense>
 
       {/* Agent Editor Modal */}
-      <AnimatePresence>
-        {isEditorModalOpen && editingAgent && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/85 backdrop-blur-sm"
-          >
-            <AgentEditor 
-              agent={editingAgent} 
-              onClose={() => {
-                setIsEditorModalOpen(false);
-                setEditingAgent(null);
-              }}
-              onSave={handleSaveAgent}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <Suspense fallback={null}>
+        <AnimatePresence>
+          {isEditorModalOpen && editingAgent && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/85 backdrop-blur-sm"
+            >
+              <AgentEditor
+                agent={editingAgent}
+                onClose={() => {
+                  setIsEditorModalOpen(false);
+                  setEditingAgent(null);
+                }}
+                onSave={handleSaveAgent}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </Suspense>
 
       {/* MCP Editor Modal */}
-      <AnimatePresence>
-        {isMcpEditorModalOpen && editingMcp && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/85 backdrop-blur-sm"
-          >
-            <McpEditor 
-              connector={editingMcp} 
-              onClose={() => {
-                setIsMcpEditorModalOpen(false);
-                setEditingMcp(null);
-              }}
-              onSave={handleSaveMcp}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <Suspense fallback={null}>
+        <AnimatePresence>
+          {isMcpEditorModalOpen && editingMcp && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/85 backdrop-blur-sm"
+            >
+              <McpEditor
+                connector={editingMcp}
+                onClose={() => {
+                  setIsMcpEditorModalOpen(false);
+                  setEditingMcp(null);
+                }}
+                onSave={handleSaveMcp}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </Suspense>
 
-      <footer className="mt-12 text-zinc-650 text-[10px] font-mono tracking-widest uppercase">
-        Sovereign Reality Systems • 2026 • Verified SEC-ARA
+      <footer className="mt-16 text-zinc-600 text-[10px] font-mono tracking-widest uppercase text-center flex flex-col items-center gap-2">
+        <div>Tadpole OS Swarm Architect • Guided & Advanced Multi-Agent Blueprint Builder</div>
+        <button
+          onClick={handleStartOver}
+          className="text-zinc-600 hover:text-red-400 transition-colors flex items-center gap-1 cursor-pointer font-sans normal-case text-xs"
+        >
+          <RotateCcw className="w-3 h-3" /> Reset Session
+        </button>
       </footer>
     </div>
   );

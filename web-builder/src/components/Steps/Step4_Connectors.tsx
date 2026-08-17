@@ -24,7 +24,7 @@ export default function Step4_Connectors({
   onNext
 }: Step4Props) {
   return (
-    <motion.div 
+    <motion.div
       key="step4"
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
@@ -33,9 +33,14 @@ export default function Step4_Connectors({
       className="w-full sovereign-panel p-8"
     >
       <div className="flex justify-between items-center mb-8">
-        <div className="flex items-center gap-2 text-cyber-green">
-          <Database className="w-5 h-5" />
-          <h2 className="font-bold text-lg" data-tooltip="Attach standalone MCP Data Connectors for digital twin syncing or external tool access.">Phase 4: Data Connectors (MCP)</h2>
+        <div className="flex items-center gap-3 text-cyber-green">
+          <Database className="w-5 h-5 shrink-0" />
+          <div>
+            <h2 className="font-bold text-lg text-white" data-tooltip="Attach standalone MCP Data Connectors for digital twin syncing or external tool access.">
+              Phase 4: Connections
+            </h2>
+            <p className="text-xs font-mono text-zinc-500">MCP tool configuration & server parameters</p>
+          </div>
         </div>
         <button
           onClick={onAddNewMcp}
@@ -54,8 +59,8 @@ export default function Step4_Connectors({
           mcpCatalog.map(connector => {
             const isSelected = selectedConnectors.includes(connector.id);
             return (
-              <div 
-                key={connector.id} 
+              <div
+                key={connector.id}
                 onClick={() => {
                   if (isSelected) {
                     setSelectedConnectors(selectedConnectors.filter(id => id !== connector.id));
@@ -64,8 +69,8 @@ export default function Step4_Connectors({
                   }
                 }}
                 className={`p-5 rounded-xl border sovereign-transition cursor-pointer text-left relative ${
-                  isSelected 
-                    ? 'bg-zinc-900 border-cyber-green/50 text-white' 
+                  isSelected
+                    ? 'bg-zinc-900 border-cyber-green/50 text-white'
                     : 'bg-zinc-950/40 border-zinc-800 text-zinc-400 hover:border-zinc-700'
                 }`}
               >
@@ -77,7 +82,7 @@ export default function Step4_Connectors({
                 </div>
                 <h4 className="font-bold text-sm text-zinc-100">{connector.name}</h4>
                 <p className="text-xs text-zinc-500 mt-2 leading-relaxed">{connector.description}</p>
-                
+
                 <div className="mt-4 pt-3 border-t border-zinc-850/50 flex justify-between items-center text-[10px] font-mono text-zinc-500" style={{ borderColor: 'color-mix(in srgb, var(--color-zinc-800) 25%, transparent)' }}>
                   <span className="truncate max-w-[150px]" title={connector.path}>{connector.path}</span>
                   <div className="flex gap-2.5">
@@ -106,7 +111,7 @@ export default function Step4_Connectors({
 
       <div className="mt-12 flex justify-between">
         <button onClick={onPrevious} className="text-zinc-500 hover:text-white transition-colors cursor-pointer">Previous</button>
-        <button 
+        <button
           onClick={onNext}
           className="bg-neural-pulse text-zinc-950 font-bold px-8 py-3 rounded-lg hover:bg-white transition-all cursor-pointer"
         >

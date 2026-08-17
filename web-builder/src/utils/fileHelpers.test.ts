@@ -235,4 +235,80 @@ describe('Swarm Architect archive contract', () => {
     expect(zip.file('workflows/global.md')).not.toBeNull();
     expect(zip.file('workflows/review.md')).not.toBeNull();
   });
+
+  it('exports a valid Guided Setup swarm with recommended specialist agents', async () => {
+    const guidedCompany = {
+      name: 'Apex Field Services',
+      mission: 'Coordinate dispatch, work orders, and customer follow-up.',
+      size: '25',
+      industry: 'Field Services',
+    };
+
+    const dispatchAgent: Agent = {
+      id: 'dispatch-coordinator',
+      name: 'Field Service Dispatch Coordinator',
+      role: 'Dispatch Coordinator',
+      department: 'Operations',
+      description: 'Coordinates technician schedules.',
+      status: 'idle',
+      provider: 'google',
+      model: 'gemini-pro-latest',
+      prompt: 'You coordinate daily field-service dispatch for a small business. Triage requests by urgency and location. Require human approval before assignments.',
+      skills: ['read_file'],
+      workflows: ['dispatch-procedure'],
+      mcpTools: [],
+      requiresOversight: false,
+    };
+
+    const estimateAgent: Agent = {
+      id: 'estimate-coordinator',
+      name: 'Estimate & Work Order Coordinator',
+      role: 'Estimate Coordinator',
+      department: 'Finance',
+      description: 'Prepares draft estimates.',
+      status: 'idle',
+      provider: 'google',
+      model: 'gemini-pro-latest',
+      prompt: 'You prepare draft estimates and work orders for a small service company. Use supplied price books. Require approval before quotes are issued.',
+      skills: ['read_file'],
+      workflows: ['dispatch-procedure'],
+      mcpTools: [],
+      requiresOversight: false,
+    };
+
+    const workflowItem: WorkflowItem = {
+      id: 'dispatch-procedure',
+      name: 'Dispatch & Work Order SOP',
+      description: '## Step 1: Dispatch\nTriage and review dispatch records.',
+    };
+
+    const zip = await buildSwarmZip(guidedCompany, [dispatchAgent, estimateAgent], [workflowItem], [], []);
+    const swarmJson = JSON.parse(await zip.file('swarm.json')!.async('string'));
+    expect(swarmJson.name).toBe('Apex Field Services Swarm');
+    expect(swarmJson.roster.length).toBe(2);
+
+    const dispatchExport = JSON.parse(await zip.file('agents/dispatch-coordinator.json')!.async('string'));
+    expect(dispatchExport.model_config.system_prompt.length).toBeLessThanOrEqual(800);
+    expect(dispatchExport.status).toBe('idle');
+  });
+
+  it('rejects system prompts exceeding 800 characters at export time', async () => {
+    const oversizedAgent: Agent = {
+      ...agent,
+      prompt: 'A'.repeat(801),
+    };
+    await expect(buildSwarmZip(company, [oversizedAgent], [workflow], [], [])).rejects.toThrow(
+      'has a system prompt longer than 800 characters',
+    );
+  });
+
+  it('rejects unrecognized capability IDs and accepts valid search_web tool', async () => {
+    await expect(
+      buildSwarmZip(company, [{ ...agent, skills: ['read_file', 'invalid_capability'] }], [workflow], [], [])
+    ).rejects.toThrow('Unrecognized capability');
+
+    const zip = await buildSwarmZip(company, [{ ...agent, skills: ['read_file', 'search_web'] }], [workflow], [], []);
+    const exported = JSON.parse(await zip.file('agents/review-agent.json')!.async('string'));
+    expect(exported.skills).toEqual(['read_file', 'search_web']);
+  });
 });

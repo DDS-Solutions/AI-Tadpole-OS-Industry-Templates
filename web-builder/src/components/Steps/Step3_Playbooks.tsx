@@ -26,7 +26,7 @@ export default function Step3_Playbooks({
   onNext
 }: Step3Props) {
   return (
-    <motion.div 
+    <motion.div
       key="step3"
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
@@ -35,11 +35,16 @@ export default function Step3_Playbooks({
       className="w-full sovereign-panel p-8"
     >
       <div className="flex justify-between items-center mb-8">
-        <div className="flex items-center gap-2 text-cyber-green">
-          <Workflow className="w-5 h-5" />
-          <h2 className="font-bold text-lg" data-tooltip="Set standard operating procedures and connect private Confluence/wiki documents.">Phase 3: The Playbook</h2>
+        <div className="flex items-center gap-3 text-cyber-green">
+          <Workflow className="w-5 h-5 shrink-0" />
+          <div>
+            <h2 className="font-bold text-lg text-white" data-tooltip="Set standard operating procedures and connect private Confluence/wiki documents.">
+              Phase 3: Workflows
+            </h2>
+            <p className="text-xs font-mono text-zinc-500">Playbook directives & knowledge ingestion</p>
+          </div>
         </div>
-        <button 
+        <button
           onClick={onAddWorkflow}
           className="bg-cyber-green/10 text-cyber-green hover:bg-cyber-green/20 px-4 py-2 rounded-lg border border-cyber-green/30 flex items-center gap-2 transition-all cursor-pointer text-xs font-semibold"
         >
@@ -50,14 +55,14 @@ export default function Step3_Playbooks({
       <div className="space-y-4">
         {workflows.map(workflow => (
           <div key={workflow.id} data-tooltip="Playbook SOP Card: Configures task guidelines or institutional knowledge mappings." className="bg-zinc-950/50 border border-zinc-800 p-6 rounded-xl relative group">
-            <button 
+            <button
               onClick={() => onRemoveWorkflow(workflow.id)}
               className="absolute top-6 right-6 text-zinc-650 hover:text-rose-500 transition-colors opacity-0 group-hover:opacity-100 cursor-pointer"
             >
               <Trash2 className="w-5 h-5" />
             </button>
             <div className="space-y-4">
-              <input 
+              <input
                 className="bg-transparent border-b border-zinc-850 mb-2 w-full font-bold focus:border-cyber-green outline-none pb-1 text-zinc-100 text-sm"
                 value={workflow.name}
                 onChange={e => {
@@ -66,7 +71,7 @@ export default function Step3_Playbooks({
                   setWorkflows(newWorkflows);
                 }}
               />
-              <textarea 
+              <textarea
                 className="bg-transparent text-sm w-full outline-none text-zinc-400 min-h-[80px] leading-relaxed"
                 placeholder="Describe the workflow SOP..."
                 value={workflow.description}
@@ -80,7 +85,7 @@ export default function Step3_Playbooks({
               {/* OKF/IKS Integration Panel */}
               <div className="pt-4 border-t border-zinc-900 mt-4 space-y-4" style={{ borderColor: 'color-mix(in srgb, var(--color-zinc-800) 40%, transparent)' }}>
                 <label className="flex items-center gap-2 text-xs text-zinc-500 cursor-pointer font-mono select-none">
-                  <input 
+                  <input
                     type="checkbox"
                     checked={!!workflow.isOkfPlaybook}
                     onChange={e => {
@@ -103,7 +108,7 @@ export default function Step3_Playbooks({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-6 border-l border-zinc-800">
                     <div>
                       <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1 cursor-help" data-tooltip="Link to external raw source material, Confluence wiki pages, or Google Docs.">External SOP / Confluence URL</label>
-                      <input 
+                      <input
                         className="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-xs focus:border-cyber-green outline-none text-zinc-300"
                         placeholder="https://confluence.company.com/pages/..."
                         value={workflow.resourceUri || ''}
@@ -116,7 +121,7 @@ export default function Step3_Playbooks({
                     </div>
                     <div>
                       <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1 cursor-help" data-tooltip="Primary focus category (e.g. legal, compliance, operations) for sorting.">Topic</label>
-                      <input 
+                      <input
                         className="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-xs focus:border-cyber-green outline-none text-zinc-300"
                         placeholder="e.g. marketing, compliance"
                         value={workflow.topic || ''}
@@ -129,7 +134,7 @@ export default function Step3_Playbooks({
                     </div>
                     <div>
                       <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1 cursor-help" data-tooltip="Structural classification category (e.g. playbook, guideline, policy).">Concept Type</label>
-                      <input 
+                      <input
                         className="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-xs focus:border-cyber-green outline-none text-zinc-300"
                         placeholder="e.g. playbook, guideline"
                         value={workflow.conceptType || ''}
@@ -142,7 +147,7 @@ export default function Step3_Playbooks({
                     </div>
                     <div>
                       <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1 cursor-help" data-tooltip="Keywords matching agent filters to trigger memory retrieval.">Tags (comma-separated)</label>
-                      <input 
+                      <input
                         className="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-xs focus:border-cyber-green outline-none text-zinc-300"
                         placeholder="e.g. seo, advertising"
                         value={workflow.tags || ''}
@@ -168,7 +173,7 @@ export default function Step3_Playbooks({
 
       <div className="mt-12 flex justify-between">
         <button onClick={onPrevious} className="text-zinc-500 hover:text-white transition-colors cursor-pointer">Previous</button>
-        <button 
+        <button
           onClick={onNext}
           className="bg-neural-pulse text-zinc-950 font-bold px-8 py-3 rounded-lg hover:bg-white transition-all cursor-pointer"
         >

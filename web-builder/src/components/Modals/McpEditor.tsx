@@ -53,7 +53,7 @@ export default function McpEditor({ connector, onClose, onSave }: McpEditorProps
 
       {/* Form Body */}
       <div className="p-6 space-y-5">
-        
+
         {/* Name, Category, Version */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>

@@ -1,3 +1,5 @@
+export type ExperienceMode = 'guided' | 'advanced';
+
 export interface Agent {
   id: string;
   name: string;
@@ -16,6 +18,7 @@ export interface Agent {
   emoji?: string;
   vibe?: string;
   isCustom?: boolean;
+  recommendationReason?: string;
 }
 
 export interface WorkflowItem {
@@ -44,6 +47,7 @@ export interface CatalogAgent {
   name: string;
   role?: string;
   prompt: string;
+  runtimePrompt: string;
   description: string;
   vibe: string;
   department: string;
@@ -83,9 +87,31 @@ export interface MCPConfig {
   mcpServers: Record<string, MCPServerConfig>;
 }
 
-export type TabMode = 'custom' | 'templates';
+export interface CompanyInfo {
+  name: string;
+  size: string;
+  description: string;
+  mission: string;
+  industry: string;
+  industryPath: string;
+  industryCode: string;
+  goals?: string[];
+}
 
-export interface StepState {
-  currentStep: number;
-  completedSteps: number[];
+export interface ValidationIssue {
+  id: string;
+  severity: 'error' | 'warning' | 'info';
+  section: 'identity' | 'agents' | 'workflows' | 'connectors' | 'general';
+  itemId?: string;
+  message: string;
+  suggestedAction?: string;
+}
+
+export interface RecommendedSpecialist {
+  agent: Agent;
+  whyRecommended: string;
+  canRead: string[];
+  canPrepare: string[];
+  cannotApprove: string[];
+  requiresApproval: boolean;
 }

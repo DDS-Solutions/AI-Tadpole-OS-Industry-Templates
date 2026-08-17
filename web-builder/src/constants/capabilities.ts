@@ -25,15 +25,8 @@ export const CANONICAL_CAPABILITIES: CapabilityItem[] = [
     requiresOversight: false,
   },
   {
-    id: 'list_dir',
-    label: 'List Directory',
-    description: 'List contents and tree structure of workspace folders.',
-    risk: 'read_only',
-    requiresOversight: false,
-  },
-  {
-    id: 'web_search',
-    label: 'Web Search',
+    id: 'search_web',
+    label: 'Search Web',
     description: 'Fetch external documentation and public web pages.',
     risk: 'read_only',
     requiresOversight: false,
@@ -62,6 +55,14 @@ export const CANONICAL_CAPABILITIES: CapabilityItem[] = [
   },
 ];
 
-export const DANGEROUS_SKILL_SET = new Set(
-  CANONICAL_CAPABILITIES.filter(cap => cap.requiresOversight).map(cap => cap.id),
-);
+export const VALID_RUNTIME_CAPABILITIES = new Set([
+  ...CANONICAL_CAPABILITIES.map(c => c.id),
+  'shell',
+  'terminal',
+]);
+
+export const DANGEROUS_SKILL_SET = new Set([
+  ...CANONICAL_CAPABILITIES.filter(cap => cap.requiresOversight).map(cap => cap.id),
+  'shell',
+  'terminal',
+]);

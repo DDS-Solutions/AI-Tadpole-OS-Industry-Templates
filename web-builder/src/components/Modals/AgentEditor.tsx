@@ -91,7 +91,7 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
 
       {/* Scrollable Form Body */}
       <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6">
-        
+
         {/* Name, Emoji, Color Group */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>

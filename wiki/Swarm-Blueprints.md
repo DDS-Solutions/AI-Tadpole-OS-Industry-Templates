@@ -114,3 +114,28 @@ Example agent profile:
 ```
 
 The current installer scans every `agents/*.json` file, not only those named in the manifest roster. Keep the directory free of drafts or invalid profiles.
+
+---
+
+## 🛠️ Swarm Architect Setup Experiences
+
+The visual Swarm Architect builder provides two tailored workflows that share an underlying configuration state and validation pipeline:
+
+### 1. Guided Setup (Business Owners & Operators)
+Designed for rapid blueprinting without technical jargon:
+- **Step 1 (Business Brief)**: Company name, size, industry, and multi-goal selection (e.g., scheduling, quoting, customer follow-up, inventory management).
+- **Step 2 (Team Recommendations)**: Round-robin goal distribution generates a tailored specialist team with explicit operational boundaries (*What it reads, What it prepares, What requires human approval*), scaled to organization size.
+- **Step 3 (Connections & Governance)**: Plain-language connector cards and read-only explanations of how Tadpole OS enforces human-in-the-loop oversight at runtime.
+- **Step 4 (Review & Export)**: Live validation metrics and one-click consumer-compatible `.zip` archive download.
+
+### 2. Advanced Setup (Developers & Administrators)
+Full technical control across 5 granular steps:
+- **Identity**: Industry taxonomy, custom industry codes, and mission definition.
+- **Roster**: Granular agent prompt editing with live character count (&le; 800 chars), provider inference, and exact capability assignments.
+- **Playbooks**: Structured step builders and raw Markdown SOP editors with syntax validation.
+- **Connectors**: MCP server definitions, argument arrays, and environment variable requirements.
+- **Forge**: Comprehensive live validation diagnostics and export packaging.
+
+### 3. Draft Persistence & Secret Privacy
+- The web builder automatically persists work-in-progress blueprints in browser `localStorage` under `tadpole_builder_draft_v1`.
+- **Privacy Guarantee**: Blueprint drafts store structural configurations, prompts, and playbooks. Connector credential fields and sensitive secrets are never stored.

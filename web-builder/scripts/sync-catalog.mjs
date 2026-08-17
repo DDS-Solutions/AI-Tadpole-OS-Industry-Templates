@@ -29,6 +29,7 @@ function validateAgentCatalog(path) {
     'emoji',
     'vibe',
     'prompt',
+    'runtimePrompt',
     'department',
     'departmentLabel',
   ];
@@ -40,8 +41,11 @@ function validateAgentCatalog(path) {
     }
     for (const field of requiredFields) {
       if (typeof agent[field] !== 'string' || agent[field].trim() === '') {
-        throw new Error(`Agent catalog entry ${index} is missing ${field}.`);
+        throw new Error(`Agent catalog entry ${index} (${agent.id || 'unknown'}) is missing ${field}.`);
       }
+    }
+    if (agent.runtimePrompt.length > 800) {
+      throw new Error(`Agent catalog entry ${index} (${agent.id}) has runtimePrompt exceeding 800 chars (${agent.runtimePrompt.length}).`);
     }
     if (ids.has(agent.id)) {
       throw new Error(`Agent catalog contains duplicate id: ${agent.id}`);

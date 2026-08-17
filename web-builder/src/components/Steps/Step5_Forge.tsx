@@ -32,7 +32,7 @@ export default function Step5_Forge({
   const declaredMcpTools = new Set(agents.flatMap(agent => agent.mcpTools || [])).size;
 
   return (
-    <motion.div 
+    <motion.div
       key="step5"
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
@@ -57,9 +57,10 @@ export default function Step5_Forge({
           <div className="text-lg font-bold text-zinc-200 mt-1">{oversightAgents}</div>
         </div>
       </div>
-      <h2 className="text-2xl font-bold mb-2" data-tooltip="The swarm configuration is ready to build and compile.">Ready for Intelligence Manifestation</h2>
-      <p className="text-zinc-500 max-w-md mx-auto mb-12 text-sm leading-relaxed">
-        Your swarm configuration for <span className="text-white font-bold">{companyInfo.name}</span> is complete. 
+      <h2 className="text-2xl font-bold mb-1" data-tooltip="The swarm configuration is ready to build and compile.">Phase 5: Validate & Export</h2>
+      <p className="text-xs font-mono text-zinc-500 mb-6">Forge diagnostics & Tadpole OS package compilation</p>
+      <p className="text-zinc-400 max-w-md mx-auto mb-8 text-sm leading-relaxed">
+        Your swarm configuration for <span className="text-white font-bold">{companyInfo.name}</span> is ready for validation.
         The package includes {agents.length} agents and {workflows.length} workflows.
       </p>
 
@@ -132,20 +133,20 @@ export default function Step5_Forge({
       })()}
 
       <div className="flex flex-col gap-4 items-center mt-8">
-        <button 
+        <button
           onClick={onExport}
           className="bg-cyber-green text-zinc-950 font-black px-12 py-4 rounded-xl hover:scale-105 transition-all flex items-center gap-3 cursor-pointer shadow-[0_0_20px_rgba(34,197,94,0.3)] text-sm uppercase font-mono tracking-wider"
         >
           <Download className="w-6 h-6" /> Export Swarm Archive
         </button>
         <div className="flex gap-8 items-center mt-4">
-          <button 
+          <button
             onClick={onPrevious}
             className="text-zinc-550 hover:text-white transition-colors text-xs font-mono tracking-wider uppercase cursor-pointer"
           >
             &larr; Previous Step
           </button>
-          <button 
+          <button
             onClick={onReset}
             className="text-zinc-550 hover:text-white transition-colors text-xs font-mono tracking-wider uppercase cursor-pointer"
           >
