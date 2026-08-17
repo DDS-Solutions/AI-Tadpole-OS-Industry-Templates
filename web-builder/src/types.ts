@@ -9,6 +9,8 @@ export interface Agent {
   provider?: string;
   skills?: string[];
   workflows?: string[];
+  mcpTools?: string[];
+  requiresOversight?: boolean;
   description?: string;
   color?: string;
   emoji?: string;
@@ -63,6 +65,7 @@ export interface MCPConnector {
   path: string;
   version: string;
   config?: MCPConfig;
+  tools?: string[];
 }
 
 export interface MCPServerConfig {

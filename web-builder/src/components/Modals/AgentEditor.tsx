@@ -18,6 +18,13 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
   const [department, setDepartment] = useState(agent.department || 'Operations');
   const [emoji, setEmoji] = useState(agent.emoji || '🤖');
   const [color, setColor] = useState(agent.color || '#3B82F6');
+  const [skills, setSkills] = useState((agent.skills || ['read_file']).join(', '));
+  const [mcpTools, setMcpTools] = useState((agent.mcpTools || []).join(', '));
+  const [requiresOversight, setRequiresOversight] = useState(agent.requiresOversight || false);
+  const dangerousSkillSelected = skills
+    .split(',')
+    .map(value => value.trim())
+    .some(value => ['write_file', 'delete_file', 'execute_shell', 'shell', 'terminal'].includes(value));
 
   const handleSave = () => {
     onSave({
@@ -30,6 +37,9 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
       department,
       emoji,
       color,
+      skills: skills.split(',').map(value => value.trim()).filter(Boolean),
+      mcpTools: mcpTools.split(',').map(value => value.trim()).filter(Boolean),
+      requiresOversight: requiresOversight || dangerousSkillSelected,
       vibe: agent.vibe
     });
   };
@@ -150,6 +160,45 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
             onChange={e => setDescription(e.target.value)}
           />
         </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1.5">Runtime Capability IDs</label>
+            <input
+              type="text"
+              className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2.5 text-xs text-zinc-200 font-mono focus:border-cyber-green outline-none"
+              placeholder="read_file, grep_search, write_file"
+              value={skills}
+              onChange={e => setSkills(e.target.value)}
+            />
+            <p className="text-[10px] text-zinc-600 mt-1.5">Use Tadpole tool IDs. Shell execution requires both <code>execute_shell</code> and <code>shell</code>.</p>
+          </div>
+          <div>
+            <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1.5">MCP Tool IDs</label>
+            <input
+              type="text"
+              className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2.5 text-xs text-zinc-200 font-mono focus:border-cyber-green outline-none"
+              placeholder="crm:get_contact, accounting:get_invoice"
+              value={mcpTools}
+              onChange={e => setMcpTools(e.target.value)}
+            />
+            <p className="text-[10px] text-zinc-600 mt-1.5">Forward-compatible declarations. The pinned runtime stores this list; connector exposure is still runtime-controlled.</p>
+          </div>
+        </div>
+
+        <label className="flex items-start gap-3 p-4 rounded-lg border border-zinc-800 bg-zinc-950/50 cursor-pointer">
+          <input
+            type="checkbox"
+            className="mt-0.5 accent-cyber-green"
+            checked={requiresOversight || dangerousSkillSelected}
+            disabled={dangerousSkillSelected}
+            onChange={e => setRequiresOversight(e.target.checked)}
+          />
+          <span>
+            <span className="block text-xs font-semibold text-zinc-200">Require operator oversight</span>
+            <span className="block text-[10px] text-zinc-500 mt-1">Swarm Architect forces this on for write, delete, and shell capabilities.</span>
+          </span>
+        </label>
 
         {/* System Prompt Codeblock */}
         <div className="flex flex-col flex-1 min-h-[300px]">
