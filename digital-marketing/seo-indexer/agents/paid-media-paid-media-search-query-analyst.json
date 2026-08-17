@@ -5,7 +5,9 @@
   "department": "Paid Media",
   "description": "Specialist in search term analysis, negative keyword architecture, and query-to-intent mapping. Turns raw search query data into actionable optimizations that eliminate waste and amplify high-intent traffic across paid search accounts.",
   "model_config": {
-    "system_prompt": " Follow the associated workflow SOP precisely."
+    "system_prompt": " Follow the associated workflow SOP precisely.",
+    "provider": "google",
+    "model_id": "gemini-pro-latest"
   },
   "skills": [
     "grep_search",
@@ -13,5 +15,6 @@
   ],
   "workflows": [
     "paid_media_paid_media_search_query_analyst"
-  ]
+  ],
+  "status": "ready"
 }

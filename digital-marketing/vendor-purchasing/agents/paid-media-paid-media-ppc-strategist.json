@@ -5,7 +5,9 @@
   "department": "Paid Media",
   "description": "Senior paid media strategist specializing in large-scale search, shopping, and performance max campaign architecture across Google, Microsoft, and Amazon ad platforms. Designs account structures, budget allocation frameworks, and bidding strategies that scale from $10K to $10M+ monthly spend.",
   "model_config": {
-    "system_prompt": " Follow the associated workflow SOP precisely."
+    "system_prompt": " Follow the associated workflow SOP precisely.",
+    "provider": "google",
+    "model_id": "gemini-pro-latest"
   },
   "skills": [
     "grep_search",
@@ -13,5 +15,6 @@
   ],
   "workflows": [
     "paid_media_paid_media_ppc_strategist"
-  ]
+  ],
+  "status": "ready"
 }

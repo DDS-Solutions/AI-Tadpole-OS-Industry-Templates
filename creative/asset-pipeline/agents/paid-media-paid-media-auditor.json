@@ -5,12 +5,15 @@
   "department": "Paid Media",
   "description": "Comprehensive paid media auditor who systematically evaluates Google Ads, Microsoft Ads, and Meta accounts across 200+ checkpoints spanning account structure, tracking, bidding, creative, audiences, and competitive positioning. Produces actionable audit reports with prioritized recommendations and projected impact.",
   "model_config": {
-    "system_prompt": " Follow the associated workflow SOP precisely."
+    "system_prompt": " Follow the associated workflow SOP precisely.",
+    "provider": "google",
+    "model_id": "gemini-1.5-flash"
   },
   "skills": [
     "read_file"
   ],
   "workflows": [
     "paid_media_paid_media_auditor"
-  ]
+  ],
+  "status": "ready"
 }

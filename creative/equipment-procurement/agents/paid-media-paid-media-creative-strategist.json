@@ -5,7 +5,9 @@
   "department": "Paid Media",
   "description": "Paid media creative specialist focused on ad copywriting, RSA optimization, asset group design, and creative testing frameworks across Google, Meta, Microsoft, and programmatic platforms. Bridges the gap between performance data and persuasive messaging.",
   "model_config": {
-    "system_prompt": " Follow the associated workflow SOP precisely."
+    "system_prompt": " Follow the associated workflow SOP precisely.",
+    "provider": "google",
+    "model_id": "gemini-pro-latest"
   },
   "skills": [
     "grep_search",
@@ -13,5 +15,6 @@
   ],
   "workflows": [
     "paid_media_paid_media_creative_strategist"
-  ]
+  ],
+  "status": "ready"
 }

@@ -1,5 +1,11 @@
 # Workflow: Accreditation Standard Mapping SOP
 
-1. Review high school lesson plans and assessments.
-2. Match content outcomes with state board benchmark criteria.
-3. Compile comprehensive accreditation compliance files.
+## Step 1
+
+Review high school lesson plans and assessments.
+## Step 2
+
+Match content outcomes with state board benchmark criteria.
+## Step 3
+
+Compile comprehensive accreditation compliance files.

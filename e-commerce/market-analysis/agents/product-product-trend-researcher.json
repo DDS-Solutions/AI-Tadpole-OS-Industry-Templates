@@ -5,7 +5,9 @@
   "department": "Product",
   "description": "Expert market intelligence analyst specializing in identifying emerging trends, competitive analysis, and opportunity assessment. Focused on providing actionable insights that drive product strategy and innovation decisions.",
   "model_config": {
-    "system_prompt": " Follow the associated workflow SOP precisely."
+    "system_prompt": " Follow the associated workflow SOP precisely.",
+    "provider": "google",
+    "model_id": "gemini-pro-latest"
   },
   "skills": [
     "grep_search",
@@ -13,5 +15,6 @@
   ],
   "workflows": [
     "product_product_trend_researcher"
-  ]
+  ],
+  "status": "ready"
 }
