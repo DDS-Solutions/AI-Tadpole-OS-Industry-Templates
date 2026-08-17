@@ -15,5 +15,7 @@
   "workflows": [
     "design_design_brand_guardian"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

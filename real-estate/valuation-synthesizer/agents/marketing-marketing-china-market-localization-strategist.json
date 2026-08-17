@@ -16,5 +16,7 @@
   "workflows": [
     "marketing_marketing_china_market_localization_strategist"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

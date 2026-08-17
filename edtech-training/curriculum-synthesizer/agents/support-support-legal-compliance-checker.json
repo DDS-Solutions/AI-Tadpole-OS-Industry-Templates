@@ -15,5 +15,7 @@
   "workflows": [
     "support_support_legal_compliance_checker"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

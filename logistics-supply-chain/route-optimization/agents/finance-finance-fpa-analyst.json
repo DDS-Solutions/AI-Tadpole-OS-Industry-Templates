@@ -15,5 +15,7 @@
   "workflows": [
     "fpa_analyst"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

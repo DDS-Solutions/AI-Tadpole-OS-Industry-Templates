@@ -16,5 +16,7 @@
   "workflows": [
     "paid_media_paid_media_ppc_strategist"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

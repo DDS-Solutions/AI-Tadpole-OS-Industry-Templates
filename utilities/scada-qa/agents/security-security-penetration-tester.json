@@ -12,11 +12,14 @@
   "skills": [
     "grep_search",
     "read_file",
-    "run_command",
-    "write_to_file"
+    "execute_shell",
+    "shell",
+    "write_file"
   ],
   "workflows": [
     "penetration_tester"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": true
 }

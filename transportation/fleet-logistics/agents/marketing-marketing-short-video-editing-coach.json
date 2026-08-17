@@ -15,5 +15,7 @@
   "workflows": [
     "marketing_marketing_short_video_editing_coach"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

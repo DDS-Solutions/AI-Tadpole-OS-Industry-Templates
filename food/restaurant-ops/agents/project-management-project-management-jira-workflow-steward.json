@@ -15,5 +15,7 @@
   "workflows": [
     "project_management_project_management_jira_workflow_steward"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

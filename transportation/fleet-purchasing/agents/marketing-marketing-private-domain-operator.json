@@ -15,5 +15,7 @@
   "workflows": [
     "marketing_marketing_private_domain_operator"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

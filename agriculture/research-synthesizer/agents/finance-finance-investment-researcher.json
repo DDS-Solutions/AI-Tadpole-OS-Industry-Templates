@@ -11,12 +11,15 @@
   },
   "skills": [
     "read_file",
-    "run_command",
+    "execute_shell",
+    "shell",
     "search_web",
-    "write_to_file"
+    "write_file"
   ],
   "workflows": [
     "investment_researcher"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": true
 }

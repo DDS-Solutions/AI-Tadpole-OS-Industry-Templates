@@ -15,5 +15,7 @@
   "workflows": [
     "specialized_model_qa"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

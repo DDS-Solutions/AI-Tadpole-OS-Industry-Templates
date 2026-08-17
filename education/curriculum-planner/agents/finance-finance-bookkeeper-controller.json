@@ -15,5 +15,7 @@
   "workflows": [
     "bookkeeper_controller"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

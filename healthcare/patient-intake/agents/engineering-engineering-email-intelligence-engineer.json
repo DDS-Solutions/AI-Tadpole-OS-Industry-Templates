@@ -16,5 +16,7 @@
   "workflows": [
     "email_intelligence_engineer"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

@@ -15,5 +15,7 @@
   "workflows": [
     "support_support_infrastructure_maintainer"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

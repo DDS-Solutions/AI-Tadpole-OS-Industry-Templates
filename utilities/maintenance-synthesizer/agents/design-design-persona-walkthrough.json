@@ -12,10 +12,12 @@
   "skills": [
     "grep_search",
     "read_file",
-    "write_to_file"
+    "write_file"
   ],
   "workflows": [
     "design_design_persona_walkthrough"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": true
 }

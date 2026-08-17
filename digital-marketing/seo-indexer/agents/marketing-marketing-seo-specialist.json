@@ -16,5 +16,7 @@
   "workflows": [
     "marketing_marketing_seo_specialist"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

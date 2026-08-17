@@ -15,5 +15,7 @@
   "workflows": [
     "gis_gis_bim_specialist"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

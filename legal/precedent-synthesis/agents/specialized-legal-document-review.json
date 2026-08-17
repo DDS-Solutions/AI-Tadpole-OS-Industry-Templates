@@ -15,5 +15,7 @@
   "workflows": [
     "legal_document_review"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": false
 }

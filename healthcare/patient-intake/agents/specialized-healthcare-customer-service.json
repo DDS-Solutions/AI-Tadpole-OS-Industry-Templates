@@ -11,10 +11,13 @@
   },
   "skills": [
     "read_file",
-    "run_command"
+    "execute_shell",
+    "shell"
   ],
   "workflows": [
     "healthcare_customer_service"
   ],
-  "status": "ready"
+  "status": "idle",
+  "mcp_tools": [],
+  "requires_oversight": true
 }
