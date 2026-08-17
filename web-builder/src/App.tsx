@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import type { Agent, WorkflowItem, TemplateItem, CatalogAgent, MCPConnector } from './types';
+import type { Agent, WorkflowItem, TemplateItem, CatalogAgent, MCPConnector, SwarmDetails } from './types';
 import { INDUSTRY_MAP, REGISTRY, INDUSTRY_CODES_MAP } from './constants';
 
 import McpEditor from './components/Modals/McpEditor';
@@ -43,7 +43,7 @@ export default function App() {
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null);
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateItem | null>(null);
   const [isLoadingSwarmDetails, setIsLoadingSwarmDetails] = useState(false);
-  const [loadedSwarmDetails, setLoadedSwarmDetails] = useState<{ roster: Agent[]; workflows: WorkflowItem[] } | null>(null);
+  const [loadedSwarmDetails, setLoadedSwarmDetails] = useState<SwarmDetails | null>(null);
   const swarmRequestController = useRef<AbortController | null>(null);
   const swarmRequestSequence = useRef(0);
 

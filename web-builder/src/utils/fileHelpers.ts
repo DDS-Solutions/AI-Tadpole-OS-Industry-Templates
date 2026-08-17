@@ -1,8 +1,7 @@
 import JSZip from 'jszip';
-import type { Agent, WorkflowItem, MCPConnector, MCPConfig, MCPServerConfig } from '../types';
+import type { Agent, WorkflowItem, MCPConnector, MCPConfig, MCPServerConfig, SwarmDetails } from '../types';
 
-
-export const REGISTRY_RAW_BASE = 'https://raw.githubusercontent.com/DDS-Solutions/AI-TadPole-OS-Industry-Templates/main';
+const REGISTRY_RAW_BASE = 'https://raw.githubusercontent.com/DDS-Solutions/AI-TadPole-OS-Industry-Templates/main';
 const CONNECTOR_ASSET_BASE = '.';
 
 interface CompanyInfo {
@@ -116,8 +115,8 @@ const loadConnectorAssets = async (
   let needsServerSource = false;
 
   for (const [serverName, server] of Object.entries(config.mcpServers)) {
-    if (!server || typeof server.command !== 'string' || !Array.isArray(server.args)) {
-      throw new Error(`${connector.name} has an invalid server definition for ${serverName}.`);
+    if (!server || typeof server !== 'object' || !Array.isArray(server.args)) {
+      throw new Error(`MCP server "${serverName}" is missing a valid arguments array.`);
     }
     const args = server.args.map(arg => {
       if (arg === 'server.py' || arg === './server.py') {
@@ -145,30 +144,37 @@ export const buildSwarmZip = async (
   selectedConnectors: string[],
   mcpCatalog: MCPConnector[],
 ): Promise<JSZip> => {
-  if (!companyInfo.name.trim()) throw new Error('A swarm name is required.');
-  if (!agents.length) throw new Error('Add at least one agent before export.');
-
   const zip = new JSZip();
+  const agentIds = new Set<string>();
+  const workflowIds = new Set<string>();
+
+  for (const agent of agents) {
+    const id = safeFileId(agent.id);
+    if (agentIds.has(id)) {
+      throw new Error(`Agent IDs collide: "${id}".`);
+    }
+    agentIds.add(id);
+  }
+
   const standardWorkflows = workflows.filter(workflow => !workflow.isOkfPlaybook);
   const okfPlaybooks = workflows.filter(workflow => workflow.isOkfPlaybook);
-  const normalizedWorkflowIds = standardWorkflows.map(workflow => safeFileId(workflow.id));
-  const workflowIds = new Set(normalizedWorkflowIds);
-  if (workflowIds.size !== normalizedWorkflowIds.length) {
-    throw new Error('Workflow IDs collide after file-name normalization.');
+
+  for (const workflow of standardWorkflows) {
+    const workflowId = safeFileId(workflow.id);
+    if (workflowIds.has(workflowId)) {
+      throw new Error(`Workflow IDs collide: "${workflowId}".`);
+    }
+    workflowIds.add(workflowId);
   }
 
-  const normalizedAgentIds = agents.map(agent => safeFileId(agent.id));
-  if (new Set(normalizedAgentIds).size !== normalizedAgentIds.length) {
-    throw new Error('Agent IDs collide after file-name normalization.');
-  }
-
-  const roster = agents.map(agent => {
-    const id = safeFileId(agent.id);
-    return { id, path: `agents/${id}.json`, role: agent.role };
-  });
   const parsedSize = Number.parseInt(companyInfo.size, 10);
+  const roster = agents.map(agent => ({
+    id: safeFileId(agent.id),
+    path: `agents/${safeFileId(agent.id)}.json`,
+    role: agent.role.trim() || 'Specialist',
+  }));
+
   const swarmJson = {
-    $schema: 'https://tadpoleos.dev/schemas/swarm-v1.json',
     name: `${companyInfo.name} Swarm`,
     version: '1.0.0',
     description: companyInfo.mission,
@@ -303,7 +309,7 @@ const workflowPathForId = (workflowId: string): string => {
 export const fetchSwarmDetailsFromRepo = async (
   templatePath: string,
   signal?: AbortSignal,
-): Promise<{ roster: Agent[]; workflows: WorkflowItem[] }> => {
+): Promise<SwarmDetails> => {
   const rawBase = `${REGISTRY_RAW_BASE}/${safeRepoPath(templatePath)}`;
   const response = await fetch(`${rawBase}/swarm.json`, { signal });
   if (!response.ok) throw new Error('Failed to fetch swarm.json');

@@ -53,8 +53,8 @@ export interface CatalogAgent {
 }
 
 export interface SwarmDetails {
-  roster: { id: string; path: string; role: string }[];
-  global_workflows: string[];
+  roster: Agent[];
+  workflows: WorkflowItem[];
 }
 
 export interface MCPConnector {
@@ -76,4 +76,11 @@ export interface MCPServerConfig {
 
 export interface MCPConfig {
   mcpServers: Record<string, MCPServerConfig>;
+}
+
+export type TabMode = 'custom' | 'templates';
+
+export interface StepState {
+  currentStep: number;
+  completedSteps: number[];
 }
