@@ -2,7 +2,7 @@ import React from 'react';
 
 export const highlightText = (text: string, search: string): React.JSX.Element => {
   if (!search.trim()) return <span>{text}</span>;
-  const regex = new RegExp(`(${search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
+  const regex = new RegExp(`(${search.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
   const parts = text.split(regex);
   return (
     <span>

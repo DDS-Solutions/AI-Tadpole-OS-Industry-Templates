@@ -1,180 +1,334 @@
 import JSZip from 'jszip';
-import type { Agent, WorkflowItem, MCPConnector } from '../types';
+import type { Agent, WorkflowItem, MCPConnector, MCPConfig, MCPServerConfig } from '../types';
 
-export const exportSwarmZip = async (
-  companyInfo: { name: string; mission: string; size: string; industry: string },
+
+export const REGISTRY_RAW_BASE = 'https://raw.githubusercontent.com/DDS-Solutions/AI-TadPole-OS-Industry-Templates/main';
+
+interface CompanyInfo {
+  name: string;
+  mission: string;
+  size: string;
+  industry: string;
+}
+
+interface SwarmAgentReference {
+  id: string;
+  path: string;
+  role?: string;
+}
+
+interface AgentPayload {
+  id?: string;
+  name?: string;
+  role?: string;
+  department?: string;
+  description?: string;
+  status?: string;
+  model?: string;
+  model_id?: string;
+  system_prompt?: string;
+  skills?: string[];
+  workflows?: string[];
+  model_config?: {
+    provider?: string;
+    model_id?: string;
+    system_prompt?: string;
+  };
+  emoji?: string;
+  color?: string;
+  vibe?: string;
+}
+
+interface SwarmPayload {
+  roster?: SwarmAgentReference[];
+  global_workflows?: string[];
+}
+
+const safeFileId = (value: string): string => {
+  const normalized = value.toLowerCase().replace(/[^a-z0-9_-]+/g, '-').replace(/^-+|-+$/g, '');
+  if (!normalized) throw new Error(`Cannot create a safe file name from "${value}".`);
+  return normalized;
+};
+
+const safeRepoPath = (value: string): string => {
+  const normalized = value.replace(/\\/g, '/').replace(/^\/+|\/+$/g, '');
+  const parts = normalized.split('/');
+  if (!normalized || parts.some(part => !part || part === '.' || part === '..') || /^[a-z]+:/i.test(normalized)) {
+    throw new Error(`Unsafe repository path "${value}".`);
+  }
+  return parts.join('/');
+};
+
+const inferProvider = (modelId: string): string => {
+  const model = modelId.toLowerCase();
+  if (model.includes('gemini')) return 'google';
+  if (model.includes('claude')) return 'anthropic';
+  if (model.includes('gpt') || model.startsWith('o1') || model.startsWith('o3')) return 'openai';
+  throw new Error(`Choose an explicit provider for unrecognized model "${modelId}".`);
+};
+
+const workflowMarkdown = (workflow: WorkflowItem): string => {
+  const body = workflow.description.trim();
+  const executableBody = /^#{2,3}\s+\S/m.test(body)
+    ? body
+    : `## Step 1: Execution\n\n${body || 'Execute this workflow according to the swarm mission.'}`;
+  return `# Workflow: ${workflow.name}\n\n${executableBody}\n`;
+};
+
+const responseOrThrow = async (url: string, label: string): Promise<Response> => {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Failed to fetch ${label} (${response.status}).`);
+  return response;
+};
+
+const loadConnectorAssets = async (
+  zip: JSZip,
+  connector: MCPConnector,
+): Promise<MCPConfig> => {
+  const connectorPath = safeRepoPath(connector.path);
+  const config = connector.config || await (
+    await responseOrThrow(`${REGISTRY_RAW_BASE}/${connectorPath}/mcps.json`, `${connector.name} MCP configuration`)
+  ).json() as MCPConfig;
+  if (!config || typeof config !== 'object' || !config.mcpServers || typeof config.mcpServers !== 'object') {
+    throw new Error(`${connector.name} does not provide a valid mcpServers configuration.`);
+  }
+
+  const connectorId = safeFileId(connector.id);
+  const archiveRoot = `mcp-blueprints/${connectorId}`;
+  const rewritten: Record<string, MCPServerConfig> = {};
+  let needsServerSource = false;
+
+  for (const [serverName, server] of Object.entries(config.mcpServers)) {
+    if (!server || typeof server.command !== 'string' || !Array.isArray(server.args)) {
+      throw new Error(`${connector.name} has an invalid server definition for ${serverName}.`);
+    }
+    const args = server.args.map(arg => {
+      if (arg === 'server.py' || arg === './server.py') {
+        needsServerSource = true;
+        return `${archiveRoot}/server.py`;
+      }
+      return arg;
+    });
+    rewritten[serverName] = { ...server, args };
+  }
+
+  if (needsServerSource) {
+    const source = await (
+      await responseOrThrow(`${REGISTRY_RAW_BASE}/${connectorPath}/server.py`, `${connector.name} server source`)
+    ).text();
+    zip.file(`${archiveRoot}/server.py`, source);
+
+    const requirementsResponse = await fetch(`${REGISTRY_RAW_BASE}/${connectorPath}/requirements.txt`);
+    if (requirementsResponse.ok) {
+      zip.file(`${archiveRoot}/requirements.txt`, await requirementsResponse.text());
+    }
+  }
+  return { mcpServers: rewritten };
+};
+
+export const buildSwarmZip = async (
+  companyInfo: CompanyInfo,
   agents: Agent[],
   workflows: WorkflowItem[],
   selectedConnectors: string[],
-  mcpCatalog: MCPConnector[]
-) => {
+  mcpCatalog: MCPConnector[],
+): Promise<JSZip> => {
+  if (!companyInfo.name.trim()) throw new Error('A swarm name is required.');
+  if (!agents.length) throw new Error('Add at least one agent before export.');
+
   const zip = new JSZip();
-  
-  // Group workflows into standard workflows vs knowledge playbooks
-  const standardWorkflows = workflows.filter(w => !w.isOkfPlaybook);
-  const okfPlaybooks = workflows.filter(w => w.isOkfPlaybook);
+  const standardWorkflows = workflows.filter(workflow => !workflow.isOkfPlaybook);
+  const okfPlaybooks = workflows.filter(workflow => workflow.isOkfPlaybook);
+  const normalizedWorkflowIds = standardWorkflows.map(workflow => safeFileId(workflow.id));
+  const workflowIds = new Set(normalizedWorkflowIds);
+  if (workflowIds.size !== normalizedWorkflowIds.length) {
+    throw new Error('Workflow IDs collide after file-name normalization.');
+  }
 
-  // swarm.json
-  const required_mcps = selectedConnectors.map(id => {
-    const c = mcpCatalog.find(mc => mc.id === id);
-    return c ? `${c.path}/mcps.json` : '';
-  }).filter(Boolean);
+  const normalizedAgentIds = agents.map(agent => safeFileId(agent.id));
+  if (new Set(normalizedAgentIds).size !== normalizedAgentIds.length) {
+    throw new Error('Agent IDs collide after file-name normalization.');
+  }
 
-  const swarmJson: any = {
-    $schema: "https://tadpoleos.dev/schemas/swarm-v1.json",
+  const roster = agents.map(agent => {
+    const id = safeFileId(agent.id);
+    return { id, path: `agents/${id}.json`, role: agent.role };
+  });
+  const parsedSize = Number.parseInt(companyInfo.size, 10);
+  const swarmJson = {
+    $schema: 'https://tadpoleos.dev/schemas/swarm-v1.json',
     name: `${companyInfo.name} Swarm`,
-    version: "1.0.0",
+    version: '1.0.0',
     description: companyInfo.mission,
     industry: companyInfo.industry.toLowerCase(),
-    company_size: parseInt(companyInfo.size),
-    roster: agents.map(a => ({
-      id: a.id,
-      path: `agents/${a.id}.json`,
-      role: a.role
-    })),
-    global_workflows: standardWorkflows.map(w => `workflows/${w.id}.md`)
+    company_size: Number.isFinite(parsedSize) ? parsedSize : 25,
+    defaults: { model: 'gemini-pro-latest' },
+    roster,
+    required_mcps: 'mcps.json',
+    global_workflows: standardWorkflows.map(workflow => `workflows/${safeFileId(workflow.id)}.md`),
   };
+  zip.file('swarm.json', JSON.stringify(swarmJson, null, 2));
 
-  if (required_mcps.length > 0) {
-    swarmJson.required_mcps = required_mcps;
-  }
-  
-  zip.file("swarm.json", JSON.stringify(swarmJson, null, 2));
-  
-  // agents/*.json
-  const agentsFolder = zip.folder("agents");
-  agents.forEach(agent => {
-    agentsFolder?.file(`${agent.id}.json`, JSON.stringify({
-      id: agent.id,
-      name: agent.name,
-      role: agent.role,
-      model: agent.model,
-      system_prompt: agent.prompt
-    }, null, 2));
-  });
-  
-  // workflows/*.md
-  if (standardWorkflows.length > 0) {
-    const workflowsFolder = zip.folder("workflows");
-    standardWorkflows.forEach(workflow => {
-      workflowsFolder?.file(`${workflow.id}.md`, `# Workflow: ${workflow.name}\n\n${workflow.description}`);
-    });
+  const agentsFolder = zip.folder('agents');
+  for (const agent of agents) {
+    const id = safeFileId(agent.id);
+    const modelId = agent.model || 'gemini-pro-latest';
+    const agentWorkflows = (agent.workflows || []).map(safeFileId);
+    const missingWorkflow = agentWorkflows.find(workflowId => !workflowIds.has(workflowId));
+    if (missingWorkflow) {
+      throw new Error(`${agent.name} references missing workflow "${missingWorkflow}".`);
+    }
+    const payload = {
+      id,
+      name: agent.name.trim(),
+      role: agent.role.trim(),
+      department: (agent.department || 'Operations').trim(),
+      description: (agent.description || `${agent.role} agent`).trim(),
+      status: agent.status || 'ready',
+      model_config: {
+        provider: agent.provider || inferProvider(modelId),
+        model_id: modelId,
+        system_prompt: agent.prompt.trim(),
+      },
+      skills: agent.skills || ['read_file'],
+      workflows: agentWorkflows,
+    };
+    if (!payload.name || !payload.role || !payload.department || !payload.description || !payload.model_config.system_prompt) {
+      throw new Error(`${agent.name || agent.id} is missing required agent metadata.`);
+    }
+    if (payload.model_config.system_prompt.length > 800) {
+      throw new Error(`${agent.name} has a system prompt longer than 800 characters.`);
+    }
+    agentsFolder?.file(`${id}.json`, JSON.stringify(payload, null, 2));
   }
 
-  // Ingest knowledge playbooks if any are defined
+  const workflowsFolder = zip.folder('workflows');
+  for (const workflow of standardWorkflows) {
+    workflowsFolder?.file(`${safeFileId(workflow.id)}.md`, workflowMarkdown(workflow));
+  }
+
+  const mergedMcpConfig: MCPConfig = { mcpServers: {} };
+  for (const connectorId of selectedConnectors) {
+    const connector = mcpCatalog.find(candidate => candidate.id === connectorId);
+    if (!connector) throw new Error(`Selected connector "${connectorId}" is not in the catalog.`);
+    const connectorConfig = await loadConnectorAssets(zip, connector);
+    for (const [serverName, server] of Object.entries(connectorConfig.mcpServers)) {
+      if (mergedMcpConfig.mcpServers[serverName]) {
+        throw new Error(`MCP server name collision: "${serverName}".`);
+      }
+      mergedMcpConfig.mcpServers[serverName] = server;
+    }
+  }
+  zip.file('mcps.json', JSON.stringify(mergedMcpConfig, null, 2));
+
   if (okfPlaybooks.length > 0) {
-    // Create knowledge.json
-    const knowledgeJson = okfPlaybooks.map(w => ({
-      title: w.name,
-      description: w.description.slice(0, 200), // excerpt for desc
-      topic: w.topic || companyInfo.industry.toLowerCase() || 'general',
-      concept_type: w.conceptType || 'playbook',
-      resource_uri: w.resourceUri || undefined,
-      tags: w.tags || companyInfo.industry.toLowerCase() || 'general',
-      text: w.description
+    const knowledgeJson = okfPlaybooks.map(workflow => ({
+      title: workflow.name,
+      description: workflow.description.slice(0, 200),
+      topic: workflow.topic?.trim() || companyInfo.industry.toLowerCase() || 'general',
+      concept_type: workflow.conceptType || 'playbook',
+      resource_uri: workflow.resourceUri || undefined,
+      tags: workflow.tags || companyInfo.industry.toLowerCase() || 'general',
+      text: workflow.description,
     }));
-    zip.file("knowledge.json", JSON.stringify(knowledgeJson, null, 2));
+    zip.file('knowledge.json', JSON.stringify(knowledgeJson, null, 2));
 
-    // Create knowledge/*.md with YAML frontmatter
-    const knowledgeFolder = zip.folder("knowledge");
-    okfPlaybooks.forEach(w => {
-      const cleanName = w.name.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    const knowledgeFolder = zip.folder('knowledge');
+    const usedNames = new Set<string>();
+    for (const workflow of okfPlaybooks) {
+      const baseName = safeFileId(workflow.id || workflow.name).replace(/-/g, '_');
+      let cleanName = baseName;
+      let suffix = 2;
+      while (usedNames.has(cleanName)) cleanName = `${baseName}_${suffix++}`;
+      usedNames.add(cleanName);
       const frontmatter = [
-        "---",
-        `title: "${w.name.replace(/"/g, '\\"')}"`,
-        w.resourceUri ? `url: "${w.resourceUri}"` : null,
-        w.tags ? `tags: "${w.tags.replace(/"/g, '\\"')}"` : null,
-        `description: "${w.description.slice(0, 150).replace(/\n/g, ' ').replace(/"/g, '\\"')}"`,
-        "---",
-        "",
-        `# ${w.name}`,
-        "",
-        `/workflows/${w.id}.md`
-      ].filter(Boolean).join("\n");
+        '---',
+        `title: "${workflow.name.replace(/"/g, '\\"')}"`,
+        workflow.resourceUri ? `url: "${workflow.resourceUri.replace(/"/g, '\\"')}"` : null,
+        workflow.tags ? `tags: "${workflow.tags.replace(/"/g, '\\"')}"` : null,
+        `description: "${workflow.description.slice(0, 150).replace(/\n/g, ' ').replace(/"/g, '\\"')}"`,
+        '---',
+        '',
+        `# ${workflow.name}`,
+        '',
+        workflow.description,
+        '',
+      ].filter(value => value !== null).join('\n');
       knowledgeFolder?.file(`${cleanName}.md`, frontmatter);
-    });
+    }
   }
-  
-  const content = await zip.generateAsync({ type: "blob" });
+  return zip;
+};
+
+export const exportSwarmZip = async (
+  companyInfo: CompanyInfo,
+  agents: Agent[],
+  workflows: WorkflowItem[],
+  selectedConnectors: string[],
+  mcpCatalog: MCPConnector[],
+): Promise<void> => {
+  const zip = await buildSwarmZip(companyInfo, agents, workflows, selectedConnectors, mcpCatalog);
+  const content = await zip.generateAsync({ type: 'blob' });
   const url = window.URL.createObjectURL(content);
   const link = document.createElement('a');
   link.href = url;
-  link.download = `${companyInfo.name.toLowerCase().replace(/\s+/g, '-')}-swarm.zip`;
+  link.download = `${safeFileId(companyInfo.name)}-swarm.zip`;
   link.click();
+  window.URL.revokeObjectURL(url);
+};
+
+const workflowPathForId = (workflowId: string): string => {
+  const fileName = workflowId.endsWith('.md') ? workflowId : `${workflowId}.md`;
+  return fileName.includes('/') ? fileName : `workflows/${fileName}`;
 };
 
 export const fetchSwarmDetailsFromRepo = async (
-  templatePath: string
+  templatePath: string,
+  signal?: AbortSignal,
 ): Promise<{ roster: Agent[]; workflows: WorkflowItem[] }> => {
-  const rawBase = `https://raw.githubusercontent.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates/main/${templatePath}`;
-  const response = await fetch(`${rawBase}/swarm.json`);
-  if (!response.ok) throw new Error("Failed to fetch swarm.json");
-  const swarmData = await response.json();
+  const rawBase = `${REGISTRY_RAW_BASE}/${safeRepoPath(templatePath)}`;
+  const response = await fetch(`${rawBase}/swarm.json`, { signal });
+  if (!response.ok) throw new Error('Failed to fetch swarm.json');
+  const swarmData = await response.json() as SwarmPayload;
 
-  // Fetch agents details from swarmData.roster
-  const roster = await Promise.all(
-    (swarmData.roster || []).map(async (agentRef: { id: string; path: string; role: string }) => {
-      try {
-        const agentRes = await fetch(`${rawBase}/${agentRef.path}`);
-        if (agentRes.ok) {
-          const agentDetails = await agentRes.json();
-          return {
-            id: agentRef.id,
-            name: agentDetails.name || agentRef.id,
-            role: agentDetails.role || agentRef.role || '',
-            model: agentDetails.model_id || agentDetails.model || agentDetails.model_config?.model_id || 'gemini-pro-latest',
-            prompt: agentDetails.system_prompt || agentDetails.model_config?.system_prompt || '',
-            description: agentDetails.description || '',
-            emoji: agentDetails.emoji || '🤖',
-            color: agentDetails.color || '#3B82F6',
-            vibe: agentDetails.vibe || ''
-          };
-        }
-      } catch (e) {
-        console.error("Error loading agent details", e);
-      }
-      return {
-        id: agentRef.id,
-        name: agentRef.id,
-        role: agentRef.role || '',
-        model: 'gemini-pro-latest',
-        prompt: '',
-        description: '',
-        emoji: '🤖',
-        color: '#3B82F6',
-        vibe: ''
-      };
-    })
-  );
+  const workflowReferences = new Set<string>(swarmData.global_workflows || []);
+  const roster = await Promise.all((swarmData.roster || []).map(async reference => {
+    const agentRes = await fetch(`${rawBase}/${safeRepoPath(reference.path)}`, { signal });
+    if (!agentRes.ok) throw new Error(`Failed to fetch agent ${reference.id}`);
+    const details = await agentRes.json() as AgentPayload;
+    for (const workflowId of details.workflows || []) workflowReferences.add(workflowPathForId(workflowId));
+    const modelId = details.model_config?.model_id || details.model_id || details.model || 'gemini-pro-latest';
+    return {
+      id: details.id || reference.id,
+      name: details.name || reference.id,
+      role: details.role || reference.role || '',
+      department: details.department || 'Operations',
+      description: details.description || `${details.role || reference.role || 'Specialist'} agent`,
+      status: details.status || 'ready',
+      provider: details.model_config?.provider || inferProvider(modelId),
+      model: modelId,
+      prompt: details.model_config?.system_prompt || details.system_prompt || '',
+      skills: details.skills || [],
+      workflows: details.workflows || [],
+      emoji: details.emoji || '🤖',
+      color: details.color || '#3B82F6',
+      vibe: details.vibe || '',
+    } satisfies Agent;
+  }));
 
-  // Fetch workflows details from swarmData.global_workflows
-  const workflows = await Promise.all(
-    (swarmData.global_workflows || []).map(async (workflowPath: string) => {
-      try {
-        const workflowRes = await fetch(`${rawBase}/${workflowPath}`);
-        if (workflowRes.ok) {
-          const mdContent = await workflowRes.text();
-          const nameMatch = mdContent.match(/^#\s*Workflow:\s*(.*)$/m) || mdContent.match(/^#\s*(.*)$/m);
-          const name = nameMatch ? nameMatch[1].trim() : workflowPath.split('/').pop()?.replace('.md', '') || 'Workflow';
-          const description = mdContent.replace(/^#.*$/m, '').trim();
-          return {
-            id: crypto.randomUUID(),
-            name,
-            description,
-            isOkfPlaybook: false
-          };
-        }
-      } catch (e) {
-        console.error("Error loading workflow details", e);
-      }
-      return {
-        id: crypto.randomUUID(),
-        name: workflowPath.split('/').pop()?.replace('.md', '') || 'Workflow',
-        description: '',
-        isOkfPlaybook: false
-      };
-    })
-  );
-
+  const workflows = await Promise.all(Array.from(workflowReferences).map(async workflowPath => {
+    const safeWorkflowPath = safeRepoPath(workflowPath);
+    const workflowRes = await fetch(`${rawBase}/${safeWorkflowPath}`, { signal });
+    if (!workflowRes.ok) throw new Error(`Failed to fetch workflow ${workflowPath}`);
+    const markdown = await workflowRes.text();
+    const nameMatch = markdown.match(/^#\s*Workflow:\s*(.*)$/m) || markdown.match(/^#\s*(.*)$/m);
+    const fileName = safeWorkflowPath.split('/').pop() || 'workflow.md';
+    return {
+      id: fileName.replace(/\.md$/i, ''),
+      name: nameMatch ? nameMatch[1].trim() : fileName.replace(/\.md$/i, ''),
+      description: markdown.replace(/^#.*(?:\r?\n)?/m, '').trim(),
+      isOkfPlaybook: false,
+    } satisfies WorkflowItem;
+  }));
   return { roster, workflows };
 };

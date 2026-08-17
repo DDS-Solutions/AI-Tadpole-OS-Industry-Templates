@@ -15,6 +15,7 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
   const [model, setModel] = useState(agent.model);
   const [prompt, setPrompt] = useState(agent.prompt);
   const [description, setDescription] = useState(agent.description || '');
+  const [department, setDepartment] = useState(agent.department || 'Operations');
   const [emoji, setEmoji] = useState(agent.emoji || '🤖');
   const [color, setColor] = useState(agent.color || '#3B82F6');
 
@@ -26,6 +27,7 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
       model,
       prompt,
       description,
+      department,
       emoji,
       color,
       vibe: agent.vibe
@@ -99,8 +101,8 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
           </div>
         </div>
 
-        {/* Role, Model Group */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Role, Department, Model Group */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1.5">Role / Vibe</label>
             <input
@@ -109,6 +111,16 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
               placeholder="e.g. Frontend UI Engineer"
               value={role}
               onChange={e => setRole(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1.5">Department</label>
+            <input
+              type="text"
+              className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2.5 text-xs text-zinc-200 focus:border-cyber-green outline-none"
+              placeholder="e.g. Engineering"
+              value={department}
+              onChange={e => setDepartment(e.target.value)}
             />
           </div>
           <div>
@@ -143,7 +155,7 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
         <div className="flex flex-col flex-1 min-h-[300px]">
           <div className="flex justify-between items-center mb-1.5">
             <label className="block text-[10px] font-mono text-zinc-500 uppercase">System Prompt / Instructions</label>
-            <span className="text-[9px] text-zinc-650 font-mono">Accepts Markdown</span>
+            <span className={`text-[9px] font-mono ${prompt.length > 800 ? 'text-rose-500' : 'text-zinc-650'}`}>{prompt.length}/800</span>
           </div>
           <textarea
             className="w-full flex-1 bg-zinc-950 border border-zinc-800 rounded-lg p-4 font-mono text-[11px] text-zinc-300 focus:border-cyber-green outline-none min-h-[320px] leading-relaxed resize-y custom-scrollbar"
@@ -165,7 +177,7 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
         </button>
         <button
           onClick={handleSave}
-          disabled={!name || !role || !prompt}
+          disabled={!name || !role || !department || !description || !prompt || prompt.length > 800}
           className="bg-cyber-green text-zinc-950 font-bold text-xs px-6 py-2.5 rounded-lg hover:scale-102 transition-all cursor-pointer disabled:opacity-50 disabled:pointer-events-none shadow-md"
           style={{ backgroundColor: color, color: '#09090b' }}
         >

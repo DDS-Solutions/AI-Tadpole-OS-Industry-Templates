@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { 
   Shield, 
   Cpu, 
@@ -44,6 +44,8 @@ export default function App() {
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateItem | null>(null);
   const [isLoadingSwarmDetails, setIsLoadingSwarmDetails] = useState(false);
   const [loadedSwarmDetails, setLoadedSwarmDetails] = useState<{ roster: Agent[]; workflows: WorkflowItem[] } | null>(null);
+  const swarmRequestController = useRef<AbortController | null>(null);
+  const swarmRequestSequence = useRef(0);
 
   // MCP Connectors State
   const [mcpCatalog, setMcpCatalog] = useState<MCPConnector[]>([]);
@@ -53,7 +55,7 @@ export default function App() {
 
   // Catalog & Editor State
   const [catalog, setCatalog] = useState<CatalogAgent[]>([]);
-  const [isCatalogLoading, setIsCatalogLoading] = useState(false);
+  const [isCatalogLoading, setIsCatalogLoading] = useState(true);
   const [isCatalogModalOpen, setIsCatalogModalOpen] = useState(false);
 
   const [isEditorModalOpen, setIsEditorModalOpen] = useState(false);
@@ -86,8 +88,6 @@ export default function App() {
 
   useEffect(() => {
     const controller = new AbortController();
-    setIsCatalogLoading(true);
-
     fetch('./registry.json', { signal: controller.signal })
       .then(res => res.json())
       .then(data => {
@@ -306,21 +306,40 @@ export default function App() {
     }
   };
 
-  const handleExport = () => {
-    exportSwarmZip(companyInfo, agents, workflows, selectedConnectors, mcpCatalog);
+  const handleExport = async () => {
+    try {
+      await exportSwarmZip(companyInfo, agents, workflows, selectedConnectors, mcpCatalog);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      window.alert(`Unable to export this swarm: ${message}`);
+    }
   };
 
-  const fetchSwarmDetails = async (templatePath: string) => {
+  const fetchSwarmDetails = async (templatePath: string, applyToBuilder = false) => {
+    swarmRequestController.current?.abort();
+    const controller = new AbortController();
+    swarmRequestController.current = controller;
+    const requestSequence = ++swarmRequestSequence.current;
     setIsLoadingSwarmDetails(true);
     setLoadedSwarmDetails(null);
     try {
-      const details = await fetchSwarmDetailsFromRepo(templatePath);
+      const details = await fetchSwarmDetailsFromRepo(templatePath, controller.signal);
+      if (requestSequence !== swarmRequestSequence.current) return;
       setLoadedSwarmDetails(details);
+      if (applyToBuilder) {
+        setAgents(details.roster);
+        setWorkflows(details.workflows);
+      }
     } catch (err) {
+      if (err instanceof DOMException && err.name === 'AbortError') return;
       console.error("Error fetching swarm details:", err);
-      setLoadedSwarmDetails({ roster: [], workflows: [] });
+      if (requestSequence === swarmRequestSequence.current) {
+        setLoadedSwarmDetails({ roster: [], workflows: [] });
+      }
     } finally {
-      setIsLoadingSwarmDetails(false);
+      if (requestSequence === swarmRequestSequence.current) {
+        setIsLoadingSwarmDetails(false);
+      }
     }
   };
 
@@ -429,7 +448,7 @@ export default function App() {
             showCustomCodeInput={showCustomCodeInput}
             setShowCustomCodeInput={setShowCustomCodeInput}
             onAiAssist={handleAiAssist}
-            onLoadSwarmDetails={fetchSwarmDetails}
+            onLoadSwarmDetails={(path) => { void fetchSwarmDetails(path, true); }}
             onNext={() => { setStep(2); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
           />
         )}
@@ -590,7 +609,7 @@ export default function App() {
                       ) : (
                         <div className="space-y-2">
                           {loadedSwarmDetails?.roster && loadedSwarmDetails.roster.length > 0 ? (
-                            loadedSwarmDetails.roster.map((agent: any, idx: number) => (
+                            loadedSwarmDetails.roster.map((agent: Agent, idx: number) => (
                               <div key={idx} className="bg-zinc-950/80 border border-zinc-850 p-3 rounded-lg flex justify-between items-center text-xs" style={{ borderColor: 'color-mix(in srgb, var(--color-border) 30%, transparent)' }}>
                                 <div className="text-left">
                                   <div className="font-bold text-zinc-200">{agent.name || agent.id}</div>

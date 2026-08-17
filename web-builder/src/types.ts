@@ -4,6 +4,11 @@ export interface Agent {
   role: string;
   model: string;
   prompt: string;
+  department?: string;
+  status?: string;
+  provider?: string;
+  skills?: string[];
+  workflows?: string[];
   description?: string;
   color?: string;
   emoji?: string;
@@ -57,4 +62,15 @@ export interface MCPConnector {
   category: string;
   path: string;
   version: string;
+  config?: MCPConfig;
+}
+
+export interface MCPServerConfig {
+  command: string;
+  args: string[];
+  env?: Record<string, string>;
+}
+
+export interface MCPConfig {
+  mcpServers: Record<string, MCPServerConfig>;
 }
