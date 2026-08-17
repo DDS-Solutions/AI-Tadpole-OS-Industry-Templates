@@ -6,7 +6,7 @@ export const highlightText = (text: string, search: string): React.JSX.Element =
   const parts = text.split(regex);
   return (
     <span>
-      {parts.map((part, i) => 
+      {parts.map((part, i) =>
         regex.test(part) ? (
           <span key={i} className="text-cyber-green bg-cyber-green/10 px-0.5 rounded font-semibold">
             {part}
@@ -28,9 +28,9 @@ export interface ShieldWarning {
 export const scanShieldCapabilities = (prompt: string): ShieldWarning[] => {
   const warnings: ShieldWarning[] = [];
   if (!prompt) return warnings;
-  
+
   const pLower = prompt.toLowerCase();
-  
+
   // shell:execute triggers
   const shellKeywords = ['execute', 'shell', 'bash', 'powershell', 'cmd.exe', 'terminal', 'command line', 'run command', 'system call'];
   const matchedShell = shellKeywords.filter(k => pLower.includes(k));

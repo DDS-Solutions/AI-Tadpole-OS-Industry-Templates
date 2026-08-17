@@ -24,7 +24,7 @@ graph TD
 
 ## 🏢 Roster Design: Knowledge Work vs. Edge Operations
 
-For each of the 23 industries represented in the catalog, swarms are categorized into one of two archetypes:
+Across the 25 industries represented in the catalog, swarms use one of two core archetypes. Field Services and Wholesale & Distribution also include compact three-agent starter teams for businesses with up to 25 seats:
 
 ### 1. Knowledge Work Swarms (Cognitive Layer)
 - **Focus**: High-context information retrieval, document audits, policy synthesis, case law precedent research, and regulatory reporting.
@@ -35,6 +35,12 @@ For each of the 23 industries represented in the catalog, swarms are categorized
 - **Focus**: Supply chain tracking, inventory receiving audits, parts procurement QA, ISO 9000 compliance logs, and dock shipping coordination.
 - **Roster Characteristics**: Highly-optimized, low-latency model allocations (e.g., `gemini-1.5-flash`, local `phi-3`) combined with automated verification scripts.
 - **Example**: `manufacturing-iso9000-qa` or `ecommerce-dispatch-qa`.
+
+### Small-Business Operations Starters (25 Seats or Fewer)
+
+- **Field Services**: Dispatch coordination, estimate and work-order preparation, customer follow-up, and daily exception review for home services, repair, and maintenance businesses.
+- **Wholesale & Distribution**: B2B quote preparation, account operations, inventory replenishment planning, and order-fulfillment exception handling.
+- **Human control**: All six agents can prepare operational drafts, but every file-writing capability is marked for oversight. People retain approval of schedules, quotes, pricing, purchase orders, inventory release, shipments, and outbound customer messages.
 
 ---
 
@@ -108,3 +114,28 @@ Example agent profile:
 ```
 
 The current installer scans every `agents/*.json` file, not only those named in the manifest roster. Keep the directory free of drafts or invalid profiles.
+
+---
+
+## 🛠️ Swarm Architect Setup Experiences
+
+The visual Swarm Architect builder provides two tailored workflows that share an underlying configuration state and validation pipeline:
+
+### 1. Guided Setup (Business Owners & Operators)
+Designed for rapid blueprinting without technical jargon:
+- **Step 1 (Business Brief)**: Company name, size, industry, and multi-goal selection (e.g., scheduling, quoting, customer follow-up, inventory management).
+- **Step 2 (Team Recommendations)**: Round-robin goal distribution generates a tailored specialist team with explicit operational boundaries (*What it reads, What it prepares, What requires human approval*), scaled to organization size.
+- **Step 3 (Connections & Governance)**: Plain-language connector cards and read-only explanations of how Tadpole OS enforces human-in-the-loop oversight at runtime.
+- **Step 4 (Review & Export)**: Live validation metrics and one-click consumer-compatible `.zip` archive download.
+
+### 2. Advanced Setup (Developers & Administrators)
+Full technical control across 5 granular steps:
+- **Identity**: Industry taxonomy, custom industry codes, and mission definition.
+- **Roster**: Granular agent prompt editing with live character count (&le; 800 chars), provider inference, and exact capability assignments.
+- **Playbooks**: Structured step builders and raw Markdown SOP editors with syntax validation.
+- **Connectors**: MCP server definitions, argument arrays, and environment variable requirements.
+- **Forge**: Comprehensive live validation diagnostics and export packaging.
+
+### 3. Draft Persistence & Secret Privacy
+- The web builder automatically persists work-in-progress blueprints in browser `localStorage` under `tadpole_builder_draft_v1`.
+- **Privacy Guarantee**: Blueprint drafts store structural configurations, prompts, and playbooks. Connector credential fields and sensitive secrets are never stored.

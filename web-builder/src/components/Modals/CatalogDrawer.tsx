@@ -36,7 +36,7 @@ export default function CatalogDrawer({
 
   const filtered = catalog.filter(agent => {
     const matchesDept = selectedCatalogDept === 'all' || agent.department === selectedCatalogDept;
-    const matchesSearch = !catalogSearch || 
+    const matchesSearch = !catalogSearch ||
       agent.name.toLowerCase().includes(catalogSearch.toLowerCase()) ||
       agent.description.toLowerCase().includes(catalogSearch.toLowerCase()) ||
       agent.vibe.toLowerCase().includes(catalogSearch.toLowerCase()) ||
@@ -91,7 +91,7 @@ export default function CatalogDrawer({
               onChange={e => setCatalogSearch(e.target.value)}
             />
             {catalogSearch && (
-              <button 
+              <button
                 onClick={() => setCatalogSearch('')}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white text-xs cursor-pointer"
               >
@@ -107,12 +107,12 @@ export default function CatalogDrawer({
           <div className="w-64 border-r border-zinc-855 overflow-y-auto custom-scrollbar bg-zinc-950/20 p-4 space-y-1" style={{ borderColor: 'color-mix(in srgb, var(--color-zinc-800) 40%, transparent)' }}>
             <div className="mono-label text-[9px] mb-2 px-2 cursor-help" data-tooltip="Primary execution categories sorting our roster agent library.">Departments</div>
             {departments.map(dept => {
-              const count = dept.id === 'all' 
-                ? catalog.length 
+              const count = dept.id === 'all'
+                ? catalog.length
                 : catalog.filter(c => c.department === dept.id).length;
-              
+
               const isSelected = selectedCatalogDept === dept.id;
-              
+
               return (
                 <button
                   key={dept.id}
@@ -128,8 +128,8 @@ export default function CatalogDrawer({
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    <span 
-                      className="w-1.5 h-1.5 rounded-full" 
+                    <span
+                      className="w-1.5 h-1.5 rounded-full"
                       style={{ backgroundColor: dept.color }}
                     />
                     <span>{dept.label}</span>
@@ -175,10 +175,10 @@ export default function CatalogDrawer({
                               {highlightText(agent.name, catalogSearch)}
                             </h4>
                           </div>
-                          <span 
+                          <span
                             className="text-[8px] font-mono uppercase tracking-tighter px-1.5 py-0.25 rounded border shrink-0"
-                            style={{ 
-                              color: agent.color, 
+                            style={{
+                              color: agent.color,
                               borderColor: `color-mix(in srgb, ${agent.color} 30%, transparent)`,
                               backgroundColor: `color-mix(in srgb, ${agent.color} 5%, transparent)`
                             }}
@@ -211,7 +211,7 @@ export default function CatalogDrawer({
                     <span className="text-3xl p-2 bg-zinc-900 border border-zinc-800 rounded-xl select-none">{selectedAgent.emoji || '🤖'}</span>
                     <div>
                       <h4 className="font-bold text-sm text-white">{selectedAgent.name}</h4>
-                      <span 
+                      <span
                         className="text-[9px] font-mono px-2 py-0.5 rounded border inline-block mt-1"
                         style={{
                           color: selectedAgent.color,

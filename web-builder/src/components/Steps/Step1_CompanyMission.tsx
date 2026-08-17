@@ -59,7 +59,7 @@ export default function Step1_CompanyMission({
   onNext
 }: Step1Props) {
   return (
-    <motion.div 
+    <motion.div
       key="step1"
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
@@ -67,15 +67,20 @@ export default function Step1_CompanyMission({
       data-tooltip="Phase 1: Configures your organization's metadata, NAICS/SIC industry code classification, and target directory paths."
       className="w-full sovereign-panel p-8"
     >
-      <div className="flex items-center gap-2 mb-6 text-cyber-green">
-        <Globe className="w-5 h-5" />
-        <h2 className="font-bold text-lg" data-tooltip="The baseline settings of the swarm identity and directory path settings.">Phase 1: The Pulse</h2>
+      <div className="flex items-center gap-3 mb-6 text-cyber-green">
+        <Globe className="w-5 h-5 shrink-0" />
+        <div>
+          <h2 className="font-bold text-lg text-white" data-tooltip="The baseline settings of the swarm identity and directory path settings.">
+            Phase 1: Identity
+          </h2>
+          <p className="text-xs font-mono text-zinc-500">Pulse configuration & package metadata</p>
+        </div>
       </div>
-      
+
       <div className="space-y-6">
         <div>
           <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="Specify the primary organization or business name associated with this multi-agent swarm blueprint.">Company / Swarm Name</label>
-          <input 
+          <input
             className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none transition-colors text-zinc-300"
             placeholder="e.g. My Enterprise Swarm"
             value={companyInfo.name}
@@ -87,7 +92,7 @@ export default function Step1_CompanyMission({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-zinc-950 border border-zinc-800 rounded-lg">
             <div>
               <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="Set the custom industry sector label if not matching the pre-defined catalog options.">Custom Industry Name</label>
-              <input 
+              <input
                 className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none transition-colors text-zinc-300"
                 placeholder="e.g. Biotech Research"
                 value={customIndustryName}
@@ -105,7 +110,7 @@ export default function Step1_CompanyMission({
             </div>
             <div>
               <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="The relative directory name that will store agent configuration profiles inside the repository.">Custom Target Directory Path</label>
-              <input 
+              <input
                 className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none transition-colors text-zinc-300"
                 placeholder="e.g. biotech"
                 value={customIndustryPath}
@@ -124,7 +129,7 @@ export default function Step1_CompanyMission({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="Choose from pre-defined industry templates to populate standard playbook steps and agent configurations.">Industry / Sector</label>
-            <select 
+            <select
               className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none text-zinc-300 cursor-pointer"
               value={isCustomIndustry ? "CUSTOM" : companyInfo.industry}
               onChange={e => {
@@ -166,7 +171,7 @@ export default function Step1_CompanyMission({
               if (companyInfo.industry && codes.length > 0) {
                 return (
                   <div className="flex flex-col md:flex-row gap-3">
-                    <select 
+                    <select
                       className="flex-1 bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none text-zinc-300 cursor-pointer"
                       value={(showCustomCodeInput || isCodeCustom) ? "CUSTOM" : companyInfo.industryCode}
                       onChange={e => {
@@ -185,9 +190,9 @@ export default function Step1_CompanyMission({
                       ))}
                       <option value="CUSTOM">Custom Code...</option>
                     </select>
-                    
+
                     {showInput && (
-                      <input 
+                      <input
                         className="flex-1 bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none transition-colors text-zinc-300"
                         placeholder="Enter Custom Code..."
                         value={companyInfo.industryCode}
@@ -198,7 +203,7 @@ export default function Step1_CompanyMission({
                 );
               } else {
                 return (
-                  <input 
+                  <input
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none transition-colors text-zinc-300"
                     placeholder="e.g. 541511"
                     value={companyInfo.industryCode}
@@ -209,7 +214,7 @@ export default function Step1_CompanyMission({
             })()}
           </div>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
              <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="The exact relative folder destination inside the cloned repository context.">Target Repo Path</label>
@@ -220,7 +225,7 @@ export default function Step1_CompanyMission({
           </div>
           <div>
             <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="Determines concurrent agent execution quotas and performance thresholds.">Company Size</label>
-            <select 
+            <select
               className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none text-zinc-300 cursor-pointer"
               value={companyInfo.size}
               onChange={e => setCompanyInfo({...companyInfo, size: e.target.value})}
@@ -231,17 +236,17 @@ export default function Step1_CompanyMission({
             </select>
           </div>
         </div>
-        
+
         <div>
           <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="Enter a paragraph explaining your core services, tools, or target workflows to calculate recommended agent catalog profiles.">What does your company do?</label>
           <div className="relative">
-            <textarea 
+            <textarea
               className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 min-h-[100px] focus:border-cyber-green outline-none text-zinc-300"
               placeholder="Describe your core business..."
               value={companyInfo.description}
               onChange={e => setCompanyInfo({...companyInfo, description: e.target.value})}
             />
-            <button 
+            <button
               onClick={onAiAssist}
               className="absolute bottom-4 right-4 bg-cyber-green/10 text-cyber-green hover:bg-cyber-green/20 p-2 rounded-lg border border-cyber-green/30 flex items-center gap-2 text-sm transition-all cursor-pointer"
             >
@@ -252,7 +257,7 @@ export default function Step1_CompanyMission({
 
         <div>
           <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="The core mandate or strategic goal defining the swarm's overarching purpose.">Mission Objective</label>
-          <textarea 
+          <textarea
             className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 min-h-[60px] focus:border-cyber-green outline-none text-zinc-300"
             placeholder="The core goal of this swarm..."
             value={companyInfo.mission}
@@ -269,15 +274,15 @@ export default function Step1_CompanyMission({
             {dynamicRegistry
               .filter(t => t.industry.toLowerCase() === companyInfo.industry.toLowerCase())
               .map(t => (
-                <div 
-                  key={t.id} 
+                <div
+                  key={t.id}
                   onClick={() => {
                     setSelectedTemplateId(t.id);
                     onLoadSwarmDetails(t.path);
                   }}
                   className={`p-4 rounded-xl border sovereign-transition cursor-pointer text-left ${
-                    selectedTemplateId === t.id 
-                      ? 'bg-zinc-900 border-cyber-green/50 text-white' 
+                    selectedTemplateId === t.id
+                      ? 'bg-zinc-900 border-cyber-green/50 text-white'
                       : 'bg-zinc-950/40 border-zinc-800 text-zinc-400 hover:border-zinc-700'
                   }`}
                 >
@@ -291,7 +296,7 @@ export default function Step1_CompanyMission({
       )}
 
       <div className="mt-12 flex justify-end">
-        <button 
+        <button
           onClick={onNext}
           disabled={!companyInfo.name || !companyInfo.industry}
           className="bg-neural-pulse text-zinc-950 font-bold px-8 py-3 rounded-lg hover:bg-white disabled:opacity-50 transition-all cursor-pointer"

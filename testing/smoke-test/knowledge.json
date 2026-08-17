@@ -1,0 +1,13 @@
+[
+  {
+    "text": "The smoke test playbook verifies that OKF knowledge ingestion accurately captures structured test procedures into the local knowledge store.",
+    "topic": "testing",
+    "resource_uri": "https://local.tadpole.internal/knowledge/smoke-playbook",
+    "concept_type": "playbook",
+    "tags": [
+      "testing",
+      "QA",
+      "smoke"
+    ]
+  }
+]

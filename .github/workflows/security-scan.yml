@@ -2,9 +2,9 @@ name: Sapphire Shield Security Scan
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, security-hardening ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, security-hardening ]
   workflow_dispatch:
 
 permissions:
@@ -16,24 +16,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
         with:
           python-version: '3.10'
 
-      - name: Validate package security boundaries
+      - name: Validate package security boundaries and lockfile
         run: |
+          python scripts/verify_compatibility_lock.py
           python scripts/validate_template.py
           python -m unittest discover -s tests -p 'test_*.py'
 
       - name: Install pinned Python source scanner
         run: python -m pip install --disable-pip-version-check bandit==1.9.4
 
-      - name: Scan executable template and connector source
+      - name: Scan executable template, scripts, tests, and connector source
         run: |
-          bandit -r mcp-blueprints -ll -ii
+          bandit -r scripts tests mcp-blueprints validate.py -ll -ii
           find . -path '*/skills/*.py' -print0 | xargs -0 -r bandit -ll -ii
 
   malware-scan:
@@ -41,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Install ClamAV
         run: |

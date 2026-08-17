@@ -1,0 +1,26 @@
+{
+  "id": "operator",
+  "name": "Smoke Test Operator",
+  "role": "Execution Commander",
+  "department": "Infrastructure",
+  "description": "Execution-capable agent verifying shell execution pairing, oversight flags, and MCP tool declarations.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "Perform controlled command execution and connector bridge tests with full operator oversight."
+  },
+  "skills": [
+    "read_file",
+    "write_file",
+    "execute_shell",
+    "shell"
+  ],
+  "workflows": [
+    "operator_sop"
+  ],
+  "mcp_tools": [
+    "smoke:healthcheck"
+  ],
+  "requires_oversight": true
+}

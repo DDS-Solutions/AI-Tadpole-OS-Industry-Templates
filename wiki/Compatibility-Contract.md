@@ -38,6 +38,7 @@ Do not describe these boundaries as solved by registry metadata.
 ## Required checks
 
 ```bash
+python scripts/verify_compatibility_lock.py
 python scripts/migrate_consumer_contract.py --check
 python scripts/validate_template.py
 python -m unittest discover -s tests -p "test_*.py"
@@ -49,4 +50,4 @@ npm run test
 npm run build
 ```
 
-Validation currently completes with zero errors and six preserved unreferenced-workflow warnings.
+Validation currently completes with zero errors and zero warnings across all templates, lockfiles, and smoke-test references.

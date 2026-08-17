@@ -1,0 +1,22 @@
+{
+  "id": "reader",
+  "name": "Smoke Test Reader",
+  "role": "Artifact Inspector",
+  "department": "Quality Assurance",
+  "description": "Deterministic read-only agent verifying catalog parsing and read-file workflows.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "Read test artifacts and verify baseline system behavior following the smoke SOP."
+  },
+  "skills": [
+    "read_file",
+    "grep_search"
+  ],
+  "workflows": [
+    "smoke_sop"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

@@ -18,6 +18,9 @@
     "plant-manager"
   ],
   "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/maintenance_cycle.md"
+  ],
   "version": "1.0.0",
   "roster": [
     {

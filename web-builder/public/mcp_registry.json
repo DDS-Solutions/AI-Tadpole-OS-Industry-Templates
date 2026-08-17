@@ -7,7 +7,17 @@
       "category": "CRM & SaaS",
       "path": "mcp-blueprints/generic-crm",
       "version": "1.0.0",
-      "author": "Tadpole OS Core"
+      "author": "Tadpole OS Core",
+      "status": "verified",
+      "maintainer": "Tadpole OS Security Team",
+      "last_reviewed": "2026-08-17",
+      "required_env": {
+        "CRM_API_KEY": {
+          "description": "API token for CRM access",
+          "placeholder": "CONFIGURE_LOCALLY"
+        }
+      },
+      "integrity_hash": "sha256:141da6c37f0a1dbcab3b05c78678feaeff000a6031b0733b7f3a9448bd83f6d6"
     },
     {
       "id": "mcp-smb-accounting",
@@ -16,7 +26,17 @@
       "category": "Accounting",
       "path": "mcp-blueprints/smb-accounting",
       "version": "1.0.0",
-      "author": "Tadpole OS Core"
+      "author": "Tadpole OS Core",
+      "status": "verified",
+      "maintainer": "Tadpole OS Security Team",
+      "last_reviewed": "2026-08-17",
+      "required_env": {
+        "ACCOUNTING_API_KEY": {
+          "description": "API authentication key for accounting software",
+          "placeholder": "CONFIGURE_LOCALLY"
+        }
+      },
+      "integrity_hash": "sha256:cb5eaab51f9781c41e3f646e5fcd4ae27980da69a510e41d4991df22f84d6f10"
     },
     {
       "id": "mcp-hardware-edge",
@@ -25,7 +45,29 @@
       "category": "IoT & Edge",
       "path": "mcp-blueprints/hardware-edge",
       "version": "1.0.0",
-      "author": "Tadpole OS Core"
+      "author": "Tadpole OS Core",
+      "status": "verified",
+      "maintainer": "Tadpole OS Security Team",
+      "last_reviewed": "2026-08-17",
+      "required_env": {
+        "SCALE_COM_PORT": {
+          "description": "Serial communications port",
+          "placeholder": "COM3"
+        },
+        "SCALE_BAUDRATE": {
+          "description": "Serial port baud rate",
+          "placeholder": "9600"
+        },
+        "MODBUS_SENSOR_IP": {
+          "description": "IP address of Modbus sensor",
+          "placeholder": "192.168.1.100"
+        },
+        "MODBUS_PORT": {
+          "description": "Modbus TCP communication port",
+          "placeholder": "502"
+        }
+      },
+      "integrity_hash": "sha256:878b9b54ced171c23e7a4651ea68fb2e1da796178bce58c21f81d2c80cdc1341"
     },
     {
       "id": "mcp-local-log-scanner",
@@ -34,7 +76,12 @@
       "category": "System",
       "path": "mcp-blueprints/log-scanner",
       "version": "1.1.2",
-      "author": "Community"
+      "author": "Community",
+      "status": "reviewed",
+      "maintainer": "Tadpole OS Community Working Group",
+      "last_reviewed": "2026-08-17",
+      "required_env": {},
+      "integrity_hash": "sha256:0480073b9d20f65a555b5560a0b3565871aafde0faa7e1f613ea291115693e62"
     }
   ]
 }

@@ -30,7 +30,7 @@ describe('scanShieldCapabilities', () => {
   it('should detect shell:execute capability triggers', () => {
     const prompt1 = 'You need to execute terminal commands to fetch system status.';
     const prompt2 = 'Run powershell or bash scripts when requested.';
-    
+
     const warnings1 = scanShieldCapabilities(prompt1);
     expect(warnings1).toHaveLength(1);
     expect(warnings1[0].capability).toBe('shell:execute');

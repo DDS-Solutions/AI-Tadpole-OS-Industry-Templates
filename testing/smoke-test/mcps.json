@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "smoke-connector": {
+      "command": "python",
+      "args": [
+        "skills/smoke_server.py"
+      ],
+      "env": {
+        "SMOKE_TEST_TOKEN": "CONFIGURE_LOCALLY"
+      }
+    }
+  }
+}

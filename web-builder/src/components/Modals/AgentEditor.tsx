@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Sliders, X } from 'lucide-react';
+import { Sliders, X, Shield, Terminal, FileText, AlertTriangle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import type { Agent } from '../../types';
+import { CANONICAL_CAPABILITIES, type CapabilityItem } from '../../constants/capabilities';
 
 interface AgentEditorProps {
   agent: Agent;
@@ -18,13 +19,33 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
   const [department, setDepartment] = useState(agent.department || 'Operations');
   const [emoji, setEmoji] = useState(agent.emoji || '🤖');
   const [color, setColor] = useState(agent.color || '#3B82F6');
-  const [skills, setSkills] = useState((agent.skills || ['read_file']).join(', '));
+  const [selectedSkills, setSelectedSkills] = useState<string[]>(
+    agent.skills && agent.skills.length > 0 ? agent.skills : ['read_file'],
+  );
   const [mcpTools, setMcpTools] = useState((agent.mcpTools || []).join(', '));
   const [requiresOversight, setRequiresOversight] = useState(agent.requiresOversight || false);
-  const dangerousSkillSelected = skills
-    .split(',')
-    .map(value => value.trim())
-    .some(value => ['write_file', 'delete_file', 'execute_shell', 'shell', 'terminal'].includes(value));
+
+  const dangerousSkillSelected = selectedSkills.some(value =>
+    ['write_file', 'delete_file', 'execute_shell', 'shell', 'terminal'].includes(value),
+  );
+
+  const toggleCapability = (cap: CapabilityItem) => {
+    const isSelected = selectedSkills.includes(cap.id);
+    let nextSkills: string[];
+
+    if (isSelected) {
+      nextSkills = selectedSkills.filter(id => id !== cap.id);
+      if (cap.companionMarker) {
+        nextSkills = nextSkills.filter(id => id !== cap.companionMarker);
+      }
+    } else {
+      nextSkills = [...selectedSkills, cap.id];
+      if (cap.companionMarker && !nextSkills.includes(cap.companionMarker)) {
+        nextSkills.push(cap.companionMarker);
+      }
+    }
+    setSelectedSkills(nextSkills);
+  };
 
   const handleSave = () => {
     onSave({
@@ -37,10 +58,10 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
       department,
       emoji,
       color,
-      skills: skills.split(',').map(value => value.trim()).filter(Boolean),
+      skills: selectedSkills,
       mcpTools: mcpTools.split(',').map(value => value.trim()).filter(Boolean),
       requiresOversight: requiresOversight || dangerousSkillSelected,
-      vibe: agent.vibe
+      vibe: agent.vibe,
     });
   };
 
@@ -53,7 +74,7 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
       className="sovereign-panel w-full max-w-3xl h-[85vh] flex flex-col bg-zinc-900 border-zinc-800 p-0 overflow-hidden"
     >
       {/* Header */}
-      <div className="flex justify-between items-center px-6 py-4 border-b border-zinc-850" style={{ borderColor: 'color-mix(in srgb, var(--color-zinc-800) 40%, transparent)' }}>
+      <div className="flex justify-between items-center px-6 py-4 border-b border-zinc-800" style={{ borderColor: 'color-mix(in srgb, var(--color-zinc-800) 40%, transparent)' }}>
         <div>
           <h3 className="text-lg font-bold text-white flex items-center gap-2">
             <Sliders className="w-5 h-5 text-cyber-green" style={{ color: color }} /> Configure Agent Prompt
@@ -62,7 +83,7 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
         </div>
         <button
           onClick={onClose}
-          className="p-1.5 text-zinc-500 hover:text-white rounded hover:bg-zinc-805 transition-all cursor-pointer"
+          className="p-1.5 text-zinc-500 hover:text-white rounded hover:bg-zinc-800 transition-all cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>
@@ -70,7 +91,7 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
 
       {/* Scrollable Form Body */}
       <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6">
-        
+
         {/* Name, Emoji, Color Group */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
@@ -103,7 +124,7 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
               />
               <input
                 type="text"
-                className="flex-1 bg-zinc-950 border border-zinc-805 rounded-lg px-3 py-2.5 text-xs text-zinc-200 font-mono focus:border-cyber-green outline-none"
+                className="flex-1 bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2.5 text-xs text-zinc-200 font-mono focus:border-cyber-green outline-none"
                 value={color}
                 onChange={e => setColor(e.target.value)}
               />
@@ -136,7 +157,7 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
           <div>
             <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1.5">LLM Model</label>
             <select
-              className="w-full bg-zinc-950 border border-zinc-805 rounded-lg px-3 py-2.5 text-xs text-zinc-200 focus:border-cyber-green outline-none cursor-pointer"
+              className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2.5 text-xs text-zinc-200 focus:border-cyber-green outline-none cursor-pointer"
               value={model}
               onChange={e => setModel(e.target.value)}
             >
@@ -161,29 +182,72 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1.5">Runtime Capability IDs</label>
-            <input
-              type="text"
-              className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2.5 text-xs text-zinc-200 font-mono focus:border-cyber-green outline-none"
-              placeholder="read_file, grep_search, write_file"
-              value={skills}
-              onChange={e => setSkills(e.target.value)}
-            />
-            <p className="text-[10px] text-zinc-600 mt-1.5">Use Tadpole tool IDs. Shell execution requires both <code>execute_shell</code> and <code>shell</code>.</p>
+        {/* Controlled Runtime Capabilities Selector */}
+        <div>
+          <div className="flex justify-between items-center mb-2">
+            <label className="block text-[10px] font-mono text-zinc-500 uppercase">
+              Tadpole OS Runtime Capabilities
+            </label>
+            <span className="text-[10px] text-zinc-500">
+              {selectedSkills.length} capability{selectedSkills.length === 1 ? '' : 'ies'} active
+            </span>
           </div>
-          <div>
-            <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1.5">MCP Tool IDs</label>
-            <input
-              type="text"
-              className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2.5 text-xs text-zinc-200 font-mono focus:border-cyber-green outline-none"
-              placeholder="crm:get_contact, accounting:get_invoice"
-              value={mcpTools}
-              onChange={e => setMcpTools(e.target.value)}
-            />
-            <p className="text-[10px] text-zinc-600 mt-1.5">Forward-compatible declarations. The pinned runtime stores this list; connector exposure is still runtime-controlled.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+            {CANONICAL_CAPABILITIES.map(cap => {
+              const active = selectedSkills.includes(cap.id);
+              const isDangerous = cap.risk === 'dangerous';
+              const isMutating = cap.risk === 'mutating';
+
+              let badgeColor = 'border-emerald-900/40 bg-emerald-950/20 text-emerald-300';
+              if (isMutating) badgeColor = 'border-amber-900/40 bg-amber-950/20 text-amber-300';
+              if (isDangerous) badgeColor = 'border-rose-900/40 bg-rose-950/20 text-rose-300';
+
+              return (
+                <button
+                  key={cap.id}
+                  type="button"
+                  onClick={() => toggleCapability(cap)}
+                  className={`p-2.5 rounded-lg border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                    active
+                      ? `${badgeColor} border-current shadow-sm`
+                      : 'border-zinc-800 bg-zinc-950/40 text-zinc-400 hover:border-zinc-700'
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-1 mb-1">
+                    <span className="text-xs font-semibold flex items-center gap-1.5">
+                      {isDangerous ? (
+                        <Terminal className="w-3.5 h-3.5 text-rose-400" />
+                      ) : isMutating ? (
+                        <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
+                      ) : (
+                        <FileText className="w-3.5 h-3.5 text-emerald-400" />
+                      )}
+                      {cap.label}
+                    </span>
+                    <span className={`text-[9px] font-mono uppercase px-1.5 py-0.5 rounded ${
+                      active ? 'bg-zinc-900/80 font-bold' : 'text-zinc-600'
+                    }`}>
+                      {cap.risk}
+                    </span>
+                  </div>
+                  <p className="text-[10px] text-zinc-500 leading-tight">{cap.description}</p>
+                </button>
+              );
+            })}
           </div>
+        </div>
+
+        {/* MCP Tools Input */}
+        <div>
+          <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1.5">Declared MCP Tool IDs</label>
+          <input
+            type="text"
+            className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2.5 text-xs text-zinc-200 font-mono focus:border-cyber-green outline-none"
+            placeholder="crm:get_contact, accounting:get_invoice"
+            value={mcpTools}
+            onChange={e => setMcpTools(e.target.value)}
+          />
+          <p className="text-[10px] text-zinc-600 mt-1.5">Forward-compatible declarations stored in agent profiles.</p>
         </div>
 
         <label className="flex items-start gap-3 p-4 rounded-lg border border-zinc-800 bg-zinc-950/50 cursor-pointer">
@@ -195,8 +259,12 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
             onChange={e => setRequiresOversight(e.target.checked)}
           />
           <span>
-            <span className="block text-xs font-semibold text-zinc-200">Require operator oversight</span>
-            <span className="block text-[10px] text-zinc-500 mt-1">Swarm Architect forces this on for write, delete, and shell capabilities.</span>
+            <span className="block text-xs font-semibold text-zinc-200 flex items-center gap-1.5">
+              <Shield className="w-4 h-4 text-cyber-green" /> Require operator oversight
+            </span>
+            <span className="block text-[10px] text-zinc-500 mt-1">
+              Swarm Architect forces this on when mutating, delete, or shell capabilities are active.
+            </span>
           </span>
         </label>
 
@@ -204,7 +272,7 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
         <div className="flex flex-col flex-1 min-h-[300px]">
           <div className="flex justify-between items-center mb-1.5">
             <label className="block text-[10px] font-mono text-zinc-500 uppercase">System Prompt / Instructions</label>
-            <span className={`text-[9px] font-mono ${prompt.length > 800 ? 'text-rose-500' : 'text-zinc-650'}`}>{prompt.length}/800</span>
+            <span className={`text-[9px] font-mono ${prompt.length > 800 ? 'text-rose-500 font-bold' : 'text-zinc-500'}`}>{prompt.length}/800</span>
           </div>
           <textarea
             className="w-full flex-1 bg-zinc-950 border border-zinc-800 rounded-lg p-4 font-mono text-[11px] text-zinc-300 focus:border-cyber-green outline-none min-h-[320px] leading-relaxed resize-y custom-scrollbar"

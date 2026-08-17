@@ -1,0 +1,16 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Small Field Service Operations (25 Seats)",
+  "version": "1.0.0",
+  "description": "A compact operations team for home services, repair, maintenance, and other appointment-based field businesses with up to 25 seats.",
+  "industry": "field-services",
+  "tags": ["field-service", "dispatch", "estimates", "work-orders", "customer-care", "small-business"],
+  "defaults": {"model": "gemini-pro-latest", "temperature": 0.2},
+  "roster": [
+    {"id": "field-service-dispatch-coordinator", "path": "agents/field-service-dispatch-coordinator.json", "supervisor": null, "priority": "critical"},
+    {"id": "field-service-estimate-work-order-coordinator", "path": "agents/field-service-estimate-work-order-coordinator.json", "supervisor": "field-service-dispatch-coordinator", "priority": "normal"},
+    {"id": "field-service-customer-care-coordinator", "path": "agents/field-service-customer-care-coordinator.json", "supervisor": "field-service-dispatch-coordinator", "priority": "normal"}
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": ["workflows/field_service_daily_operations.md"]
+}

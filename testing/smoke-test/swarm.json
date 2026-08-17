@@ -1,0 +1,34 @@
+{
+  "id": "smoke-test",
+  "name": "Reference Lifecycle Smoke Test Swarm",
+  "industry": "Governance & Compliance",
+  "company_size": "SMB (<25 Employees)",
+  "description": "Deterministic reference swarm verifying end-to-end installation, idle availability, workflow parsing, knowledge ingestion, and MCP execution isolation.",
+  "author": "Tadpole OS QA Team",
+  "tags": [
+    "testing",
+    "smoke-test",
+    "verification",
+    "reference"
+  ],
+  "path": "testing/smoke-test",
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/smoke_sop.md"
+  ],
+  "version": "1.0.0",
+  "roster": [
+    {
+      "id": "reader",
+      "path": "agents/reader.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "operator",
+      "path": "agents/operator.json",
+      "supervisor": null,
+      "priority": "critical"
+    }
+  ]
+}

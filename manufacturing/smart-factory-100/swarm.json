@@ -18,6 +18,9 @@
     "erpsync-master"
   ],
   "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/smart_factory_sync.md"
+  ],
   "version": "1.0.0",
   "roster": [
     {
