@@ -66,6 +66,11 @@ export interface MCPConnector {
   version: string;
   config?: MCPConfig;
   tools?: string[];
+  status?: 'verified' | 'reviewed' | 'experimental';
+  maintainer?: string;
+  last_reviewed?: string;
+  required_env?: Record<string, { description: string; placeholder?: string }>;
+  integrity_hash?: string;
 }
 
 export interface MCPServerConfig {
