@@ -8,9 +8,9 @@
   "critical_contract_files": {
     "COMPATIBILITY_MATRIX.md": "a95f56c0592ff042e3e92eb81814cddf89c67f3dda79da4edec43212ebc916b1",
     "TEMPLATE_SPEC.md": "8b306eade08bf204ab71230cc908be0168af37223af63c7464a26fbc6933f31e",
-    "index.json": "f0d6e9b83aa541d8e7276ec8ccb85d272f9149ea11b1bbe7f72fe19293395eb2",
+    "index.json": "96f9566362c61b811d875aa51d5edadecb6eb139953cb320aa39738125e692bf",
     "mcp_registry.json": "4f70ca8ac1d59f93cdcbf1bbd162e7578d15a536a8ff822737924971553f6507",
-    "registry.json": "a79ab42ab7ba4d7a13f2055ae1ea4c18aca47458062d86b44134fcd9c27d8fbe",
+    "registry.json": "421c490e0ab3fda838a0cccf8d5c81ef59d674e79fd24dc4bbd546fb1ec5fcde",
     "scripts/capabilities.py": "11f94b7883b4cd6cad27b41c2cfc66ff523073dcc556e17c81d40672736d7c11",
     "scripts/migrate_consumer_contract.py": "bd7e1756bb892429137b12daa051d4d8440e6afa27c8ca9f5f570b961acc2654",
     "scripts/validate_template.py": "b6e2ce08373cb3807c656abe0b9bb947585b0b79a5cc203649ab1ac8e5c1c5c5"
