@@ -1,12 +1,15 @@
 # Developer & Contribution Guide
 
-This page explains how developers can build, validate, and submit custom swarm templates to the community repository.
+This page explains how developers can build, validate, and submit custom swarm templates without drifting from the AI-Tadpole-OS consumer contract.
+
+> [!IMPORTANT]
+> Any schema, validator, archive, workflow, MCP, knowledge, or migration change must begin with a cross-repository contract audit. Pin the reviewed AI-Tadpole-OS revision and update [`COMPATIBILITY_MATRIX.md`](../COMPATIBILITY_MATRIX.md) when the accepted contract changes.
 
 ---
 
 ## 🛠️ Testing Templates Locally
 
-To ensure your swarm template complies with Tadpole OS specifications and will install cleanly without database or traversal errors, use the local validation script.
+Use the local validation suite to confirm that a template matches the pinned Tadpole OS contract before attempting installation.
 
 ### Prerequisites
 - Python 3.8 or higher.
@@ -18,26 +21,33 @@ To ensure your swarm template complies with Tadpole OS specifications and will i
 ### Run Validation
 From the root of the repository, execute:
 ```bash
-# Run the native specification validator
+# Confirm that no additive consumer-contract migrations remain
+python scripts/migrate_consumer_contract.py --check
+
+# Validate the complete registry against the pinned consumer contract
 python scripts/validate_template.py
 
-# Run the global repository validator
-python validate.py
+# Exercise known-valid and known-invalid contract fixtures
+python -m unittest discover -s tests -p "test_*.py"
 ```
 
 ### Validation Scope
-The validation suite performs the following structural integrity checks:
-1. **Schema Compliance**: Validates `registry.json` and updates `index.json`.
+The validation suite is read-only and performs the following integrity checks:
+1. **Catalog Parity**: Confirms `registry.json` and `index.json` agree on unique template IDs and paths.
 2. **Directory Resolution**: Confirms all templates declared in `registry.json` exist physically.
-3. **Configuration Auditing**: Parses `swarm.json` to verify JSON syntax.
+3. **Configuration Auditing**: Parses `swarm.json`, rejects unsafe paths, and checks roster and global-workflow references.
 4. **Agent Profile Checks**: 
-   - Scans all roster profiles under `/agents/` to ensure agent paths exist and parse as valid JSON.
-   - Asserts that agent profile JSONs strictly adhere to native properties (`id`, `name`, `role`, `department`, `description`, `model_config`, `skills`, `workflows`).
-   - Asserts that the system prompt inside `model_config` is under 800 characters.
+   - Scans every profile under `/agents/`, because the consumer installs all JSON files in that directory—not only roster entries.
+   - Requires non-empty `id`, `name`, `role`, `department`, `description`, and `status` strings.
+   - Requires `model_config.provider`, `model_config.model_id`, and `model_config.system_prompt`, with a maximum 800-character prompt.
+   - Validates `skills` and `workflows` arrays and confirms every workflow reference exists.
 5. **Workflow Checks**: 
-   - Checks that all workflows declared in `global_workflows` or inside agent profiles exist physically as `.md` files under the template `/workflows/` subdirectory.
-   - Verifies that all workflow files contain valid step headers matching `## Step [Name]`.
-6. **MCP Registry Checks**: Scans `mcp_registry.json` and ensures all referenced `mcps.json` configurations are syntactically valid and exist in the filesystem.
+   - Checks global, agent-owned, and otherwise present workflow files.
+   - Requires at least one consumer-visible `##` or `###` heading. `## Step N: Name` is preferred but is not the only syntax the pinned parser accepts.
+   - Reports unreferenced files as warnings.
+6. **MCP and Knowledge Checks**: Validates the root `{ "mcpServers": {} }` shape, server commands/arguments/environment values, blueprint files, and required `knowledge.json` text/topic fields.
+
+The legacy `validate.py` entry point delegates to the same contract validator; it no longer maintains a second set of rules.
 
 ---
 
@@ -61,13 +71,16 @@ The visual **Swarm Architect Web Builder** is located inside `/web-builder`. To 
 ```bash
 # Navigate to the workspace and install packages
 cd web-builder
-npm install
+npm ci
 
 # Run Vite dev server locally
 npm run dev
 
-# Run Vitest unit tests (validates prompt scanner and search highlighting logic)
+# Run prompt, archive-content, MCP, OKF, safety, and round-trip tests
 npm run test
+
+# Run static analysis
+npm run lint
 
 # Build production assets
 npm run build
@@ -84,7 +97,8 @@ web-builder/src/
 ├── types.ts              # Common interfaces (Agent, Workflow, MCP)
 ├── utils.tsx             # Text highlighting & capability scanners
 ├── utils/
-│   └── fileHelpers.ts    # ZIP assembly (JSZip) & template loaders
+│   ├── fileHelpers.ts      # ZIP assembly, connector bundling, and template loaders
+│   └── fileHelpers.test.ts # Archive contract and round-trip tests
 ├── components/
 │   ├── Modals/
 │   │   ├── AgentEditor.tsx   # Agent configuration editor modal
@@ -112,7 +126,12 @@ npm run graph:export
 
 ## 🔄 Automated CI/CD Pipeline
 
-The templates repository features a GitHub Actions workflow configured at `.github/workflows/validate-templates.yml`. 
+The templates repository uses `.github/workflows/validate-templates.yml` as the publication gate.
 
 - **Triggers**: Executed automatically on every `push` and `pull_request` targeting the `main` branch.
-- **Workflow**: Sets up a Python environment and runs `validate.py`. Pull requests that contain syntax errors, missing files, or incorrect roster references will trigger a build failure and block merges.
+- **Registry job**: Runs the migration check, complete validator, and Python characterization tests.
+- **Builder job**: Uses the lockfile with `npm ci`, then runs lint, archive/round-trip tests, and the production build.
+- **Deployment**: Repeats builder lint/tests/build before publishing GitHub Pages.
+- **Security scan**: Runs for every pull request rather than a partial list of industry directories.
+
+Pull requests also include a checklist requiring the reviewed AI-Tadpole-OS commit and compatibility notes.

@@ -32,10 +32,15 @@ All active MCPs in the repository are cataloged in `mcp_registry.json`:
 ## 🛠️ Attaching Connectors to Swarms
 
 ### Via Swarm Architect
-When configuring your swarm using the visual **Swarm Architect** (`/web-builder`), you will be presented with a **Phase 4: Data Connectors** UI. Here you can browse the active MCP catalog and select the connectors required by your agents. The exported `swarm.json` will automatically compile the requested dependencies.
+When configuring your swarm using the visual **Swarm Architect** (`/web-builder`), Phase 4 lets you select catalog connectors. Export then:
+
+- merges selected server definitions into a root `mcps.json`;
+- sets manifest metadata to `"required_mcps": "mcps.json"`;
+- bundles relative Python server sources and available requirements files under `mcp-blueprints/`; and
+- rejects missing connector definitions or duplicate MCP server names.
 
 ### Manual Configuration
-If you're writing a template manually, simply append the `required_mcps` array to your `swarm.json` manifesto pointing to the internal configuration files:
+If you are writing a template manually, place the accepted MCP configuration at the template root. The current AI-Tadpole-OS installer reads this exact file and does not follow repository-relative `required_mcps` paths:
 
 ```json
 {
@@ -44,15 +49,32 @@ If you're writing a template manually, simply append the `required_mcps` array t
   "version": "1.0.0",
   "roster": [ ... ],
   "global_workflows": [ ... ],
-  "required_mcps": [
-    "mcp-blueprints/generic-crm/mcps.json"
-  ]
+  "required_mcps": "mcps.json"
 }
 ```
 
+```json
+{
+  "mcpServers": {
+    "generic-crm": {
+      "command": "python",
+      "args": ["mcp-blueprints/generic-crm/server.py"],
+      "env": {
+        "CRM_API_KEY": "CONFIGURE_LOCALLY"
+      }
+    }
+  }
+}
+```
+
+`required_mcps` remains useful portable manifest metadata, but it is not an installation mechanism in the pinned consumer.
+
 ## 🔒 Security Model
 
-In alignment with the Sapphire Shield policy, MCP servers are entirely local.
-- Tadpole OS boots the MCP connector as a child process via Stdio.
+In alignment with the Sapphire Shield policy, MCP servers are intended to run locally.
+- MCP server configuration uses a command and string argument list suitable for stdio startup.
 - Environment variables and credentials must be provided manually by the system administrator during installation.
 - Overlord Approval boundaries are strictly enforced for write/mutation endpoints.
+
+> [!WARNING]
+> The current remote installer deletes its temporary repository clone after merging MCP configuration. Commands that point to server files inside that clone therefore lose their backing files. Exported archives are self-contained, but end-to-end remote installation of file-backed connectors requires an upstream consumer fix that retains or relocates those assets.

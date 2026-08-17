@@ -10,7 +10,7 @@ Swarms cannot execute arbitrary commands, read files outside designated workspac
 
 1. **Workspace Isolation**: Agents are locked into their respective directories located under `data/workspaces/default/`. Path traversal sequences (`../`) are detected and rejected.
 2. **Bring Your Own Keys**: Templates are strictly forbidden from packaging API keys or system credentials. Any integration with external software (e.g., Salesforce, Jira, or private databases) requires local configuration upon deployment.
-3. **No Executables**: Templates may only bundle declarative JSON configurations, Markdown SOPs, and scanned Python/JS execution scripts. Compiled binaries (`.exe`, `.bin`, `.so`) are rejected.
+3. **No Compiled Binaries**: Templates may bundle declarative JSON, Markdown SOPs, and reviewed Python/JS source where required. Compiled binaries (`.exe`, `.bin`, `.so`) and embedded credentials are prohibited.
 
 ---
 
@@ -46,7 +46,7 @@ Incoming Template ---> Git Clone ---> Run skillspector on scripts
 
 ## 🔍 Visual Builder Telemetry Audit (Swarm Architect)
 
-To ensure zero-trust compliance prior to deployment, the **Swarm Architect Web Builder** runs a static security audit panel (**Sapphire Shield Security Audit**) on Step 4 (The Forge) before zipping the archive.
+To support zero-trust review prior to deployment, the **Swarm Architect Web Builder** runs a static security audit panel (**Sapphire Shield Security Audit**) in Phase 5 (The Forge) before zipping the archive.
 
 ### Prompt Scan Targets
 The auditing engine parses system prompts for capability requests matching these Tadpole OS boundaries:
@@ -58,3 +58,14 @@ The auditing engine parses system prompts for capability requests matching these
 *   **Compliance Indicator**: If no warnings are detected, the builder displays: `🟢 Sovereign Shield Status: Zero Privileges. Runs directly without manual intervention.`
 *   **Override Warnings**: If matching keywords are found, the builder warns that: `⚠️ Overlord (Entity 0) Authorization will be required upon Swarm installation` and lists which specific agents requested the capabilities.
 
+### Archive Safety Checks
+
+Archive generation also rejects:
+
+- repository paths containing traversal or absolute/URL-style values;
+- agent or workflow IDs that collide after filename normalization;
+- agent references to workflows absent from the archive;
+- missing required agent metadata or prompts over 800 characters; and
+- missing MCP configurations or duplicate MCP server names.
+
+These builder checks complement—rather than replace—the repository validator and the consumer's own security controls.

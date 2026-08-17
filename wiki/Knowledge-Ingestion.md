@@ -1,6 +1,6 @@
 # Institutional Knowledge & Playbook Ingestion (OKF)
 
-Tadpole OS swarms support seamless ingestion of corporate standard operating procedures (SOPs) and knowledge docs directly into the local **Open Knowledge Foundation (OKF)** vector database on installation. This ensures that new agents can instantly access compliance requirements, templates, and company policies.
+When vector memory and an embedding provider are available, Tadpole OS swarms can ingest corporate standard operating procedures (SOPs) and knowledge documents into the local **Open Knowledge Foundation (OKF)** store during installation.
 
 ---
 
@@ -25,7 +25,7 @@ description: "SOP for receiving incoming parts and verifying chemical batch shee
 3. If container temperature is out of bounds, quarantine the batch.
 ```
 
-The Tadpole OS server automatically extracts these parameters to index the document topic, URI, tags, and descriptive title during vector database storage.
+The Tadpole OS server extracts supported frontmatter and ingests the Markdown body as the knowledge text. The body must contain the actual playbook; a reference such as `/workflows/example.md` is not resolved into that file's contents.
 
 ### Format B: Structured JSON (`knowledge.json`)
 For legacy systems, databases, or third-party catalog integration, you can provide a `knowledge.json` file in the template root directory containing an array of knowledge requests:
@@ -44,6 +44,8 @@ For legacy systems, databases, or third-party catalog integration, you can provi
 ]
 ```
 
+Every entry must contain non-empty `text` and `topic` strings. Other metadata fields are optional at the pinned consumer revision.
+
 ---
 
 ## ⚡ Ingestion Pipeline Mechanics
@@ -61,5 +63,7 @@ graph TD
     Vectorize --> Done[Deployment Finished]
 ```
 
-- **Resilient Degradation**: If vector memory or Ollama-based embedding generation is offline (e.g., due to low-power nodes or `PRIVACY_MODE=true` constraints), the engine logs a warning but proceeds with the installation of the swarm.
+- **Resilient Degradation**: If vector memory or embedding generation is unavailable, the engine can proceed with the rest of installation. Individual parsing or ingestion failures may not fail the overall install response, so successful installation alone is not proof that knowledge was indexed.
 - **Deduplication**: Documents sharing the same `resource_uri` are checked for duplication. If the checksum or update timestamp has not changed, duplicate vector inserts are bypassed to prevent database bloat.
+
+Swarm Architect now writes the full playbook text to both `knowledge.json` and `knowledge/*.md`, and prevents normalized knowledge filenames from colliding.

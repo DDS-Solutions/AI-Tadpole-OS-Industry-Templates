@@ -2,6 +2,9 @@
 
 This document details the directory layout, schema definitions, and format specifications for native templates in Tadpole OS.
 
+> [!IMPORTANT]
+> This repository supports [AI-Tadpole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS), whose runtime loaders and installers are the authoritative integration contract. Any schema, validator, archive, or migration change must begin with a cross-repository contract audit so this registry is not changed away from what the consuming application accepts. Follow the [Cross-Repository Audit Remediation Plan](AUDIT_REMEDIATION_PLAN.md) and record the AI-Tadpole-OS revision used for compatibility verification.
+
 ---
 
 ## Directory Layout
@@ -61,7 +64,10 @@ Native Tadpole OS agents are model-agnostic and capability-driven. They must onl
 - `role` (string, required): Role title.
 - `department` (string, required): Department category.
 - `description` (string, required): A brief description of the agent's function.
+- `status` (string, required): Initial runtime state. Registry templates use `"ready"`.
 - `model_config` (object, required):
+  - `provider` (string, required): Consumer model provider (for example, `"google"`).
+  - `model_id` (string, required by this registry): Explicit provider model ID.
   - `system_prompt` (string, required): Personality and high-level role definition (Max 800 characters). Must refer to the associated workflow SOP.
 - `skills` (array of strings): List of capability/tool IDs (e.g., `["read_file", "grep_search"]`).
 - `workflows` (array of strings): List of referenced workflow IDs (e.g., `["legal_document_review"]`).
@@ -74,7 +80,10 @@ Native Tadpole OS agents are model-agnostic and capability-driven. They must onl
   "role": "Legal Document Review Specialist",
   "department": "Legal Operations",
   "description": "Meticulous first-pass contract analysis and compliance validation specialist.",
+  "status": "ready",
   "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
     "system_prompt": "You are a meticulous, legally-informed document analysis specialist. Frame all findings as 'flagged for attorney review'. Confidentiality is absolute. Follow the associated workflow SOP precisely."
   },
   "skills": [
@@ -95,7 +104,7 @@ Workflows represent executable Standard Operating Procedures (SOPs) written in m
 ### Rules & Structure
 1. **Title**: The workflow must start with `# Workflow: [Name] SOP` (or equivalent title).
 2. **Procedural Blocks**: Incorporates global instructions (e.g. Overview, Critical Rules, Technical Deliverables).
-3. **Strict Step Headers**: Individual steps must be declared using `## Step [Number]: [Name]` or `## Step [Name]`.
+3. **Executable Headings**: The pinned consumer parser treats every `##` or `###` heading as a step boundary, so a workflow must contain at least one such heading. The preferred registry style is `## Step [Number]: [Name]` or `## Step [Name]`.
    - Examples of valid headers:
      - `## Step 1: Document Intake & Classification`
      - `## Step 2: Structural Analysis`

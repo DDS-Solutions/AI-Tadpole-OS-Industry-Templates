@@ -40,7 +40,7 @@ For each of the 23 industries represented in the catalog, swarms are categorized
 
 ## 📄 Swarm Configuration Schema (`swarm.json`)
 
-Every template directory must host a `swarm.json` config. This file serves as the main blueprint parsed by the Tadpole OS installer. Here is the formal schema layout:
+Every template directory must host a `swarm.json` config. It is the registry's portable blueprint and round-trip metadata format. At the currently pinned consumer revision, the installer copies this file but does not deserialize its roster, defaults, workflows, or MCP references; operational installation comes from scanning the template directories and root `mcps.json` directly.
 
 ```json
 {
@@ -80,5 +80,29 @@ Every template directory must host a `swarm.json` config. This file serves as th
 
 With the transition to the native Tadpole OS capability-based architecture:
 * **Decoupled Instructions**: The agents' monolithic prompts have been separated into a slim personality definition (under `agents/*.json`) and a structured markdown SOP playbook (under `workflows/*.md`).
-* **Strict Workflow Execution**: Workflows contain strict `## Step [Name]` headers that the Tadpole OS step-engine reads and executes sequentially.
+* **Required Runtime Identity**: Every profile supplies non-empty `id`, `name`, `role`, `department`, `description`, and `status` values. Registry agents begin with `status: "ready"`.
+* **Explicit Model Configuration**: `model_config` contains `provider`, `model_id`, and a system prompt of at most 800 characters. An explicit provider prevents unknown model strings from falling back to the wrong provider.
+* **Workflow Execution Headings**: The pinned parser treats any `##` or `###` heading as a step boundary. The registry recommends `## Step N: Name` for clarity and portability.
 * **Declarative Skills**: Capabilities like `read_file` or `grep_search` are explicitly declared in the agent's `skills` array, ensuring granular tool tracking and zero-trust verification.
+
+Example agent profile:
+
+```json
+{
+  "id": "specialized-legal-review",
+  "name": "Legal Review Specialist",
+  "role": "Contract Reviewer",
+  "department": "Legal Operations",
+  "description": "Performs evidence-based first-pass contract review.",
+  "status": "ready",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemini-pro-latest",
+    "system_prompt": "Review contracts carefully and follow the associated workflow SOP."
+  },
+  "skills": ["read_file"],
+  "workflows": ["legal_review"]
+}
+```
+
+The current installer scans every `agents/*.json` file, not only those named in the manifest roster. Keep the directory free of drafts or invalid profiles.
