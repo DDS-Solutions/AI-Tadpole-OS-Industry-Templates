@@ -1285,6 +1285,27 @@
         "grep_search",
         "read_file"
       ]
+    },
+    {
+      "id": "smoke-test",
+      "name": "Reference Lifecycle Smoke Test Swarm",
+      "description": "Deterministic reference swarm verifying end-to-end installation, idle availability, workflow parsing, knowledge ingestion, and MCP execution isolation.",
+      "industry": "Governance & Compliance",
+      "tags": [
+        "testing",
+        "smoke-test",
+        "verification",
+        "reference"
+      ],
+      "path": "testing/smoke-test",
+      "company_size": 25,
+      "required_skills": [
+        "execute_shell",
+        "grep_search",
+        "read_file",
+        "shell",
+        "write_file"
+      ]
     }
   ]
 }
