@@ -18,6 +18,9 @@
     "funnel-analyst"
   ],
   "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/campaign_launch.md"
+  ],
   "version": "1.0.0",
   "roster": [
     {

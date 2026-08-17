@@ -18,6 +18,9 @@
     "quality-inspector"
   ],
   "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/production_run.md"
+  ],
   "version": "1.0.0",
   "roster": [
     {

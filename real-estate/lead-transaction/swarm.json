@@ -18,6 +18,9 @@
     "client-concierge"
   ],
   "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/lead_nurture.md"
+  ],
   "version": "1.0.0",
   "roster": [
     {

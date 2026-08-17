@@ -18,6 +18,9 @@
     "audit-overseer"
   ],
   "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/reconciliation_guide.md"
+  ],
   "version": "1.0.0",
   "roster": [
     {
