@@ -71,6 +71,7 @@ export default function CatalogDrawer({
           </div>
           <button
             onClick={onClose}
+            aria-label="Close agent catalog"
             data-tooltip="Exit Catalog Workspace"
             className="p-1.5 text-zinc-500 hover:text-white rounded hover:bg-zinc-800 transition-all cursor-pointer"
           >

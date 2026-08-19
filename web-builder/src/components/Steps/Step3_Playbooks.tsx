@@ -57,6 +57,7 @@ export default function Step3_Playbooks({
           <div key={workflow.id} data-tooltip="Playbook SOP Card: Configures task guidelines or institutional knowledge mappings." className="bg-zinc-950/50 border border-zinc-800 p-6 rounded-xl relative group">
             <button
               onClick={() => onRemoveWorkflow(workflow.id)}
+              aria-label={`Remove ${workflow.name || 'workflow'}`}
               className="absolute top-6 right-6 text-zinc-650 hover:text-rose-500 transition-colors opacity-0 group-hover:opacity-100 cursor-pointer"
             >
               <Trash2 className="w-5 h-5" />

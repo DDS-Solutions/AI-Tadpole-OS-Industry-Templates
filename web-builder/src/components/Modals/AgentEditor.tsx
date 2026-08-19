@@ -83,6 +83,7 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
         </div>
         <button
           onClick={onClose}
+          aria-label="Close agent editor"
           className="p-1.5 text-zinc-500 hover:text-white rounded hover:bg-zinc-800 transition-all cursor-pointer"
         >
           <X className="w-5 h-5" />

@@ -6,13 +6,13 @@
     "pinned_contract_version": "1.0.0"
   },
   "critical_contract_files": {
-    "COMPATIBILITY_MATRIX.md": "23bddaec976038bd50fa014d7155cb96ddf23ea8dab6b18f583e9ba7ee60903a",
-    "TEMPLATE_SPEC.md": "cfb9ced19bfd4e826798d08510e9c0483e692524fcb86520846ea84be8bdad42",
-    "index.json": "0fa6e75026de3d658a047a7dd2476f2d132f984d3bb9aa7dbe57528ff9ec03b7",
-    "mcp_registry.json": "2821ec95873fd050bb16d96bac6b53b5b0ab80aad651d1f1fe668c8084f8f733",
-    "registry.json": "af2d5a6230af188b2cef87a0c11be4eb85eef461fef9d041635749cc39bcf49e",
-    "scripts/capabilities.py": "3a2d557f244e731c3381dba2bcacf7eb01c62baec387fe224f27d0dae6d032c8",
-    "scripts/migrate_consumer_contract.py": "5338914a26ee0d1a44bdf282c239f4ee081ba33e9c212e813418dbf81e009716",
-    "scripts/validate_template.py": "90118afc96dc0cd51d7ab1df1930d9c2933fac1929c9e4ba17576b731fc40123"
+    "COMPATIBILITY_MATRIX.md": "a95f56c0592ff042e3e92eb81814cddf89c67f3dda79da4edec43212ebc916b1",
+    "TEMPLATE_SPEC.md": "619ec3b81efde07ecbef7734452f9c6199105b583a24d2eba414f271db4ea215",
+    "index.json": "96f9566362c61b811d875aa51d5edadecb6eb139953cb320aa39738125e692bf",
+    "mcp_registry.json": "f2d39047689bbabe48c15c9d8bbf9f06e0000d7d1831538b8a1c5ec94dd7786a",
+    "registry.json": "421c490e0ab3fda838a0cccf8d5c81ef59d674e79fd24dc4bbd546fb1ec5fcde",
+    "scripts/capabilities.py": "0788a9949d7eb245703562579971a35d8ff7f7b83ccd211bd8052fe236808afa",
+    "scripts/migrate_consumer_contract.py": "b52f19f72d86df995b7a5c8369cd0e2023b1ccb870fd31928198904367acc385",
+    "scripts/validate_template.py": "b4539cf55f41825cffc9569ee070452e09b502728ded4b9dc452f111f7f41c0c"
   }
 }

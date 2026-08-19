@@ -112,6 +112,7 @@ export default function Step2_TeamRecommendations({
                     </div>
                     <button
                       onClick={() => onRemoveAgent(agent.id)}
+                      aria-label={`Remove ${agent.name}`}
                       className="p-1.5 text-zinc-500 hover:text-red-400 hover:bg-red-950/30 rounded-lg transition-colors cursor-pointer"
                       title="Remove agent"
                     >

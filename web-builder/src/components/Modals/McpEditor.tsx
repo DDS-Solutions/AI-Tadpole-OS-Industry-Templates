@@ -45,6 +45,7 @@ export default function McpEditor({ connector, onClose, onSave }: McpEditorProps
         </div>
         <button
           onClick={onClose}
+          aria-label="Close connector editor"
           className="p-1.5 text-zinc-500 hover:text-white rounded hover:bg-zinc-800 transition-all cursor-pointer"
         >
           <X className="w-5 h-5" />

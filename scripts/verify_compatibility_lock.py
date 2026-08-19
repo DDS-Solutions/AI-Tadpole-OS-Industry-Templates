@@ -25,11 +25,9 @@ CRITICAL_CONTRACT_FILES = [
 
 
 def compute_sha256(path: Path) -> str:
-    hasher = hashlib.sha256()
-    with path.open("rb") as f:
-        while chunk := f.read(65536):
-            hasher.update(chunk)
-    return hasher.hexdigest()
+    content = path.read_bytes().replace(b"\r\n", b"\n")
+    return hashlib.sha256(content).hexdigest()
+
 
 
 def generate_lock_data() -> dict[str, Any]:
