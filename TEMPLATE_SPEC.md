@@ -18,8 +18,10 @@ Each template directory (e.g., `legal/contract-review/`) must follow this struct
 │   └── *.json          # No massive system_prompt; references workflows/ & skills/
 ├── skills/             # Reviewed installable skill/MCP source (optional)
 │   └── *.{json,py,js,ts}
-└── workflows/          # Executable markdown SOP files
-    └── *.md
+├── workflows/          # Executable markdown SOP files
+│   └── *.md
+└── quarantine/         # Audit archive of unpinned/deprecated assets (excluded from runtime install)
+    └── mcps.json
 ```
 
 ---

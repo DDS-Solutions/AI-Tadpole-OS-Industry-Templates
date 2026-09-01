@@ -64,8 +64,10 @@ Each template is structured as:
 │   └── *.json          # No massive system_prompt; references workflows/ & skills/
 ├── skills/             # Reviewed installable source (optional)
 │   └── *.{json,py,js,ts}
-└── workflows/          # Markdown SOPs with at least one ## or ### heading
-    └── *.md
+├── workflows/          # Markdown SOPs with at least one ## or ### heading
+│   └── *.md
+└── quarantine/         # Audit archive of unpinned/deprecated assets (excluded from install)
+    └── mcps.json
 ```
 
 ## 🧠 Institutional Knowledge Integration (OKF/IKS)

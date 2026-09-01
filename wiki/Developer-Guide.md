@@ -12,7 +12,7 @@ This page explains how developers can build, validate, and submit custom swarm t
 Use the local validation suite to confirm that a template matches the pinned AI-Tadpole-OS contract before attempting installation.
 
 ### Prerequisites
-- Python 3.8 or higher.
+- Python 3.10 or higher.
 - Clone the templates repository:
   ```bash
   git clone https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git
@@ -98,29 +98,27 @@ web-builder/src/
 ├── types.ts              # Common interfaces (Agent, Workflow, MCP)
 ├── utils.tsx             # Text highlighting & capability scanners
 ├── utils/
+│   ├── catalogHelpers.ts   # Team recommendation & goal workflow generators
+│   ├── draftStorage.ts     # LocalStorage state persistence
 │   ├── fileHelpers.ts      # ZIP assembly, connector bundling, and template loaders
-│   └── fileHelpers.test.ts # Archive contract and round-trip tests
+│   └── validation.ts       # Fail-closed contract and tool authorization rules
 ├── components/
+│   ├── Guided/             # Guided Setup Wizard (4-step streamlined onboarding)
+│   │   ├── GuidedWizard.tsx
+│   │   ├── Step1_BusinessBrief.tsx
+│   │   ├── Step2_RecommendedTeam.tsx
+│   │   ├── Step3_BusinessConnections.tsx
+│   │   └── Step4_ReviewDeploy.tsx
 │   ├── Modals/
 │   │   ├── AgentEditor.tsx   # Agent configuration editor modal
 │   │   ├── McpEditor.tsx     # Custom MCP connector editor modal
 │   │   └── CatalogDrawer.tsx # Sliding sidebar for catalog search
-│   └── Steps/
+│   └── Steps/              # Advanced Swarm Forge (5-phase power editor)
 │       ├── Step1_CompanyMission.tsx # Pulse (Phase 1 Settings)
 │       ├── Step2_Roster.tsx         # Roster (Phase 2 Agent Grid)
 │       ├── Step3_Playbooks.tsx      # Playbook (Phase 3 Workflow SOPs)
 │       ├── Step4_Connectors.tsx     # Connectors (Phase 4 MCP list)
 │       └── Step5_Forge.tsx          # Forge (Phase 5 Build Manifest & Export)
-```
-
-### Static Analysis & Graph Queries
-Audit codebase dependencies and observability status using the built-in Cargo graph tools:
-```bash
-# Audit context and observability trace status
-npm run graph:audit
-
-# Export current codebase symbol dependency graphs
-npm run graph:export
 ```
 
 ---

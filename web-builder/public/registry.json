@@ -50,8 +50,6 @@
       "company_size": 25,
       "required_skills": [
         "read_file",
-        "execute_shell",
-        "shell",
         "write_file"
       ]
     },
@@ -69,9 +67,7 @@
       "company_size": 25,
       "required_skills": [
         "grep_search",
-        "read_file",
-        "execute_shell",
-        "shell"
+        "read_file"
       ]
     },
     {
@@ -104,11 +100,10 @@
         "audit"
       ],
       "path": "financial-services/bookkeeping-audit",
-      "company_size": 25,
+      "company_size": 50,
       "required_skills": [
         "read_file",
-        "execute_shell",
-        "shell"
+        "write_file"
       ]
     },
     {
@@ -123,7 +118,7 @@
         "automation"
       ],
       "path": "digital-marketing/full-funnel-automation",
-      "company_size": 25,
+      "company_size": 50,
       "required_skills": [
         "grep_search",
         "read_file"
@@ -214,8 +209,7 @@
       "company_size": 25,
       "required_skills": [
         "read_file",
-        "execute_shell",
-        "shell"
+        "write_file"
       ]
     },
     {
@@ -285,8 +279,7 @@
       "company_size": 25,
       "required_skills": [
         "read_file",
-        "execute_shell",
-        "shell"
+        "write_file"
       ]
     },
     {
@@ -318,9 +311,9 @@
       "path": "security/incident-response",
       "company_size": 25,
       "required_skills": [
+        "execute_shell",
         "grep_search",
         "read_file",
-        "execute_shell",
         "shell",
         "write_file"
       ]
@@ -394,8 +387,6 @@
       "required_skills": [
         "grep_search",
         "read_file",
-        "execute_shell",
-        "shell",
         "search_web",
         "write_file"
       ]
@@ -453,9 +444,7 @@
       "company_size": 25,
       "required_skills": [
         "grep_search",
-        "read_file",
-        "execute_shell",
-        "shell"
+        "read_file"
       ]
     },
     {
@@ -492,8 +481,7 @@
       "company_size": 25,
       "required_skills": [
         "read_file",
-        "execute_shell",
-        "shell"
+        "write_file"
       ]
     },
     {
@@ -512,8 +500,7 @@
       "company_size": 25,
       "required_skills": [
         "read_file",
-        "execute_shell",
-        "shell"
+        "write_file"
       ]
     },
     {
@@ -608,8 +595,6 @@
       "required_skills": [
         "grep_search",
         "read_file",
-        "execute_shell",
-        "shell",
         "search_web",
         "write_file"
       ]
@@ -685,8 +670,7 @@
       "company_size": 25,
       "required_skills": [
         "read_file",
-        "execute_shell",
-        "shell"
+        "write_file"
       ]
     },
     {
@@ -1030,8 +1014,6 @@
       "company_size": 25,
       "required_skills": [
         "read_file",
-        "execute_shell",
-        "shell",
         "search_web",
         "write_file"
       ]
@@ -1127,9 +1109,9 @@
       "path": "security/hardware-inventory",
       "company_size": 25,
       "required_skills": [
+        "execute_shell",
         "grep_search",
         "read_file",
-        "execute_shell",
         "shell",
         "write_file"
       ]
@@ -1242,9 +1224,9 @@
       "path": "utilities/scada-qa",
       "company_size": 25,
       "required_skills": [
+        "execute_shell",
         "grep_search",
         "read_file",
-        "execute_shell",
         "shell",
         "write_file"
       ]
@@ -1290,6 +1272,7 @@
     },
     {
       "id": "smoke-test",
+      "internal": true,
       "name": "Reference Lifecycle Smoke Test Swarm",
       "description": "Deterministic reference swarm verifying end-to-end installation, idle availability, workflow parsing, knowledge ingestion, and MCP execution isolation.",
       "industry": "Governance & Compliance",

@@ -131,13 +131,21 @@ def collect_changes(root: Path) -> list[tuple[Path, str]]:
     for template in migrated_registry["templates"]:
         template_root = root / Path(template["path"])
         swarm_path = template_root / "swarm.json"
-        swarm = json.loads(swarm_path.read_text(encoding="utf-8"))
+        if not swarm_path.is_file():
+            continue
+        try:
+            swarm = json.loads(swarm_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
         default_model = (swarm.get("defaults") or {}).get("model", DEFAULT_MODEL_ID)
 
         agents_root = template_root / "agents"
         if agents_root.is_dir():
             for agent_path in sorted(agents_root.glob("*.json")):
-                original = json.loads(agent_path.read_text(encoding="utf-8"))
+                try:
+                    original = json.loads(agent_path.read_text(encoding="utf-8"))
+                except (OSError, json.JSONDecodeError):
+                    continue
                 migrated = migrated_agent(original, default_model)
                 if migrated != original:
                     changes.append((agent_path, json_text(migrated)))
@@ -145,14 +153,20 @@ def collect_changes(root: Path) -> list[tuple[Path, str]]:
         workflows_root = template_root / "workflows"
         if workflows_root.is_dir():
             for workflow_path in sorted(workflows_root.glob("*.md")):
-                original_text = workflow_path.read_text(encoding="utf-8")
+                try:
+                    original_text = workflow_path.read_text(encoding="utf-8")
+                except OSError:
+                    continue
                 migrated_text = migrated_workflow(original_text)
                 if migrated_text != original_text:
                     changes.append((workflow_path, migrated_text))
 
         mcp_path = template_root / "mcps.json"
         if mcp_path.is_file():
-            original_mcp = json.loads(mcp_path.read_text(encoding="utf-8"))
+            try:
+                original_mcp = json.loads(mcp_path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                continue
             migrated_mcp = migrated_mcp_config(original_mcp)
             if migrated_mcp != original_mcp:
                 changes.append((mcp_path, json_text(migrated_mcp)))

@@ -160,4 +160,4 @@ not consume.
 | --- | --- | --- | --- | --- | --- |
 | **Read-Only / Research** | `pharma/clinical-trials/agents/specialized-data-privacy-officer.json` | `["read_file", "grep_search"]` | `false` | `clinical_privacy_sop` | `[]` |
 | **Mutating / File Ops** | `development/full-stack-sprint/agents/engineering-engineering-database-optimizer.json` | `["read_file", "write_file"]` | `true` (forced) | `db_migration_sop` | `[]` |
-| **Execution / Shell** | `testing/smoke-test/agents/operator.json` | `["read_file", "write_file", "execute_shell", "shell"]` | `true` (forced) | `operator_sop` | `["smoke:healthcheck"]` |
+| **Execution / Shell** | `testing/smoke-test/agents/operator.json` | `["read_file", "write_file", "execute_shell", "shell"]` | `true` (forced) | `operator_sop` | `["smoke-connector:healthcheck"]` |

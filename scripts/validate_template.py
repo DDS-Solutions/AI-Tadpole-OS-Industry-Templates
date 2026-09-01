@@ -49,7 +49,8 @@ SHA256_HEX = re.compile(r"^[0-9a-f]{64}$")
 MCP_TOOL_DECLARATION = re.compile(
     r"^(?:mcp__[A-Za-z0-9_.-]+__[A-Za-z0-9_.-]+|[A-Za-z0-9_.-]+:[A-Za-z0-9_.-]+)$"
 )
-SHELL_CONTROL = re.compile(r"(?:\r|\n|&&|\|\||[;|<>`])")
+SHELL_CONTROL = re.compile(r"(?:\r|\n|&&|\|\||[;|<>`]|(?:\$\()|(?:\$\{))")
+FENCED_CODE_BLOCK = re.compile(r"```[\s\S]*?```", re.MULTILINE)
 SECRET_PATTERNS = (
     ("private key", re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----")),
     ("AWS access key", re.compile(r"\b(?:AKIA|ASIA)[A-Z0-9]{16}\b")),
@@ -301,7 +302,8 @@ def validate_agent_payload(agent: Any) -> list[str]:
 def validate_workflow_content(content: str) -> list[str]:
     if not content.strip():
         return ["workflow is empty"]
-    if not EXECUTABLE_HEADING.search(content):
+    unfenced = FENCED_CODE_BLOCK.sub("", content)
+    if not EXECUTABLE_HEADING.search(unfenced):
         return ["workflow needs at least one ## or ### execution heading"]
     return []
 
@@ -397,10 +399,14 @@ def validate_catalog_parity(root: Path, report: ValidationReport) -> list[dict[s
         if len(paths) != len(set(paths)):
             report.error(label, "contains duplicate template paths")
 
-    registry_contract = {(item.get("id"), item.get("path")) for item in templates if isinstance(item, dict)}
+    public_registry_contract = {
+        (item.get("id"), item.get("path"))
+        for item in templates
+        if isinstance(item, dict) and not item.get("internal")
+    }
     index_contract = {(item.get("id"), item.get("path")) for item in index if isinstance(item, dict)}
-    if registry_contract != index_contract:
-        report.error("catalog", "registry.json and index.json disagree on template IDs or paths")
+    if public_registry_contract != index_contract:
+        report.error("catalog", "registry.json (public entries) and index.json disagree on template IDs or paths")
     return templates
 
 
@@ -591,14 +597,25 @@ def validate_template(root: Path, template: dict[str, Any], report: ValidationRe
                     continue
                 if grant.endswith(":*") or grant == "*":
                     continue  # already flagged by validate_agent_payload
-                server_name = grant.split(":", 1)[0] if ":" in grant else grant.replace("mcp__", "").split("__", 1)[0]
+                if ":" in grant:
+                    server_name, tool_name = grant.split(":", 1)
+                    canonical_grant = grant
+                elif grant.startswith("mcp__"):
+                    parts = grant[5:].split("__", 1)
+                    server_name = parts[0]
+                    tool_name = parts[1] if len(parts) > 1 else ""
+                    canonical_grant = f"{server_name}:{tool_name}"
+                else:
+                    server_name = grant
+                    canonical_grant = grant
+
                 if server_name not in active_mcp_servers:
                     report.error(agent_context, f"dangling MCP grant {grant!r}: server {server_name!r} not in active mcps.json")
                 else:
                     server_agent_grants[server_name].append(agent.get("id", agent_path.stem))
 
                 # Check tool descriptor risk level
-                descriptor = tool_manifest_map.get(grant)
+                descriptor = tool_manifest_map.get(canonical_grant) or tool_manifest_map.get(grant)
                 if descriptor:
                     risk = descriptor.get("risk", "read")
                     if risk in ("write", "execute") and not agent.get("requires_oversight"):
@@ -661,8 +678,8 @@ def validate_mcp_registry(root: Path, report: ValidationReport) -> None:
             connector_ids.add(connector_id)
 
         status = connector.get("status")
-        if status not in ("verified", "reviewed"):
-            report.error(context, "status must be verified or reviewed")
+        if status not in ("verified", "reviewed", "sample"):
+            report.error(context, "status must be verified, reviewed, or sample")
 
         tools = connector.get("tools")
         if not isinstance(tools, list) or not tools:
@@ -709,6 +726,15 @@ def validate_mcp_registry(root: Path, report: ValidationReport) -> None:
             continue
         for message in validate_mcp_payload(config):
             report.error(context, message)
+
+        server_keys = set(config.get("mcpServers", {}).keys()) if isinstance(config, dict) else set()
+        if tools and server_keys:
+            for tool in tools:
+                if isinstance(tool, dict):
+                    t_id = tool.get("id", "")
+                    t_server = t_id.split(":", 1)[0] if ":" in t_id else ""
+                    if t_server and t_server not in server_keys:
+                        report.error(context, f"tool id {t_id!r} prefix {t_server!r} does not match any server in config.mcpServers: {sorted(server_keys)}")
 
 
 def validate_repository(root: Path) -> ValidationReport:

@@ -10,8 +10,6 @@
     ],
     "required_skills": [
       "read_file",
-      "execute_shell",
-      "shell",
       "write_file"
     ]
   },
@@ -26,9 +24,7 @@
     ],
     "required_skills": [
       "grep_search",
-      "read_file",
-      "execute_shell",
-      "shell"
+      "read_file"
     ]
   },
   {
@@ -57,8 +53,7 @@
     ],
     "required_skills": [
       "read_file",
-      "execute_shell",
-      "shell"
+      "write_file"
     ]
   },
   {
@@ -139,12 +134,11 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "food/restaurant-ops",
     "required_models": [
-      "gemini-1.5-flash"
+      "gemini-pro-latest"
     ],
     "required_skills": [
       "read_file",
-      "execute_shell",
-      "shell"
+      "write_file"
     ]
   },
   {
@@ -154,7 +148,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "chemical/process-safety",
     "required_models": [
-      "gemini-1.5-flash"
+      "gemini-pro-latest"
     ],
     "required_skills": [
       "grep_search",
@@ -168,7 +162,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "transportation/fleet-logistics",
     "required_models": [
-      "gemini-1.5-flash"
+      "gemini-pro-latest"
     ],
     "required_skills": [
       "grep_search",
@@ -183,7 +177,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "pharma/clinical-trials",
     "required_models": [
-      "gemini-1.5-flash"
+      "gemini-pro-latest"
     ],
     "required_skills": [
       "grep_search",
@@ -198,12 +192,11 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "agriculture/precision-farming",
     "required_models": [
-      "gemini-1.5-flash"
+      "gemini-pro-latest"
     ],
     "required_skills": [
       "read_file",
-      "execute_shell",
-      "shell"
+      "write_file"
     ]
   },
   {
@@ -213,7 +206,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "compliance/regulatory-audit",
     "required_models": [
-      "gemini-1.5-flash"
+      "gemini-pro-latest"
     ],
     "required_skills": [
       "read_file"
@@ -226,12 +219,12 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "security/incident-response",
     "required_models": [
-      "gemini-1.5-flash"
+      "gemini-pro-latest"
     ],
     "required_skills": [
+      "execute_shell",
       "grep_search",
       "read_file",
-      "execute_shell",
       "shell",
       "write_file"
     ]
@@ -243,7 +236,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "hr/recruiting-triage",
     "required_models": [
-      "gemini-1.5-flash"
+      "gemini-pro-latest"
     ],
     "required_skills": [
       "read_file",
@@ -257,7 +250,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "education/curriculum-planner",
     "required_models": [
-      "gemini-1.5-flash"
+      "gemini-pro-latest"
     ],
     "required_skills": [
       "read_file",
@@ -271,7 +264,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "utilities/grid-telemetry",
     "required_models": [
-      "gemini-1.5-flash"
+      "gemini-pro-latest"
     ],
     "required_skills": [
       "grep_search",
@@ -286,13 +279,11 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "creative/asset-pipeline",
     "required_models": [
-      "gemini-1.5-flash"
+      "gemini-pro-latest"
     ],
     "required_skills": [
       "grep_search",
       "read_file",
-      "execute_shell",
-      "shell",
       "search_web",
       "write_file"
     ]
@@ -338,9 +329,7 @@
     ],
     "required_skills": [
       "grep_search",
-      "read_file",
-      "execute_shell",
-      "shell"
+      "read_file"
     ]
   },
   {
@@ -368,8 +357,7 @@
     ],
     "required_skills": [
       "read_file",
-      "execute_shell",
-      "shell"
+      "write_file"
     ]
   },
   {
@@ -383,8 +371,7 @@
     ],
     "required_skills": [
       "read_file",
-      "execute_shell",
-      "shell"
+      "write_file"
     ]
   },
   {
@@ -457,8 +444,6 @@
     "required_skills": [
       "grep_search",
       "read_file",
-      "execute_shell",
-      "shell",
       "search_web",
       "write_file"
     ]
@@ -517,8 +502,7 @@
     ],
     "required_skills": [
       "read_file",
-      "execute_shell",
-      "shell"
+      "write_file"
     ]
   },
   {
@@ -776,8 +760,6 @@
     ],
     "required_skills": [
       "read_file",
-      "execute_shell",
-      "shell",
       "search_web",
       "write_file"
     ]
@@ -849,9 +831,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
+      "execute_shell",
       "grep_search",
       "read_file",
-      "execute_shell",
       "shell",
       "write_file"
     ]
@@ -937,9 +919,9 @@
       "gemini-pro-latest"
     ],
     "required_skills": [
+      "execute_shell",
       "grep_search",
       "read_file",
-      "execute_shell",
       "shell",
       "write_file"
     ]
@@ -971,23 +953,6 @@
     "required_skills": [
       "grep_search",
       "read_file"
-    ]
-  },
-  {
-    "id": "smoke-test",
-    "name": "Reference Lifecycle Smoke Test Swarm",
-    "description": "Deterministic reference swarm verifying end-to-end installation, idle availability, workflow parsing, knowledge ingestion, and MCP execution isolation.",
-    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
-    "path": "testing/smoke-test",
-    "required_models": [
-      "gemini-pro-latest"
-    ],
-    "required_skills": [
-      "execute_shell",
-      "grep_search",
-      "read_file",
-      "shell",
-      "write_file"
     ]
   },
   {

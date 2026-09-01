@@ -2,7 +2,7 @@
 
 This policy distinguishes controls enforced by this registry, declarations emitted by Swarm Architect, and limitations in the private Tadpole-OS installer/runtime.
 
-The authoritative consumer review is the private `DDS-Solutions/TadPole-OS` checkout at `D:\TadpoleOS-Dev`, commit `d328fcd43eca185f4672be313774b81982253973`, reviewed read-only on 2026-08-17. The public [AI-Tadpole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS) repository is downstream. Re-audit private upstream before changing a contract or promoting a security claim.
+The authoritative consumer review is the private `DDS-Solutions/TadPole-OS` checkout at `D:\TadpoleOS-Dev`, commit `7fc749fe11d6e7dd05c24b041e4bcaf0e93c0227`, reviewed read-only on 2026-09-01. The public [AI-Tadpole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS) repository is downstream. Re-audit private upstream before changing a contract or promoting a security claim.
 
 ## Enforced by this registry
 
@@ -41,7 +41,7 @@ The Phase 5 prompt capability panel is a keyword heuristic. It does not parse be
 
 - No matches does not mean “zero privileges” or “safe.”
 - A match requests operator review but does not guarantee an approval prompt.
-- Exported `mcp_tools` is a declaration; the pinned runtime stores it but does not currently use it as its active MCP filter.
+- Exported `mcp_tools` is a validated declaration; the pinned runtime (commit `7fc749fe...`) filters external tools against `mcp_tools`, but unpatched runtimes may not.
 
 ## Private upstream enforcement and limitations
 
@@ -49,14 +49,13 @@ The pinned installer validates the public repository URL and requested path, ski
 
 These are not whole-installation guarantees:
 
-- Agents and workflows are written before the skill scan; rejection does not roll back earlier writes.
+- Agents and workflows are written before the skill scan; rejection does not roll back earlier writes on unpatched versions.
 - A scan-call error is logged and installation can continue.
 - Agents, workflows, knowledge, MCP configuration, nested files, and unsupported file types do not receive the same SkillSpector gate.
 - Agent persistence, MCP parsing/writes, and knowledge ingestion can be skipped while the endpoint returns success.
 - The temporary clone is deleted after installation.
 - MCP config `env` is parsed but not applied to the spawned process. Child connectors only inherit the AI-Tadpole-OS process environment.
-- Connector dependencies are not installed.
-- The current toolbelt does not use `mcp_tools` as the active authorization filter and does not fully discover external MCP tools.
+- Connector dependencies are not installed automatically.
 - Most static tool exposure is governed by runtime ACL/safe-mode logic rather than a strict one-to-one `skills` membership filter; filesystem and shell capability checks are special cases.
 
 Swarm Architect's `skills/` → `execution/` packaging prevents bundled server source from disappearing with clone cleanup, but it does not solve the environment, dependency, discovery, or authorization limitations.

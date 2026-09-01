@@ -11,8 +11,7 @@
   },
   "skills": [
     "read_file",
-    "execute_shell",
-    "shell"
+    "write_file"
   ],
   "workflows": [
     "financial_analyst"
