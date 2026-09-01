@@ -4,7 +4,7 @@ import { safeFileId } from './catalogHelpers';
 import { inferProvider } from './validation';
 import { VALID_RUNTIME_CAPABILITIES, DANGEROUS_SKILL_SET as DANGEROUS_SKILLS } from '../constants/capabilities';
 
-const REGISTRY_RAW_BASE = 'https://raw.githubusercontent.com/DDS-Solutions/AI-TadPole-OS-Industry-Templates/main';
+const REGISTRY_RAW_BASE = 'https://raw.githubusercontent.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates/main';
 const CONNECTOR_ASSET_BASE = '.';
 
 interface CompanyInfo {
@@ -381,6 +381,7 @@ const workflowPathForId = (workflowId: string): string => {
 export const fetchSwarmDetailsFromRepo = async (
   templatePath: string,
   signal?: AbortSignal,
+  mcpCatalog: MCPConnector[] = [],
 ): Promise<SwarmDetails> => {
   const rawBase = `${REGISTRY_RAW_BASE}/${safeRepoPath(templatePath)}`;
   const response = await fetch(`${rawBase}/swarm.json`, { signal });
@@ -437,7 +438,15 @@ export const fetchSwarmDetailsFromRepo = async (
     if (mcpRes.ok) {
       mcpConfig = await mcpRes.json() as MCPConfig;
       if (mcpConfig?.mcpServers && selectedConnectors.length === 0) {
-        selectedConnectors = Object.keys(mcpConfig.mcpServers).map(s => `mcp-${s}`);
+        selectedConnectors = Object.keys(mcpConfig.mcpServers).map(serverName => {
+          const matched = mcpCatalog.find(
+            c => (c.config?.mcpServers && serverName in c.config.mcpServers) ||
+                 c.id === `mcp-${serverName}` ||
+                 c.id === serverName ||
+                 c.path?.includes(serverName)
+          );
+          return matched ? matched.id : `mcp-${serverName}`;
+        });
       }
     }
   } catch {

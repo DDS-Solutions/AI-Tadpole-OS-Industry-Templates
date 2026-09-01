@@ -353,6 +353,16 @@ export function validateSwarm(
       });
     }
 
+    if (conn.status === 'sample') {
+      issues.push({
+        id: `connector-sample-${connectorId}`,
+        severity: 'info',
+        section: 'connectors',
+        itemId: connectorId,
+        message: `Connector "${conn.name}" is a sample connector simulating mock API responses. Configure production endpoints before live deployment.`,
+      });
+    }
+
     if (conn.required_env && Object.keys(conn.required_env).length > 0) {
       const varNames = Object.keys(conn.required_env).join(', ');
       issues.push({

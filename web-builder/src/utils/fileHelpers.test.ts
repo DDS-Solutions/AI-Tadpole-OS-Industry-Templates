@@ -364,4 +364,49 @@ describe('Swarm Architect archive contract', () => {
     expect(lockData.connectors).toHaveLength(1);
     expect(lockData.connectors[0].id).toBe('generic-crm');
   });
+
+  it('correctly maps server keys to catalog connector IDs when importing swarms with active mcps.json', async () => {
+    const responses: Record<string, BodyInit> = {
+      'swarm.json': JSON.stringify({
+        roster: [{ id: 'sensor-agent', path: 'agents/sensor-agent.json', role: 'Sensor Monitor' }],
+      }),
+      'agents/sensor-agent.json': JSON.stringify({
+        ...agent,
+        id: 'sensor-agent',
+        name: 'Sensor Monitor',
+        workflows: [],
+        mcp_tools: ['hardware-edge-sensors:read_telemetry'],
+      }),
+      'mcps.json': JSON.stringify({
+        mcpServers: {
+          'hardware-edge-sensors': {
+            command: 'python',
+            args: ['server.py'],
+          },
+        },
+      }),
+    };
+
+    vi.stubGlobal('fetch', vi.fn(async (url: string) => {
+      const key = Object.keys(responses).find(candidate => url.endsWith(candidate));
+      return key ? new Response(responses[key], { status: 200 }) : new Response('', { status: 404 });
+    }));
+
+    const mockCatalog: MCPConnector[] = [{
+      id: 'mcp-hardware-edge',
+      name: 'Hardware Edge',
+      category: 'Sensors',
+      description: 'Hardware sensors connector',
+      version: '2.0.0',
+      path: 'connectors/hardware-edge',
+      config: {
+        mcpServers: {
+          'hardware-edge-sensors': { command: 'python', args: ['server.py'] },
+        },
+      },
+    }];
+
+    const imported = await fetchSwarmDetailsFromRepo('utilities/test', undefined, mockCatalog);
+    expect(imported.selectedConnectors).toEqual(['mcp-hardware-edge']);
+  });
 });

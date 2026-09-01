@@ -128,15 +128,18 @@ export default function App() {
           setDynamicIndustries(registryIndustries);
         }
         if (data && data.templates) {
-          const registryTemplates = data.templates.map((t: TemplateItem) => ({
-            id: t.id,
-            name: t.name,
-            description: t.description || '',
-            industry: t.industry,
-            path: t.path,
-            tags: t.tags || [],
-            company_size: t.company_size
-          }));
+          const registryTemplates = data.templates
+            .filter((t: TemplateItem) => !t.internal)
+            .map((t: TemplateItem) => ({
+              id: t.id,
+              name: t.name,
+              description: t.description || '',
+              industry: t.industry,
+              path: t.path,
+              tags: t.tags || [],
+              company_size: t.company_size,
+              internal: t.internal,
+            }));
           setDynamicRegistry(registryTemplates);
         }
       })
@@ -342,7 +345,7 @@ export default function App() {
     setLoadedSwarmDetails(null);
     setSwarmLoadError(null);
     try {
-      const details = await fetchSwarmDetailsFromRepo(templatePath, controller.signal);
+      const details = await fetchSwarmDetailsFromRepo(templatePath, controller.signal, mcpCatalog);
       if (requestSequence !== swarmRequestSequence.current) return;
       setLoadedSwarmDetails(details);
       if (applyToBuilder) {

@@ -185,4 +185,26 @@ describe('validateSwarm', () => {
     const issues = validateSwarm(validCompany, [agentReferencingOkf], [okfWorkflow], [], []);
     expect(issues.some(e => e.id.includes('agent-okf-workflow'))).toBe(true);
   });
+
+  it('surfaces an info notice for sample connectors simulating mock responses', () => {
+    const mockMcpCatalog: MCPConnector[] = [{
+      id: 'mcp-generic-crm',
+      name: 'Generic CRM Mock',
+      category: 'Data',
+      description: 'Mock CRM connector',
+      version: '2.0.0',
+      path: 'connectors/generic-crm',
+      status: 'sample',
+      tools: [{ id: 'generic-crm:get_contact', name: 'Get Contact', description: 'desc', risk: 'read' as const }],
+      config: { mcpServers: { 'generic-crm': { command: 'python', args: ['server.py'] } } },
+    }];
+
+    const agentWithGrant: Agent = {
+      ...validAgent,
+      mcpTools: ['generic-crm:get_contact'],
+    };
+
+    const issues = validateSwarm(validCompany, [agentWithGrant], [validWorkflow], ['mcp-generic-crm'], mockMcpCatalog);
+    expect(issues.some(e => e.id === 'connector-sample-mcp-generic-crm' && e.severity === 'info')).toBe(true);
+  });
 });

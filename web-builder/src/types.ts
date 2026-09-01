@@ -42,6 +42,7 @@ export interface TemplateItem {
   path: string;
   tags: string[];
   company_size?: number;
+  internal?: boolean;
 }
 
 export interface CatalogAgent {
@@ -94,7 +95,7 @@ export interface MCPConnector {
   author?: string;
   maintainer?: string;
   last_reviewed?: string;
-  status?: 'verified' | 'reviewed' | 'experimental' | 'quarantined';
+  status?: 'verified' | 'reviewed' | 'experimental' | 'quarantined' | 'sample';
   required_env?: Record<string, { description: string; placeholder?: string }>;
   integrity_hash?: string;
   dependency_manifest?: string;
