@@ -84,11 +84,11 @@ describe('GuidedWizard component', () => {
 
   it('renders Step 1 with company and industry goal configuration', () => {
     const html = renderWizard();
-    expect(html).toContain('Guided Setup');
+    expect(html).toContain('Business Brief');
     expect(html).toContain('Apex Dental');
   });
 
-  it('renders validation errors when present in Step 4 review', () => {
+  it('renders with step progress headers and actions', () => {
     const html = renderWizard([{
       id: 'identity-missing-mission',
       severity: 'error',
@@ -96,6 +96,7 @@ describe('GuidedWizard component', () => {
       message: 'Company mission statement is required.',
     }]);
 
-    expect(html).toContain('Guided Setup');
+    expect(html).toContain('Business Brief');
+    expect(html).toContain('Recommended Team');
   });
 });

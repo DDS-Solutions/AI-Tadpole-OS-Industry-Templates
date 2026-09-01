@@ -168,7 +168,7 @@ describe('validateSwarm', () => {
 
     // Agent has no mcpTools
     const issues = validateSwarm(validCompany, [validAgent], [validWorkflow], ['generic-crm'], mockMcpCatalog);
-    expect(issues.some(e => e.id === 'mcp-connector-unused-generic-crm')).toBe(true);
+    expect(issues.some(e => e.id === 'connector-no-grants-generic-crm')).toBe(true);
   });
 
   it('rejects agents referencing OKF playbooks as execution workflows', () => {

@@ -335,6 +335,12 @@ describe('Swarm Architect archive contract', () => {
   });
 
   it('emits connector-lock.json and connector_ids in swarm.json when connectors are selected', async () => {
+    const fetchMock = vi.fn(async (url: string) => {
+      if (url.endsWith('/server.py')) return new Response('print("ready")', { status: 200 });
+      return new Response('', { status: 404 });
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
     const mockMcp: MCPConnector = {
       id: 'generic-crm',
       name: 'Generic CRM',
