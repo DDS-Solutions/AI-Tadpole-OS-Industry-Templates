@@ -1,12 +1,3 @@
 {
-  "mcpServers": {
-    "inventory-db": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-sqlite",
-        "data/kitchen_inventory.db"
-      ]
-    }
-  }
+  "mcpServers": {}
 }

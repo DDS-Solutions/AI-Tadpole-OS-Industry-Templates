@@ -54,6 +54,26 @@ function validateAgentCatalog(path) {
   }
 }
 
+function validateMcpRegistry(path) {
+  const registry = parseJson(path, 'MCP registry');
+  if (!registry || registry.version !== '2.0.0' || !Array.isArray(registry.connectors)) {
+    throw new Error('MCP registry must have version "2.0.0" and a connectors array.');
+  }
+  for (const connector of registry.connectors) {
+    if (!connector.id || !connector.name || !connector.path) {
+      throw new Error(`Connector missing required fields: ${JSON.stringify(connector)}`);
+    }
+    if (!Array.isArray(connector.tools) || connector.tools.length === 0) {
+      throw new Error(`Connector ${connector.id} must define a non-empty tools manifest.`);
+    }
+    for (const tool of connector.tools) {
+      if (!tool.id || !tool.name || !['read', 'write', 'execute'].includes(tool.risk)) {
+        throw new Error(`Tool descriptor invalid in connector ${connector.id}: ${JSON.stringify(tool)}`);
+      }
+    }
+  }
+}
+
 mkdirSync(publicRoot, { recursive: true });
 cpSync(resolve(repositoryRoot, 'registry.json'), resolve(publicRoot, 'registry.json'));
 cpSync(resolve(repositoryRoot, 'mcp_registry.json'), resolve(publicRoot, 'mcp_registry.json'));
@@ -64,5 +84,5 @@ cpSync(
 );
 
 parseJson(resolve(publicRoot, 'registry.json'), 'Template registry');
-parseJson(resolve(publicRoot, 'mcp_registry.json'), 'MCP registry');
+validateMcpRegistry(resolve(publicRoot, 'mcp_registry.json'));
 validateAgentCatalog(resolve(publicRoot, 'ai-tadpole-catalog.json'));

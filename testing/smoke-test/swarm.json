@@ -2,7 +2,7 @@
   "id": "smoke-test",
   "name": "Reference Lifecycle Smoke Test Swarm",
   "industry": "Governance & Compliance",
-  "company_size": "SMB (<25 Employees)",
+  "company_size": 25,
   "description": "Deterministic reference swarm verifying end-to-end installation, idle availability, workflow parsing, knowledge ingestion, and MCP execution isolation.",
   "author": "AI-Tadpole-OS QA Team",
   "tags": [
@@ -13,6 +13,9 @@
   ],
   "path": "testing/smoke-test",
   "required_mcps": "mcps.json",
+  "connector_ids": [
+    "smoke-connector"
+  ],
   "global_workflows": [
     "workflows/smoke_sop.md"
   ],

@@ -1,11 +1,3 @@
 {
-  "mcpServers": {
-    "github-sec": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-github"
-      ]
-    }
-  }
+  "mcpServers": {}
 }

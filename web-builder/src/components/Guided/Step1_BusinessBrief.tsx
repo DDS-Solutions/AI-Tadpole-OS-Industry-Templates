@@ -130,25 +130,27 @@ export default function Step1_BusinessBrief({
           {BUSINESS_GOALS.map(goal => {
             const isSelected = selectedGoals.includes(goal.id);
             return (
-              <div
+              <button
+                type="button"
                 key={goal.id}
                 onClick={() => toggleGoal(goal.id)}
-                className={`p-4 rounded-xl border transition-all cursor-pointer select-none flex flex-col justify-between ${
+                aria-pressed={isSelected}
+                className={`w-full p-4 rounded-xl border transition-all cursor-pointer select-none flex flex-col justify-between text-left ${
                   isSelected
                     ? 'bg-cyber-green/10 border-cyber-green text-white shadow-sm'
                     : 'bg-zinc-950/70 border-zinc-800/80 hover:border-zinc-700 text-zinc-300'
                 }`}
               >
-                <div className="flex items-start justify-between gap-2">
-                  <div>
-                    <h4 className="text-sm font-semibold flex items-center gap-1.5">
+                <span className="flex items-start justify-between gap-2">
+                  <span>
+                    <span className="text-sm font-semibold flex items-center gap-1.5">
                       {goal.label}
-                    </h4>
-                    <p className="text-xs text-zinc-400 mt-1 leading-snug">
+                    </span>
+                    <span className="block text-xs text-zinc-400 mt-1 leading-snug">
                       {goal.description}
-                    </p>
-                  </div>
-                  <div
+                    </span>
+                  </span>
+                  <span
                     className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 border transition-colors ${
                       isSelected
                         ? 'bg-cyber-green border-cyber-green text-zinc-950'
@@ -156,9 +158,9 @@ export default function Step1_BusinessBrief({
                     }`}
                   >
                     {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
-                  </div>
-                </div>
-              </div>
+                  </span>
+                </span>
+              </button>
             );
           })}
         </div>

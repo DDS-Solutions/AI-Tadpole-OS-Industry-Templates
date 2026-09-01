@@ -208,13 +208,14 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
                   key={cap.id}
                   type="button"
                   onClick={() => toggleCapability(cap)}
+                  aria-pressed={active}
                   className={`p-2.5 rounded-lg border text-left transition-all cursor-pointer flex flex-col justify-between ${
                     active
                       ? `${badgeColor} border-current shadow-sm`
                       : 'border-zinc-800 bg-zinc-950/40 text-zinc-400 hover:border-zinc-700'
                   }`}
                 >
-                  <div className="flex items-center justify-between gap-1 mb-1">
+                  <span className="flex items-center justify-between gap-1 mb-1">
                     <span className="text-xs font-semibold flex items-center gap-1.5">
                       {isDangerous ? (
                         <Terminal className="w-3.5 h-3.5 text-rose-400" />
@@ -230,8 +231,8 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
                     }`}>
                       {cap.risk}
                     </span>
-                  </div>
-                  <p className="text-[10px] text-zinc-500 leading-tight">{cap.description}</p>
+                  </span>
+                  <span className="block text-[10px] text-zinc-500 leading-tight">{cap.description}</span>
                 </button>
               );
             })}

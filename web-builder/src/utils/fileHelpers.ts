@@ -47,6 +47,8 @@ interface AgentPayload {
 interface SwarmPayload {
   roster?: SwarmAgentReference[];
   global_workflows?: string[];
+  connector_ids?: string[];
+  required_mcps?: string;
 }
 
 const safeRepoPath = (value: string): string => {
@@ -137,6 +139,19 @@ export const buildSwarmZip = async (
   selectedConnectors: string[],
   mcpCatalog: MCPConnector[],
 ): Promise<JSZip> => {
+  if (!companyInfo.name || !companyInfo.name.trim()) {
+    throw new Error('Archive validation failed: company or swarm name is required.');
+  }
+  if (!companyInfo.industry || !companyInfo.industry.trim()) {
+    throw new Error('Archive validation failed: industry sector is required.');
+  }
+  if (!companyInfo.mission || !companyInfo.mission.trim()) {
+    throw new Error('Archive validation failed: swarm mission is required.');
+  }
+  if (agents.length === 0) {
+    throw new Error('Archive validation failed: at least one specialist agent is required.');
+  }
+
   const zip = new JSZip();
   const agentIds = new Set<string>();
   const workflowIds = new Set<string>();
@@ -151,6 +166,7 @@ export const buildSwarmZip = async (
 
   const standardWorkflows = workflows.filter(workflow => !workflow.isOkfPlaybook);
   const okfPlaybooks = workflows.filter(workflow => workflow.isOkfPlaybook);
+  const okfIds = new Set(okfPlaybooks.map(wf => safeFileId(wf.id)));
 
   for (const workflow of standardWorkflows) {
     const workflowId = safeFileId(workflow.id);
@@ -161,35 +177,78 @@ export const buildSwarmZip = async (
   }
 
   const parsedSize = Number.parseInt(companyInfo.size, 10);
+  const companySize = Number.isFinite(parsedSize) && parsedSize > 0 ? parsedSize : 25;
   const roster = agents.map(agent => ({
     id: safeFileId(agent.id),
     path: `agents/${safeFileId(agent.id)}.json`,
     role: agent.role.trim() || 'Specialist',
   }));
 
-  const swarmJson = {
+  const swarmJson: Record<string, unknown> = {
     name: `${companyInfo.name} Swarm`,
     version: '1.0.0',
-    description: companyInfo.mission,
+    description: companyInfo.mission.trim(),
     industry: companyInfo.industry.toLowerCase(),
-    company_size: Number.isFinite(parsedSize) ? parsedSize : 25,
+    company_size: companySize,
     defaults: { model: 'gemini-pro-latest' },
     roster,
-    required_mcps: 'mcps.json',
     global_workflows: standardWorkflows.map(workflow => `workflows/${safeFileId(workflow.id)}.md`),
+    required_mcps: 'mcps.json',
   };
+
+  if (selectedConnectors.length > 0) {
+    swarmJson.connector_ids = selectedConnectors.map(safeFileId);
+  }
+
   zip.file('swarm.json', JSON.stringify(swarmJson, null, 2));
+
+  // Build tool risk catalog lookup
+  const toolRiskMap = new Map<string, string>();
+  for (const connector of mcpCatalog) {
+    for (const tool of connector.tools || []) {
+      toolRiskMap.set(tool.id, tool.risk);
+    }
+  }
 
   const agentsFolder = zip.folder('agents');
   for (const agent of agents) {
     const id = safeFileId(agent.id);
     const modelId = agent.model || 'gemini-pro-latest';
     const agentWorkflows = (agent.workflows || []).map(safeFileId);
+
+    // Reject OKF playbooks referenced as agent workflows
+    const okfRef = agentWorkflows.find(wfId => okfIds.has(wfId));
+    if (okfRef) {
+      throw new Error(`Agent "${agent.name}" references OKF playbook "${okfRef}" as an executable workflow.`);
+    }
+
     const missingWorkflow = agentWorkflows.find(workflowId => !workflowIds.has(workflowId));
     if (missingWorkflow) {
       throw new Error(`${agent.name} references missing workflow "${missingWorkflow}".`);
     }
     const skills = validatedSkills(agent.skills);
+
+    // Validate and canonicalize MCP tool grants
+    const canonicalGrants: string[] = [];
+    for (const rawGrant of agent.mcpTools || []) {
+      const grant = rawGrant.trim();
+      if (!grant) continue;
+      if (grant.endsWith(':*') || grant === '*') {
+        throw new Error(`Agent "${agent.name}" contains wildcard MCP grant "${grant}". Wildcards are prohibited.`);
+      }
+      const canonical = grant.includes(':')
+        ? grant
+        : grant.startsWith('mcp__')
+        ? grant.replace('mcp__', '').replace('__', ':')
+        : grant;
+      canonicalGrants.push(canonical);
+    }
+
+    const hasMutatingToolGrant = canonicalGrants.some(grant => {
+      const risk = toolRiskMap.get(grant);
+      return risk === 'write' || risk === 'execute';
+    });
+
     const payload = {
       id,
       name: agent.name.trim(),
@@ -204,10 +263,11 @@ export const buildSwarmZip = async (
       },
       skills,
       workflows: agentWorkflows,
-      mcp_tools: Array.from(new Set((agent.mcpTools || []).map(tool => tool.trim()).filter(Boolean))),
+      mcp_tools: Array.from(new Set(canonicalGrants)),
       requires_oversight: Boolean(
         agent.requiresOversight
         || skills.some(skill => DANGEROUS_SKILLS.has(skill))
+        || hasMutatingToolGrant
       ),
     };
     if (!payload.name || !payload.role || !payload.department || !payload.description || !payload.model_config.system_prompt) {
@@ -225,6 +285,8 @@ export const buildSwarmZip = async (
   }
 
   const mergedMcpConfig: MCPConfig = { mcpServers: {} };
+  const lockedConnectors: Array<Record<string, unknown>> = [];
+
   for (const connectorId of selectedConnectors) {
     const connector = mcpCatalog.find(candidate => candidate.id === connectorId);
     if (!connector) throw new Error(`Selected connector "${connectorId}" is not in the catalog.`);
@@ -235,8 +297,25 @@ export const buildSwarmZip = async (
       }
       mergedMcpConfig.mcpServers[serverName] = server;
     }
+    lockedConnectors.push({
+      id: connector.id,
+      name: connector.name,
+      version: connector.version || '1.0.0',
+      integrity_hash: connector.integrity_hash || null,
+      dependency_provenance: connector.dependency_provenance || [],
+    });
   }
   zip.file('mcps.json', JSON.stringify(mergedMcpConfig, null, 2));
+
+  // Emit connector-lock.json with verified provenance
+  if (selectedConnectors.length > 0) {
+    const connectorLock = {
+      version: '1.0.0',
+      generated_at: new Date().toISOString(),
+      connectors: lockedConnectors,
+    };
+    zip.file('connector-lock.json', JSON.stringify(connectorLock, null, 2));
+  }
 
   if (okfPlaybooks.length > 0) {
     const knowledgeJson = okfPlaybooks.map(workflow => ({
@@ -335,7 +414,7 @@ export const fetchSwarmDetailsFromRepo = async (
     } satisfies Agent;
   }));
 
-  const workflows = await Promise.all(Array.from(workflowReferences).map(async workflowPath => {
+  const workflows: WorkflowItem[] = await Promise.all(Array.from(workflowReferences).map(async workflowPath => {
     const safeWorkflowPath = safeRepoPath(workflowPath);
     const workflowRes = await fetch(`${rawBase}/${safeWorkflowPath}`, { signal });
     if (!workflowRes.ok) throw new Error(`Failed to fetch workflow ${workflowPath}`);
@@ -349,5 +428,56 @@ export const fetchSwarmDetailsFromRepo = async (
       isOkfPlaybook: false,
     } satisfies WorkflowItem;
   }));
-  return { roster, workflows };
+
+  // Fetch mcps.json if present
+  let mcpConfig: MCPConfig | undefined;
+  let selectedConnectors: string[] = swarmData.connector_ids || [];
+  try {
+    const mcpRes = await fetch(`${rawBase}/mcps.json`, { signal });
+    if (mcpRes.ok) {
+      mcpConfig = await mcpRes.json() as MCPConfig;
+      if (mcpConfig?.mcpServers && selectedConnectors.length === 0) {
+        selectedConnectors = Object.keys(mcpConfig.mcpServers).map(s => `mcp-${s}`);
+      }
+    }
+  } catch {
+    // Non-fatal if no mcps.json
+  }
+
+  // Fetch knowledge.json if present
+  let knowledge: unknown[] = [];
+  try {
+    const knowledgeRes = await fetch(`${rawBase}/knowledge.json`, { signal });
+    if (knowledgeRes.ok) {
+      const parsed = await knowledgeRes.json() as Array<Record<string, unknown>>;
+      if (Array.isArray(parsed)) {
+        knowledge = parsed;
+        for (const item of parsed) {
+          if (typeof item.title === 'string' && item.title) {
+            workflows.push({
+              id: safeFileId(item.title),
+              name: item.title,
+              description: typeof item.text === 'string' ? item.text : (typeof item.description === 'string' ? item.description : ''),
+              isOkfPlaybook: true,
+              resourceUri: typeof item.resource_uri === 'string' ? item.resource_uri : undefined,
+              topic: typeof item.topic === 'string' ? item.topic : undefined,
+              conceptType: typeof item.concept_type === 'string' ? item.concept_type : undefined,
+              tags: typeof item.tags === 'string' ? item.tags : undefined,
+            });
+          }
+        }
+      }
+    }
+  } catch {
+    // Non-fatal if no knowledge.json
+  }
+
+  return {
+    roster,
+    workflows,
+    selectedConnectors,
+    connectorIds: selectedConnectors,
+    mcpConfig,
+    knowledge,
+  };
 };

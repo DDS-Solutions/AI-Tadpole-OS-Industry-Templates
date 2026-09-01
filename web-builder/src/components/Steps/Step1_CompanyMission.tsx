@@ -274,21 +274,23 @@ export default function Step1_CompanyMission({
             {dynamicRegistry
               .filter(t => t.industry.toLowerCase() === companyInfo.industry.toLowerCase())
               .map(t => (
-                <div
+                <button
+                  type="button"
                   key={t.id}
                   onClick={() => {
                     setSelectedTemplateId(t.id);
                     onLoadSwarmDetails(t.path);
                   }}
-                  className={`p-4 rounded-xl border sovereign-transition cursor-pointer text-left ${
+                  aria-pressed={selectedTemplateId === t.id}
+                  className={`w-full p-4 rounded-xl border sovereign-transition cursor-pointer text-left ${
                     selectedTemplateId === t.id
                       ? 'bg-zinc-900 border-cyber-green/50 text-white'
                       : 'bg-zinc-950/40 border-zinc-800 text-zinc-400 hover:border-zinc-700'
                   }`}
                 >
-                  <h4 className="font-bold text-xs text-zinc-200">{t.name}</h4>
-                  <p className="text-[10px] text-zinc-550 mt-1.5 leading-relaxed">{t.description}</p>
-                </div>
+                  <span className="block font-bold text-xs text-zinc-200">{t.name}</span>
+                  <span className="block text-[10px] text-zinc-550 mt-1.5 leading-relaxed">{t.description}</span>
+                </button>
               ))
             }
           </div>

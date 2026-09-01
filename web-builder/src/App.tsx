@@ -314,6 +314,14 @@ export default function App() {
 
   const handleExport = async () => {
     setExportError(null);
+    const blockingIssues = validationIssues.filter(issue => issue.severity === 'error');
+    if (blockingIssues.length > 0) {
+      const firstIssue = blockingIssues[0];
+      setExportError(
+        `Resolve ${blockingIssues.length} validation ${blockingIssues.length === 1 ? 'error' : 'errors'} before export. ${firstIssue.message}`,
+      );
+      return;
+    }
     setIsExporting(true);
     try {
       await exportSwarmZip(companyInfo, agents, workflows, selectedConnectors, mcpCatalog);
@@ -340,6 +348,7 @@ export default function App() {
       if (applyToBuilder) {
         setAgents(details.roster);
         setWorkflows(details.workflows);
+        setSelectedConnectors(details.selectedConnectors || []);
       }
     } catch (err) {
       if (err instanceof DOMException && err.name === 'AbortError') return;
@@ -387,6 +396,7 @@ export default function App() {
 
     setAgents(loadedSwarmDetails.roster);
     setWorkflows(loadedSwarmDetails.workflows || []);
+    setSelectedConnectors(loadedSwarmDetails.selectedConnectors || []);
 
     setHasSelectedMode(true);
     setShowTemplatesLibrary(false);
@@ -487,7 +497,9 @@ export default function App() {
         <div className="flex items-center gap-3">
           <div className="p-1 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center gap-1">
             <button
+              type="button"
               onClick={() => setExperienceMode('guided')}
+              aria-pressed={experienceMode === 'guided'}
               className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
                 experienceMode === 'guided'
                   ? 'bg-cyber-green text-zinc-950 shadow-sm'
@@ -498,7 +510,9 @@ export default function App() {
               Guided Setup
             </button>
             <button
+              type="button"
               onClick={() => setExperienceMode('advanced')}
+              aria-pressed={experienceMode === 'advanced'}
               className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
                 experienceMode === 'advanced'
                   ? 'bg-zinc-800 text-white border border-zinc-700 shadow-sm'
@@ -511,7 +525,9 @@ export default function App() {
           </div>
 
           <button
+            type="button"
             onClick={() => setShowTemplatesLibrary(!showTemplatesLibrary)}
+            aria-label={`Browse ${dynamicRegistry.length} pre-built industry templates`}
             className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-white transition-colors cursor-pointer"
             title={`Browse ${dynamicRegistry.length} pre-built industry templates`}
           >
@@ -529,6 +545,7 @@ export default function App() {
             agents={agents}
             setAgents={setAgents}
             workflows={workflows}
+            setWorkflows={setWorkflows}
             dynamicIndustries={dynamicIndustries}
             mcpCatalog={mcpCatalog}
             selectedConnectors={selectedConnectors}
@@ -554,8 +571,10 @@ export default function App() {
                 { id: 5, label: 'Validate & Export' }
               ].map(s => (
                 <button
+                  type="button"
                   key={s.id}
                   onClick={() => setStep(s.id)}
+                  aria-current={s.id === step ? 'step' : undefined}
                   className="flex flex-col items-center gap-1.5 cursor-pointer group"
                 >
                   <span className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${s.id === step ? 'text-cyber-green font-bold' : 'text-zinc-500 group-hover:text-zinc-300'}`}>
@@ -633,6 +652,8 @@ export default function App() {
                   companyInfo={companyInfo}
                   agents={agents}
                   workflows={workflows}
+                  validationIssues={validationIssues}
+                  isExporting={isExporting}
                   onExport={handleExport}
                   onPrevious={() => { setStep(4); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                   onReset={handleStartOver}
@@ -686,22 +707,24 @@ export default function App() {
                   filteredTemplates.map(template => {
                     const isSelected = selectedTemplateId === template.id;
                     return (
-                      <div
+                      <button
+                        type="button"
                         key={template.id}
                         onClick={() => handleTemplateClick(template)}
-                        className={`p-4 rounded-xl border sovereign-transition cursor-pointer text-left ${
+                        aria-pressed={isSelected}
+                        className={`w-full p-4 rounded-xl border sovereign-transition cursor-pointer text-left ${
                           isSelected
                             ? 'bg-zinc-900 border-cyber-green/50 text-white'
                             : 'bg-zinc-950/40 border-zinc-800 text-zinc-400 hover:border-zinc-700'
                         }`}
                       >
-                        <div className="flex justify-between items-start mb-1.5">
+                        <span className="flex justify-between items-start mb-1.5">
                           <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">{template.industry}</span>
                           {isSelected && <span className="w-1.5 h-1.5 bg-cyber-green rounded-full animate-pulse" />}
-                        </div>
-                        <h4 className="font-bold text-sm text-zinc-100">{template.name}</h4>
-                        <p className="text-xs text-zinc-400 line-clamp-1 mt-1">{template.description}</p>
-                      </div>
+                        </span>
+                        <span className="block font-bold text-sm text-zinc-100">{template.name}</span>
+                        <span className="block text-xs text-zinc-400 line-clamp-1 mt-1">{template.description}</span>
+                      </button>
                     );
                   })
                 )}

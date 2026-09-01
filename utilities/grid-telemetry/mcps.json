@@ -1,12 +1,3 @@
 {
-  "mcpServers": {
-    "grid-db": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-postgres",
-        "postgresql://localhost:5432/grid_telemetry"
-      ]
-    }
-  }
+  "mcpServers": {}
 }

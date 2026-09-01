@@ -23,6 +23,14 @@ export default function Step4_Connectors({
   onPrevious,
   onNext
 }: Step4Props) {
+  const toggleConnector = (connectorId: string) => {
+    if (selectedConnectors.includes(connectorId)) {
+      setSelectedConnectors(selectedConnectors.filter(id => id !== connectorId));
+    } else {
+      setSelectedConnectors([...selectedConnectors, connectorId]);
+    }
+  };
+
   return (
     <motion.div
       key="step4"
@@ -43,6 +51,7 @@ export default function Step4_Connectors({
           </div>
         </div>
         <button
+          type="button"
           onClick={onAddNewMcp}
           className="flex items-center gap-2 bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white px-4 py-2 rounded-lg text-xs font-mono tracking-wider uppercase transition-all cursor-pointer hover:bg-zinc-800"
         >
@@ -61,41 +70,40 @@ export default function Step4_Connectors({
             return (
               <div
                 key={connector.id}
-                onClick={() => {
-                  if (isSelected) {
-                    setSelectedConnectors(selectedConnectors.filter(id => id !== connector.id));
-                  } else {
-                    setSelectedConnectors([...selectedConnectors, connector.id]);
-                  }
-                }}
-                className={`p-5 rounded-xl border sovereign-transition cursor-pointer text-left relative ${
+                className={`p-5 rounded-xl border sovereign-transition text-left relative ${
                   isSelected
                     ? 'bg-zinc-900 border-cyber-green/50 text-white'
                     : 'bg-zinc-950/40 border-zinc-800 text-zinc-400 hover:border-zinc-700'
                 }`}
               >
-                <div className="flex justify-between items-start mb-2">
-                  <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">{connector.category} v{connector.version}</span>
-                  <div className="flex items-center gap-2">
-                    {isSelected && <span className="w-2 h-2 bg-cyber-green rounded-full shadow-[0_0_8px_rgba(34,197,94,0.8)] animate-pulse" />}
-                  </div>
-                </div>
-                <h4 className="font-bold text-sm text-zinc-100">{connector.name}</h4>
-                <p className="text-xs text-zinc-500 mt-2 leading-relaxed">{connector.description}</p>
+                <button
+                  type="button"
+                  onClick={() => toggleConnector(connector.id)}
+                  aria-pressed={isSelected}
+                  className="w-full cursor-pointer text-left focus-sovereign rounded-lg"
+                >
+                  <span className="flex justify-between items-start mb-2">
+                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">{connector.category} v{connector.version}</span>
+                    <span className="flex items-center gap-2">
+                      {isSelected && <span className="w-2 h-2 bg-cyber-green rounded-full shadow-[0_0_8px_rgba(34,197,94,0.8)] animate-pulse" />}
+                    </span>
+                  </span>
+                  <span className="block font-bold text-sm text-zinc-100">{connector.name}</span>
+                  <span className="block text-xs text-zinc-500 mt-2 leading-relaxed">{connector.description}</span>
+                </button>
 
                 <div className="mt-4 pt-3 border-t border-zinc-850/50 flex justify-between items-center text-[10px] font-mono text-zinc-500" style={{ borderColor: 'color-mix(in srgb, var(--color-zinc-800) 25%, transparent)' }}>
                   <span className="truncate max-w-[150px]" title={connector.path}>{connector.path}</span>
                   <div className="flex gap-2.5">
                     <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onEditMcp(connector);
-                      }}
+                      type="button"
+                      onClick={() => onEditMcp(connector)}
                       className="text-zinc-500 hover:text-white flex items-center gap-1 transition-colors cursor-pointer"
                     >
                       <Sliders className="w-3 h-3" /> Edit
                     </button>
                     <button
+                      type="button"
                       onClick={(e) => onDeleteMcp(connector.id, e)}
                       className="text-zinc-500 hover:text-rose-450 flex items-center gap-1 transition-colors cursor-pointer"
                     >
@@ -110,8 +118,9 @@ export default function Step4_Connectors({
       </div>
 
       <div className="mt-12 flex justify-between">
-        <button onClick={onPrevious} className="text-zinc-500 hover:text-white transition-colors cursor-pointer">Previous</button>
+        <button type="button" onClick={onPrevious} className="text-zinc-500 hover:text-white transition-colors cursor-pointer">Previous</button>
         <button
+          type="button"
           onClick={onNext}
           className="bg-neural-pulse text-zinc-950 font-bold px-8 py-3 rounded-lg hover:bg-white transition-all cursor-pointer"
         >

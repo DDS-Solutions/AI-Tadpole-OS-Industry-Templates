@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -50,7 +51,7 @@ class SmokeTemplateLifecycleTests(unittest.TestCase):
 
         self.assertIn("execute_shell", operator["skills"])
         self.assertIn("shell", operator["skills"])
-        self.assertEqual(["smoke:healthcheck"], operator["mcp_tools"])
+        self.assertEqual(["smoke-connector:healthcheck"], operator["mcp_tools"])
 
     def test_smoke_workflows_and_knowledge_payloads_are_executable(self) -> None:
         workflow_text = (self.smoke_root / "workflows" / "smoke_sop.md").read_text(encoding="utf-8")
@@ -88,6 +89,68 @@ class SmokeTemplateLifecycleTests(unittest.TestCase):
                 self.assertTrue(agent_path.is_file())
                 agent_data = load_json(agent_path)
                 self.assertEqual([], validate_agent_payload(agent_data))
+
+    def test_smoke_connector_implements_runtime_json_rpc_lifecycle(self) -> None:
+        server = self.smoke_root / "skills" / "smoke_server.py"
+        process = subprocess.Popen(
+            [sys.executable, str(server)],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        self.assertIsNotNone(process.stdin)
+        self.assertIsNotNone(process.stdout)
+        try:
+            requests = [
+                {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}},
+                {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}},
+                {
+                    "jsonrpc": "2.0",
+                    "id": 3,
+                    "method": "tools/call",
+                    "params": {"name": "healthcheck", "arguments": {}},
+                },
+            ]
+            responses = []
+            for request in requests:
+                process.stdin.write(json.dumps(request) + "\n")
+                process.stdin.flush()
+                responses.append(json.loads(process.stdout.readline()))
+
+            self.assertEqual("2024-11-05", responses[0]["result"]["protocolVersion"])
+            self.assertEqual("healthcheck", responses[1]["result"]["tools"][0]["name"])
+            self.assertEqual("smoke-test: OK", responses[2]["result"]["content"][0]["text"])
+        finally:
+            process.stdin.close()
+            process.terminate()
+            process.wait(timeout=5)
+            process.stdout.close()
+            if process.stderr is not None:
+                process.stderr.close()
+
+
+    def test_curated_connectors_tool_manifest_parity_and_declaration(self) -> None:
+        registry = load_json(ROOT / "mcp_registry.json")
+        self.assertEqual("2.0.0", registry.get("version"))
+        connectors = registry.get("connectors", [])
+        self.assertEqual(4, len(connectors))
+        
+        for connector in connectors:
+            connector_id = connector["id"]
+            tools = connector.get("tools", [])
+            self.assertTrue(len(tools) > 0, f"Connector {connector_id} has no tools")
+            
+            # Verify server script exists and contains declared tool definitions
+            server_path = ROOT / connector["path"] / "server.py"
+            self.assertTrue(server_path.is_file(), f"Server script missing for {connector_id}")
+            server_code = server_path.read_text(encoding="utf-8")
+            
+            for tool in tools:
+                tool_name = tool["name"]
+                self.assertIn(f"def {tool_name}", server_code, f"Tool {tool_name} not defined in {server_path}")
+                self.assertTrue(tool["id"].endswith(f":{tool_name}"), f"Tool ID {tool['id']} does not match name {tool_name}")
+                self.assertIn(tool["risk"], ["read", "write", "execute"])
 
 
 if __name__ == "__main__":

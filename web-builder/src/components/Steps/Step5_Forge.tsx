@@ -1,6 +1,6 @@
-import { Cpu, Shield, Download } from 'lucide-react';
+import { AlertCircle, AlertTriangle, Cpu, Shield, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
-import type { Agent, WorkflowItem } from '../../types';
+import type { Agent, ValidationIssue, WorkflowItem } from '../../types';
 import { scanShieldCapabilities } from '../../utils';
 
 interface CompanyInfo {
@@ -11,6 +11,8 @@ interface Step5Props {
   companyInfo: CompanyInfo;
   agents: Agent[];
   workflows: WorkflowItem[];
+  validationIssues: ValidationIssue[];
+  isExporting: boolean;
   onExport: () => void;
   onPrevious: () => void;
   onReset: () => void;
@@ -20,6 +22,8 @@ export default function Step5_Forge({
   companyInfo,
   agents,
   workflows,
+  validationIssues,
+  isExporting,
   onExport,
   onPrevious,
   onReset
@@ -30,6 +34,9 @@ export default function Step5_Forge({
   )).length;
   const capabilityCount = new Set(agents.flatMap(agent => agent.skills || [])).size;
   const declaredMcpTools = new Set(agents.flatMap(agent => agent.mcpTools || [])).size;
+  const errors = validationIssues.filter(issue => issue.severity === 'error');
+  const warnings = validationIssues.filter(issue => issue.severity === 'warning');
+  const isReady = errors.length === 0;
 
   return (
     <motion.div
@@ -63,6 +70,43 @@ export default function Step5_Forge({
         Your swarm configuration for <span className="text-white font-bold">{companyInfo.name}</span> is ready for validation.
         The package includes {agents.length} agents and {workflows.length} workflows.
       </p>
+
+      <div
+        role={isReady ? 'status' : 'alert'}
+        className={`max-w-md mx-auto mb-8 rounded-xl border p-4 text-left ${
+          !isReady
+            ? 'border-red-900/60 bg-red-950/30 text-red-200'
+            : warnings.length > 0
+              ? 'border-amber-900/60 bg-amber-950/20 text-amber-200'
+              : 'border-cyber-green/30 bg-cyber-green/10 text-cyber-green'
+        }`}
+      >
+        <div className="flex items-start gap-2.5">
+          {!isReady ? (
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-400" />
+          ) : warnings.length > 0 ? (
+            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
+          ) : (
+            <Shield className="mt-0.5 h-4 w-4 shrink-0 text-cyber-green" />
+          )}
+          <div>
+            <div className="text-xs font-bold text-white">
+              {!isReady
+                ? `${errors.length} blocking validation ${errors.length === 1 ? 'error' : 'errors'}`
+                : warnings.length > 0
+                  ? `${warnings.length} non-blocking ${warnings.length === 1 ? 'warning' : 'warnings'}`
+                  : 'Contract validation passed'}
+            </div>
+            <p className="mt-1 text-[11px] leading-relaxed text-zinc-400">
+              {!isReady
+                ? errors[0].message
+                : warnings.length > 0
+                  ? warnings[0].message
+                  : 'The blueprint is structurally ready for archive generation.'}
+            </p>
+          </div>
+        </div>
+      </div>
 
       <div data-tooltip="Archive Manifest: List of configuration maps, agent prompt profiles, and SOP documents structured in the build." className="max-w-sm mx-auto p-4 bg-zinc-950 border border-zinc-800 rounded-xl text-left font-mono text-xs text-zinc-500 mb-12">
         <div className="mb-2">Manifest:</div>
@@ -135,9 +179,10 @@ export default function Step5_Forge({
       <div className="flex flex-col gap-4 items-center mt-8">
         <button
           onClick={onExport}
-          className="bg-cyber-green text-zinc-950 font-black px-12 py-4 rounded-xl hover:scale-105 transition-all flex items-center gap-3 cursor-pointer shadow-[0_0_20px_rgba(34,197,94,0.3)] text-sm uppercase font-mono tracking-wider"
+          disabled={!isReady || isExporting}
+          className="bg-cyber-green text-zinc-950 font-black px-12 py-4 rounded-xl hover:scale-105 transition-all flex items-center gap-3 cursor-pointer shadow-[0_0_20px_rgba(34,197,94,0.3)] text-sm uppercase font-mono tracking-wider disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
         >
-          <Download className="w-6 h-6" /> Export Swarm Archive
+          <Download className="w-6 h-6" /> {isExporting ? 'Packaging Swarm...' : 'Export Swarm Archive'}
         </button>
         <div className="flex gap-8 items-center mt-4">
           <button

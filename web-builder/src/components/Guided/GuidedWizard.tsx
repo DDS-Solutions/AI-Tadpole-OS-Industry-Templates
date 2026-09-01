@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Building2, Users, Layers, CheckCircle2 } from 'lucide-react';
 import type { Agent, CatalogAgent, CompanyInfo, MCPConnector, ValidationIssue, WorkflowItem } from '../../types';
-import { recommendTeam } from '../../utils/catalogHelpers';
+import { recommendTeam, generateGoalWorkflows, generateDefaultMission } from '../../utils/catalogHelpers';
 
 import Step1_BusinessBrief from './Step1_BusinessBrief';
 import Step2_TeamRecommendations from './Step2_TeamRecommendations';
@@ -20,6 +20,7 @@ interface GuidedWizardProps {
   agents: Agent[];
   setAgents: (agents: Agent[]) => void;
   workflows: WorkflowItem[];
+  setWorkflows?: (workflows: WorkflowItem[]) => void;
   dynamicIndustries: Industry[];
   mcpCatalog: MCPConnector[];
   selectedConnectors: string[];
@@ -40,6 +41,7 @@ export default function GuidedWizard({
   agents,
   setAgents,
   workflows,
+  setWorkflows,
   dynamicIndustries,
   mcpCatalog,
   selectedConnectors,
@@ -61,15 +63,50 @@ export default function GuidedWizard({
   }, [companyInfo.goals, companyInfo.industry, companyInfo.size, catalog]);
 
   const handleRecommendTeam = () => {
+    // 1. Generate default mission if blank
+    let activeMission = companyInfo.mission;
+    if (!activeMission || activeMission.trim() === '') {
+      activeMission = generateDefaultMission(companyInfo.name, companyInfo.industry, companyInfo.goals || []);
+      setCompanyInfo({ ...companyInfo, mission: activeMission });
+    }
+
+    // 2. Generate goal workflows and assign them
+    const generatedWorkflows = generateGoalWorkflows(companyInfo.goals || []);
+    if (setWorkflows) {
+      setWorkflows(generatedWorkflows);
+    }
+
+    // 3. Map workflows to recommended agents
     if (recommendedSpecialists.length > 0) {
-      setAgents(recommendedSpecialists.map(s => s.agent));
+      const mappedAgents = recommendedSpecialists.map(spec => {
+        const matchedWfs = generatedWorkflows.filter(gw => spec.matchedGoalIds?.includes(gw.generatedFromGoalId || ''));
+        const wfIds = matchedWfs.length > 0 ? matchedWfs.map(w => w.id) : generatedWorkflows.map(w => w.id);
+        return {
+          ...spec.agent,
+          workflows: wfIds,
+        };
+      });
+      setAgents(mappedAgents);
     }
     setCurrentStep(2);
   };
 
   const handleRegenerateTeam = () => {
+    const generatedWorkflows = generateGoalWorkflows(companyInfo.goals || []);
+    if (setWorkflows) {
+      setWorkflows(generatedWorkflows);
+    }
+
     if (recommendedSpecialists.length > 0) {
-      setAgents(recommendedSpecialists.map(s => s.agent));
+      const mappedAgents = recommendedSpecialists.map(spec => {
+        const matchedWfs = generatedWorkflows.filter(gw => spec.matchedGoalIds?.includes(gw.generatedFromGoalId || ''));
+        const wfIds = matchedWfs.length > 0 ? matchedWfs.map(w => w.id) : generatedWorkflows.map(w => w.id);
+        return {
+          ...spec.agent,
+          workflows: wfIds,
+        };
+      });
+      setAgents(mappedAgents);
     }
   };
 
@@ -97,7 +134,9 @@ export default function GuidedWizard({
             return (
               <div key={s.num} className="flex items-center gap-2 sm:gap-4">
                 <button
+                  type="button"
                   onClick={() => setCurrentStep(s.num)}
+                  aria-current={isCurrent ? 'step' : undefined}
                   className={`flex items-center gap-2 px-3 py-1.5 rounded-xl transition-all cursor-pointer text-xs font-semibold ${
                     isCurrent
                       ? 'bg-cyber-green text-zinc-950 shadow-sm shadow-cyber-green/20'
@@ -152,6 +191,7 @@ export default function GuidedWizard({
       {currentStep === 3 && (
         <Step3_BusinessConnections
           agents={agents}
+          setAgents={setAgents}
           mcpCatalog={mcpCatalog}
           selectedConnectors={selectedConnectors}
           setSelectedConnectors={setSelectedConnectors}

@@ -35,6 +35,5 @@
       "priority": "normal"
     }
   ],
-  "required_mcps": "mcps.json",
   "global_workflows": []
 }

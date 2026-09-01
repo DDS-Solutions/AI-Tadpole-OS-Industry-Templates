@@ -1,4 +1,5 @@
 {
+  "version": "2.0.0",
   "connectors": [
     {
       "id": "mcp-generic-crm",
@@ -10,14 +11,58 @@
       "author": "AI-Tadpole-OS Core",
       "status": "verified",
       "maintainer": "AI-Tadpole-OS Security Team",
-      "last_reviewed": "2026-08-17",
+      "last_reviewed": "2026-09-01",
       "required_env": {
         "CRM_API_KEY": {
           "description": "API token for CRM access",
           "placeholder": "CONFIGURE_LOCALLY"
         }
       },
-      "integrity_hash": "sha256:141da6c37f0a1dbcab3b05c78678feaeff000a6031b0733b7f3a9448bd83f6d6"
+      "integrity_hash": "sha256:141da6c37f0a1dbcab3b05c78678feaeff000a6031b0733b7f3a9448bd83f6d6",
+      "dependency_manifest": "requirements.txt",
+      "dependency_provenance": [
+        {
+          "package": "mcp",
+          "version": "1.29.1",
+          "artifact": "mcp-1.29.1-py3-none-any.whl",
+          "sha256": "b6310eeb59153300c4ab8b9aec4c52f4819a2d6a8e429eb43d908bed7c783648",
+          "source": "https://pypi.org/project/mcp/1.29.1/"
+        }
+      ],
+      "tools": [
+        {
+          "id": "generic-crm:get_crm_contact",
+          "name": "get_crm_contact",
+          "description": "Get a CRM contact by ID",
+          "risk": "read",
+          "recommendedGoalIds": ["customer-follow-up", "quoting"]
+        },
+        {
+          "id": "generic-crm:update_invoice",
+          "name": "update_invoice",
+          "description": "Update invoice status",
+          "risk": "write",
+          "recommendedGoalIds": ["quoting", "bookkeeping"]
+        },
+        {
+          "id": "generic-crm:list_recent_changes",
+          "name": "list_recent_changes",
+          "description": "List recent changes in CRM",
+          "risk": "read",
+          "recommendedGoalIds": ["customer-follow-up", "scheduling"]
+        }
+      ],
+      "config": {
+        "mcpServers": {
+          "generic-crm": {
+            "command": "python",
+            "args": ["server.py"],
+            "env": {
+              "CRM_API_KEY": "CONFIGURE_LOCALLY"
+            }
+          }
+        }
+      }
     },
     {
       "id": "mcp-smb-accounting",
@@ -29,14 +74,58 @@
       "author": "AI-Tadpole-OS Core",
       "status": "verified",
       "maintainer": "AI-Tadpole-OS Security Team",
-      "last_reviewed": "2026-08-17",
+      "last_reviewed": "2026-09-01",
       "required_env": {
         "ACCOUNTING_API_KEY": {
           "description": "API authentication key for accounting software",
           "placeholder": "CONFIGURE_LOCALLY"
         }
       },
-      "integrity_hash": "sha256:cb5eaab51f9781c41e3f646e5fcd4ae27980da69a510e41d4991df22f84d6f10"
+      "integrity_hash": "sha256:cb5eaab51f9781c41e3f646e5fcd4ae27980da69a510e41d4991df22f84d6f10",
+      "dependency_manifest": "requirements.txt",
+      "dependency_provenance": [
+        {
+          "package": "mcp",
+          "version": "1.29.1",
+          "artifact": "mcp-1.29.1-py3-none-any.whl",
+          "sha256": "b6310eeb59153300c4ab8b9aec4c52f4819a2d6a8e429eb43d908bed7c783648",
+          "source": "https://pypi.org/project/mcp/1.29.1/"
+        }
+      ],
+      "tools": [
+        {
+          "id": "smb-accounting:get_invoice",
+          "name": "get_invoice",
+          "description": "Get invoice details by ID",
+          "risk": "read",
+          "recommendedGoalIds": ["bookkeeping", "quoting"]
+        },
+        {
+          "id": "smb-accounting:create_invoice",
+          "name": "create_invoice",
+          "description": "Create a new invoice for a customer",
+          "risk": "write",
+          "recommendedGoalIds": ["bookkeeping", "quoting"]
+        },
+        {
+          "id": "smb-accounting:get_account_balance",
+          "name": "get_account_balance",
+          "description": "Get the current balance for an account",
+          "risk": "read",
+          "recommendedGoalIds": ["bookkeeping"]
+        }
+      ],
+      "config": {
+        "mcpServers": {
+          "smb-accounting": {
+            "command": "python",
+            "args": ["server.py"],
+            "env": {
+              "ACCOUNTING_API_KEY": "CONFIGURE_LOCALLY"
+            }
+          }
+        }
+      }
     },
     {
       "id": "mcp-hardware-edge",
@@ -48,7 +137,7 @@
       "author": "AI-Tadpole-OS Core",
       "status": "verified",
       "maintainer": "AI-Tadpole-OS Security Team",
-      "last_reviewed": "2026-08-17",
+      "last_reviewed": "2026-09-01",
       "required_env": {
         "SCALE_COM_PORT": {
           "description": "Serial communications port",
@@ -67,7 +156,68 @@
           "placeholder": "502"
         }
       },
-      "integrity_hash": "sha256:878b9b54ced171c23e7a4651ea68fb2e1da796178bce58c21f81d2c80cdc1341"
+      "integrity_hash": "sha256:878b9b54ced171c23e7a4651ea68fb2e1da796178bce58c21f81d2c80cdc1341",
+      "dependency_manifest": "requirements.txt",
+      "dependency_provenance": [
+        {
+          "package": "mcp",
+          "version": "1.29.1",
+          "artifact": "mcp-1.29.1-py3-none-any.whl",
+          "sha256": "b6310eeb59153300c4ab8b9aec4c52f4819a2d6a8e429eb43d908bed7c783648",
+          "source": "https://pypi.org/project/mcp/1.29.1/"
+        },
+        {
+          "package": "pyserial",
+          "version": "3.5",
+          "artifact": "pyserial-3.5-py2.py3-none-any.whl",
+          "sha256": "c4451db6ba391ca6ca299fb3ec7bae67a5c55dde170964c7a14ceefec02f2cf0",
+          "source": "https://pypi.org/project/pyserial/3.5/"
+        },
+        {
+          "package": "pymodbus",
+          "version": "3.15.0",
+          "artifact": "pymodbus-3.15.0-py3-none-any.whl",
+          "sha256": "74d8dee961f23845f18a8481253183504dca05c4fcd102890cd28f4d7ce09267",
+          "source": "https://pypi.org/project/pymodbus/3.15.0/"
+        }
+      ],
+      "tools": [
+        {
+          "id": "hardware-edge-sensors:read_scale_weight",
+          "name": "read_scale_weight",
+          "description": "Connect to a serial weighing scale and read the current weight",
+          "risk": "read",
+          "recommendedGoalIds": ["inventory", "order-fulfillment"]
+        },
+        {
+          "id": "hardware-edge-sensors:read_temperature_sensor",
+          "name": "read_temperature_sensor",
+          "description": "Read current temperature from a Modbus TCP industrial thermal sensor",
+          "risk": "read",
+          "recommendedGoalIds": ["compliance-review", "inventory"]
+        },
+        {
+          "id": "hardware-edge-sensors:read_pressure_sensor",
+          "name": "read_pressure_sensor",
+          "description": "Read current pressure from a Modbus TCP industrial pressure sensor",
+          "risk": "read",
+          "recommendedGoalIds": ["compliance-review", "inventory"]
+        }
+      ],
+      "config": {
+        "mcpServers": {
+          "hardware-edge-sensors": {
+            "command": "python",
+            "args": ["server.py"],
+            "env": {
+              "SCALE_COM_PORT": "COM3",
+              "SCALE_BAUDRATE": "9600",
+              "MODBUS_SENSOR_IP": "192.168.1.100",
+              "MODBUS_PORT": "502"
+            }
+          }
+        }
+      }
     },
     {
       "id": "mcp-local-log-scanner",
@@ -79,9 +229,51 @@
       "author": "Community",
       "status": "reviewed",
       "maintainer": "AI-Tadpole-OS Community Working Group",
-      "last_reviewed": "2026-08-17",
+      "last_reviewed": "2026-09-01",
       "required_env": {},
-      "integrity_hash": "sha256:0480073b9d20f65a555b5560a0b3565871aafde0faa7e1f613ea291115693e62"
+      "integrity_hash": "sha256:0480073b9d20f65a555b5560a0b3565871aafde0faa7e1f613ea291115693e62",
+      "dependency_manifest": "requirements.txt",
+      "dependency_provenance": [
+        {
+          "package": "mcp",
+          "version": "1.29.1",
+          "artifact": "mcp-1.29.1-py3-none-any.whl",
+          "sha256": "b6310eeb59153300c4ab8b9aec4c52f4819a2d6a8e429eb43d908bed7c783648",
+          "source": "https://pypi.org/project/mcp/1.29.1/"
+        }
+      ],
+      "tools": [
+        {
+          "id": "log-scanner:search_logs",
+          "name": "search_logs",
+          "description": "Search local log files for a specific query string",
+          "risk": "read",
+          "recommendedGoalIds": ["compliance-review"]
+        },
+        {
+          "id": "log-scanner:tail_log",
+          "name": "tail_log",
+          "description": "Tail the last N lines of a specified log file",
+          "risk": "read",
+          "recommendedGoalIds": ["compliance-review"]
+        },
+        {
+          "id": "log-scanner:list_log_files",
+          "name": "list_log_files",
+          "description": "List available log files in a directory",
+          "risk": "read",
+          "recommendedGoalIds": ["compliance-review"]
+        }
+      ],
+      "config": {
+        "mcpServers": {
+          "log-scanner": {
+            "command": "python",
+            "args": ["server.py"],
+            "env": {}
+          }
+        }
+      }
     }
   ]
 }

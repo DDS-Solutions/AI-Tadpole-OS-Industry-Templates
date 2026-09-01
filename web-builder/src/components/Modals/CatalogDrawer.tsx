@@ -155,11 +155,13 @@ export default function CatalogDrawer({
                 {filtered.map(agent => {
                   const isSelected = selectedAgent?.id === agent.id;
                   return (
-                    <div
+                    <button
+                      type="button"
                       key={agent.id}
                       onClick={() => setSelectedCatalogAgentId(agent.id)}
+                      aria-pressed={isSelected}
                       data-tooltip="Click to preview agent details and prompt"
-                      className={`p-4 rounded-xl border sovereign-transition cursor-pointer flex flex-col justify-between text-left min-h-[110px] ${
+                      className={`w-full p-4 rounded-xl border sovereign-transition cursor-pointer flex flex-col justify-between text-left min-h-[110px] ${
                         isSelected
                           ? 'bg-zinc-800/80 border-cyber-green text-white shadow-md'
                           : 'bg-zinc-950/40 border-zinc-800/60 text-zinc-400 hover:border-zinc-700 hover:bg-zinc-900/10'
@@ -168,14 +170,14 @@ export default function CatalogDrawer({
                         borderColor: isSelected ? agent.color : undefined
                       }}
                     >
-                      <div>
-                        <div className="flex justify-between items-start mb-1.5 gap-2">
-                          <div className="flex items-center gap-1.5 min-w-0">
+                      <span>
+                        <span className="flex justify-between items-start mb-1.5 gap-2">
+                          <span className="flex items-center gap-1.5 min-w-0">
                             <span className="text-lg select-none">{agent.emoji || '🤖'}</span>
-                            <h4 className="font-bold text-xs text-zinc-200 line-clamp-1">
+                            <span className="font-bold text-xs text-zinc-200 line-clamp-1">
                               {highlightText(agent.name, catalogSearch)}
-                            </h4>
-                          </div>
+                            </span>
+                          </span>
                           <span
                             className="text-[8px] font-mono uppercase tracking-tighter px-1.5 py-0.25 rounded border shrink-0"
                             style={{
@@ -186,12 +188,12 @@ export default function CatalogDrawer({
                           >
                             {agent.departmentLabel}
                           </span>
-                        </div>
-                        <p className="text-[10px] text-zinc-500 line-clamp-2 leading-relaxed">
+                        </span>
+                        <span className="block text-[10px] text-zinc-500 line-clamp-2 leading-relaxed">
                           {highlightText(agent.description || agent.vibe, catalogSearch)}
-                        </p>
-                      </div>
-                    </div>
+                        </span>
+                      </span>
+                    </button>
                   );
                 })}
                 {filtered.length === 0 && (

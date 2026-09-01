@@ -2,7 +2,7 @@
   "id": "job-shop-25",
   "name": "Manufacturing Job Shop (25 Seats)",
   "industry": "Manufacturing",
-  "company_size": "SMB (<25 Employees)",
+  "company_size": 25,
   "description": "Optimize production scheduling, material tracking, and quality control for small-scale manufacturing and job shops.",
   "author": "AI-Tadpole-OS",
   "tags": [
@@ -17,7 +17,6 @@
     "inventory-bot",
     "quality-inspector"
   ],
-  "required_mcps": "mcps.json",
   "global_workflows": [
     "workflows/production_run.md"
   ],

@@ -2,7 +2,7 @@
   "id": "bookkeeping-audit",
   "name": "Bookkeeping & Audit Swarm",
   "industry": "Financial Services",
-  "company_size": "SMB (<50 Employees)",
+  "company_size": 50,
   "description": "Automate daily reconciliation, tax preparation, and audit trails. Designed for small businesses to reduce accounting overhead and ensure compliance.",
   "author": "AI-Tadpole-OS",
   "tags": [
@@ -17,7 +17,6 @@
     "tax-strategist",
     "audit-overseer"
   ],
-  "required_mcps": "mcps.json",
   "global_workflows": [
     "workflows/reconciliation_guide.md"
   ],

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import sys
@@ -40,6 +41,13 @@ SAFE_PLACEHOLDER = re.compile(
     r"(?:YOUR_[A-Z0-9_]+|CONFIGURE_LOCALLY|REPLACE_ME|CHANGEME|"
     r"DUMMY(?:_[A-Z0-9_]+)?|\$\{[A-Z0-9_]+\}|<[^>]+>)",
     re.IGNORECASE,
+)
+PINNED_REQUIREMENT = re.compile(
+    r"^(?P<package>[A-Za-z0-9][A-Za-z0-9_.-]*)==(?P<version>[A-Za-z0-9][A-Za-z0-9_.+!-]*)$"
+)
+SHA256_HEX = re.compile(r"^[0-9a-f]{64}$")
+MCP_TOOL_DECLARATION = re.compile(
+    r"^(?:mcp__[A-Za-z0-9_.-]+__[A-Za-z0-9_.-]+|[A-Za-z0-9_.-]+:[A-Za-z0-9_.-]+)$"
 )
 SHELL_CONTROL = re.compile(r"(?:\r|\n|&&|\|\||[;|<>`])")
 SECRET_PATTERNS = (
@@ -127,6 +135,11 @@ def validate_package_tree(
             continue
         if not path.is_file():
             continue
+        # Quarantine directory is non-installable isolated storage
+        if relative.startswith("quarantine/"):
+            if path.suffix.lower() != ".json":
+                errors.append(f"{relative} quarantined file must be JSON format")
+            continue
         try:
             size = path.stat().st_size
             raw = path.read_bytes()
@@ -138,6 +151,94 @@ def validate_package_tree(
             suffixes = TEMPLATE_SKILL_FILE_SUFFIXES
         errors.extend(validate_package_file(relative, path.suffix, size, raw, suffixes))
     return errors
+
+
+def validate_connector_dependencies(connector_root: Path, connector: dict) -> list[str]:
+    """Require exact direct-dependency pins with reviewable package provenance."""
+    errors: list[str] = []
+    manifest_name = connector.get("dependency_manifest")
+    if manifest_name != "requirements.txt":
+        return ["dependency_manifest must be requirements.txt"]
+
+    manifest_path = connector_root / manifest_name
+    if not manifest_path.is_file():
+        return ["dependency manifest requirements.txt is missing"]
+
+    try:
+        lines = manifest_path.read_text(encoding="utf-8").splitlines()
+    except OSError as exc:
+        return [f"cannot read dependency manifest: {exc}"]
+
+    requirements: dict[str, str] = {}
+    for line_number, raw_line in enumerate(lines, start=1):
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        match = PINNED_REQUIREMENT.fullmatch(line)
+        if match is None:
+            errors.append(
+                f"requirements.txt:{line_number} must use an exact package==version pin"
+            )
+            continue
+        package = match.group("package").lower().replace("_", "-")
+        if package in requirements:
+            errors.append(f"requirements.txt contains duplicate package {package}")
+        requirements[package] = match.group("version")
+
+    provenance = connector.get("dependency_provenance")
+    if not isinstance(provenance, list) or not provenance:
+        errors.append("dependency_provenance must be a non-empty array")
+        return errors
+
+    reviewed: dict[str, str] = {}
+    for index, dependency in enumerate(provenance):
+        context = f"dependency_provenance[{index}]"
+        if not isinstance(dependency, dict):
+            errors.append(f"{context} must be an object")
+            continue
+        package_value = dependency.get("package")
+        version = dependency.get("version")
+        artifact = dependency.get("artifact")
+        digest = dependency.get("sha256")
+        source = dependency.get("source")
+        if not isinstance(package_value, str) or not package_value:
+            errors.append(f"{context}.package must be a non-empty string")
+            continue
+        package = package_value.lower().replace("_", "-")
+        if not isinstance(version, str) or not version:
+            errors.append(f"{context}.version must be a non-empty string")
+            continue
+        if not isinstance(artifact, str) or version not in artifact:
+            errors.append(f"{context}.artifact must name the reviewed versioned artifact")
+        if not isinstance(digest, str) or SHA256_HEX.fullmatch(digest) is None:
+            errors.append(f"{context}.sha256 must be a lowercase SHA-256 digest")
+        expected_source = f"https://pypi.org/project/{package_value}/{version}/"
+        if source != expected_source:
+            errors.append(f"{context}.source must be {expected_source}")
+        if package in reviewed:
+            errors.append(f"dependency_provenance contains duplicate package {package}")
+        reviewed[package] = version
+
+    if requirements != reviewed:
+        errors.append(
+            "dependency_provenance package/version pairs must exactly match requirements.txt"
+        )
+    return errors
+
+
+def validate_connector_integrity(connector_root: Path, connector: dict) -> list[str]:
+    """Verify that the registry digest authenticates the executable entrypoint."""
+    server_path = connector_root / "server.py"
+    if not server_path.is_file():
+        return ["server.py is missing"]
+    try:
+        actual = hashlib.sha256(server_path.read_bytes()).hexdigest()
+    except OSError as exc:
+        return [f"cannot read server.py for integrity verification: {exc}"]
+    expected = connector.get("integrity_hash")
+    if not isinstance(expected, str) or expected != f"sha256:{actual}":
+        return ["integrity_hash does not match the SHA-256 digest of server.py"]
+    return []
 
 
 def validate_agent_payload(agent: Any) -> list[str]:
@@ -168,6 +269,19 @@ def validate_agent_payload(agent: Any) -> list[str]:
         value = agent.get(key, [])
         if not isinstance(value, list) or not all(isinstance(item, str) and item for item in value):
             errors.append(f"{key} must be an array of non-empty strings")
+
+    mcp_tools = agent.get("mcp_tools", [])
+    if isinstance(mcp_tools, list):
+        for declaration in mcp_tools:
+            if isinstance(declaration, str):
+                if declaration.endswith(":*") or declaration == "*":
+                    errors.append(
+                        f"mcp_tools declaration {declaration!r} must use exact canonical server:tool (wildcards server:* are prohibited)"
+                    )
+                elif MCP_TOOL_DECLARATION.fullmatch(declaration) is None:
+                    errors.append(
+                        f"mcp_tools declaration {declaration!r} must use exact canonical server:tool or encoded mcp__server__tool"
+                    )
 
     skills = agent.get("skills", [])
     if isinstance(skills, list):
@@ -290,6 +404,31 @@ def validate_catalog_parity(root: Path, report: ValidationReport) -> list[dict[s
     return templates
 
 
+def load_tool_manifest_map(root: Path) -> dict[str, dict[str, Any]]:
+    """Build a lookup map of canonical tool ID -> tool descriptor."""
+    manifest_map: dict[str, dict[str, Any]] = {
+        "smoke-connector:healthcheck": {
+            "id": "smoke-connector:healthcheck",
+            "name": "healthcheck",
+            "description": "Smoke test health check",
+            "risk": "read",
+            "server": "smoke-connector",
+        }
+    }
+    registry_path = root / "mcp_registry.json"
+    if registry_path.is_file():
+        try:
+            registry = load_json(registry_path)
+            for connector in registry.get("connectors", []):
+                for tool in connector.get("tools", []):
+                    tool_id = tool.get("id")
+                    if tool_id:
+                        manifest_map[tool_id] = tool
+        except Exception:
+            pass
+    return manifest_map
+
+
 def validate_template(root: Path, template: dict[str, Any], report: ValidationReport) -> None:
     template_id = str(template.get("id") or "<missing-id>")
     context = f"template {template_id}"
@@ -317,6 +456,16 @@ def validate_template(root: Path, template: dict[str, Any], report: ValidationRe
     if not isinstance(swarm, dict):
         report.error(context, "swarm.json must be an object")
         return
+
+    # Swarm mission and company_size validation
+    mission = swarm.get("description") or swarm.get("mission")
+    if not isinstance(mission, str) or not mission.strip():
+        report.error(context, "swarm.json requires a non-empty description or mission")
+
+    company_size = swarm.get("company_size")
+    if company_size is not None:
+        if not isinstance(company_size, int) or company_size <= 0:
+            report.error(context, f"company_size must be a positive integer (found {company_size!r})")
 
     roster = swarm.get("roster", [])
     if not isinstance(roster, list):
@@ -361,6 +510,46 @@ def validate_template(root: Path, template: dict[str, Any], report: ValidationRe
         if not workflow_path.is_file():
             report.error(context, f"global workflow does not exist: {workflow_ref}")
 
+    # Load active MCP servers
+    active_mcp_servers: dict[str, Any] = {}
+    mcp_path = template_root / "mcps.json"
+    if mcp_path.is_file():
+        try:
+            mcp_payload = load_json(mcp_path)
+        except (OSError, json.JSONDecodeError) as exc:
+            report.error(f"{context} mcps.json", f"cannot parse JSON: {exc}")
+        else:
+            for message in validate_mcp_payload(mcp_payload):
+                report.error(f"{context} mcps.json", message)
+            if isinstance(mcp_payload, dict):
+                active_mcp_servers = mcp_payload.get("mcpServers", {})
+
+    if active_mcp_servers:
+        connector_ids = swarm.get("connector_ids")
+        if not isinstance(connector_ids, list) or not connector_ids:
+            report.error(context, "swarm.json must define non-empty connector_ids when active mcps.json is present")
+
+    tool_manifest_map = load_tool_manifest_map(root)
+    server_agent_grants: dict[str, list[str]] = {s: [] for s in active_mcp_servers}
+
+    # Load knowledge items to check OKF playbook references
+    okf_playbook_names: set[str] = set()
+    knowledge_path = template_root / "knowledge.json"
+    if knowledge_path.is_file():
+        try:
+            knowledge = load_json(knowledge_path)
+            for item in knowledge if isinstance(knowledge, list) else []:
+                if isinstance(item, dict) and item.get("title"):
+                    okf_playbook_names.add(item["title"].lower().replace(" ", "_"))
+                    okf_playbook_names.add(item["title"].lower().replace(" ", "-"))
+        except Exception:
+            pass
+
+    knowledge_dir = template_root / "knowledge"
+    if knowledge_dir.is_dir():
+        for k_file in knowledge_dir.glob("*.md"):
+            okf_playbook_names.add(k_file.stem.lower())
+
     agents_root = template_root / "agents"
     agent_paths = sorted(agents_root.glob("*.json")) if agents_root.is_dir() else []
     if not agent_paths:
@@ -391,6 +580,34 @@ def validate_template(root: Path, template: dict[str, Any], report: ValidationRe
                 referenced_workflows.add(workflow_path)
                 if not workflow_path.is_file():
                     report.error(agent_context, f"workflow does not exist: workflows/{workflow_name}")
+                # OKF playbook reference check
+                wf_clean = str(workflow_id).lower().replace(".md", "")
+                if wf_clean in okf_playbook_names and not (template_root / "workflows" / workflow_name).is_file():
+                    report.error(agent_context, f"agent cannot reference OKF playbook {workflow_id!r} as an executable workflow")
+
+            # Cross-validate agent MCP grants
+            for grant in agent.get("mcp_tools", []):
+                if not isinstance(grant, str):
+                    continue
+                if grant.endswith(":*") or grant == "*":
+                    continue  # already flagged by validate_agent_payload
+                server_name = grant.split(":", 1)[0] if ":" in grant else grant.replace("mcp__", "").split("__", 1)[0]
+                if server_name not in active_mcp_servers:
+                    report.error(agent_context, f"dangling MCP grant {grant!r}: server {server_name!r} not in active mcps.json")
+                else:
+                    server_agent_grants[server_name].append(agent.get("id", agent_path.stem))
+
+                # Check tool descriptor risk level
+                descriptor = tool_manifest_map.get(grant)
+                if descriptor:
+                    risk = descriptor.get("risk", "read")
+                    if risk in ("write", "execute") and not agent.get("requires_oversight"):
+                        report.error(agent_context, f"mutating MCP tool grant {grant!r} requires oversight (requires_oversight must be true)")
+
+    # Every active server must have at least one authorized agent grant
+    for server_name, authorized_agents in server_agent_grants.items():
+        if not authorized_agents:
+            report.error(context, f"active MCP server {server_name!r} in mcps.json has no authorized agent grants")
 
     if set(agent_paths) - roster_paths:
         names = ", ".join(path.name for path in sorted(set(agent_paths) - roster_paths))
@@ -406,17 +623,6 @@ def validate_template(root: Path, template: dict[str, Any], report: ValidationRe
         names = ", ".join(path.name for path in sorted(orphan_workflows))
         report.warning(context, f"unreferenced workflows: {names}")
 
-    mcp_path = template_root / "mcps.json"
-    if mcp_path.is_file():
-        try:
-            mcp_payload = load_json(mcp_path)
-        except (OSError, json.JSONDecodeError) as exc:
-            report.error(f"{context} mcps.json", f"cannot parse JSON: {exc}")
-        else:
-            for message in validate_mcp_payload(mcp_payload):
-                report.error(f"{context} mcps.json", message)
-
-    knowledge_path = template_root / "knowledge.json"
     if knowledge_path.is_file():
         try:
             knowledge = load_json(knowledge_path)
@@ -433,7 +639,10 @@ def validate_mcp_registry(root: Path, report: ValidationReport) -> None:
     except (OSError, json.JSONDecodeError) as exc:
         report.error("mcp_registry.json", f"cannot parse: {exc}")
         return
-    connectors = registry.get("connectors") if isinstance(registry, dict) else None
+    if not isinstance(registry, dict) or registry.get("version") != "2.0.0":
+        report.error("mcp_registry.json", "version must be 2.0.0")
+        return
+    connectors = registry.get("connectors")
     if not isinstance(connectors, list):
         report.error("mcp_registry.json", "connectors must be an array")
         return
@@ -450,11 +659,47 @@ def validate_mcp_registry(root: Path, report: ValidationReport) -> None:
             report.error(context, "duplicate connector id")
         else:
             connector_ids.add(connector_id)
+
+        status = connector.get("status")
+        if status not in ("verified", "reviewed"):
+            report.error(context, "status must be verified or reviewed")
+
+        tools = connector.get("tools")
+        if not isinstance(tools, list) or not tools:
+            report.error(context, "tools must be a non-empty array of tool descriptors")
+        else:
+            tool_ids: set[str] = set()
+            for t_idx, tool in enumerate(tools):
+                t_ctx = f"{context} tools[{t_idx}]"
+                if not isinstance(tool, dict):
+                    report.error(t_ctx, "must be an object")
+                    continue
+                t_id = tool.get("id")
+                t_name = tool.get("name")
+                t_desc = tool.get("description")
+                t_risk = tool.get("risk")
+                if not isinstance(t_id, str) or ":" not in t_id:
+                    report.error(t_ctx, "id must be in canonical server:tool format")
+                elif t_id in tool_ids:
+                    report.error(t_ctx, f"duplicate tool id: {t_id}")
+                else:
+                    tool_ids.add(t_id)
+                if not isinstance(t_name, str) or not t_name:
+                    report.error(t_ctx, "name must be a non-empty string")
+                if not isinstance(t_desc, str) or not t_desc:
+                    report.error(t_ctx, "description must be a non-empty string")
+                if t_risk not in ("read", "write", "execute"):
+                    report.error(t_ctx, "risk must be read, write, or execute")
+
         connector_root = safe_relative_path(root, connector.get("path"))
         if connector_root is None or not connector_root.is_dir():
             report.error(context, "path is invalid or missing")
             continue
         for message in validate_package_tree(connector_root, CONNECTOR_FILE_SUFFIXES):
+            report.error(context, message)
+        for message in validate_connector_dependencies(connector_root, connector):
+            report.error(context, message)
+        for message in validate_connector_integrity(connector_root, connector):
             report.error(context, message)
         config_path = connector_root / "mcps.json"
         try:
@@ -464,8 +709,6 @@ def validate_mcp_registry(root: Path, report: ValidationReport) -> None:
             continue
         for message in validate_mcp_payload(config):
             report.error(context, message)
-        if not (connector_root / "server.py").is_file():
-            report.error(context, "server.py is missing")
 
 
 def validate_repository(root: Path) -> ValidationReport:

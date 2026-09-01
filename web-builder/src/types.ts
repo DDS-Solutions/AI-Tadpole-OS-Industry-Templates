@@ -30,6 +30,8 @@ export interface WorkflowItem {
   topic?: string;
   conceptType?: string;
   tags?: string;
+  source?: 'generated' | 'template' | 'custom' | 'imported';
+  generatedFromGoalId?: string;
 }
 
 export interface TemplateItem {
@@ -59,6 +61,26 @@ export interface CatalogAgent {
 export interface SwarmDetails {
   roster: Agent[];
   workflows: WorkflowItem[];
+  selectedConnectors?: string[];
+  connectorIds?: string[];
+  mcpConfig?: MCPConfig;
+  knowledge?: unknown[];
+}
+
+export interface MCPToolDescriptor {
+  id: string;
+  name: string;
+  description: string;
+  risk: 'read' | 'write' | 'execute';
+  recommendedGoalIds?: string[];
+}
+
+export interface MCPDependencyProvenance {
+  package: string;
+  version: string;
+  artifact: string;
+  sha256: string;
+  source: string;
 }
 
 export interface MCPConnector {
@@ -68,13 +90,17 @@ export interface MCPConnector {
   category: string;
   path: string;
   version: string;
-  config?: MCPConfig;
-  tools?: string[];
-  status?: 'verified' | 'reviewed' | 'experimental';
+  schema_version?: string;
+  author?: string;
   maintainer?: string;
   last_reviewed?: string;
+  status?: 'verified' | 'reviewed' | 'experimental' | 'quarantined';
   required_env?: Record<string, { description: string; placeholder?: string }>;
   integrity_hash?: string;
+  dependency_manifest?: string;
+  dependency_provenance?: MCPDependencyProvenance[];
+  tools?: MCPToolDescriptor[];
+  config?: MCPConfig;
 }
 
 export interface MCPServerConfig {
@@ -114,4 +140,5 @@ export interface RecommendedSpecialist {
   canPrepare: string[];
   cannotApprove: string[];
   requiresApproval: boolean;
+  matchedGoalIds?: string[];
 }

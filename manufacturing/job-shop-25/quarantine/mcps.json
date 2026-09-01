@@ -1,0 +1,25 @@
+{
+  "status": "quarantined",
+  "reason": "unpinned external dependencies, missing tool manifest, no explicit agent grant",
+  "review_date": "2026-09-01",
+  "mcpServers": {
+    "material-tracking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgresql",
+        "postgresql://localhost:5432/inventory_db"
+      ]
+    },
+    "shop-floor-iot": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-mqtt-bridge"
+      ],
+      "env": {
+        "BROKER_URL": "mqtt://localhost:1883"
+      }
+    }
+  }
+}

@@ -69,6 +69,28 @@ describe('Swarm Architect archive contract', () => {
     )).rejects.toThrow('Agent IDs collide');
   });
 
+  it('blocks archive generation when required identity or roster data is missing', async () => {
+    await expect(buildSwarmZip(
+      { ...company, name: '' },
+      [agent],
+      [workflow],
+      [],
+      [],
+    )).rejects.toThrow('company or swarm name is required');
+
+    await expect(buildSwarmZip(
+      { ...company, industry: '' },
+      [agent],
+      [workflow],
+      [],
+      [],
+    )).rejects.toThrow('industry sector is required');
+
+    await expect(buildSwarmZip(company, [], [workflow], [], [])).rejects.toThrow(
+      'at least one specialist agent is required',
+    );
+  });
+
   it('stores actual OKF text in JSON and Markdown assets', async () => {
     const playbook: WorkflowItem = {
       id: 'incident-response',
@@ -310,5 +332,30 @@ describe('Swarm Architect archive contract', () => {
     const zip = await buildSwarmZip(company, [{ ...agent, skills: ['read_file', 'search_web'] }], [workflow], [], []);
     const exported = JSON.parse(await zip.file('agents/review-agent.json')!.async('string'));
     expect(exported.skills).toEqual(['read_file', 'search_web']);
+  });
+
+  it('emits connector-lock.json and connector_ids in swarm.json when connectors are selected', async () => {
+    const mockMcp: MCPConnector = {
+      id: 'generic-crm',
+      name: 'Generic CRM',
+      category: 'Data',
+      description: 'CRM connector',
+      version: '2.0.0',
+      path: 'connectors/generic-crm',
+      tools: [{ id: 'generic-crm:get_crm_contact', name: 'Get Contact', description: 'desc', risk: 'read' }],
+      config: { mcpServers: { 'generic-crm': { command: 'python', args: ['server.py'] } } },
+    };
+
+    const zip = await buildSwarmZip(company, [agent], [workflow], ['generic-crm'], [mockMcp]);
+    const swarmJson = JSON.parse(await zip.file('swarm.json')!.async('string'));
+    expect(swarmJson.connector_ids).toEqual(['generic-crm']);
+    expect(swarmJson.company_size).toBe(25);
+    expect(typeof swarmJson.company_size).toBe('number');
+
+    const lockFile = zip.file('connector-lock.json');
+    expect(lockFile).not.toBeNull();
+    const lockData = JSON.parse(await lockFile!.async('string'));
+    expect(lockData.connectors).toHaveLength(1);
+    expect(lockData.connectors[0].id).toBe('generic-crm');
   });
 });

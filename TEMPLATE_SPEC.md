@@ -83,9 +83,9 @@ Native AI-Tadpole-OS agents are model-agnostic and capability-driven. They must 
   - `model_id` (string, required by this registry): Explicit provider model ID.
   - `system_prompt` (string, required): Personality and high-level role definition (Max 800 characters). Must refer to the associated workflow SOP.
 - `skills` (array of strings): Exact Tadpole capability/tool IDs (e.g., `["read_file", "grep_search"]`). Use `write_file`, not legacy `write_to_file`. Shell-capable agents declare both `execute_shell` and the required `shell` marker.
-- `workflows` (array of strings): List of referenced workflow IDs (e.g., `["legal_document_review"]`).
-- `mcp_tools` (array of strings, required by this registry): Forward-compatible MCP tool declarations. The pinned runtime persists this field but does not currently use it as the active MCP authorization filter.
-- `requires_oversight` (boolean, required by this registry): Whether the runtime must route tool calls through operator oversight. It must be `true` for declared write, delete, or shell capabilities.
+- `workflows` (array of strings): List of referenced workflow IDs (e.g., `["legal_document_review"]`). OKF playbooks cannot be referenced as executable agent workflows.
+- `mcp_tools` (array of strings, required by this registry): Active external MCP authorization declarations in exact canonical `server:tool` or encoded `mcp__server__tool` form. Wildcards (`server:*`) are prohibited in builder exports and production templates. An empty array grants no external MCP tools. Native tools remain governed by skills, ACL, and oversight policy.
+- `requires_oversight` (boolean, required by this registry): Whether the runtime must route tool calls through operator oversight. It must be `true` for declared write, delete, shell capabilities, or mutating/executing (`write` / `execute`) MCP tool grants.
 
 ### Example
 ```json

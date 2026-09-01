@@ -1,0 +1,15 @@
+{
+  "status": "quarantined",
+  "reason": "unpinned external dependencies, missing tool manifest, no explicit agent grant",
+  "review_date": "2026-09-01",
+  "mcpServers": {
+    "grades-db": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sqlite",
+        "data/student_records.db"
+      ]
+    }
+  }
+}

@@ -6,13 +6,22 @@ import json
 import sys
 
 
-def handle_request(request: dict) -> dict:
+def handle_request(request: dict) -> dict | None:
     method = request.get("method")
-    if method == "tools/list":
-        return {
+    request_id = request.get("id")
+    if method == "initialize":
+        result = {
+            "protocolVersion": "2024-11-05",
+            "capabilities": {"tools": {}},
+            "serverInfo": {"name": "smoke-connector", "version": "1.0.0"},
+        }
+    elif method == "notifications/initialized":
+        return None
+    elif method == "tools/list":
+        result = {
             "tools": [
                 {
-                    "name": "smoke:healthcheck",
+                    "name": "healthcheck",
                     "description": "Returns status ok for smoke test verification",
                     "inputSchema": {
                         "type": "object",
@@ -21,13 +30,19 @@ def handle_request(request: dict) -> dict:
                 }
             ]
         }
-    if method == "tools/call":
-        return {
+    elif method == "tools/call":
+        result = {
             "content": [
                 {"type": "text", "text": "smoke-test: OK"}
             ]
         }
-    return {"error": {"code": -32601, "message": f"Method {method} not found"}}
+    else:
+        return {
+            "jsonrpc": "2.0",
+            "id": request_id,
+            "error": {"code": -32601, "message": f"Method {method} not found"},
+        }
+    return {"jsonrpc": "2.0", "id": request_id, "result": result}
 
 
 def main() -> None:
@@ -38,8 +53,9 @@ def main() -> None:
         try:
             req = json.loads(line)
             res = handle_request(req)
-            sys.stdout.write(json.dumps(res) + "\n")
-            sys.stdout.flush()
+            if res is not None:
+                sys.stdout.write(json.dumps(res) + "\n")
+                sys.stdout.flush()
         except Exception as exc:
             sys.stderr.write(f"Error handling request: {exc}\n")
 

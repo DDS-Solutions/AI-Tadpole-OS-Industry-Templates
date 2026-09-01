@@ -47,14 +47,24 @@ export function validateSwarm(
     });
   }
 
+  if (!companyInfo.mission || companyInfo.mission.trim() === '') {
+    issues.push({
+      id: 'identity-missing-mission',
+      severity: 'error',
+      section: 'identity',
+      message: 'Swarm mission or purpose is required.',
+      suggestedAction: 'Enter a clear mission statement for this swarm.',
+    });
+  }
+
   const parsedSize = Number.parseInt(companyInfo.size, 10);
   if (Number.isNaN(parsedSize) || parsedSize <= 0) {
     issues.push({
       id: 'identity-invalid-size',
-      severity: 'warning',
+      severity: 'error',
       section: 'identity',
-      message: 'Company size should be a positive number.',
-      suggestedAction: 'Specify estimated employee count (default is 25).',
+      message: 'Company size must be a positive integer.',
+      suggestedAction: 'Specify estimated employee count (e.g. 25).',
     });
   }
 
@@ -71,9 +81,13 @@ export function validateSwarm(
 
   const agentIds = new Set<string>();
   const workflowIds = new Set<string>();
+  const playbookMap = new Map<string, WorkflowItem>();
   for (const w of workflows) {
     const norm = tryNormalizeId(w.id);
-    if (norm) workflowIds.add(norm);
+    if (norm) {
+      workflowIds.add(norm);
+      playbookMap.set(norm, w);
+    }
   }
 
   for (const agent of agents) {
@@ -209,6 +223,18 @@ export function validateSwarm(
           message: `Agent "${agent.name}" references workflow "${ref}" which is not defined in Playbooks.`,
           suggestedAction: 'Add the missing playbook or remove the reference.',
         });
+      } else {
+        const targetWf = playbookMap.get(safeRef);
+        if (targetWf?.isOkfPlaybook) {
+          issues.push({
+            id: `agent-okf-workflow-${cleanId}-${ref}`,
+            severity: 'error',
+            section: 'agents',
+            itemId: agent.id,
+            message: `Agent "${agent.name}" references OKF knowledge playbook "${ref}" as an executable workflow. Knowledge playbooks cannot be assigned to agents.`,
+            suggestedAction: 'Create an executable workflow under Playbooks or remove this reference.',
+          });
+        }
       }
     }
 
@@ -277,7 +303,10 @@ export function validateSwarm(
     }
   }
 
-  // 4. Connectors validation
+  // 4. Connectors & MCP Tools Cross-Validation
+  const activeServers = new Map<string, MCPConnector>();
+  const connectorToolsMap = new Map<string, { risk: 'read' | 'write' | 'execute'; connector: MCPConnector; name: string }>();
+
   for (const connectorId of selectedConnectors) {
     const conn = mcpCatalog.find(c => c.id === connectorId);
     if (!conn) {
@@ -290,6 +319,28 @@ export function validateSwarm(
         suggestedAction: 'Remove or re-select the connector.',
       });
       continue;
+    }
+
+    // Determine server names from config or tools
+    const serverNames: string[] = [];
+    if (conn.config?.mcpServers) {
+      serverNames.push(...Object.keys(conn.config.mcpServers));
+    }
+    if (conn.tools) {
+      for (const t of conn.tools) {
+        const sName = t.id.split(':')[0];
+        if (sName && !serverNames.includes(sName)) {
+          serverNames.push(sName);
+        }
+        connectorToolsMap.set(t.id, { risk: t.risk, connector: conn, name: t.name });
+      }
+    }
+    if (serverNames.length === 0) {
+      const fallbackName = conn.id.replace(/^mcp-/, '');
+      serverNames.push(fallbackName);
+    }
+    for (const sName of serverNames) {
+      activeServers.set(sName, conn);
     }
 
     if (conn.status === 'experimental') {
@@ -310,6 +361,76 @@ export function validateSwarm(
         section: 'connectors',
         itemId: connectorId,
         message: `Connector "${conn.name}" requires environment variables (${varNames}) configured in AI-Tadpole-OS.`,
+      });
+    }
+  }
+
+  // Cross-check agent grants
+  const serverGrantsCount = new Map<string, number>();
+  for (const sName of activeServers.keys()) {
+    serverGrantsCount.set(sName, 0);
+  }
+
+  for (const agent of agents) {
+    const cleanId = tryNormalizeId(agent.id) || agent.id;
+    for (const grant of agent.mcpTools || []) {
+      if (grant.endsWith(':*') || grant === '*') {
+        issues.push({
+          id: `agent-mcp-wildcard-${cleanId}-${grant}`,
+          severity: 'error',
+          section: 'connectors',
+          itemId: agent.id,
+          message: `Agent "${agent.name}" uses wildcard grant "${grant}". Wildcards (server:*) are prohibited.`,
+          suggestedAction: 'Specify explicit tool grants in server:tool format.',
+        });
+        continue;
+      }
+
+      const serverName = grant.includes(':')
+        ? grant.split(':')[0]
+        : grant.startsWith('mcp__')
+        ? grant.replace('mcp__', '').split('__')[0]
+        : grant;
+
+      if (!activeServers.has(serverName)) {
+        issues.push({
+          id: `agent-mcp-dangling-${cleanId}-${grant}`,
+          severity: 'error',
+          section: 'connectors',
+          itemId: agent.id,
+          message: `Agent "${agent.name}" declares MCP grant "${grant}", but connector "${serverName}" is not selected in Connectors.`,
+          suggestedAction: `Select the ${serverName} connector or remove this tool grant from ${agent.name}.`,
+        });
+      } else {
+        serverGrantsCount.set(serverName, (serverGrantsCount.get(serverName) || 0) + 1);
+
+        const toolDesc = connectorToolsMap.get(grant);
+        if (toolDesc) {
+          if ((toolDesc.risk === 'write' || toolDesc.risk === 'execute') && !agent.requiresOversight) {
+            issues.push({
+              id: `agent-mcp-oversight-required-${cleanId}-${grant}`,
+              severity: 'error',
+              section: 'connectors',
+              itemId: agent.id,
+              message: `Agent "${agent.name}" has mutating MCP tool grant "${grant}". Human oversight must be enabled.`,
+              suggestedAction: 'Enable requires oversight for this agent in Roster.',
+            });
+          }
+        }
+      }
+    }
+  }
+
+  // For each selected connector, check that at least one agent is granted access
+  for (const [sName, conn] of activeServers.entries()) {
+    if ((serverGrantsCount.get(sName) || 0) === 0) {
+      issues.push({
+        id: `connector-no-grants-${conn.id}`,
+        severity: 'error',
+        section: 'connectors',
+        itemId: conn.id,
+        message: `Selected connector "${conn.name}" has no agent tool grants assigned.`,
+        suggestedAction: `Assign tools for "${conn.name}" to at least one specialist in Roster or deselect this connector.`,
       });
     }
   }

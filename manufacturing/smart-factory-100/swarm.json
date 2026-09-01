@@ -2,7 +2,7 @@
   "id": "smart-factory-100",
   "name": "Smart Factory Enterprise (100 Seats)",
   "industry": "Manufacturing",
-  "company_size": "Enterprise (>100 Employees)",
+  "company_size": 100,
   "description": "Enterprise-level orchestration for smart factories. Synchronize digital twins, R&D design files, and full-scale ERP systems across multiple sites.",
   "author": "AI-Tadpole-OS",
   "tags": [
@@ -17,7 +17,6 @@
     "rd-liaison",
     "erpsync-master"
   ],
-  "required_mcps": "mcps.json",
   "global_workflows": [
     "workflows/smart_factory_sync.md"
   ],

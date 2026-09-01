@@ -2,7 +2,7 @@
   "id": "lead-transaction-management",
   "name": "Real Estate Lead & Transaction Management",
   "industry": "Real Estate",
-  "company_size": "SMB (<25 Employees)",
+  "company_size": 25,
   "description": "Automate lead nurturing, property listing syndication, and transaction coordination. Designed for small agencies to close more deals with less paperwork.",
   "author": "AI-Tadpole-OS",
   "tags": [
@@ -17,7 +17,6 @@
     "transaction-coordinator",
     "client-concierge"
   ],
-  "required_mcps": "mcps.json",
   "global_workflows": [
     "workflows/lead_nurture.md"
   ],

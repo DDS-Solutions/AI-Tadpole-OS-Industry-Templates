@@ -2,7 +2,7 @@
   "id": "medium-plant-50",
   "name": "Medium Manufacturing Plant (50 Seats)",
   "industry": "Manufacturing",
-  "company_size": "SMB (<50 Employees)",
+  "company_size": 50,
   "description": "Optimize predictive maintenance, supply chain coordination, and plant-level analytics for medium-sized manufacturing facilities.",
   "author": "AI-Tadpole-OS",
   "tags": [
@@ -17,7 +17,6 @@
     "supply-chain-orchestrator",
     "plant-manager"
   ],
-  "required_mcps": "mcps.json",
   "global_workflows": [
     "workflows/maintenance_cycle.md"
   ],

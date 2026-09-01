@@ -116,9 +116,10 @@ Alternatively (or additionally), you can define a `knowledge.json` file in the r
 
 AI-Tadpole-OS Swarms can package standard Model Context Protocol (MCP) connector configurations for external databases, CRM systems, and internal REST APIs. Credentials remain local and must not be committed to templates.
 
-* **Blueprint Library**: Browse our `mcp-blueprints/` directory for pre-built Python MCP server examples (e.g., `generic-crm`).
-* **Swarm Architect Integration**: Phase 4 emits root `mcps.json`. Bundled Python source is placed in `skills/`, while its MCP argument points at the post-install `execution/` path so it survives clone cleanup.
-* **Current Consumer Boundary**: The private pinned upstream reads only `<template>/mcps.json`. It does not apply MCP config `env` values to child processes, install connector dependencies, use `mcp_tools` as its active filter, or fully discover external tools. Configure environment/dependencies locally and treat MCP usability/authorization as runtime work.
+* **Blueprint Library**: Browse our `mcp-blueprints/` directory for reviewed Python MCP server blueprints (e.g., `generic-crm`, `smb-accounting`, `hardware-edge`, `log-scanner`) with exact tool manifests and dependency provenance.
+* **Swarm Architect Integration**: Emits root `mcps.json`, `connector_ids` in `swarm.json`, and `connector-lock.json` with verified SHA-256 dependency provenance. Bundled Python source is placed in `skills/`, while its MCP argument points at the post-install `execution/` path.
+* **Fail-Closed Authorization**: All MCP tool access requires explicit, canonical `server:tool` grants per agent. Server-wide wildcards (`server:*`) are rejected. Mutating and system tool grants strictly enforce runtime operator oversight (`requires_oversight: true`).
+* **Upstream Operational Boundaries**: The runtime resolves environment placeholders, dynamically discovers external tool schemas, and enforces dual-point authorization. However, connector dependency installation and transactional knowledge activation remain operator boundaries.
 
 ## 🛡️ The Sapphire Shield: Enforced Boundaries
 
@@ -126,11 +127,11 @@ Security claims are split by layer so an advisory builder message is not mistake
 
 * **Registry Admission Gate**: Registered packages use UTF-8 JSON/Markdown, with reviewed executable source allowed only under template `skills/` or registry `mcp-blueprints/`. The 1 MB limit, link/type/content, credential, command, shell, inline execution, and placeholder rules are blocking.
 * **Reviewed Source**: CI runs contract/adversarial tests, pinned Bandit over connector and template-skill Python, and ClamAV over the repository.
-* **Builder Archive Gate**: Export rejects unsafe paths, normalized filename collisions, missing references, invalid profiles, and conflicting MCP server names. Connector assets come from the same deployed builder release rather than the moving `main` branch.
+* **Builder Archive Gate**: Export rejects unsafe paths, normalized filename collisions, missing references, invalid profiles, unused/dangling connectors, and conflicting MCP server names. Connector assets come from the same deployed builder release snapshot rather than the moving `main` branch.
 * **Prompt Advisory**: The builder's prompt keyword review is a review aid only. A clear result does not prove safety or zero privileges, and a warning does not itself trigger AI-Tadpole-OS approval.
-* **Consumer Boundary**: The pinned private Tadpole-OS installer has path/overwrite guards plus a `skills/` scan, but installation is not transactional and scan-call errors can continue without rollback. Treat complete authorization, receipts, and rollback as upstream work.
+* **Consumer Runtime**: The pinned private Tadpole-OS runtime provides path validation, pre-write scanning, transactional rollback, structured installation receipts, and exact MCP authorization gates.
 
-See [wiki/Security-Policy.md](wiki/Security-Policy.md) for the exact enforced controls and remaining upstream gaps.
+See [wiki/Security-Policy.md](wiki/Security-Policy.md) for the exact enforced controls and remaining upstream boundaries.
 
 ## 🤝 Contributing to the Ecosystem
 

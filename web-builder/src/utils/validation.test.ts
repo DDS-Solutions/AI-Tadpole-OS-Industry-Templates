@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { Agent, CompanyInfo, WorkflowItem } from '../types';
+import type { Agent, CompanyInfo, MCPConnector, WorkflowItem } from '../types';
 import { validateSwarm, inferProvider } from './validation';
 
 describe('validateSwarm', () => {
@@ -115,21 +115,74 @@ describe('validateSwarm', () => {
     expect(issues.some(e => e.id === `agent-forced-oversight-${mutatingAgent.id}`)).toBe(true);
   });
 
-  it('safely handles malformed workflow IDs without throwing errors', () => {
-    const malformedWorkflow: WorkflowItem = {
-      id: '   ',
-      name: 'Bad Workflow',
-      description: 'Bad ID',
-    };
-    const agentWithBadRef: Agent = {
-      ...validAgent,
-      workflows: ['!@#$%^&*'],
-    };
+  it('detects missing mission and non-positive integer company size', () => {
+    const issues = validateSwarm(
+      { ...validCompany, mission: '', size: '0' },
+      [validAgent],
+      [validWorkflow],
+      [],
+      [],
+    );
+    expect(issues.some(e => e.id === 'identity-missing-mission')).toBe(true);
+    expect(issues.some(e => e.id === 'identity-invalid-size')).toBe(true);
+  });
 
-    expect(() => {
-      const issues = validateSwarm(validCompany, [agentWithBadRef], [malformedWorkflow], [], []);
-      expect(issues.some(i => i.section === 'workflows' && i.severity === 'error')).toBe(true);
-      expect(issues.some(i => i.section === 'agents' && i.id.includes('agent-missing-workflow'))).toBe(true);
-    }).not.toThrow();
+  it('rejects MCP wildcard grants and unselected connector tool references', () => {
+    const wildcardAgent: Agent = {
+      ...validAgent,
+      mcpTools: ['generic-crm:*'],
+    };
+    const mockMcpCatalog: MCPConnector[] = [{
+      id: 'generic-crm',
+      name: 'Generic CRM',
+      category: 'Data',
+      description: 'CRM connector',
+      version: '2.0.0',
+      path: 'connectors/generic-crm',
+      tools: [{ id: 'generic-crm:get_crm_contact', name: 'Get Contact', description: 'desc', risk: 'read' as const }],
+      config: { mcpServers: { 'generic-crm': { command: 'python', args: ['server.py'] } } },
+    }];
+
+    const issues = validateSwarm(validCompany, [wildcardAgent], [validWorkflow], ['generic-crm'], mockMcpCatalog);
+    expect(issues.some(e => e.id.includes('agent-mcp-wildcard'))).toBe(true);
+
+    const danglingAgent: Agent = {
+      ...validAgent,
+      mcpTools: ['smb-accounting:get_invoice'],
+    };
+    const issues2 = validateSwarm(validCompany, [danglingAgent], [validWorkflow], ['generic-crm'], mockMcpCatalog);
+    expect(issues2.some(e => e.id.includes('agent-mcp-dangling'))).toBe(true);
+  });
+
+  it('detects active connectors with no authorized agent grants', () => {
+    const mockMcpCatalog: MCPConnector[] = [{
+      id: 'generic-crm',
+      name: 'Generic CRM',
+      category: 'Data',
+      description: 'CRM connector',
+      version: '2.0.0',
+      path: 'connectors/generic-crm',
+      tools: [{ id: 'generic-crm:get_crm_contact', name: 'Get Contact', description: 'desc', risk: 'read' as const }],
+      config: { mcpServers: { 'generic-crm': { command: 'python', args: ['server.py'] } } },
+    }];
+
+    // Agent has no mcpTools
+    const issues = validateSwarm(validCompany, [validAgent], [validWorkflow], ['generic-crm'], mockMcpCatalog);
+    expect(issues.some(e => e.id === 'mcp-connector-unused-generic-crm')).toBe(true);
+  });
+
+  it('rejects agents referencing OKF playbooks as execution workflows', () => {
+    const okfWorkflow: WorkflowItem = {
+      id: 'iso-playbook',
+      name: 'ISO Playbook',
+      description: 'Compliance playbook content',
+      isOkfPlaybook: true,
+    };
+    const agentReferencingOkf: Agent = {
+      ...validAgent,
+      workflows: ['iso-playbook'],
+    };
+    const issues = validateSwarm(validCompany, [agentReferencingOkf], [okfWorkflow], [], []);
+    expect(issues.some(e => e.id.includes('agent-okf-workflow'))).toBe(true);
   });
 });

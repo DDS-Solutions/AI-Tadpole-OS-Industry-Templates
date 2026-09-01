@@ -189,6 +189,51 @@ export const BUSINESS_GOALS: BusinessGoalDef[] = [
   },
 ];
 
+export function generateGoalWorkflows(selectedGoalIds: string[]): import('../types').WorkflowItem[] {
+  const chosenGoals = selectedGoalIds.length > 0 ? selectedGoalIds : ['scheduling', 'quoting', 'customer-follow-up'];
+  const goalDefs = chosenGoals
+    .map(goalId => BUSINESS_GOALS.find(g => g.id === goalId))
+    .filter((g): g is BusinessGoalDef => g !== undefined);
+
+  return goalDefs.map(goal => {
+    const safeId = safeFileId(`sop-${goal.id}`);
+    const markdownBody = [
+      `## Step 1: Scope and Objectives`,
+      `Establish the operational scope for ${goal.label.toLowerCase()} in alignment with swarm mission boundaries.`,
+      ``,
+      `## Step 2: Standard Operating Procedure`,
+      `1. Review incoming requests against verified criteria and constraints.`,
+      `2. Prepare candidate drafts, summaries, and calculations (${goal.canPrepare.join(', ')}).`,
+      `3. Verify compliance with human approval policies before proposing execution.`,
+      ``,
+      `## Step 3: Safeguards and Oversight`,
+      `Ensure that final approval actions (${goal.cannotApprove.join(', ')}) remain restricted to authorized human operators.`,
+    ].join('\n');
+
+    return {
+      id: safeId,
+      name: `${goal.label} Procedure`,
+      description: markdownBody,
+      isOkfPlaybook: false,
+      source: 'generated',
+      generatedFromGoalId: goal.id,
+      topic: goal.category.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      conceptType: 'playbook',
+      tags: `workflow,${goal.id}`,
+    };
+  });
+}
+
+export function generateDefaultMission(companyName: string, industry: string, goals: string[]): string {
+  const name = companyName.trim() || 'Organization';
+  const ind = industry.trim() || 'enterprise';
+  const goalLabels = goals
+    .map(gId => BUSINESS_GOALS.find(g => g.id === gId)?.label)
+    .filter(Boolean);
+  const goalStr = goalLabels.length > 0 ? goalLabels.join(', ') : 'operational efficiency and compliance';
+  return `To drive autonomous, safe, and transparent ${ind} operations for ${name}, coordinating specialized AI agents to deliver excellence in ${goalStr}.`;
+}
+
 export function recommendTeam(
   selectedGoalIds: string[],
   industry: string,
@@ -232,7 +277,13 @@ export function recommendTeam(
               canPrepare: goalDef.canPrepare,
               cannotApprove: goalDef.cannotApprove,
               requiresApproval: goalDef.requiresApproval,
+              matchedGoalIds: [goalDef.id],
             });
+          }
+        } else {
+          const existing = matchedAgentMap.get(agentId)!;
+          if (existing.matchedGoalIds && !existing.matchedGoalIds.includes(goalDef.id)) {
+            existing.matchedGoalIds.push(goalDef.id);
           }
         }
       }
@@ -244,10 +295,9 @@ export function recommendTeam(
   if (matchedAgentMap.size < maxSpecialists && catalog.length > 0) {
     const normalizedIndustry = (industry || '').toLowerCase();
     const industryMatches = catalog.filter(a =>
-      !matchedAgentMap.has(a.id) &&
-      (a.department.toLowerCase().includes(normalizedIndustry) ||
-       a.description.toLowerCase().includes(normalizedIndustry) ||
-       a.vibe.toLowerCase().includes(normalizedIndustry))
+      ((a.department && a.department.toLowerCase().includes(normalizedIndustry)) ||
+       (a.description && a.description.toLowerCase().includes(normalizedIndustry)) ||
+       (a.vibe && a.vibe.toLowerCase().includes(normalizedIndustry)))
     );
 
     for (const entry of industryMatches) {
@@ -262,9 +312,11 @@ export function recommendTeam(
         canPrepare: ['Draft operational recommendations and documents'],
         cannotApprove: ['Direct external actions or unreviewed commitments'],
         requiresApproval: true,
+        matchedGoalIds: chosenGoals,
       });
     }
   }
 
   return Array.from(matchedAgentMap.values());
 }
+

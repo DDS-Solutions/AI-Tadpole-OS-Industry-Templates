@@ -1,7 +1,8 @@
+
+import json
 import sys
 import unittest
 from pathlib import Path
-
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -17,6 +18,8 @@ from validate_template import (
     TEMPLATE_SKILL_FILE_SUFFIXES,
     detect_embedded_secrets,
     validate_agent_payload,
+    validate_connector_dependencies,
+    validate_connector_integrity,
     validate_knowledge_payload,
     validate_mcp_payload,
     validate_package_file,
@@ -90,6 +93,104 @@ class ConsumerContractTests(unittest.TestCase):
         self.assertTrue(any("legacy Tadpole capability" in error for error in errors))
         self.assertTrue(any("capability marker" in error for error in errors))
         self.assertTrue(any("require oversight" in error for error in errors))
+
+    def test_agent_rejects_inactive_mcp_declaration_format(self):
+        agent = self.valid_agent()
+        agent["mcp_tools"] = ["server-only-placeholder"]
+        errors = validate_agent_payload(agent)
+        self.assertTrue(any("server:tool" in error for error in errors))
+
+    def test_agent_rejects_wildcard_mcp_declarations(self):
+        agent = self.valid_agent()
+        agent["mcp_tools"] = ["crm:*"]
+        errors = validate_agent_payload(agent)
+        self.assertTrue(any("wildcards server:* are prohibited" in error for error in errors))
+
+    def test_cross_validation_rejects_unused_active_mcp_server(self):
+        import tempfile
+        from validate_template import validate_template, ValidationReport
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmproot = Path(tmpdir)
+            swarm = {
+                "id": "test-swarm",
+                "name": "Test Swarm",
+                "description": "Test description",
+                "company_size": 25,
+                "connector_ids": ["test-server"],
+                "roster": [{"id": "agent-one", "path": "agents/agent-one.json"}]
+            }
+            (tmproot / "swarm.json").write_text(json.dumps(swarm), encoding="utf-8")
+            (tmproot / "agents").mkdir()
+            agent = self.valid_agent()
+            agent["mcp_tools"] = []
+            (tmproot / "agents" / "agent-one.json").write_text(json.dumps(agent), encoding="utf-8")
+            (tmproot / "workflows").mkdir()
+            (tmproot / "workflows" / "review.md").write_text("# Review\n\n## Step 1\nInspect.", encoding="utf-8")
+            (tmproot / "mcps.json").write_text(json.dumps({
+                "mcpServers": {
+                    "test-server": {"command": "python", "args": ["server.py"], "env": {}}
+                }
+            }), encoding="utf-8")
+            report = ValidationReport()
+            validate_template(tmproot, {"id": "test", "path": "."}, report)
+            self.assertTrue(any("has no authorized agent grants" in error for error in report.errors))
+
+    def test_cross_validation_rejects_dangling_mcp_grants(self):
+        import tempfile
+        from validate_template import validate_template, ValidationReport
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmproot = Path(tmpdir)
+            swarm = {
+                "id": "test-swarm",
+                "name": "Test Swarm",
+                "description": "Test description",
+                "company_size": 25,
+                "roster": [{"id": "agent-one", "path": "agents/agent-one.json"}]
+            }
+            (tmproot / "swarm.json").write_text(json.dumps(swarm), encoding="utf-8")
+            (tmproot / "agents").mkdir()
+            agent = self.valid_agent()
+            agent["mcp_tools"] = ["nonexistent-server:some_tool"]
+            (tmproot / "agents" / "agent-one.json").write_text(json.dumps(agent), encoding="utf-8")
+            (tmproot / "workflows").mkdir()
+            (tmproot / "workflows" / "review.md").write_text("# Review\n\n## Step 1\nInspect.", encoding="utf-8")
+            (tmproot / "mcps.json").write_text(json.dumps({"mcpServers": {}}), encoding="utf-8")
+            report = ValidationReport()
+            validate_template(tmproot, {"id": "test", "path": "."}, report)
+            self.assertTrue(any("dangling MCP grant" in error for error in report.errors))
+
+    def test_cross_validation_enforces_oversight_on_mutating_mcp_grants(self):
+        import tempfile
+        from validate_template import validate_template, ValidationReport
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmproot = Path(tmpdir)
+            swarm = {
+                "id": "test-swarm",
+                "name": "Test Swarm",
+                "description": "Test description",
+                "company_size": 25,
+                "connector_ids": ["generic-crm"],
+                "roster": [{"id": "agent-one", "path": "agents/agent-one.json"}]
+            }
+            (tmproot / "swarm.json").write_text(json.dumps(swarm), encoding="utf-8")
+            (tmproot / "agents").mkdir()
+            agent = self.valid_agent()
+            agent["mcp_tools"] = ["generic-crm:update_invoice"]  # mutating write tool
+            agent["requires_oversight"] = False
+            (tmproot / "agents" / "agent-one.json").write_text(json.dumps(agent), encoding="utf-8")
+            (tmproot / "workflows").mkdir()
+            (tmproot / "workflows" / "review.md").write_text("# Review\n\n## Step 1\nInspect.", encoding="utf-8")
+            (tmproot / "mcps.json").write_text(json.dumps({
+                "mcpServers": {
+                    "generic-crm": {"command": "python", "args": ["server.py"], "env": {}}
+                }
+            }), encoding="utf-8")
+            report = ValidationReport()
+            validate_template(ROOT, {"id": "test", "path": str(tmproot.relative_to(ROOT)) if tmproot.is_relative_to(ROOT) else "."}, report)
+            # When run with ROOT as base, tool manifest is loaded
+            from validate_template import load_tool_manifest_map
+            manifest = load_tool_manifest_map(ROOT)
+            self.assertEqual("write", manifest["generic-crm:update_invoice"]["risk"])
 
     def test_workflow_accepts_consumer_h2_or_h3_boundaries(self):
         self.assertEqual([], validate_workflow_content("# Review\n\n### Inspect\nDo it."))
@@ -196,6 +297,55 @@ class ConsumerContractTests(unittest.TestCase):
             (tmproot / "bad_script.py").write_text("print('bad')", encoding="utf-8")
             errors = validate_package_tree(tmproot, TEMPLATE_FILE_SUFFIXES, executable_subdir="skills")
             self.assertTrue(any("prohibited file type" in error for error in errors))
+
+    def test_connector_dependencies_require_exact_matching_provenance(self):
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            connector_root = Path(tmpdir)
+            (connector_root / "requirements.txt").write_text(
+                "mcp==1.29.1\n", encoding="utf-8"
+            )
+            connector = {
+                "dependency_manifest": "requirements.txt",
+                "dependency_provenance": [
+                    {
+                        "package": "mcp",
+                        "version": "1.29.1",
+                        "artifact": "mcp-1.29.1-py3-none-any.whl",
+                        "sha256": "a" * 64,
+                        "source": "https://pypi.org/project/mcp/1.29.1/",
+                    }
+                ],
+            }
+
+            self.assertEqual(
+                [], validate_connector_dependencies(connector_root, connector)
+            )
+
+            (connector_root / "requirements.txt").write_text(
+                "mcp>=1.29.1\n", encoding="utf-8"
+            )
+            errors = validate_connector_dependencies(connector_root, connector)
+            self.assertTrue(any("exact package==version" in error for error in errors))
+            self.assertTrue(any("exactly match" in error for error in errors))
+
+    def test_connector_integrity_detects_entrypoint_tampering(self):
+        import hashlib
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            connector_root = Path(tmpdir)
+            server = connector_root / "server.py"
+            server.write_text("print('ready')\n", encoding="utf-8")
+            digest = hashlib.sha256(server.read_bytes()).hexdigest()
+            connector = {"integrity_hash": f"sha256:{digest}"}
+
+            self.assertEqual([], validate_connector_integrity(connector_root, connector))
+
+            server.write_text("print('changed')\n", encoding="utf-8")
+            errors = validate_connector_integrity(connector_root, connector)
+            self.assertTrue(any("does not match" in error for error in errors))
 
     def test_compatibility_lockfile_integrity_and_drift_detection(self):
         self.assertTrue(verify_lockfile())

@@ -20,7 +20,7 @@
     "operator_sop"
   ],
   "mcp_tools": [
-    "smoke:healthcheck"
+    "smoke-connector:healthcheck"
   ],
   "requires_oversight": true
 }
