@@ -1,0 +1,22 @@
+{
+  "id": "finance-finance-fpa-analyst",
+  "name": "Finance Finance Fpa Analyst",
+  "role": "Finance Finance Fpa Analyst Specialist",
+  "department": "Operations",
+  "description": "Specialized AI agent handling Finance Finance Fpa Analyst Specialist workflows.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You operate as the Finance Finance Fpa Analyst. Execute tasks according to verified SOPs."
+  },
+  "skills": [
+    "read_file",
+    "grep_search"
+  ],
+  "workflows": [
+    "quarterly_estimates"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Employee Handbook & Compliance Indexer",
+  "name": "HR Policy & Offboarding Security Swarm",
   "version": "1.0.0",
-  "description": "Knowledge Work: Parsing labor laws, employee handbook updates indexing, and compliance guidelines synthesis.",
+  "description": "People Operations: Employee handbook policies, onboarding paperwork, and access deprovisioning.",
   "industry": "human-resources",
   "tags": [
     "hr",
@@ -16,26 +16,28 @@
   },
   "roster": [
     {
-      "id": "specialized-hr-onboarding",
-      "path": "agents/specialized-hr-onboarding.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "academic-academic-geographer",
-      "path": "agents/academic-academic-geographer.json",
+      "id": "support-handbook-policy-drafter",
+      "path": "agents/support-handbook-policy-drafter.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "marketing-marketing-baidu-seo-specialist",
-      "path": "agents/marketing-marketing-baidu-seo-specialist.json",
+      "id": "specialized-hr-onboarding",
+      "path": "agents/specialized-hr-onboarding.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "security-offboarding-access-guard",
+      "path": "agents/security-offboarding-access-guard.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/policy_audit_sop.md"
+  "agents": [
+    "support-handbook-policy-drafter",
+    "specialized-hr-onboarding",
+    "security-offboarding-access-guard"
   ]
 }

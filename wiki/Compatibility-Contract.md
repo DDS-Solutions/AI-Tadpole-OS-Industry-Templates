@@ -18,8 +18,8 @@ Before changing a schema, validator, archive, migration, workflow, MCP layout, k
 ## Current alignment
 
 - `index.json` matches the Rust catalog's top-level array (68 public templates with `required_models: ["gemma4:31b"]`) and clone URL.
-- All 208 installed template agent profiles (instantiated from 91 distinct persona specializations across 68 public swarms + 1 internal test harness) provide the required identity/model fields (`gemma4:31b`), start `idle`, and explicitly declare `mcp_tools` and `requires_oversight`.
-- The Swarm Architect visual builder indexes a 223-persona global catalog with bounded prompts and domain guardrails.
+- All 209 installed template agent profiles (instantiated from 95 distinct persona specializations across 68 public swarms + 1 internal test harness) provide the required identity/model fields (`gemma4:31b`), start `idle`, and explicitly declare `mcp_tools` and `requires_oversight`.
+- The Swarm Architect visual builder indexes a 274-persona global catalog with bounded prompts, domain guardrails, and core SMB operational competencies.
 - Legacy `run_command`/`write_to_file` labels were replaced by native Tadpole IDs.
 - Shell declarations include the runtime's required `shell` marker, and mutation/shell declarations require oversight.
 - Workflows contain parser-visible `##`/`###` steps.

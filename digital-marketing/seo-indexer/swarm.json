@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "SEO Content Strategy Indexer",
+  "name": "Agency Client Reporting & Project Desk",
   "version": "1.0.0",
-  "description": "Knowledge Work: Web scraping, SEO keyword trend analysis, search intent mapping, and strategy synthesis.",
+  "description": "Agency Operations: Monthly client recap reports, creative brief tracking, and review management.",
   "industry": "digital-marketing",
   "tags": [
     "marketing",
@@ -16,26 +16,28 @@
   },
   "roster": [
     {
-      "id": "paid-media-paid-media-search-query-analyst",
-      "path": "agents/paid-media-paid-media-search-query-analyst.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "marketing-marketing-baidu-seo-specialist",
-      "path": "agents/marketing-marketing-baidu-seo-specialist.json",
+      "id": "support-client-reporting-recap-writer",
+      "path": "agents/support-client-reporting-recap-writer.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "marketing-marketing-seo-specialist",
-      "path": "agents/marketing-marketing-seo-specialist.json",
+      "id": "project-management-creative-brief-tracker",
+      "path": "agents/project-management-creative-brief-tracker.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "support-review-reputation-clerk",
+      "path": "agents/support-review-reputation-clerk.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/seo_sop.md"
+  "agents": [
+    "support-client-reporting-recap-writer",
+    "project-management-creative-brief-tracker",
+    "support-review-reputation-clerk"
   ]
 }

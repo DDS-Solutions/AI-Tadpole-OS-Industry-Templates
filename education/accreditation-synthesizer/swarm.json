@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Accreditation & Curriculum Audit Synthesizer",
+  "name": "School Office & Accreditation Desk",
   "version": "1.0.0",
-  "description": "Knowledge Work: Academic standards audits, accreditation compliance indexing, and curriculum synthesis.",
+  "description": "Education Operations: Student registrar intake, accreditation audit binders, and parent notices.",
   "industry": "education",
   "tags": [
     "education",
@@ -16,14 +16,8 @@
   },
   "roster": [
     {
-      "id": "finance-finance-bookkeeper-controller",
-      "path": "agents/finance-finance-bookkeeper-controller.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "specialized-corporate-training-designer",
-      "path": "agents/specialized-corporate-training-designer.json",
+      "id": "operations-enrollment-registrar-clerk",
+      "path": "agents/operations-enrollment-registrar-clerk.json",
       "supervisor": null,
       "priority": "normal"
     },
@@ -32,10 +26,18 @@
       "path": "agents/support-support-legal-compliance-checker.json",
       "supervisor": null,
       "priority": "normal"
+    },
+    {
+      "id": "support-parent-communications-drafter",
+      "path": "agents/support-parent-communications-drafter.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/accreditation_sop.md"
+  "agents": [
+    "operations-enrollment-registrar-clerk",
+    "support-support-legal-compliance-checker",
+    "support-parent-communications-drafter"
   ]
 }

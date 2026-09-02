@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Harvest Shipping & Equipment Parts Inventory",
+  "name": "Ag Input Purchasing & Farm Finance",
   "version": "1.0.0",
-  "description": "Edge Operations: Bulk crop shipping logistics, receiving farming parts, and equipment maintenance QA.",
+  "description": "Agriculture Operations: Seed/chemical input purchasing, farm bill documentation, and crop budgeting.",
   "industry": "agriculture-agtech",
   "tags": [
     "agriculture",
@@ -17,26 +17,28 @@
   },
   "roster": [
     {
-      "id": "marketing-marketing-cross-border-ecommerce",
-      "path": "agents/marketing-marketing-cross-border-ecommerce.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "design-design-brand-guardian",
-      "path": "agents/design-design-brand-guardian.json",
+      "id": "purchasing-ag-input-purchasing-clerk",
+      "path": "agents/purchasing-ag-input-purchasing-clerk.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "engineering-engineering-devops-automator",
-      "path": "agents/engineering-engineering-devops-automator.json",
+      "id": "finance-finance-bookkeeper-controller",
+      "path": "agents/finance-finance-bookkeeper-controller.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "sales-quote-proposal-drafter",
+      "path": "agents/sales-quote-proposal-drafter.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/grain_shipping_sop.md"
+  "agents": [
+    "purchasing-ag-input-purchasing-clerk",
+    "finance-finance-bookkeeper-controller",
+    "sales-quote-proposal-drafter"
   ]
 }

@@ -1,9 +1,9 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Fleet Logistics Swarm",
+  "name": "Fleet Dispatch & DOT Maintenance Swarm",
   "version": "1.0.0",
   "author": "TransitSphere Solutions",
-  "description": "A high-performance swarm for fleet scheduling, route optimization, vehicle maintenance tracking, and fuel efficiency.",
+  "description": "Transportation: Fleet preventative maintenance, ELD hours compliance, and vendor parts purchasing.",
   "industry": "Transportation & Logistics",
   "tags": [
     "transportation",
@@ -13,27 +13,31 @@
   ],
   "defaults": {
     "model": "gemma4:31b",
-    "temperature": 0.3
+    "temperature": 0.2
   },
   "roster": [
     {
-      "id": "engineering-engineering-filament-optimization-specialist",
-      "path": "agents/engineering-engineering-filament-optimization-specialist.json",
+      "id": "operations-fleet-maintenance-scheduler",
+      "path": "agents/operations-fleet-maintenance-scheduler.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "marketing-marketing-cross-border-ecommerce",
-      "path": "agents/marketing-marketing-cross-border-ecommerce.json",
+      "id": "compliance-dot-hours-inspection-clerk",
+      "path": "agents/compliance-dot-hours-inspection-clerk.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "marketing-marketing-short-video-editing-coach",
-      "path": "agents/marketing-marketing-short-video-editing-coach.json",
+      "id": "purchasing-vendor-purchasing-clerk",
+      "path": "agents/purchasing-vendor-purchasing-clerk.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
-  "global_workflows": []
+  "agents": [
+    "operations-fleet-maintenance-scheduler",
+    "compliance-dot-hours-inspection-clerk",
+    "purchasing-vendor-purchasing-clerk"
+  ]
 }

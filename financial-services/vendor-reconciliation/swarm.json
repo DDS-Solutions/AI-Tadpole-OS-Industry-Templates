@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Vendor Invoice & Purchasing QA",
+  "name": "Vendor AP & Cash Disbursement Swarm",
   "version": "1.0.0",
-  "description": "Edge Operations: Invoice processing, shipping validation, vendor ledger audits, and purchase reconciliation.",
+  "description": "Financial Operations: Accounts payable 3-way matching, invoice disbursement approval, and vendor inquiries.",
   "industry": "financial-services",
   "tags": [
     "finance",
@@ -20,23 +20,25 @@
       "id": "finance-finance-bookkeeper-controller",
       "path": "agents/finance-finance-bookkeeper-controller.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
     },
     {
-      "id": "specialized-accounts-payable-agent",
-      "path": "agents/specialized-accounts-payable-agent.json",
+      "id": "finance-ar-collections-specialist",
+      "path": "agents/finance-ar-collections-specialist.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "specialized-chief-financial-officer",
-      "path": "agents/specialized-chief-financial-officer.json",
+      "id": "purchasing-vendor-purchasing-clerk",
+      "path": "agents/purchasing-vendor-purchasing-clerk.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/reconciliation_sop.md"
+  "agents": [
+    "finance-finance-bookkeeper-controller",
+    "finance-ar-collections-specialist",
+    "purchasing-vendor-purchasing-clerk"
   ]
 }

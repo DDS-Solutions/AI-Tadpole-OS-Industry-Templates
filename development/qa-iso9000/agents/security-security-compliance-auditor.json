@@ -1,0 +1,22 @@
+{
+  "id": "security-security-compliance-auditor",
+  "name": "Security Security Compliance Auditor",
+  "role": "Security Security Compliance Auditor Specialist",
+  "department": "Operations",
+  "description": "Specialized AI agent handling Security Security Compliance Auditor Specialist workflows.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You operate as the Security Security Compliance Auditor. Execute tasks according to verified SOPs."
+  },
+  "skills": [
+    "read_file",
+    "grep_search"
+  ],
+  "workflows": [
+    "security_audit"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

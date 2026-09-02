@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Grid Maintenance Manuals & SOP Indexer",
+  "name": "Utility Work Order & Infrastructure Costing",
   "version": "1.0.0",
-  "description": "Knowledge Work: Processing telemetry manuals, emergency utility plans indexing, and maintenance reports synthesis.",
+  "description": "Utilities Operations: Equipment preventative maintenance, job costing, and safety audits.",
   "industry": "critical-infrastructure",
   "tags": [
     "utilities",
@@ -16,26 +16,28 @@
   },
   "roster": [
     {
-      "id": "design-design-brand-guardian",
-      "path": "agents/design-design-brand-guardian.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "design-design-persona-walkthrough",
-      "path": "agents/design-design-persona-walkthrough.json",
+      "id": "operations-equipment-maintenance-clerk",
+      "path": "agents/operations-equipment-maintenance-clerk.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "engineering-engineering-backend-architect",
-      "path": "agents/engineering-engineering-backend-architect.json",
+      "id": "compliance-osha-safety-clerk",
+      "path": "agents/compliance-osha-safety-clerk.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "finance-job-costing-estimator",
+      "path": "agents/finance-job-costing-estimator.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/utility_telemetry_sop.md"
+  "agents": [
+    "operations-equipment-maintenance-clerk",
+    "compliance-osha-safety-clerk",
+    "finance-job-costing-estimator"
   ]
 }

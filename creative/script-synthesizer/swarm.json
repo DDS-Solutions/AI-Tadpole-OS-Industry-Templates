@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Script & Localization Knowledge Indexer",
+  "name": "Media Production & Creative Brief Desk",
   "version": "1.0.0",
-  "description": "Knowledge Work: Script parsing, dialog semantic mapping, cultural adaptation databases indexing, and localization synthesis.",
+  "description": "Media Production: Script brief tracking, production milestone recaps, and project estimate drafting.",
   "industry": "media-creative",
   "tags": [
     "creative",
@@ -17,26 +17,28 @@
   },
   "roster": [
     {
-      "id": "engineering-engineering-database-optimizer",
-      "path": "agents/engineering-engineering-database-optimizer.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "paid-media-paid-media-auditor",
-      "path": "agents/paid-media-paid-media-auditor.json",
+      "id": "project-management-creative-brief-tracker",
+      "path": "agents/project-management-creative-brief-tracker.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "paid-media-paid-media-creative-strategist",
-      "path": "agents/paid-media-paid-media-creative-strategist.json",
+      "id": "support-client-reporting-recap-writer",
+      "path": "agents/support-client-reporting-recap-writer.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "sales-quote-proposal-drafter",
+      "path": "agents/sales-quote-proposal-drafter.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/script_localization_sop.md"
+  "agents": [
+    "project-management-creative-brief-tracker",
+    "support-client-reporting-recap-writer",
+    "sales-quote-proposal-drafter"
   ]
 }

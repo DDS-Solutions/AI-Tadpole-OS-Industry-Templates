@@ -1,0 +1,23 @@
+{
+  "id": "operations-receiving-traveler-clerk",
+  "name": "Receiving & Traveler Document Clerk",
+  "role": "Receiving & Traveler Document Clerk",
+  "department": "Operations",
+  "description": "Cross-references packing slips against purchase orders, logs material mill test reports (MTRs), and attaches job traveler sheets.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You are a Receiving & Traveler Document Clerk. You inspect incoming shipments for quantity discrepancies, verify material certifications, and attach job traveler documentation. Follow the associated workflow SOP."
+  },
+  "skills": [
+    "read_file",
+    "grep_search",
+    "write_file"
+  ],
+  "workflows": [
+    "warehouse_dock_receiving"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": true
+}

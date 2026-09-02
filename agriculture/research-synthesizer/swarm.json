@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Soil Science & Agronomy Database Indexer",
+  "name": "Farm Operations & Harvest Logistics",
   "version": "1.0.0",
-  "description": "Knowledge Work: Soil telemetry data parsing, crop yields indexing, and agricultural research synthesis.",
+  "description": "Agriculture Operations: Harvest equipment dispatch, grain lot tracking, and weather-window scheduling.",
   "industry": "agriculture-agtech",
   "tags": [
     "agriculture",
@@ -17,26 +17,28 @@
   },
   "roster": [
     {
-      "id": "design-design-ux-researcher",
-      "path": "agents/design-design-ux-researcher.json",
+      "id": "operations-harvest-field-scheduler",
+      "path": "agents/operations-harvest-field-scheduler.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "engineering-engineering-database-optimizer",
-      "path": "agents/engineering-engineering-database-optimizer.json",
+      "id": "compliance-grain-traceability-clerk",
+      "path": "agents/compliance-grain-traceability-clerk.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "finance-finance-investment-researcher",
-      "path": "agents/finance-finance-investment-researcher.json",
+      "id": "operations-equipment-maintenance-clerk",
+      "path": "agents/operations-equipment-maintenance-clerk.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/soil_telemetry_sop.md"
+  "agents": [
+    "operations-harvest-field-scheduler",
+    "compliance-grain-traceability-clerk",
+    "operations-equipment-maintenance-clerk"
   ]
 }

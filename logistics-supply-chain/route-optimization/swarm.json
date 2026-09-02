@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Route & Transit Strategy Analyzer",
+  "name": "Logistics Dispatch & Route Maintenance Desk",
   "version": "1.0.0",
-  "description": "Knowledge Work: Freight data analysis, carrier performance indexing, transit delay prediction, and strategic synthesis.",
+  "description": "Supply Chain Operations: Delivery fleet maintenance, DOT driver hours audit, and transport costing.",
   "industry": "logistics-supply-chain",
   "tags": [
     "logistics",
@@ -16,26 +16,28 @@
   },
   "roster": [
     {
-      "id": "finance-finance-financial-analyst",
-      "path": "agents/finance-finance-financial-analyst.json",
+      "id": "operations-fleet-maintenance-scheduler",
+      "path": "agents/operations-fleet-maintenance-scheduler.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "finance-finance-fpa-analyst",
-      "path": "agents/finance-finance-fpa-analyst.json",
+      "id": "compliance-dot-hours-inspection-clerk",
+      "path": "agents/compliance-dot-hours-inspection-clerk.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "specialized-business-strategist",
-      "path": "agents/specialized-business-strategist.json",
+      "id": "finance-job-costing-estimator",
+      "path": "agents/finance-job-costing-estimator.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/route_analysis_sop.md"
+  "agents": [
+    "operations-fleet-maintenance-scheduler",
+    "compliance-dot-hours-inspection-clerk",
+    "finance-job-costing-estimator"
   ]
 }

@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Expert Knowledge Harvester",
+  "name": "Consulting Time, Billing & Scope Desk",
   "version": "1.0.0",
-  "description": "Knowledge Work: Client interview transcription analysis, expert feedback harvesting, and methodology synthesis.",
+  "description": "Consulting Operations: Time entry auditing, SOW proposal drafting, and client document collection.",
   "industry": "specialized-consultancies",
   "tags": [
     "consultancy",
@@ -16,26 +16,28 @@
   },
   "roster": [
     {
-      "id": "specialized-corporate-training-designer",
-      "path": "agents/specialized-corporate-training-designer.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "specialized-legal-billing-time-tracking",
-      "path": "agents/specialized-legal-billing-time-tracking.json",
+      "id": "finance-time-billing-coder",
+      "path": "agents/finance-time-billing-coder.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "specialized-medical-billing-coding-specialist",
-      "path": "agents/specialized-medical-billing-coding-specialist.json",
+      "id": "sales-quote-proposal-drafter",
+      "path": "agents/sales-quote-proposal-drafter.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "support-client-document-coordinator",
+      "path": "agents/support-client-document-coordinator.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/synthesis_sop.md"
+  "agents": [
+    "finance-time-billing-coder",
+    "sales-quote-proposal-drafter",
+    "support-client-document-coordinator"
   ]
 }

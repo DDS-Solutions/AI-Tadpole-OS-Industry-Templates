@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Threat Intel Feed Parser & Knowledge Base",
+  "name": "MSSP Security Operations & Incident Desk",
   "version": "1.0.0",
-  "description": "Knowledge Work: Scraping CVE bulletins, threat intel feed indexing, and security alert briefings synthesis.",
+  "description": "Cybersecurity: Threat detection, vulnerability patching, and security compliance audits.",
   "industry": "cybersecurity",
   "tags": [
     "security",
@@ -16,12 +16,6 @@
   },
   "roster": [
     {
-      "id": "security-security-architect",
-      "path": "agents/security-security-architect.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
       "id": "security-security-threat-detection-engineer",
       "path": "agents/security-security-threat-detection-engineer.json",
       "supervisor": null,
@@ -32,10 +26,18 @@
       "path": "agents/security-security-appsec-engineer.json",
       "supervisor": null,
       "priority": "normal"
+    },
+    {
+      "id": "security-security-compliance-auditor",
+      "path": "agents/security-security-compliance-auditor.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/threat_intel_sop.md"
+  "agents": [
+    "security-security-threat-detection-engineer",
+    "security-security-appsec-engineer",
+    "security-security-compliance-auditor"
   ]
 }

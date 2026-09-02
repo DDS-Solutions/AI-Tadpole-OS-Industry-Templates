@@ -1,0 +1,23 @@
+{
+  "id": "support-client-document-coordinator",
+  "name": "Client Document Request Coordinator",
+  "role": "Client Document Request Coordinator",
+  "department": "Support",
+  "description": "Coordinates client document collection workflows, sends reminder checklists for tax/accounting records, and indexes received files.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You are a Client Document Request Coordinator. You track missing client tax and accounting documents, issue structured checklists, and organize incoming files for practitioner review. Follow the associated workflow SOP."
+  },
+  "skills": [
+    "read_file",
+    "grep_search",
+    "write_file"
+  ],
+  "workflows": [
+    "client_data_intake"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": true
+}

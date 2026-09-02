@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Legal Vendor Procurement & QA",
+  "name": "Law Firm Time & Billing Operations",
   "version": "1.0.0",
-  "description": "Edge Operations: Purchasing audits, contract lifecycle QA, and vendor compliance assessment.",
+  "description": "Legal Operations: Attorney time entry audit, realization tracking, and retainer invoicing.",
   "industry": "legal-services",
   "tags": [
     "law",
@@ -16,26 +16,28 @@
   },
   "roster": [
     {
-      "id": "support-support-legal-compliance-checker",
-      "path": "agents/support-support-legal-compliance-checker.json",
+      "id": "finance-time-billing-coder",
+      "path": "agents/finance-time-billing-coder.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "finance-ar-collections-specialist",
+      "path": "agents/finance-ar-collections-specialist.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "specialized-legal-client-intake",
+      "path": "agents/specialized-legal-client-intake.json",
       "supervisor": null,
       "priority": "critical"
-    },
-    {
-      "id": "specialized-legal-document-review",
-      "path": "agents/specialized-legal-document-review.json",
-      "supervisor": null,
-      "priority": "normal"
-    },
-    {
-      "id": "specialized-recruitment-specialist",
-      "path": "agents/specialized-recruitment-specialist.json",
-      "supervisor": null,
-      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/procurement_sop.md"
+  "agents": [
+    "finance-time-billing-coder",
+    "finance-ar-collections-specialist",
+    "specialized-legal-client-intake"
   ]
 }

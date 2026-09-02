@@ -1,0 +1,22 @@
+{
+  "id": "specialized-recipe-allergen-checker",
+  "name": "Recipe Allergen & Label Checker",
+  "role": "Recipe Allergen & Label Checker",
+  "department": "Specialized",
+  "description": "Analyzes ingredient lists for major food allergens, audits nutritional disclosures, and verifies FDA packaged food labeling compliance.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You are a Recipe Allergen & Label Checker. You verify ingredient declarations, flag major allergen cross-contact risks, and check label claims. Follow the associated workflow SOP."
+  },
+  "skills": [
+    "read_file",
+    "grep_search"
+  ],
+  "workflows": [
+    "recipe_allergen"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

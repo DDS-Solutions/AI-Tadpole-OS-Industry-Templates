@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "DOT Regulations Compliance Auditor",
+  "name": "Transportation Regulatory & Safety Desk",
   "version": "1.0.0",
-  "description": "Knowledge Work: Analyzing transit laws, DOT regulation changes indexing, and compliance reporting.",
+  "description": "Transportation: FMCSA hours-of-service compliance, driver qualification files, and safety audits.",
   "industry": "transportation-logistics",
   "tags": [
     "transportation",
@@ -16,26 +16,28 @@
   },
   "roster": [
     {
+      "id": "compliance-dot-hours-inspection-clerk",
+      "path": "agents/compliance-dot-hours-inspection-clerk.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
       "id": "support-support-legal-compliance-checker",
       "path": "agents/support-support-legal-compliance-checker.json",
       "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "operations-fleet-maintenance-scheduler",
+      "path": "agents/operations-fleet-maintenance-scheduler.json",
+      "supervisor": null,
       "priority": "critical"
-    },
-    {
-      "id": "marketing-marketing-baidu-seo-specialist",
-      "path": "agents/marketing-marketing-baidu-seo-specialist.json",
-      "supervisor": null,
-      "priority": "normal"
-    },
-    {
-      "id": "marketing-marketing-cross-border-ecommerce",
-      "path": "agents/marketing-marketing-cross-border-ecommerce.json",
-      "supervisor": null,
-      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/dot_compliance_sop.md"
+  "agents": [
+    "compliance-dot-hours-inspection-clerk",
+    "support-support-legal-compliance-checker",
+    "operations-fleet-maintenance-scheduler"
   ]
 }

@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Clinical Guideline Indexer",
+  "name": "Clinical Documentation & Prior-Auth Desk",
   "version": "1.0.0",
-  "description": "Knowledge Work: Processing medical research, clinical protocols indexing, and case summary generation.",
+  "description": "Clinical Practice: Medical chart visit summaries, prior-authorization packet prep, and guideline indexing.",
   "industry": "medical-practices",
   "tags": [
     "healthcare",
@@ -16,31 +16,28 @@
   },
   "roster": [
     {
+      "id": "specialized-clinical-documentation-specialist",
+      "path": "agents/specialized-clinical-documentation-specialist.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "specialized-prior-auth-insurance-specialist",
+      "path": "agents/specialized-prior-auth-insurance-specialist.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
       "id": "specialized-data-privacy-officer",
       "path": "agents/specialized-data-privacy-officer.json",
       "supervisor": null,
-      "priority": "normal"
-    },
-    {
-      "id": "specialized-specialized-workflow-architect",
-      "path": "agents/specialized-specialized-workflow-architect.json",
-      "supervisor": null,
       "priority": "critical"
-    },
-    {
-      "id": "specialized-specialized-model-qa",
-      "path": "agents/specialized-specialized-model-qa.json",
-      "supervisor": null,
-      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/guideline_sop.md"
-  ],
   "agents": [
-    "specialized-data-privacy-officer",
-    "specialized-specialized-workflow-architect",
-    "specialized-specialized-model-qa"
+    "specialized-clinical-documentation-specialist",
+    "specialized-prior-auth-insurance-specialist",
+    "specialized-data-privacy-officer"
   ]
 }

@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Kitchen Inventory Receiving & Supplier QA",
+  "name": "Catering Quotes & Food Purchasing Swarm",
   "version": "1.0.0",
-  "description": "Edge Operations: Purchasing ingredients, temperature shipping checks, receiving logs, and supplier quality audits.",
+  "description": "Food & Beverage: Catering proposals, food distributor purchasing, and vendor AP reconciliation.",
   "industry": "food-beverage",
   "tags": [
     "food",
@@ -17,26 +17,28 @@
   },
   "roster": [
     {
-      "id": "support-wholesale-order-fulfillment-coordinator",
-      "path": "agents/support-wholesale-order-fulfillment-coordinator.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "specialized-specialized-model-qa",
-      "path": "agents/specialized-specialized-model-qa.json",
+      "id": "sales-catering-quote-drafter",
+      "path": "agents/sales-catering-quote-drafter.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "specialized-supply-chain-strategist",
-      "path": "agents/specialized-supply-chain-strategist.json",
+      "id": "purchasing-vendor-purchasing-clerk",
+      "path": "agents/purchasing-vendor-purchasing-clerk.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "finance-finance-bookkeeper-controller",
+      "path": "agents/finance-finance-bookkeeper-controller.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/receiving_sop.md"
+  "agents": [
+    "sales-catering-quote-drafter",
+    "purchasing-vendor-purchasing-clerk",
+    "finance-finance-bookkeeper-controller"
   ]
 }

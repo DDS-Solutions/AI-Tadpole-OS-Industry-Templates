@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Medical Inventory & Procurement QA",
+  "name": "Clinical Supplies & Equipment Inventory",
   "version": "1.0.0",
-  "description": "Edge Operations: Purchasing medical supplies, shipping, receiving audits, and ISO compliance sterilization QA.",
+  "description": "Clinical Practice: Medical supplies replenishment, sterilization logs, and clinic vendor purchasing.",
   "industry": "medical-practices",
   "tags": [
     "healthcare",
@@ -17,26 +17,28 @@
   },
   "roster": [
     {
-      "id": "specialized-medical-billing-coding-specialist",
-      "path": "agents/specialized-medical-billing-coding-specialist.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "security-security-compliance-auditor",
-      "path": "agents/security-security-compliance-auditor.json",
+      "id": "purchasing-vendor-purchasing-clerk",
+      "path": "agents/purchasing-vendor-purchasing-clerk.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "specialized-healthcare-marketing-compliance",
-      "path": "agents/specialized-healthcare-marketing-compliance.json",
+      "id": "operations-equipment-maintenance-clerk",
+      "path": "agents/operations-equipment-maintenance-clerk.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "finance-finance-bookkeeper-controller",
+      "path": "agents/finance-finance-bookkeeper-controller.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/inventory_sop.md"
+  "agents": [
+    "purchasing-vendor-purchasing-clerk",
+    "operations-equipment-maintenance-clerk",
+    "finance-finance-bookkeeper-controller"
   ]
 }

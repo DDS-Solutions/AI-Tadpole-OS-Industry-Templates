@@ -1,0 +1,22 @@
+{
+  "id": "finance-finance-bookkeeper-controller",
+  "name": "Finance Finance Bookkeeper Controller",
+  "role": "Finance Finance Bookkeeper Controller Specialist",
+  "department": "Operations",
+  "description": "Specialized AI agent handling Finance Finance Bookkeeper Controller Specialist workflows.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You operate as the Finance Finance Bookkeeper Controller. Execute tasks according to verified SOPs."
+  },
+  "skills": [
+    "read_file",
+    "grep_search"
+  ],
+  "workflows": [
+    "farm_bookkeeping"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

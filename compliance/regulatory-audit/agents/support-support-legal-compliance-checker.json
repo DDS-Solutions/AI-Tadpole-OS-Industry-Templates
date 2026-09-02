@@ -1,0 +1,22 @@
+{
+  "id": "support-support-legal-compliance-checker",
+  "name": "Support Support Legal Compliance Checker",
+  "role": "Support Support Legal Compliance Checker Specialist",
+  "department": "Operations",
+  "description": "Specialized AI agent handling Support Support Legal Compliance Checker Specialist workflows.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You operate as the Support Support Legal Compliance Checker. Execute tasks according to verified SOPs."
+  },
+  "skills": [
+    "read_file",
+    "grep_search"
+  ],
+  "workflows": [
+    "regulatory_tracking"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

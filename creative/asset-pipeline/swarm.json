@@ -1,9 +1,9 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Creative Asset Pipeline Swarm",
+  "name": "Creative Studio Project & Reporting Desk",
   "version": "1.0.0",
   "author": "PixelStream Studios",
-  "description": "Designed for creative asset verification, size budget checks, and dialog localization tracking.",
+  "description": "Creative Agency: Creative brief tracking, client monthly reporting, and quote estimation.",
   "industry": "Media & Creative",
   "tags": [
     "creative",
@@ -13,27 +13,31 @@
   ],
   "defaults": {
     "model": "gemma4:31b",
-    "temperature": 0.3
+    "temperature": 0.2
   },
   "roster": [
     {
-      "id": "paid-media-paid-media-auditor",
-      "path": "agents/paid-media-paid-media-auditor.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "paid-media-paid-media-creative-strategist",
-      "path": "agents/paid-media-paid-media-creative-strategist.json",
+      "id": "project-management-creative-brief-tracker",
+      "path": "agents/project-management-creative-brief-tracker.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "finance-finance-investment-researcher",
-      "path": "agents/finance-finance-investment-researcher.json",
+      "id": "support-client-reporting-recap-writer",
+      "path": "agents/support-client-reporting-recap-writer.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "sales-quote-proposal-drafter",
+      "path": "agents/sales-quote-proposal-drafter.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
-  "global_workflows": []
+  "agents": [
+    "project-management-creative-brief-tracker",
+    "support-client-reporting-recap-writer",
+    "sales-quote-proposal-drafter"
+  ]
 }

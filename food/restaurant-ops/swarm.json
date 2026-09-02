@@ -1,9 +1,9 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Restaurant Operations Swarm",
+  "name": "Restaurant Floor & Shift Operations",
   "version": "1.0.0",
   "author": "FoodService Labs",
-  "description": "An optimized swarm for managing kitchen inventory, menu performance, and automated supplier ordering.",
+  "description": "Food & Beverage: Daily shift scheduling, health safety compliance, and register sales reconciliation.",
   "industry": "Food & Beverage",
   "tags": [
     "food",
@@ -13,27 +13,31 @@
   ],
   "defaults": {
     "model": "gemma4:31b",
-    "temperature": 0.3
+    "temperature": 0.2
   },
   "roster": [
     {
-      "id": "project-management-project-management-jira-workflow-steward",
-      "path": "agents/project-management-project-management-jira-workflow-steward.json",
+      "id": "operations-shift-scheduling-coordinator",
+      "path": "agents/operations-shift-scheduling-coordinator.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "compliance-food-safety-haccp-clerk",
+      "path": "agents/compliance-food-safety-haccp-clerk.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "specialized-chief-financial-officer",
-      "path": "agents/specialized-chief-financial-officer.json",
-      "supervisor": null,
-      "priority": "normal"
-    },
-    {
-      "id": "specialized-operations-manager",
-      "path": "agents/specialized-operations-manager.json",
+      "id": "finance-finance-bookkeeper-controller",
+      "path": "agents/finance-finance-bookkeeper-controller.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
-  "global_workflows": []
+  "agents": [
+    "operations-shift-scheduling-coordinator",
+    "compliance-food-safety-haccp-clerk",
+    "finance-finance-bookkeeper-controller"
+  ]
 }

@@ -1,8 +1,8 @@
 [
   {
     "id": "legal-contract-review",
-    "name": "Legal Contract Auditor",
-    "description": "AI-driven contract analysis, litigation forecasting, and automated discovery.",
+    "name": "Legal Matter Intake & Contract Review",
+    "description": "Legal Operations: Client conflict check, first-pass contract review, and docket deadline management.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "legal/contract-review",
     "required_models": [
@@ -15,8 +15,8 @@
   },
   {
     "id": "healthcare-patient-intake",
-    "name": "Patient Intake Automation",
-    "description": "Process clinical data and automate patient intake workflows.",
+    "name": "Patient Intake & Scheduling Desk",
+    "description": "Clinical Practice: Patient intake, appointment scheduling, HIPAA consent verification, and visit follow-ups.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "healthcare/patient-intake",
     "required_models": [
@@ -44,8 +44,8 @@
   },
   {
     "id": "bookkeeping-audit",
-    "name": "SMB Bookkeeping Swarm",
-    "description": "Automated daily reconciliation, tax optimization, and digital audit trails.",
+    "name": "Bookkeeping & Cash Operations Swarm",
+    "description": "Financial Operations: General ledger reconciliation, AP/AR cash flow, and client document collection.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "financial-services/bookkeeping-audit",
     "required_models": [
@@ -72,8 +72,8 @@
   },
   {
     "id": "lead-transaction-management",
-    "name": "Real Estate Closer",
-    "description": "Automated lead nurturing, MLS syndication, and escrow timeline tracking.",
+    "name": "Real Estate Transaction & Showing Desk",
+    "description": "Brokerage Operations: Transaction coordination, speed-to-lead showing response, and listing packets.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "real-estate/lead-transaction",
     "required_models": [
@@ -87,8 +87,8 @@
   },
   {
     "id": "manufacturing-job-shop-25",
-    "name": "Job Shop (25 Seats)",
-    "description": "Optimized production scheduling and material tracking for small-scale manufacturing.",
+    "name": "Job Shop 25-Seat Operations Swarm",
+    "description": "Shopfloor Operations: Work order scheduling, receiving traveler verification, job costing, and QA inspection.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "manufacturing/job-shop-25",
     "required_models": [
@@ -129,8 +129,8 @@
   },
   {
     "id": "food-restaurant-ops",
-    "name": "Food & Beverage Operations",
-    "description": "Automate kitchen inventory, menu performance analytics, and supplier ordering workflows.",
+    "name": "Restaurant Floor & Shift Operations",
+    "description": "Food & Beverage: Daily shift scheduling, health safety compliance, and register sales reconciliation.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "food/restaurant-ops",
     "required_models": [
@@ -157,8 +157,8 @@
   },
   {
     "id": "transportation-fleet-logistics",
-    "name": "Fleet Logistics Swarm",
-    "description": "Fleet scheduling, route optimization, maintenance tracking, and fuel efficiency analytics.",
+    "name": "Fleet Dispatch & DOT Maintenance Swarm",
+    "description": "Transportation: Fleet preventative maintenance, ELD hours compliance, and vendor parts purchasing.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "transportation/fleet-logistics",
     "required_models": [
@@ -201,8 +201,8 @@
   },
   {
     "id": "compliance-regulatory-audit",
-    "name": "Regulatory Compliance Swarm",
-    "description": "Continuous security posture assessment, SOC2/ISO readiness checks, and regulatory compliance mapping.",
+    "name": "Corporate Compliance & Audit Evidence Desk",
+    "description": "Compliance Operations: Regulatory policy tracking, audit evidence collection, and vendor security packaging.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "compliance/regulatory-audit",
     "required_models": [
@@ -231,8 +231,8 @@
   },
   {
     "id": "hr-recruiting-triage",
-    "name": "Recruiting Triage Swarm",
-    "description": "Designed for parsing candidate resumes, screening against role criteria, and coordinating onboarding files.",
+    "name": "Recruiting & Talent Acquisition Swarm",
+    "description": "People Operations: Candidate sourcing, job descriptions, interview coordination, and scorecard aggregation.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "hr/recruiting-triage",
     "required_models": [
@@ -245,8 +245,8 @@
   },
   {
     "id": "education-curriculum-planner",
-    "name": "Curriculum Planner Swarm",
-    "description": "Designed for curriculum audit mapping, lesson plan alignment, and student analytics reviews.",
+    "name": "School Office & Student Records Desk",
+    "description": "Education Operations: Registrar admissions, curriculum mapping, and parent communications.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "education/curriculum-planner",
     "required_models": [
@@ -259,8 +259,8 @@
   },
   {
     "id": "utilities-grid-telemetry",
-    "name": "Grid Telemetry Swarm",
-    "description": "Designed for grid status logs auditing, alarm triage, and utility crew scheduling.",
+    "name": "Utility Grid Operations & Safety Desk",
+    "description": "Utilities Operations: Preventative maintenance logs, OSHA safety compliance, and parts purchasing.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "utilities/grid-telemetry",
     "required_models": [
@@ -274,8 +274,8 @@
   },
   {
     "id": "creative-asset-pipeline",
-    "name": "Creative Asset Pipeline Swarm",
-    "description": "Designed for creative asset verification, size budget checks, and dialog localization tracking.",
+    "name": "Creative Studio Project & Reporting Desk",
+    "description": "Creative Agency: Creative brief tracking, client monthly reporting, and quote estimation.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "creative/asset-pipeline",
     "required_models": [
@@ -290,8 +290,8 @@
   },
   {
     "id": "legal-precedent-synthesis",
-    "name": "Legal Precedent Synthesizer",
-    "description": "Knowledge Work: Automated analysis of legal precedents, case law synthesis, and document drafting.",
+    "name": "Litigation Prep & E-Discovery Desk",
+    "description": "Legal Operations: E-discovery indexing, court docket calculation, and factual case timeline prep.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "legal/precedent-synthesis",
     "required_models": [
@@ -305,8 +305,8 @@
   },
   {
     "id": "legal-procurement-qa",
-    "name": "Legal Vendor Procurement & QA",
-    "description": "Edge Operations: Purchasing audits, contract lifecycle QA, and vendor compliance assessment.",
+    "name": "Law Firm Time & Billing Operations",
+    "description": "Legal Operations: Attorney time entry audit, realization tracking, and retainer invoicing.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "legal/procurement-qa",
     "required_models": [
@@ -320,8 +320,8 @@
   },
   {
     "id": "medical-clinical-guidelines",
-    "name": "Clinical Guideline Indexer",
-    "description": "Knowledge Work: Processing medical research, clinical protocols indexing, and case summary generation.",
+    "name": "Clinical Documentation & Prior-Auth Desk",
+    "description": "Clinical Practice: Medical chart visit summaries, prior-authorization packet prep, and guideline indexing.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "healthcare/clinical-guidelines",
     "required_models": [
@@ -334,8 +334,8 @@
   },
   {
     "id": "medical-inventory-qa",
-    "name": "Medical Inventory & Procurement QA",
-    "description": "Edge Operations: Purchasing medical supplies, shipping, receiving audits, and ISO compliance sterilization QA.",
+    "name": "Clinical Supplies & Equipment Inventory",
+    "description": "Clinical Practice: Medical supplies replenishment, sterilization logs, and clinic vendor purchasing.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "healthcare/inventory-qa",
     "required_models": [
@@ -348,8 +348,8 @@
   },
   {
     "id": "financial-policy-synthesizer",
-    "name": "Tax Law & Policy Synthesizer",
-    "description": "Knowledge Work: Financial research, tax law changes synthesis, policy auditing, and regulatory reporting.",
+    "name": "Tax Compliance & Client Onboarding",
+    "description": "Financial Operations: Tax packet collection, KYC onboarding checklists, and quarterly tax estimate prep.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "financial-services/policy-synthesizer",
     "required_models": [
@@ -362,8 +362,8 @@
   },
   {
     "id": "financial-vendor-reconciliation",
-    "name": "Vendor Invoice & Purchasing QA",
-    "description": "Edge Operations: Invoice processing, shipping validation, vendor ledger audits, and purchase reconciliation.",
+    "name": "Vendor AP & Cash Disbursement Swarm",
+    "description": "Financial Operations: Accounts payable 3-way matching, invoice disbursement approval, and vendor inquiries.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "financial-services/vendor-reconciliation",
     "required_models": [
@@ -376,8 +376,8 @@
   },
   {
     "id": "marketing-seo-indexer",
-    "name": "SEO Content Strategy Indexer",
-    "description": "Knowledge Work: Web scraping, SEO keyword trend analysis, search intent mapping, and strategy synthesis.",
+    "name": "Agency Client Reporting & Project Desk",
+    "description": "Agency Operations: Monthly client recap reports, creative brief tracking, and review management.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "digital-marketing/seo-indexer",
     "required_models": [
@@ -390,8 +390,8 @@
   },
   {
     "id": "marketing-vendor-purchasing",
-    "name": "Ad Spend & Vendor Purchasing QA",
-    "description": "Edge Operations: Media buy procurement, invoice verification, ad network compliance, and ISO quality auditing.",
+    "name": "DTC Operations & Customer Care Swarm",
+    "description": "E-Commerce Operations: Returns/WISMO resolution, product catalog QA, and customer care.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "digital-marketing/vendor-purchasing",
     "required_models": [
@@ -405,8 +405,8 @@
   },
   {
     "id": "ecommerce-market-analysis",
-    "name": "Competitor & Market Trend Analyzer",
-    "description": "Knowledge Work: E-commerce catalog scraping, competitor pricing intelligence, and trend synthesis.",
+    "name": "E-Commerce Catalog & Quoting Desk",
+    "description": "E-Commerce: Product catalog QA, customer returns triage, and B2B quote drafting.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "e-commerce/market-analysis",
     "required_models": [
@@ -419,8 +419,8 @@
   },
   {
     "id": "ecommerce-dispatch-qa",
-    "name": "Warehouse Dispatch & Shipping QA",
-    "description": "Edge Operations: Shipping dispatch, receiving validation, inventory auditing, and packaging quality control.",
+    "name": "E-Commerce Fulfillment & Collections Swarm",
+    "description": "E-Commerce: Warehouse packing verification, return order logistics, and wholesale AR aging.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "e-commerce/dispatch-qa",
     "required_models": [
@@ -434,8 +434,8 @@
   },
   {
     "id": "realestate-valuation-synthesizer",
-    "name": "Property Valuation & Appraisal Synthesizer",
-    "description": "Knowledge Work: Property data compilation, local market appraisal indexing, and trend report writing.",
+    "name": "Real Estate Transaction & Showing Desk",
+    "description": "Brokerage Operations: Transaction coordination, speed-to-lead showing response, and listing packets.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "real-estate/valuation-synthesizer",
     "required_models": [
@@ -450,8 +450,8 @@
   },
   {
     "id": "realestate-maintenance-procurement",
-    "name": "Maintenance Procurement & Contractor QA",
-    "description": "Edge Operations: Facilities purchasing, material inventory, shipping parts, and contractor SLA quality audits.",
+    "name": "Property Management & Maintenance Swarm",
+    "description": "Property Management: Tenant work-order dispatch, lease abstracting, and rent collection.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "real-estate/maintenance-procurement",
     "required_models": [
@@ -464,8 +464,8 @@
   },
   {
     "id": "consultancy-expert-synthesizer",
-    "name": "Expert Knowledge Harvester",
-    "description": "Knowledge Work: Client interview transcription analysis, expert feedback harvesting, and methodology synthesis.",
+    "name": "Consulting Time, Billing & Scope Desk",
+    "description": "Consulting Operations: Time entry auditing, SOW proposal drafting, and client document collection.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "specialized-consultancies/expert-synthesizer",
     "required_models": [
@@ -478,8 +478,8 @@
   },
   {
     "id": "consultancy-subcontractor-qa",
-    "name": "Subcontractor Procurement & QA",
-    "description": "Edge Operations: Consultant onboarding procurement, shipping materials, project timesheet QA, and ISO compliance.",
+    "name": "Consulting Subcontractor & Expense Swarm",
+    "description": "Consulting Operations: 1099 SME contractor recruiting, vendor purchasing, and time billing.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "specialized-consultancies/subcontractor-qa",
     "required_models": [
@@ -493,8 +493,8 @@
   },
   {
     "id": "logistics-route-optimization",
-    "name": "Route & Transit Strategy Analyzer",
-    "description": "Knowledge Work: Freight data analysis, carrier performance indexing, transit delay prediction, and strategic synthesis.",
+    "name": "Logistics Dispatch & Route Maintenance Desk",
+    "description": "Supply Chain Operations: Delivery fleet maintenance, DOT driver hours audit, and transport costing.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "logistics-supply-chain/route-optimization",
     "required_models": [
@@ -507,8 +507,8 @@
   },
   {
     "id": "logistics-dock-shipping",
-    "name": "Loading Dock Shipping & Receiving QA",
-    "description": "Edge Operations: Freight loading, receiving, container seals inspections, inventory logging, and ISO 9000 audits.",
+    "name": "Warehouse Dock Receiving & QA Swarm",
+    "description": "Supply Chain Operations: Inbound dock traveler verification, vendor purchasing, and quality inspection.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "logistics-supply-chain/dock-shipping",
     "required_models": [
@@ -522,8 +522,8 @@
   },
   {
     "id": "engineering-spec-compliance",
-    "name": "Engineering Spec & Code Compliance Auditor",
-    "description": "Knowledge Work: Reviewing structural specifications, municipal building codes indexing, and safety compliance audits.",
+    "name": "Construction RFI & Submittal Desk",
+    "description": "Engineering & Architecture: RFI tracking, specification compliance, and jobsite OSHA safety logs.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "engineering-architecture/spec-compliance",
     "required_models": [
@@ -537,8 +537,8 @@
   },
   {
     "id": "engineering-parts-procurement",
-    "name": "CAD Material Purchasing & ISO 9000 QA",
-    "description": "Edge Operations: Raw materials purchasing, parts receiving, supplier testing certs, and metallurgical quality QA.",
+    "name": "Engineering Subcontractor & Bid Procurement",
+    "description": "Engineering & Architecture: Subcontractor bid leveling, procurement, and materials purchasing.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "engineering-architecture/parts-procurement",
     "required_models": [
@@ -552,8 +552,8 @@
   },
   {
     "id": "edtech-curriculum-synthesizer",
-    "name": "EdTech Curriculum & Course Indexer",
-    "description": "Knowledge Work: Educational standards mapping, syllabus content synthesis, and training guideline indexing.",
+    "name": "EdTech Curriculum & Student Desk",
+    "description": "EdTech Operations: Student enrollment, curriculum course mapping, and parent communications.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "edtech-training/curriculum-synthesizer",
     "required_models": [
@@ -566,8 +566,8 @@
   },
   {
     "id": "edtech-license-procurement",
-    "name": "Software License Procurement & Asset Audit",
-    "description": "Edge Operations: SaaS license purchasing, hardware cataloging, asset shipping, and software inventory audits.",
+    "name": "EdTech Software Licensing & Vendor Operations",
+    "description": "EdTech Operations: Educational software seats, vendor purchasing, and curriculum compliance.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "edtech-training/license-procurement",
     "required_models": [
@@ -580,8 +580,8 @@
   },
   {
     "id": "development-docs-synthesizer",
-    "name": "Tech Spec & API Documentation Indexer",
-    "description": "Knowledge Work: Parsing codebase schemas, indexing API documentation, and tech spec synthesis.",
+    "name": "Studio Delivery & Release Desk",
+    "description": "Software Studio: Client ticket triage, changelog release writing, and scope change-order drafting.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "development/docs-synthesizer",
     "required_models": [
@@ -595,8 +595,8 @@
   },
   {
     "id": "development-qa-iso9000",
-    "name": "Release Quality Assurance & ISO 9000",
-    "description": "Edge Operations: Software release QA, test compliance auditing, security asset shipping, and patch management.",
+    "name": "Software QA & Release Gate Swarm",
+    "description": "Software Studio: Automated test packaging, release gate audits, and client acceptance logs.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "development/qa-iso9000",
     "required_models": [
@@ -625,8 +625,8 @@
   },
   {
     "id": "manufacturing-iso9000-qa",
-    "name": "Factory Floor ISO 9000 QA & Inventory",
-    "description": "Edge Operations: Materials receiving, shipping finished goods, parts inventory audits, and ISO 9000 quality checks.",
+    "name": "Manufacturing ISO 9001 Quality & Maintenance",
+    "description": "Manufacturing Operations: Calibration logs, machine preventative maintenance, and vendor purchasing.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "manufacturing/iso9000-qa",
     "required_models": [
@@ -638,8 +638,8 @@
   },
   {
     "id": "food-recipe-compliance",
-    "name": "Recipe & Safety Compliance Auditor",
-    "description": "Knowledge Work: Analyzing recipe regulations, health guidelines indexing, and labeling audit reporting.",
+    "name": "Food Safety & Recipe Compliance Desk",
+    "description": "Food & Beverage: HACCP safety logs, recipe allergen labeling, and dock receiving temperature checks.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "food/recipe-compliance",
     "required_models": [
@@ -652,8 +652,8 @@
   },
   {
     "id": "food-inventory-receiving",
-    "name": "Kitchen Inventory Receiving & Supplier QA",
-    "description": "Edge Operations: Purchasing ingredients, temperature shipping checks, receiving logs, and supplier quality audits.",
+    "name": "Catering Quotes & Food Purchasing Swarm",
+    "description": "Food & Beverage: Catering proposals, food distributor purchasing, and vendor AP reconciliation.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "food/inventory-receiving",
     "required_models": [
@@ -666,8 +666,8 @@
   },
   {
     "id": "chemical-sds-synthesizer",
-    "name": "Safety Data Sheet (SDS) Policy Indexer",
-    "description": "Knowledge Work: SDS sheet parsing, OSHA hazard mapping, and health regulations synthesis.",
+    "name": "Chemical SDS & Environmental Compliance Desk",
+    "description": "Chemical Sector: 16-section SDS authoring, EPA/OSHA compliance, and batch record packaging.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "chemical/sds-synthesizer",
     "required_models": [
@@ -680,8 +680,8 @@
   },
   {
     "id": "chemical-hazmat-shipping",
-    "name": "Hazmat Shipping, Receiving & ISO QA",
-    "description": "Edge Operations: Hazmat container shipping, receiving checks, containment inventory, and ISO 9000 compliance audits.",
+    "name": "Hazmat Shipping & Chemical AP Swarm",
+    "description": "Chemical Sector: DOT 49 CFR dangerous goods manifests, hazmat shipping, and raw material AP.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "chemical/hazmat-shipping",
     "required_models": [
@@ -693,8 +693,8 @@
   },
   {
     "id": "transportation-policy-compliance",
-    "name": "DOT Regulations Compliance Auditor",
-    "description": "Knowledge Work: Analyzing transit laws, DOT regulation changes indexing, and compliance reporting.",
+    "name": "Transportation Regulatory & Safety Desk",
+    "description": "Transportation: FMCSA hours-of-service compliance, driver qualification files, and safety audits.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "transportation/policy-compliance",
     "required_models": [
@@ -708,8 +708,8 @@
   },
   {
     "id": "transportation-fleet-purchasing",
-    "name": "Spare Parts Inventory & Fleet Purchasing QA",
-    "description": "Edge Operations: Parts procurement, fleet shipping logs, inventory management, and maintenance QA.",
+    "name": "Fleet Fuel & Equipment Purchasing",
+    "description": "Transportation: Bulk diesel fuel contracts, fleet replacement leasing, and carrier AP.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "transportation/fleet-purchasing",
     "required_models": [
@@ -751,8 +751,8 @@
   },
   {
     "id": "agriculture-research-synthesizer",
-    "name": "Soil Science & Agronomy Database Indexer",
-    "description": "Knowledge Work: Soil telemetry data parsing, crop yields indexing, and agricultural research synthesis.",
+    "name": "Farm Operations & Harvest Logistics",
+    "description": "Agriculture Operations: Harvest equipment dispatch, grain lot tracking, and weather-window scheduling.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "agriculture/research-synthesizer",
     "required_models": [
@@ -766,8 +766,8 @@
   },
   {
     "id": "agriculture-grain-shipping",
-    "name": "Harvest Shipping & Equipment Parts Inventory",
-    "description": "Edge Operations: Bulk crop shipping logistics, receiving farming parts, and equipment maintenance QA.",
+    "name": "Ag Input Purchasing & Farm Finance",
+    "description": "Agriculture Operations: Seed/chemical input purchasing, farm bill documentation, and crop budgeting.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "agriculture/grain-shipping",
     "required_models": [
@@ -781,8 +781,8 @@
   },
   {
     "id": "compliance-crosswalk-synthesizer",
-    "name": "SOC2/ISO Framework Crosswalk Synthesizer",
-    "description": "Knowledge Work: Regulatory framework mapping, control guidelines synthesis, and security standard crosswalk audits.",
+    "name": "Enterprise Security & Control Crosswalk",
+    "description": "Compliance Operations: Security control audits, access verification, and QA evidence aggregation.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "compliance/crosswalk-synthesizer",
     "required_models": [
@@ -795,8 +795,8 @@
   },
   {
     "id": "compliance-vendor-purchasing-qa",
-    "name": "Vendor Security Assessment & Procurement QA",
-    "description": "Edge Operations: Vendor onboarding security checks, compliance audits, and procurement security QA.",
+    "name": "Vendor Compliance & Procurement Governance",
+    "description": "Compliance Operations: Supplier compliance audits, vendor risk packaging, and accounting AP.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "compliance/vendor-purchasing-qa",
     "required_models": [
@@ -808,8 +808,8 @@
   },
   {
     "id": "security-threat-intelligence",
-    "name": "Threat Intel Feed Parser & Knowledge Base",
-    "description": "Knowledge Work: Scraping CVE bulletins, threat intel feed indexing, and security alert briefings synthesis.",
+    "name": "MSSP Security Operations & Incident Desk",
+    "description": "Cybersecurity: Threat detection, vulnerability patching, and security compliance audits.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "security/threat-intelligence",
     "required_models": [
@@ -823,8 +823,8 @@
   },
   {
     "id": "security-hardware-inventory",
-    "name": "Security Hardware Purchasing & Asset QA",
-    "description": "Edge Operations: Network hardware procurement, firewall shipping audits, asset receiving, and hardware QA.",
+    "name": "IT Asset & Access Governance Swarm",
+    "description": "IT & Security Operations: Asset licensing, offboarding access revocation, and backup drills.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "security/hardware-inventory",
     "required_models": [
@@ -840,8 +840,8 @@
   },
   {
     "id": "hr-policy-synthesizer",
-    "name": "Employee Handbook & Compliance Indexer",
-    "description": "Knowledge Work: Parsing labor laws, employee handbook updates indexing, and compliance guidelines synthesis.",
+    "name": "HR Policy & Offboarding Security Swarm",
+    "description": "People Operations: Employee handbook policies, onboarding paperwork, and access deprovisioning.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "hr/policy-synthesizer",
     "required_models": [
@@ -855,8 +855,8 @@
   },
   {
     "id": "hr-recruiter-purchasing",
-    "name": "Recruiting Tool Procurement & Contractor QA",
-    "description": "Edge Operations: Job board purchasing, external placement contractor QA, and invoice auditing.",
+    "name": "HR Vendor & Talent Operations",
+    "description": "People Operations: Recruiting agency contracts, HR software seat management, and background check audits.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "hr/recruiter-purchasing",
     "required_models": [
@@ -868,8 +868,8 @@
   },
   {
     "id": "education-accreditation-synthesizer",
-    "name": "Accreditation & Curriculum Audit Synthesizer",
-    "description": "Knowledge Work: Academic standards audits, accreditation compliance indexing, and curriculum synthesis.",
+    "name": "School Office & Accreditation Desk",
+    "description": "Education Operations: Student registrar intake, accreditation audit binders, and parent notices.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "education/accreditation-synthesizer",
     "required_models": [
@@ -882,8 +882,8 @@
   },
   {
     "id": "education-supplies-purchasing",
-    "name": "School Supplies Purchasing & Textbook Inventory",
-    "description": "Edge Operations: Textbook procurement, classroom supplies shipping, receiving audits, and inventory QA.",
+    "name": "School Supplies & Facilities Purchasing",
+    "description": "Education Operations: School supply purchasing, facility maintenance work orders, and accounting AP.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "education/supplies-purchasing",
     "required_models": [
@@ -896,8 +896,8 @@
   },
   {
     "id": "utilities-maintenance-synthesizer",
-    "name": "Grid Maintenance Manuals & SOP Indexer",
-    "description": "Knowledge Work: Processing telemetry manuals, emergency utility plans indexing, and maintenance reports synthesis.",
+    "name": "Utility Work Order & Infrastructure Costing",
+    "description": "Utilities Operations: Equipment preventative maintenance, job costing, and safety audits.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "utilities/maintenance-synthesizer",
     "required_models": [
@@ -911,8 +911,8 @@
   },
   {
     "id": "utilities-scada-qa",
-    "name": "SCADA Device Shipping, Receiving & Hardware QA",
-    "description": "Edge Operations: Grid sensor procurement, SCADA equipment shipping logs, receiving inspections, and hardware QA.",
+    "name": "Utility SCADA & Cybersecurity Governance",
+    "description": "Utilities Operations: SCADA access compliance, backup restore drills, and equipment PM.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "utilities/scada-qa",
     "required_models": [
@@ -928,8 +928,8 @@
   },
   {
     "id": "creative-script-synthesizer",
-    "name": "Script & Localization Knowledge Indexer",
-    "description": "Knowledge Work: Script parsing, dialog semantic mapping, cultural adaptation databases indexing, and localization synthesis.",
+    "name": "Media Production & Creative Brief Desk",
+    "description": "Media Production: Script brief tracking, production milestone recaps, and project estimate drafting.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "creative/script-synthesizer",
     "required_models": [
@@ -943,8 +943,8 @@
   },
   {
     "id": "creative-equipment-procurement",
-    "name": "Studio Equipment Purchasing & Asset Inventory",
-    "description": "Edge Operations: Camera/lens procurement, studio shipping logs, asset receiving, and hardware QA.",
+    "name": "Creative Studio Gear & Vendor Operations",
+    "description": "Creative Studio: Camera equipment rental POs, software licensing, and studio AP reconciliation.",
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "creative/equipment-procurement",
     "required_models": [

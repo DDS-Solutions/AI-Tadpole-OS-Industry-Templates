@@ -1,10 +1,10 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
   "id": "lead-transaction-management",
-  "name": "Real Estate Lead & Transaction Management",
+  "name": "Real Estate Transaction & Showing Desk",
   "industry": "Real Estate",
   "company_size": 25,
-  "description": "Automate lead nurturing, property listing syndication, and transaction coordination. Designed for small agencies to close more deals with less paperwork.",
+  "description": "Brokerage Operations: Transaction coordination, speed-to-lead showing response, and listing packets.",
   "author": "AI-Tadpole-OS",
   "tags": [
     "real-estate",
@@ -14,32 +14,33 @@
   ],
   "path": "real-estate/lead-transaction",
   "agents": [
-    "specialized-real-estate-buyer-seller",
-    "specialized-legal-document-review",
-    "sales-sales-deal-strategist"
-  ],
-  "global_workflows": [
-    "workflows/lead_nurture.md"
+    "project-management-transaction-coordinator",
+    "sales-showing-lead-response-clerk",
+    "marketing-marketing-aeo-foundations"
   ],
   "version": "1.0.0",
   "roster": [
     {
-      "id": "specialized-real-estate-buyer-seller",
-      "path": "agents/specialized-real-estate-buyer-seller.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "specialized-legal-document-review",
-      "path": "agents/specialized-legal-document-review.json",
+      "id": "project-management-transaction-coordinator",
+      "path": "agents/project-management-transaction-coordinator.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "sales-sales-deal-strategist",
-      "path": "agents/sales-sales-deal-strategist.json",
+      "id": "sales-showing-lead-response-clerk",
+      "path": "agents/sales-showing-lead-response-clerk.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "marketing-marketing-aeo-foundations",
+      "path": "agents/marketing-marketing-aeo-foundations.json",
       "supervisor": null,
       "priority": "normal"
     }
-  ]
+  ],
+  "defaults": {
+    "model": "gemma4:31b",
+    "temperature": 0.2
+  }
 }

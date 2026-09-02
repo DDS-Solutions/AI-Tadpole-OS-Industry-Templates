@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Vendor Security Assessment & Procurement QA",
+  "name": "Vendor Compliance & Procurement Governance",
   "version": "1.0.0",
-  "description": "Edge Operations: Vendor onboarding security checks, compliance audits, and procurement security QA.",
+  "description": "Compliance Operations: Supplier compliance audits, vendor risk packaging, and accounting AP.",
   "industry": "governance-compliance",
   "tags": [
     "compliance",
@@ -17,26 +17,28 @@
   },
   "roster": [
     {
-      "id": "specialized-accounts-payable-agent",
-      "path": "agents/specialized-accounts-payable-agent.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "security-security-compliance-auditor",
-      "path": "agents/security-security-compliance-auditor.json",
+      "id": "purchasing-vendor-purchasing-clerk",
+      "path": "agents/purchasing-vendor-purchasing-clerk.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "specialized-operations-manager",
-      "path": "agents/specialized-operations-manager.json",
+      "id": "compliance-vendor-risk-questionnaire-packager",
+      "path": "agents/compliance-vendor-risk-questionnaire-packager.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "finance-finance-bookkeeper-controller",
+      "path": "agents/finance-finance-bookkeeper-controller.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/vendor_qa_sop.md"
+  "agents": [
+    "purchasing-vendor-purchasing-clerk",
+    "compliance-vendor-risk-questionnaire-packager",
+    "finance-finance-bookkeeper-controller"
   ]
 }

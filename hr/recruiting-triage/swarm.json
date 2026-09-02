@@ -1,9 +1,9 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Recruiting Triage Swarm",
+  "name": "Recruiting & Talent Acquisition Swarm",
   "version": "1.0.0",
   "author": "HR Systems Group",
-  "description": "Designed for parsing candidate resumes, screening against role criteria, and coordinating onboarding files.",
+  "description": "People Operations: Candidate sourcing, job descriptions, interview coordination, and scorecard aggregation.",
   "industry": "Human Resources",
   "tags": [
     "hr",
@@ -12,27 +12,31 @@
   ],
   "defaults": {
     "model": "gemma4:31b",
-    "temperature": 0.4
+    "temperature": 0.2
   },
   "roster": [
     {
-      "id": "academic-academic-geographer",
-      "path": "agents/academic-academic-geographer.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "specialized-hr-onboarding",
-      "path": "agents/specialized-hr-onboarding.json",
+      "id": "specialized-recruitment-specialist",
+      "path": "agents/specialized-recruitment-specialist.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "academic-academic-psychologist",
-      "path": "agents/academic-academic-psychologist.json",
+      "id": "specialized-job-description-scorecard-writer",
+      "path": "agents/specialized-job-description-scorecard-writer.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "project-management-interview-coordinator",
+      "path": "agents/project-management-interview-coordinator.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
-  "global_workflows": []
+  "agents": [
+    "specialized-recruitment-specialist",
+    "specialized-job-description-scorecard-writer",
+    "project-management-interview-coordinator"
+  ]
 }

@@ -1,10 +1,10 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
   "id": "job-shop-25",
-  "name": "Manufacturing Job Shop (25 Seats)",
+  "name": "Job Shop 25-Seat Operations Swarm",
   "industry": "Manufacturing",
   "company_size": 25,
-  "description": "Optimize production scheduling, material tracking, and quality control for small-scale manufacturing and job shops.",
+  "description": "Shopfloor Operations: Work order scheduling, receiving traveler verification, job costing, and QA inspection.",
   "author": "AI-Tadpole-OS",
   "tags": [
     "manufacturing",
@@ -14,32 +14,40 @@
   ],
   "path": "manufacturing/job-shop-25",
   "agents": [
-    "specialized-supply-chain-strategist",
-    "testing-testing-workflow-optimizer",
-    "support-support-infrastructure-maintainer"
-  ],
-  "global_workflows": [
-    "workflows/production_run.md"
+    "operations-production-scheduler",
+    "operations-receiving-traveler-clerk",
+    "finance-job-costing-estimator",
+    "testing-quality-inspector-traveler"
   ],
   "version": "1.0.0",
   "roster": [
     {
-      "id": "specialized-supply-chain-strategist",
-      "path": "agents/specialized-supply-chain-strategist.json",
+      "id": "operations-production-scheduler",
+      "path": "agents/operations-production-scheduler.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "testing-testing-workflow-optimizer",
-      "path": "agents/testing-testing-workflow-optimizer.json",
+      "id": "operations-receiving-traveler-clerk",
+      "path": "agents/operations-receiving-traveler-clerk.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "support-support-infrastructure-maintainer",
-      "path": "agents/support-support-infrastructure-maintainer.json",
+      "id": "finance-job-costing-estimator",
+      "path": "agents/finance-job-costing-estimator.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "testing-quality-inspector-traveler",
+      "path": "agents/testing-quality-inspector-traveler.json",
       "supervisor": null,
       "priority": "normal"
     }
-  ]
+  ],
+  "defaults": {
+    "model": "gemma4:31b",
+    "temperature": 0.2
+  }
 }

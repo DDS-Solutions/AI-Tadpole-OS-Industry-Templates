@@ -1,10 +1,10 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
   "id": "bookkeeping-audit",
-  "name": "Bookkeeping & Audit Swarm",
+  "name": "Bookkeeping & Cash Operations Swarm",
   "industry": "Financial Services",
   "company_size": 50,
-  "description": "Automate daily reconciliation, tax preparation, and audit trails. Designed for small businesses to reduce accounting overhead and ensure compliance.",
+  "description": "Financial Operations: General ledger reconciliation, AP/AR cash flow, and client document collection.",
   "author": "AI-Tadpole-OS",
   "tags": [
     "finance",
@@ -15,11 +15,8 @@
   "path": "financial-services/bookkeeping-audit",
   "agents": [
     "finance-finance-bookkeeper-controller",
-    "finance-finance-financial-analyst",
-    "finance-finance-tax-strategist"
-  ],
-  "global_workflows": [
-    "workflows/reconciliation_guide.md"
+    "finance-ar-collections-specialist",
+    "support-client-document-coordinator"
   ],
   "version": "1.0.0",
   "roster": [
@@ -27,19 +24,23 @@
       "id": "finance-finance-bookkeeper-controller",
       "path": "agents/finance-finance-bookkeeper-controller.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
     },
     {
-      "id": "finance-finance-financial-analyst",
-      "path": "agents/finance-finance-financial-analyst.json",
+      "id": "finance-ar-collections-specialist",
+      "path": "agents/finance-ar-collections-specialist.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "finance-finance-tax-strategist",
-      "path": "agents/finance-finance-tax-strategist.json",
+      "id": "support-client-document-coordinator",
+      "path": "agents/support-client-document-coordinator.json",
       "supervisor": null,
       "priority": "normal"
     }
-  ]
+  ],
+  "defaults": {
+    "model": "gemma4:31b",
+    "temperature": 0.2
+  }
 }

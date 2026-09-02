@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Software License Procurement & Asset Audit",
+  "name": "EdTech Software Licensing & Vendor Operations",
   "version": "1.0.0",
-  "description": "Edge Operations: SaaS license purchasing, hardware cataloging, asset shipping, and software inventory audits.",
+  "description": "EdTech Operations: Educational software seats, vendor purchasing, and curriculum compliance.",
   "industry": "edtech-training",
   "tags": [
     "education",
@@ -17,26 +17,28 @@
   },
   "roster": [
     {
-      "id": "finance-finance-bookkeeper-controller",
-      "path": "agents/finance-finance-bookkeeper-controller.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "marketing-marketing-livestream-commerce-coach",
-      "path": "agents/marketing-marketing-livestream-commerce-coach.json",
+      "id": "purchasing-vendor-purchasing-clerk",
+      "path": "agents/purchasing-vendor-purchasing-clerk.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "project-management-project-management-jira-workflow-steward",
-      "path": "agents/project-management-project-management-jira-workflow-steward.json",
+      "id": "support-support-legal-compliance-checker",
+      "path": "agents/support-support-legal-compliance-checker.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "finance-finance-bookkeeper-controller",
+      "path": "agents/finance-finance-bookkeeper-controller.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/asset_sop.md"
+  "agents": [
+    "purchasing-vendor-purchasing-clerk",
+    "support-support-legal-compliance-checker",
+    "finance-finance-bookkeeper-controller"
   ]
 }

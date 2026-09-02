@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Engineering Spec & Code Compliance Auditor",
+  "name": "Construction RFI & Submittal Desk",
   "version": "1.0.0",
-  "description": "Knowledge Work: Reviewing structural specifications, municipal building codes indexing, and safety compliance audits.",
+  "description": "Engineering & Architecture: RFI tracking, specification compliance, and jobsite OSHA safety logs.",
   "industry": "engineering-architecture",
   "tags": [
     "engineering",
@@ -16,26 +16,28 @@
   },
   "roster": [
     {
-      "id": "specialized-specialized-civil-engineer",
-      "path": "agents/specialized-specialized-civil-engineer.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "engineering-engineering-cms-developer",
-      "path": "agents/engineering-engineering-cms-developer.json",
+      "id": "project-management-rfi-submittal-clerk",
+      "path": "agents/project-management-rfi-submittal-clerk.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "security-security-architect",
-      "path": "agents/security-security-architect.json",
+      "id": "compliance-osha-safety-clerk",
+      "path": "agents/compliance-osha-safety-clerk.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "finance-job-costing-estimator",
+      "path": "agents/finance-job-costing-estimator.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/spec_review_sop.md"
+  "agents": [
+    "project-management-rfi-submittal-clerk",
+    "compliance-osha-safety-clerk",
+    "finance-job-costing-estimator"
   ]
 }

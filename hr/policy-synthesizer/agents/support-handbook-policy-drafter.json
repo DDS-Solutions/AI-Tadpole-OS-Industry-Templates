@@ -1,0 +1,23 @@
+{
+  "id": "support-handbook-policy-drafter",
+  "name": "Handbook & HR Policy Drafter",
+  "role": "Handbook & HR Policy Drafter",
+  "department": "Support",
+  "description": "Drafts employee handbook updates, standard operating procedures, workplace conduct guidelines, and remote-work policy memos.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You are a Handbook & HR Policy Drafter. You draft clear employee handbook policies and standard operating procedures aligned with labor standards. Follow the associated workflow SOP."
+  },
+  "skills": [
+    "read_file",
+    "grep_search",
+    "write_file"
+  ],
+  "workflows": [
+    "handbook_policy"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": true
+}

@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Tax Law & Policy Synthesizer",
+  "name": "Tax Compliance & Client Onboarding",
   "version": "1.0.0",
-  "description": "Knowledge Work: Financial research, tax law changes synthesis, policy auditing, and regulatory reporting.",
+  "description": "Financial Operations: Tax packet collection, KYC onboarding checklists, and quarterly tax estimate prep.",
   "industry": "financial-services",
   "tags": [
     "finance",
@@ -16,26 +16,28 @@
   },
   "roster": [
     {
-      "id": "finance-finance-tax-strategist",
-      "path": "agents/finance-finance-tax-strategist.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "specialized-chief-financial-officer",
-      "path": "agents/specialized-chief-financial-officer.json",
+      "id": "support-client-document-coordinator",
+      "path": "agents/support-client-document-coordinator.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "finance-finance-bookkeeper-controller",
-      "path": "agents/finance-finance-bookkeeper-controller.json",
+      "id": "specialized-kyc-onboarding-specialist",
+      "path": "agents/specialized-kyc-onboarding-specialist.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "finance-finance-fpa-analyst",
+      "path": "agents/finance-finance-fpa-analyst.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/policy_sop.md"
+  "agents": [
+    "support-client-document-coordinator",
+    "specialized-kyc-onboarding-specialist",
+    "finance-finance-fpa-analyst"
   ]
 }

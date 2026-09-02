@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Competitor & Market Trend Analyzer",
+  "name": "E-Commerce Catalog & Quoting Desk",
   "version": "1.0.0",
-  "description": "Knowledge Work: E-commerce catalog scraping, competitor pricing intelligence, and trend synthesis.",
+  "description": "E-Commerce: Product catalog QA, customer returns triage, and B2B quote drafting.",
   "industry": "e-commerce",
   "tags": [
     "e-commerce",
@@ -16,26 +16,28 @@
   },
   "roster": [
     {
-      "id": "product-product-trend-researcher",
-      "path": "agents/product-product-trend-researcher.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "specialized-specialized-pricing-analyst",
-      "path": "agents/specialized-specialized-pricing-analyst.json",
+      "id": "product-catalog-listing-qa",
+      "path": "agents/product-catalog-listing-qa.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "engineering-engineering-drupal-shopping-cart",
-      "path": "agents/engineering-engineering-drupal-shopping-cart.json",
+      "id": "support-returns-wismo-clerk",
+      "path": "agents/support-returns-wismo-clerk.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "sales-quote-proposal-drafter",
+      "path": "agents/sales-quote-proposal-drafter.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/market_analysis_sop.md"
+  "agents": [
+    "product-catalog-listing-qa",
+    "support-returns-wismo-clerk",
+    "sales-quote-proposal-drafter"
   ]
 }

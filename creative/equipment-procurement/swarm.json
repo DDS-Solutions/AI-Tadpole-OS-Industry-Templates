@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Studio Equipment Purchasing & Asset Inventory",
+  "name": "Creative Studio Gear & Vendor Operations",
   "version": "1.0.0",
-  "description": "Edge Operations: Camera/lens procurement, studio shipping logs, asset receiving, and hardware QA.",
+  "description": "Creative Studio: Camera equipment rental POs, software licensing, and studio AP reconciliation.",
   "industry": "media-creative",
   "tags": [
     "creative",
@@ -17,26 +17,28 @@
   },
   "roster": [
     {
-      "id": "paid-media-paid-media-creative-strategist",
-      "path": "agents/paid-media-paid-media-creative-strategist.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "project-management-project-management-studio-producer",
-      "path": "agents/project-management-project-management-studio-producer.json",
+      "id": "purchasing-vendor-purchasing-clerk",
+      "path": "agents/purchasing-vendor-purchasing-clerk.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "paid-media-paid-media-auditor",
-      "path": "agents/paid-media-paid-media-auditor.json",
+      "id": "project-management-creative-brief-tracker",
+      "path": "agents/project-management-creative-brief-tracker.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "finance-finance-bookkeeper-controller",
+      "path": "agents/finance-finance-bookkeeper-controller.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/optics_receiving_sop.md"
+  "agents": [
+    "purchasing-vendor-purchasing-clerk",
+    "project-management-creative-brief-tracker",
+    "finance-finance-bookkeeper-controller"
   ]
 }

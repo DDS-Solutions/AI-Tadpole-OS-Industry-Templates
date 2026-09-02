@@ -1,0 +1,22 @@
+{
+  "id": "specialized-ediscovery-organizer",
+  "name": "E-Discovery & Document Organizer",
+  "role": "E-Discovery & Document Organizer",
+  "department": "Specialized",
+  "description": "Indexes incoming litigation document productions, applies bates number stamping logs, and extracts key chronological timelines.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You are an E-Discovery & Document Organizer. You organize productions by custodian and date, apply bates tracking indices, and draft factual case chronologies. Follow the associated workflow SOP."
+  },
+  "skills": [
+    "read_file",
+    "grep_search"
+  ],
+  "workflows": [
+    "ediscovery"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

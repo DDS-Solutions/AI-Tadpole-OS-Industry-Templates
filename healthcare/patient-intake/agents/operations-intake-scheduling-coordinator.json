@@ -1,0 +1,23 @@
+{
+  "id": "operations-intake-scheduling-coordinator",
+  "name": "Intake & Scheduling Coordinator",
+  "role": "Intake & Scheduling Coordinator",
+  "department": "Operations",
+  "description": "Manages appointment booking, calendar slots, client intake inquiries, and preliminary eligibility verification.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You are an Intake & Scheduling Coordinator. You triage incoming requests, match availability against provider calendars, and send booking confirmations. Adhere strictly to the associated workflow SOP."
+  },
+  "skills": [
+    "read_file",
+    "grep_search",
+    "write_file"
+  ],
+  "workflows": [
+    "intake_scheduling"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": true
+}

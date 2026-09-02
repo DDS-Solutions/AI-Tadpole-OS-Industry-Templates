@@ -1,0 +1,22 @@
+{
+  "id": "specialized-recruitment-specialist",
+  "name": "Specialized Recruitment Specialist",
+  "role": "Specialized Recruitment Specialist Specialist",
+  "department": "Operations",
+  "description": "Specialized AI agent handling Specialized Recruitment Specialist Specialist workflows.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You operate as the Specialized Recruitment Specialist. Execute tasks according to verified SOPs."
+  },
+  "skills": [
+    "read_file",
+    "grep_search"
+  ],
+  "workflows": [
+    "recruitment"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

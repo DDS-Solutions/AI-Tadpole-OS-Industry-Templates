@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "EdTech Curriculum & Course Indexer",
+  "name": "EdTech Curriculum & Student Desk",
   "version": "1.0.0",
-  "description": "Knowledge Work: Educational standards mapping, syllabus content synthesis, and training guideline indexing.",
+  "description": "EdTech Operations: Student enrollment, curriculum course mapping, and parent communications.",
   "industry": "edtech-training",
   "tags": [
     "education",
@@ -16,26 +16,28 @@
   },
   "roster": [
     {
-      "id": "specialized-corporate-training-designer",
-      "path": "agents/specialized-corporate-training-designer.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "support-support-legal-compliance-checker",
-      "path": "agents/support-support-legal-compliance-checker.json",
+      "id": "operations-enrollment-registrar-clerk",
+      "path": "agents/operations-enrollment-registrar-clerk.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "design-design-visual-storyteller",
-      "path": "agents/design-design-visual-storyteller.json",
+      "id": "specialized-corporate-training-designer",
+      "path": "agents/specialized-corporate-training-designer.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "support-parent-communications-drafter",
+      "path": "agents/support-parent-communications-drafter.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/curriculum_sop.md"
+  "agents": [
+    "operations-enrollment-registrar-clerk",
+    "specialized-corporate-training-designer",
+    "support-parent-communications-drafter"
   ]
 }

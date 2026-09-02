@@ -1,0 +1,22 @@
+{
+  "id": "infrastructure-backup-restore-clerk",
+  "name": "Backup & Disaster Recovery Clerk",
+  "role": "Backup & Disaster Recovery Clerk",
+  "department": "Infrastructure",
+  "description": "Monitors immutable backup snapshot statuses, logs periodic test restore drills, and maintains disaster recovery runbooks.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You are a Backup & Disaster Recovery Clerk. You verify snapshot integrity across cloud backups, log monthly test restore drills, and maintain DR runbooks. Follow the associated workflow SOP."
+  },
+  "skills": [
+    "read_file",
+    "grep_search"
+  ],
+  "workflows": [
+    "backup_drills"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "SOC2/ISO Framework Crosswalk Synthesizer",
+  "name": "Enterprise Security & Control Crosswalk",
   "version": "1.0.0",
-  "description": "Knowledge Work: Regulatory framework mapping, control guidelines synthesis, and security standard crosswalk audits.",
+  "description": "Compliance Operations: Security control audits, access verification, and QA evidence aggregation.",
   "industry": "governance-compliance",
   "tags": [
     "compliance",
@@ -17,26 +17,28 @@
   },
   "roster": [
     {
-      "id": "security-security-compliance-auditor",
-      "path": "agents/security-security-compliance-auditor.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "engineering-engineering-it-service-manager",
-      "path": "agents/engineering-engineering-it-service-manager.json",
+      "id": "support-support-legal-compliance-checker",
+      "path": "agents/support-support-legal-compliance-checker.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "security-security-senior-secops",
-      "path": "agents/security-security-senior-secops.json",
+      "id": "security-security-compliance-auditor",
+      "path": "agents/security-security-compliance-auditor.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "testing-qa-evidence-collector",
+      "path": "agents/testing-qa-evidence-collector.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/crosswalk_sop.md"
+  "agents": [
+    "support-support-legal-compliance-checker",
+    "security-security-compliance-auditor",
+    "testing-qa-evidence-collector"
   ]
 }

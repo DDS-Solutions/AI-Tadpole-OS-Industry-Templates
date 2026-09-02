@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "SCADA Device Shipping, Receiving & Hardware QA",
+  "name": "Utility SCADA & Cybersecurity Governance",
   "version": "1.0.0",
-  "description": "Edge Operations: Grid sensor procurement, SCADA equipment shipping logs, receiving inspections, and hardware QA.",
+  "description": "Utilities Operations: SCADA access compliance, backup restore drills, and equipment PM.",
   "industry": "critical-infrastructure",
   "tags": [
     "utilities",
@@ -18,26 +18,28 @@
   },
   "roster": [
     {
-      "id": "engineering-engineering-devops-automator",
-      "path": "agents/engineering-engineering-devops-automator.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "security-security-penetration-tester",
-      "path": "agents/security-security-penetration-tester.json",
+      "id": "security-security-compliance-auditor",
+      "path": "agents/security-security-compliance-auditor.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "support-support-infrastructure-maintainer",
-      "path": "agents/support-support-infrastructure-maintainer.json",
+      "id": "operations-equipment-maintenance-clerk",
+      "path": "agents/operations-equipment-maintenance-clerk.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "infrastructure-backup-restore-clerk",
+      "path": "agents/infrastructure-backup-restore-clerk.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/scada_receiving_sop.md"
+  "agents": [
+    "security-security-compliance-auditor",
+    "operations-equipment-maintenance-clerk",
+    "infrastructure-backup-restore-clerk"
   ]
 }

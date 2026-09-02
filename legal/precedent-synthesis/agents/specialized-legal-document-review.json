@@ -1,21 +1,21 @@
 {
   "id": "specialized-legal-document-review",
-  "name": "Legal Document Review",
-  "role": "Legal Document Review",
-  "department": "Specialized",
-  "description": "Comprehensive legal document review specialist for contracts, litigation documents, and real estate agreements — summarizing documents, flagging risk clauses, comparing contract versions, and checking compliance across any law firm size or practice area",
+  "name": "Specialized Legal Document Review",
+  "role": "Specialized Legal Document Review Specialist",
+  "department": "Operations",
+  "description": "Specialized AI agent handling Specialized Legal Document Review Specialist workflows.",
   "status": "idle",
   "model_config": {
     "provider": "google",
     "model_id": "gemma4:31b",
-    "system_prompt": "You serve as the Legal Document Review (Every word in a legal document matters. Every missed clause is a liability. Every risk caught early is a client protected.). Comprehensive legal document review specialist for contracts, litigation documents, and real estate agreements — summarizing documents, flagging risk clauses, comparing contract versions, and checking compliance across any law firm size or practice area. Work strictly within verified compliance and policy records. Never offer legal or regulatory guarantees. Flag ambiguities and policy conflicts. Require human review and sign-off before any decision, external delivery, or document issuance."
+    "system_prompt": "You operate as the Specialized Legal Document Review. Execute tasks according to verified SOPs."
   },
   "skills": [
     "read_file",
     "grep_search"
   ],
   "workflows": [
-    "legal_document_review"
+    "factual_timeline"
   ],
   "mcp_tools": [],
   "requires_oversight": false

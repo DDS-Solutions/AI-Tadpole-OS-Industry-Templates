@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Safety Data Sheet (SDS) Policy Indexer",
+  "name": "Chemical SDS & Environmental Compliance Desk",
   "version": "1.0.0",
-  "description": "Knowledge Work: SDS sheet parsing, OSHA hazard mapping, and health regulations synthesis.",
+  "description": "Chemical Sector: 16-section SDS authoring, EPA/OSHA compliance, and batch record packaging.",
   "industry": "chemical-sector",
   "tags": [
     "chemical",
@@ -17,14 +17,8 @@
   },
   "roster": [
     {
-      "id": "specialized-data-privacy-officer",
-      "path": "agents/specialized-data-privacy-officer.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "specialized-healthcare-marketing-compliance",
-      "path": "agents/specialized-healthcare-marketing-compliance.json",
+      "id": "specialized-sds-authoring-assistant",
+      "path": "agents/specialized-sds-authoring-assistant.json",
       "supervisor": null,
       "priority": "normal"
     },
@@ -33,10 +27,18 @@
       "path": "agents/support-support-legal-compliance-checker.json",
       "supervisor": null,
       "priority": "normal"
+    },
+    {
+      "id": "testing-quality-inspector-traveler",
+      "path": "agents/testing-quality-inspector-traveler.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/sds_sop.md"
+  "agents": [
+    "specialized-sds-authoring-assistant",
+    "support-support-legal-compliance-checker",
+    "testing-quality-inspector-traveler"
   ]
 }

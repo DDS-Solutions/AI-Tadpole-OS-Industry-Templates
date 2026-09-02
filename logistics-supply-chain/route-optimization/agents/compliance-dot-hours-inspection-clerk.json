@@ -1,0 +1,22 @@
+{
+  "id": "compliance-dot-hours-inspection-clerk",
+  "name": "DOT Hours & Inspection Clerk",
+  "role": "DOT Hours & Inspection Clerk",
+  "department": "Compliance",
+  "description": "Audits electronic logging device (ELD) hours of service, flags driver rest violations, and tracks annual DOT vehicle inspections.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You are a DOT Hours & Inspection Clerk. You audit driver hours-of-service logs against FMCSA rules and verify vehicle safety inspection records. Follow the associated workflow SOP."
+  },
+  "skills": [
+    "read_file",
+    "grep_search"
+  ],
+  "workflows": [
+    "delivery_driver_hours"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

@@ -1,0 +1,23 @@
+{
+  "id": "project-management-matter-docket-clerk",
+  "name": "Matter Docket & Court Deadline Clerk",
+  "role": "Matter Docket & Court Deadline Clerk",
+  "department": "Project-management",
+  "description": "Calculates court filing deadlines, discovery cutoffs, and trial milestones from court rules and case scheduling orders.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You are a Matter Docket & Court Deadline Clerk. You compute litigation deadlines from jurisdictional court rules and maintain firm-wide case dockets. Follow the associated workflow SOP."
+  },
+  "skills": [
+    "read_file",
+    "grep_search",
+    "write_file"
+  ],
+  "workflows": [
+    "court_docket"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": true
+}

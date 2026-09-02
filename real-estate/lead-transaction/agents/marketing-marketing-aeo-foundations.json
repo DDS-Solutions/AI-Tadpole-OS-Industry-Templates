@@ -1,0 +1,22 @@
+{
+  "id": "marketing-marketing-aeo-foundations",
+  "name": "Marketing Marketing Aeo Foundations",
+  "role": "Marketing Marketing Aeo Foundations Specialist",
+  "department": "Operations",
+  "description": "Specialized AI agent handling Marketing Marketing Aeo Foundations Specialist workflows.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You operate as the Marketing Marketing Aeo Foundations. Execute tasks according to verified SOPs."
+  },
+  "skills": [
+    "read_file",
+    "grep_search"
+  ],
+  "workflows": [
+    "listing_packets"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

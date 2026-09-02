@@ -1,9 +1,9 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Curriculum Planner Swarm",
+  "name": "School Office & Student Records Desk",
   "version": "1.0.0",
   "author": "EdTech Solutions",
-  "description": "Designed for curriculum audit mapping, lesson plan alignment, and student analytics reviews.",
+  "description": "Education Operations: Registrar admissions, curriculum mapping, and parent communications.",
   "industry": "Education",
   "tags": [
     "education",
@@ -12,27 +12,31 @@
   ],
   "defaults": {
     "model": "gemma4:31b",
-    "temperature": 0.3
+    "temperature": 0.2
   },
   "roster": [
     {
-      "id": "engineering-engineering-data-engineer",
-      "path": "agents/engineering-engineering-data-engineer.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "finance-finance-bookkeeper-controller",
-      "path": "agents/finance-finance-bookkeeper-controller.json",
+      "id": "operations-enrollment-registrar-clerk",
+      "path": "agents/operations-enrollment-registrar-clerk.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "gis-gis-bim-specialist",
-      "path": "agents/gis-gis-bim-specialist.json",
+      "id": "specialized-corporate-training-designer",
+      "path": "agents/specialized-corporate-training-designer.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "support-parent-communications-drafter",
+      "path": "agents/support-parent-communications-drafter.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
-  "global_workflows": []
+  "agents": [
+    "operations-enrollment-registrar-clerk",
+    "specialized-corporate-training-designer",
+    "support-parent-communications-drafter"
+  ]
 }

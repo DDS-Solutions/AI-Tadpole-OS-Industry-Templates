@@ -1,0 +1,22 @@
+{
+  "id": "specialized-legal-client-intake",
+  "name": "Specialized Legal Client Intake",
+  "role": "Specialized Legal Client Intake Specialist",
+  "department": "Operations",
+  "description": "Specialized AI agent handling Specialized Legal Client Intake Specialist workflows.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You operate as the Specialized Legal Client Intake. Execute tasks according to verified SOPs."
+  },
+  "skills": [
+    "read_file",
+    "grep_search"
+  ],
+  "workflows": [
+    "matter_retention"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

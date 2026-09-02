@@ -1,0 +1,22 @@
+{
+  "id": "specialized-corporate-training-designer",
+  "name": "Specialized Corporate Training Designer",
+  "role": "Specialized Corporate Training Designer Specialist",
+  "department": "Operations",
+  "description": "Specialized AI agent handling Specialized Corporate Training Designer Specialist workflows.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You operate as the Specialized Corporate Training Designer. Execute tasks according to verified SOPs."
+  },
+  "skills": [
+    "read_file",
+    "grep_search"
+  ],
+  "workflows": [
+    "standards_mapping"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

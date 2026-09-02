@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "CAD Material Purchasing & ISO 9000 QA",
+  "name": "Engineering Subcontractor & Bid Procurement",
   "version": "1.0.0",
-  "description": "Edge Operations: Raw materials purchasing, parts receiving, supplier testing certs, and metallurgical quality QA.",
+  "description": "Engineering & Architecture: Subcontractor bid leveling, procurement, and materials purchasing.",
   "industry": "engineering-architecture",
   "tags": [
     "engineering",
@@ -17,26 +17,28 @@
   },
   "roster": [
     {
-      "id": "specialized-supply-chain-strategist",
-      "path": "agents/specialized-supply-chain-strategist.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "engineering-engineering-backend-architect",
-      "path": "agents/engineering-engineering-backend-architect.json",
+      "id": "purchasing-vendor-purchasing-clerk",
+      "path": "agents/purchasing-vendor-purchasing-clerk.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "engineering-engineering-cms-developer",
-      "path": "agents/engineering-engineering-cms-developer.json",
+      "id": "project-management-rfi-submittal-clerk",
+      "path": "agents/project-management-rfi-submittal-clerk.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "finance-job-costing-estimator",
+      "path": "agents/finance-job-costing-estimator.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/materials_qa_sop.md"
+  "agents": [
+    "purchasing-vendor-purchasing-clerk",
+    "project-management-rfi-submittal-clerk",
+    "finance-job-costing-estimator"
   ]
 }

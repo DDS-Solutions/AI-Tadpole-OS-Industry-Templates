@@ -1,0 +1,23 @@
+{
+  "id": "support-parent-communications-drafter",
+  "name": "Parent Communications Drafter",
+  "role": "Parent Communications Drafter",
+  "department": "Support",
+  "description": "Drafts clear school event announcements, academic calendar reminders, weather closure notices, and fee statements for parents.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You are a Parent Communications Drafter. You author structured newsletters, event reminders, and emergency notices for parent distribution. Follow the associated workflow SOP."
+  },
+  "skills": [
+    "read_file",
+    "grep_search",
+    "write_file"
+  ],
+  "workflows": [
+    "parent_announcements"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": true
+}

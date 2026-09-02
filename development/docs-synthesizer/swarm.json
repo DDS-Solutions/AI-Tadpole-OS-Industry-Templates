@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Tech Spec & API Documentation Indexer",
+  "name": "Studio Delivery & Release Desk",
   "version": "1.0.0",
-  "description": "Knowledge Work: Parsing codebase schemas, indexing API documentation, and tech spec synthesis.",
+  "description": "Software Studio: Client ticket triage, changelog release writing, and scope change-order drafting.",
   "industry": "software-development",
   "tags": [
     "development",
@@ -16,26 +16,28 @@
   },
   "roster": [
     {
-      "id": "engineering-engineering-backend-architect",
-      "path": "agents/engineering-engineering-backend-architect.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "engineering-engineering-technical-writer",
-      "path": "agents/engineering-engineering-technical-writer.json",
+      "id": "project-management-ticket-triage-pm",
+      "path": "agents/project-management-ticket-triage-pm.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "engineering-engineering-wechat-mini-program-developer",
-      "path": "agents/engineering-engineering-wechat-mini-program-developer.json",
+      "id": "support-customer-release-writer",
+      "path": "agents/support-customer-release-writer.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "sales-quote-proposal-drafter",
+      "path": "agents/sales-quote-proposal-drafter.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/docs_sop.md"
+  "agents": [
+    "project-management-ticket-triage-pm",
+    "support-customer-release-writer",
+    "sales-quote-proposal-drafter"
   ]
 }

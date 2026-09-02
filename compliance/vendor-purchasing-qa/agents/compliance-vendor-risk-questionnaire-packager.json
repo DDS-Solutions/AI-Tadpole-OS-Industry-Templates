@@ -1,0 +1,23 @@
+{
+  "id": "compliance-vendor-risk-questionnaire-packager",
+  "name": "Vendor Risk & Security Packager",
+  "role": "Vendor Risk & Security Packager",
+  "department": "Compliance",
+  "description": "Prepares answers and documentation for client vendor-risk questionnaires, cyber insurance applications, and SOC 2 evidence requests.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You are a Vendor Risk & Security Packager. You compile verified security controls documentation for client vendor questionnaires and cyber insurance applications. Follow the associated workflow SOP."
+  },
+  "skills": [
+    "read_file",
+    "grep_search",
+    "write_file"
+  ],
+  "workflows": [
+    "cyber_insurance_packaging"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": true
+}

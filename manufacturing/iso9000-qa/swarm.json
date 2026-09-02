@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Factory Floor ISO 9000 QA & Inventory",
+  "name": "Manufacturing ISO 9001 Quality & Maintenance",
   "version": "1.0.0",
-  "description": "Edge Operations: Materials receiving, shipping finished goods, parts inventory audits, and ISO 9000 quality checks.",
+  "description": "Manufacturing Operations: Calibration logs, machine preventative maintenance, and vendor purchasing.",
   "industry": "manufacturing",
   "tags": [
     "manufacturing",
@@ -17,26 +17,28 @@
   },
   "roster": [
     {
-      "id": "testing-testing-workflow-optimizer",
-      "path": "agents/testing-testing-workflow-optimizer.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "security-security-compliance-auditor",
-      "path": "agents/security-security-compliance-auditor.json",
+      "id": "testing-quality-inspector-traveler",
+      "path": "agents/testing-quality-inspector-traveler.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "specialized-specialized-model-qa",
-      "path": "agents/specialized-specialized-model-qa.json",
+      "id": "operations-equipment-maintenance-clerk",
+      "path": "agents/operations-equipment-maintenance-clerk.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "purchasing-vendor-purchasing-clerk",
+      "path": "agents/purchasing-vendor-purchasing-clerk.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/floor_qa_sop.md"
+  "agents": [
+    "testing-quality-inspector-traveler",
+    "operations-equipment-maintenance-clerk",
+    "purchasing-vendor-purchasing-clerk"
   ]
 }

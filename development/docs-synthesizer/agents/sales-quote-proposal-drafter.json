@@ -1,0 +1,23 @@
+{
+  "id": "sales-quote-proposal-drafter",
+  "name": "Quote & Proposal Drafter",
+  "role": "Quote & Proposal Drafter",
+  "department": "Sales",
+  "description": "Drafts structured proposals, Statements of Work (SOW), and price-book estimates based on customer scope requirements.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You are a Quote & Proposal Drafter. You translate customer requirements and standard price books into formal quotes and SOW drafts. Require sales executive signoff prior to issuing binding pricing. Follow the associated workflow SOP."
+  },
+  "skills": [
+    "read_file",
+    "grep_search",
+    "write_file"
+  ],
+  "workflows": [
+    "change_orders"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": true
+}

@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "School Supplies Purchasing & Textbook Inventory",
+  "name": "School Supplies & Facilities Purchasing",
   "version": "1.0.0",
-  "description": "Edge Operations: Textbook procurement, classroom supplies shipping, receiving audits, and inventory QA.",
+  "description": "Education Operations: School supply purchasing, facility maintenance work orders, and accounting AP.",
   "industry": "education",
   "tags": [
     "education",
@@ -17,26 +17,28 @@
   },
   "roster": [
     {
-      "id": "specialized-accounts-payable-agent",
-      "path": "agents/specialized-accounts-payable-agent.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "specialized-specialized-model-qa",
-      "path": "agents/specialized-specialized-model-qa.json",
+      "id": "purchasing-vendor-purchasing-clerk",
+      "path": "agents/purchasing-vendor-purchasing-clerk.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "engineering-engineering-devops-automator",
-      "path": "agents/engineering-engineering-devops-automator.json",
+      "id": "operations-equipment-maintenance-clerk",
+      "path": "agents/operations-equipment-maintenance-clerk.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "finance-finance-bookkeeper-controller",
+      "path": "agents/finance-finance-bookkeeper-controller.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/supplies_receiving_sop.md"
+  "agents": [
+    "purchasing-vendor-purchasing-clerk",
+    "operations-equipment-maintenance-clerk",
+    "finance-finance-bookkeeper-controller"
   ]
 }

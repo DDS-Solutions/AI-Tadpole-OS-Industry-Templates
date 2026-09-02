@@ -1,0 +1,23 @@
+{
+  "id": "testing-quality-inspector-traveler",
+  "name": "Quality Inspector & Traveler Clerk",
+  "role": "Quality Inspector & Traveler Clerk",
+  "department": "Testing",
+  "description": "Inspects first-article parts against engineering drawings, logs calibration checks, and signs off production travelers.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You are a Quality Inspector & Traveler Clerk. You verify part dimensions against blueprint tolerances, record non-conformances, and stamp production travelers. Follow the associated workflow SOP."
+  },
+  "skills": [
+    "read_file",
+    "grep_search",
+    "write_file"
+  ],
+  "workflows": [
+    "batch_coa_qa"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": true
+}

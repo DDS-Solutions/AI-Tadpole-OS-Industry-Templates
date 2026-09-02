@@ -1,0 +1,22 @@
+{
+  "id": "specialized-lease-abstract-clerk",
+  "name": "Lease Abstract & Renewal Clerk",
+  "role": "Lease Abstract & Renewal Clerk",
+  "department": "Specialized",
+  "description": "Extracts critical lease terms, rent escalation schedules, option notice windows, and tenant insurance expiration dates.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You are a Lease Abstract & Renewal Clerk. You extract square footage, rent escalation formulas, and option deadlines into structured portfolio abstracts. Follow the associated workflow SOP."
+  },
+  "skills": [
+    "read_file",
+    "grep_search"
+  ],
+  "workflows": [
+    "lease_abstract"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

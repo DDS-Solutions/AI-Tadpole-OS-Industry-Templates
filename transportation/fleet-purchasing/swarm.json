@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Spare Parts Inventory & Fleet Purchasing QA",
+  "name": "Fleet Fuel & Equipment Purchasing",
   "version": "1.0.0",
-  "description": "Edge Operations: Parts procurement, fleet shipping logs, inventory management, and maintenance QA.",
+  "description": "Transportation: Bulk diesel fuel contracts, fleet replacement leasing, and carrier AP.",
   "industry": "transportation-logistics",
   "tags": [
     "transportation",
@@ -17,26 +17,28 @@
   },
   "roster": [
     {
-      "id": "engineering-engineering-it-service-manager",
-      "path": "agents/engineering-engineering-it-service-manager.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "marketing-marketing-cross-border-ecommerce",
-      "path": "agents/marketing-marketing-cross-border-ecommerce.json",
+      "id": "purchasing-vendor-purchasing-clerk",
+      "path": "agents/purchasing-vendor-purchasing-clerk.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "marketing-marketing-private-domain-operator",
-      "path": "agents/marketing-marketing-private-domain-operator.json",
+      "id": "operations-fleet-maintenance-scheduler",
+      "path": "agents/operations-fleet-maintenance-scheduler.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "finance-finance-bookkeeper-controller",
+      "path": "agents/finance-finance-bookkeeper-controller.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/parts_sop.md"
+  "agents": [
+    "purchasing-vendor-purchasing-clerk",
+    "operations-fleet-maintenance-scheduler",
+    "finance-finance-bookkeeper-controller"
   ]
 }

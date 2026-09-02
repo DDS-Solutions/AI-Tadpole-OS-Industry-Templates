@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Recruiting Tool Procurement & Contractor QA",
+  "name": "HR Vendor & Talent Operations",
   "version": "1.0.0",
-  "description": "Edge Operations: Job board purchasing, external placement contractor QA, and invoice auditing.",
+  "description": "People Operations: Recruiting agency contracts, HR software seat management, and background check audits.",
   "industry": "human-resources",
   "tags": [
     "hr",
@@ -16,26 +16,28 @@
   },
   "roster": [
     {
-      "id": "academic-academic-geographer",
-      "path": "agents/academic-academic-geographer.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "project-management-project-management-studio-operations",
-      "path": "agents/project-management-project-management-studio-operations.json",
+      "id": "specialized-recruitment-specialist",
+      "path": "agents/specialized-recruitment-specialist.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "specialized-accounts-payable-agent",
-      "path": "agents/specialized-accounts-payable-agent.json",
+      "id": "purchasing-vendor-purchasing-clerk",
+      "path": "agents/purchasing-vendor-purchasing-clerk.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "finance-finance-bookkeeper-controller",
+      "path": "agents/finance-finance-bookkeeper-controller.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/recruiting_audit_sop.md"
+  "agents": [
+    "specialized-recruitment-specialist",
+    "purchasing-vendor-purchasing-clerk",
+    "finance-finance-bookkeeper-controller"
   ]
 }

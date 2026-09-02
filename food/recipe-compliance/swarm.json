@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Recipe & Safety Compliance Auditor",
+  "name": "Food Safety & Recipe Compliance Desk",
   "version": "1.0.0",
-  "description": "Knowledge Work: Analyzing recipe regulations, health guidelines indexing, and labeling audit reporting.",
+  "description": "Food & Beverage: HACCP safety logs, recipe allergen labeling, and dock receiving temperature checks.",
   "industry": "food-beverage",
   "tags": [
     "food",
@@ -16,26 +16,28 @@
   },
   "roster": [
     {
-      "id": "specialized-healthcare-marketing-compliance",
-      "path": "agents/specialized-healthcare-marketing-compliance.json",
+      "id": "compliance-food-safety-haccp-clerk",
+      "path": "agents/compliance-food-safety-haccp-clerk.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "support-support-legal-compliance-checker",
-      "path": "agents/support-support-legal-compliance-checker.json",
+      "id": "specialized-recipe-allergen-checker",
+      "path": "agents/specialized-recipe-allergen-checker.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "finance-finance-bookkeeper-controller",
-      "path": "agents/finance-finance-bookkeeper-controller.json",
+      "id": "purchasing-vendor-purchasing-clerk",
+      "path": "agents/purchasing-vendor-purchasing-clerk.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/label_sop.md"
+  "agents": [
+    "compliance-food-safety-haccp-clerk",
+    "specialized-recipe-allergen-checker",
+    "purchasing-vendor-purchasing-clerk"
   ]
 }

@@ -1,9 +1,9 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Clinical Intake Swarm",
+  "name": "Patient Intake & Scheduling Desk",
   "version": "1.0.0",
   "author": "Medical Systems Inc.",
-  "description": "An optimized swarm for processing raw patient data and clinical intake automation.",
+  "description": "Clinical Practice: Patient intake, appointment scheduling, HIPAA consent verification, and visit follow-ups.",
   "industry": "Medical Practices",
   "tags": [
     "healthcare",
@@ -12,28 +12,32 @@
   ],
   "defaults": {
     "model": "gemma4:31b",
-    "temperature": 0.4
+    "temperature": 0.2
   },
   "roster": [
     {
-      "id": "specialized-healthcare-customer-service",
-      "path": "agents/specialized-healthcare-customer-service.json",
+      "id": "operations-intake-scheduling-coordinator",
+      "path": "agents/operations-intake-scheduling-coordinator.json",
       "supervisor": null,
       "priority": "critical"
-    },
-    {
-      "id": "specialized-healthcare-marketing-compliance",
-      "path": "agents/specialized-healthcare-marketing-compliance.json",
-      "supervisor": null,
-      "priority": "normal"
     },
     {
       "id": "specialized-data-privacy-officer",
       "path": "agents/specialized-data-privacy-officer.json",
       "supervisor": null,
-      "priority": "high"
+      "priority": "critical"
+    },
+    {
+      "id": "support-customer-care-front-desk",
+      "path": "agents/support-customer-care-front-desk.json",
+      "supervisor": null,
+      "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": []
+  "agents": [
+    "operations-intake-scheduling-coordinator",
+    "specialized-data-privacy-officer",
+    "support-customer-care-front-desk"
+  ]
 }

@@ -1,9 +1,9 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Legal Intelligence Swarm",
+  "name": "Legal Matter Intake & Contract Review",
   "version": "1.0.0",
   "author": "SMB Legal Inc.",
-  "description": "A high-performance swarm tailored for contract analysis.",
+  "description": "Legal Operations: Client conflict check, first-pass contract review, and docket deadline management.",
   "industry": "legal",
   "tags": [
     "law",
@@ -16,24 +16,28 @@
   },
   "roster": [
     {
-      "id": "specialized-legal-document-review",
-      "path": "agents/specialized-legal-document-review.json",
+      "id": "specialized-legal-client-intake",
+      "path": "agents/specialized-legal-client-intake.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "finance-finance-financial-analyst",
-      "path": "agents/finance-finance-financial-analyst.json",
+      "id": "specialized-legal-document-review",
+      "path": "agents/specialized-legal-document-review.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "specialized-legal-client-intake",
-      "path": "agents/specialized-legal-client-intake.json",
+      "id": "support-support-legal-compliance-checker",
+      "path": "agents/support-support-legal-compliance-checker.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": []
+  "agents": [
+    "specialized-legal-client-intake",
+    "specialized-legal-document-review",
+    "support-support-legal-compliance-checker"
+  ]
 }

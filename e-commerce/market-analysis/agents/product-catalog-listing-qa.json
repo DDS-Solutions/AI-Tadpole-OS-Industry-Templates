@@ -1,0 +1,22 @@
+{
+  "id": "product-catalog-listing-qa",
+  "name": "E-Commerce Catalog & Listing QA",
+  "role": "E-Commerce Catalog & Listing QA",
+  "department": "Product",
+  "description": "Scans digital product catalogs for missing attributes, image errors, suppressed SKUs, and marketplace policy violations.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You are an E-Commerce Catalog & Listing QA Specialist. You audit product listings across channels for missing dimensions, broken variant links, and search suppression. Follow the associated workflow SOP."
+  },
+  "skills": [
+    "read_file",
+    "grep_search"
+  ],
+  "workflows": [
+    "catalog_integrity"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Security Hardware Purchasing & Asset QA",
+  "name": "IT Asset & Access Governance Swarm",
   "version": "1.0.0",
-  "description": "Edge Operations: Network hardware procurement, firewall shipping audits, asset receiving, and hardware QA.",
+  "description": "IT & Security Operations: Asset licensing, offboarding access revocation, and backup drills.",
   "industry": "cybersecurity",
   "tags": [
     "security",
@@ -17,26 +17,28 @@
   },
   "roster": [
     {
-      "id": "support-support-infrastructure-maintainer",
-      "path": "agents/support-support-infrastructure-maintainer.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "security-security-compliance-auditor",
-      "path": "agents/security-security-compliance-auditor.json",
+      "id": "infrastructure-asset-license-clerk",
+      "path": "agents/infrastructure-asset-license-clerk.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "security-security-penetration-tester",
-      "path": "agents/security-security-penetration-tester.json",
+      "id": "security-offboarding-access-guard",
+      "path": "agents/security-offboarding-access-guard.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "infrastructure-backup-restore-clerk",
+      "path": "agents/infrastructure-backup-restore-clerk.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/hardware_receiving_sop.md"
+  "agents": [
+    "infrastructure-asset-license-clerk",
+    "security-offboarding-access-guard",
+    "infrastructure-backup-restore-clerk"
   ]
 }

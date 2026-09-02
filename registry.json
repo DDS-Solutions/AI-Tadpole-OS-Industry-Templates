@@ -38,8 +38,8 @@
   "templates": [
     {
       "id": "legal-contract-review",
-      "name": "Legal Contract Auditor",
-      "description": "AI-driven contract analysis, litigation forecasting, and automated discovery.",
+      "name": "Legal Matter Intake & Contract Review",
+      "description": "Legal Operations: Client conflict check, first-pass contract review, and docket deadline management.",
       "industry": "Legal Services",
       "tags": [
         "law",
@@ -51,12 +51,15 @@
       "required_skills": [
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "healthcare-patient-intake",
-      "name": "Patient Intake Automation",
-      "description": "Process clinical data and automate patient intake workflows.",
+      "name": "Patient Intake & Scheduling Desk",
+      "description": "Clinical Practice: Patient intake, appointment scheduling, HIPAA consent verification, and visit follow-ups.",
       "industry": "Medical Practices",
       "tags": [
         "healthcare",
@@ -68,6 +71,9 @@
       "required_skills": [
         "grep_search",
         "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
@@ -86,12 +92,15 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "bookkeeping-audit",
-      "name": "SMB Bookkeeping Swarm",
-      "description": "Automated daily reconciliation, tax optimization, and digital audit trails.",
+      "name": "Bookkeeping & Cash Operations Swarm",
+      "description": "Financial Operations: General ledger reconciliation, AP/AR cash flow, and client document collection.",
       "industry": "Financial Services",
       "tags": [
         "finance",
@@ -104,6 +113,9 @@
       "required_skills": [
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
@@ -122,12 +134,15 @@
       "required_skills": [
         "grep_search",
         "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "lead-transaction-management",
-      "name": "Real Estate Closer",
-      "description": "Automated lead nurturing, MLS syndication, and escrow timeline tracking.",
+      "name": "Real Estate Transaction & Showing Desk",
+      "description": "Brokerage Operations: Transaction coordination, speed-to-lead showing response, and listing packets.",
       "industry": "Real Estate",
       "tags": [
         "real-estate",
@@ -141,12 +156,15 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "manufacturing-job-shop-25",
-      "name": "Job Shop (25 Seats)",
-      "description": "Optimized production scheduling and material tracking for small-scale manufacturing.",
+      "name": "Job Shop 25-Seat Operations Swarm",
+      "description": "Shopfloor Operations: Work order scheduling, receiving traveler verification, job costing, and QA inspection.",
       "industry": "Manufacturing",
       "tags": [
         "manufacturing",
@@ -158,6 +176,9 @@
       "required_skills": [
         "grep_search",
         "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
@@ -175,6 +196,9 @@
       "required_skills": [
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
@@ -192,12 +216,15 @@
       "required_skills": [
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "food-restaurant-ops",
-      "name": "Food & Beverage Operations",
-      "description": "Automate kitchen inventory, menu performance analytics, and supplier ordering workflows.",
+      "name": "Restaurant Floor & Shift Operations",
+      "description": "Food & Beverage: Daily shift scheduling, health safety compliance, and register sales reconciliation.",
       "industry": "Food & Beverage",
       "tags": [
         "food",
@@ -210,6 +237,9 @@
       "required_skills": [
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
@@ -227,12 +257,15 @@
       "required_skills": [
         "grep_search",
         "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "transportation-fleet-logistics",
-      "name": "Fleet Logistics Swarm",
-      "description": "Fleet scheduling, route optimization, maintenance tracking, and fuel efficiency analytics.",
+      "name": "Fleet Dispatch & DOT Maintenance Swarm",
+      "description": "Transportation: Fleet preventative maintenance, ELD hours compliance, and vendor parts purchasing.",
       "industry": "Transportation & Logistics",
       "tags": [
         "transportation",
@@ -245,6 +278,9 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
@@ -263,6 +299,9 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
@@ -280,12 +319,15 @@
       "required_skills": [
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "compliance-regulatory-audit",
-      "name": "Regulatory Compliance Swarm",
-      "description": "Continuous security posture assessment, SOC2/ISO readiness checks, and regulatory compliance mapping.",
+      "name": "Corporate Compliance & Audit Evidence Desk",
+      "description": "Compliance Operations: Regulatory policy tracking, audit evidence collection, and vendor security packaging.",
       "industry": "Governance & Compliance",
       "tags": [
         "compliance",
@@ -296,6 +338,9 @@
       "company_size": 25,
       "required_skills": [
         "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
@@ -316,12 +361,15 @@
         "read_file",
         "shell",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "hr-recruiting-triage",
-      "name": "Recruiting Triage Swarm",
-      "description": "Designed for parsing candidate resumes, screening against role criteria, and coordinating onboarding files.",
+      "name": "Recruiting & Talent Acquisition Swarm",
+      "description": "People Operations: Candidate sourcing, job descriptions, interview coordination, and scorecard aggregation.",
       "industry": "Human Resources",
       "tags": [
         "hr",
@@ -333,12 +381,15 @@
       "required_skills": [
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "education-curriculum-planner",
-      "name": "Curriculum Planner Swarm",
-      "description": "Designed for curriculum audit mapping, lesson plan alignment, and student analytics reviews.",
+      "name": "School Office & Student Records Desk",
+      "description": "Education Operations: Registrar admissions, curriculum mapping, and parent communications.",
       "industry": "Education",
       "tags": [
         "education",
@@ -350,12 +401,15 @@
       "required_skills": [
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "utilities-grid-telemetry",
-      "name": "Grid Telemetry Swarm",
-      "description": "Designed for grid status logs auditing, alarm triage, and utility crew scheduling.",
+      "name": "Utility Grid Operations & Safety Desk",
+      "description": "Utilities Operations: Preventative maintenance logs, OSHA safety compliance, and parts purchasing.",
       "industry": "Critical Infrastructure",
       "tags": [
         "utilities",
@@ -369,12 +423,15 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "creative-asset-pipeline",
-      "name": "Creative Asset Pipeline Swarm",
-      "description": "Designed for creative asset verification, size budget checks, and dialog localization tracking.",
+      "name": "Creative Studio Project & Reporting Desk",
+      "description": "Creative Agency: Creative brief tracking, client monthly reporting, and quote estimation.",
       "industry": "Media & Creative",
       "tags": [
         "creative",
@@ -389,12 +446,15 @@
         "read_file",
         "search_web",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "legal-precedent-synthesis",
-      "name": "Legal Precedent Synthesizer",
-      "description": "Knowledge Work: Automated analysis of legal precedents, case law synthesis, and document drafting.",
+      "name": "Litigation Prep & E-Discovery Desk",
+      "description": "Legal Operations: E-discovery indexing, court docket calculation, and factual case timeline prep.",
       "industry": "Legal Services",
       "tags": [
         "law",
@@ -408,12 +468,15 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "legal-procurement-qa",
-      "name": "Legal Vendor Procurement & QA",
-      "description": "Edge Operations: Purchasing audits, contract lifecycle QA, and vendor compliance assessment.",
+      "name": "Law Firm Time & Billing Operations",
+      "description": "Legal Operations: Attorney time entry audit, realization tracking, and retainer invoicing.",
       "industry": "Legal Services",
       "tags": [
         "law",
@@ -427,12 +490,15 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "medical-clinical-guidelines",
-      "name": "Clinical Guideline Indexer",
-      "description": "Knowledge Work: Processing medical research, clinical protocols indexing, and case summary generation.",
+      "name": "Clinical Documentation & Prior-Auth Desk",
+      "description": "Clinical Practice: Medical chart visit summaries, prior-authorization packet prep, and guideline indexing.",
       "industry": "Medical Practices",
       "tags": [
         "healthcare",
@@ -445,12 +511,15 @@
       "required_skills": [
         "grep_search",
         "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "medical-inventory-qa",
-      "name": "Medical Inventory & Procurement QA",
-      "description": "Edge Operations: Purchasing medical supplies, shipping, receiving audits, and ISO compliance sterilization QA.",
+      "name": "Clinical Supplies & Equipment Inventory",
+      "description": "Clinical Practice: Medical supplies replenishment, sterilization logs, and clinic vendor purchasing.",
       "industry": "Medical Practices",
       "tags": [
         "healthcare",
@@ -464,12 +533,15 @@
       "required_skills": [
         "grep_search",
         "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "financial-policy-synthesizer",
-      "name": "Tax Law & Policy Synthesizer",
-      "description": "Knowledge Work: Financial research, tax law changes synthesis, policy auditing, and regulatory reporting.",
+      "name": "Tax Compliance & Client Onboarding",
+      "description": "Financial Operations: Tax packet collection, KYC onboarding checklists, and quarterly tax estimate prep.",
       "industry": "Financial Services",
       "tags": [
         "finance",
@@ -482,12 +554,15 @@
       "required_skills": [
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "financial-vendor-reconciliation",
-      "name": "Vendor Invoice & Purchasing QA",
-      "description": "Edge Operations: Invoice processing, shipping validation, vendor ledger audits, and purchase reconciliation.",
+      "name": "Vendor AP & Cash Disbursement Swarm",
+      "description": "Financial Operations: Accounts payable 3-way matching, invoice disbursement approval, and vendor inquiries.",
       "industry": "Financial Services",
       "tags": [
         "finance",
@@ -501,12 +576,15 @@
       "required_skills": [
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "marketing-seo-indexer",
-      "name": "SEO Content Strategy Indexer",
-      "description": "Knowledge Work: Web scraping, SEO keyword trend analysis, search intent mapping, and strategy synthesis.",
+      "name": "Agency Client Reporting & Project Desk",
+      "description": "Agency Operations: Monthly client recap reports, creative brief tracking, and review management.",
       "industry": "Digital Marketing",
       "tags": [
         "marketing",
@@ -519,12 +597,15 @@
       "required_skills": [
         "grep_search",
         "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "marketing-vendor-purchasing",
-      "name": "Ad Spend & Vendor Purchasing QA",
-      "description": "Edge Operations: Media buy procurement, invoice verification, ad network compliance, and ISO quality auditing.",
+      "name": "DTC Operations & Customer Care Swarm",
+      "description": "E-Commerce Operations: Returns/WISMO resolution, product catalog QA, and customer care.",
       "industry": "Digital Marketing",
       "tags": [
         "marketing",
@@ -539,12 +620,15 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "ecommerce-market-analysis",
-      "name": "Competitor & Market Trend Analyzer",
-      "description": "Knowledge Work: E-commerce catalog scraping, competitor pricing intelligence, and trend synthesis.",
+      "name": "E-Commerce Catalog & Quoting Desk",
+      "description": "E-Commerce: Product catalog QA, customer returns triage, and B2B quote drafting.",
       "industry": "E-commerce",
       "tags": [
         "e-commerce",
@@ -557,12 +641,15 @@
       "required_skills": [
         "grep_search",
         "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "ecommerce-dispatch-qa",
-      "name": "Warehouse Dispatch & Shipping QA",
-      "description": "Edge Operations: Shipping dispatch, receiving validation, inventory auditing, and packaging quality control.",
+      "name": "E-Commerce Fulfillment & Collections Swarm",
+      "description": "E-Commerce: Warehouse packing verification, return order logistics, and wholesale AR aging.",
       "industry": "E-commerce",
       "tags": [
         "e-commerce",
@@ -577,12 +664,15 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "realestate-valuation-synthesizer",
-      "name": "Property Valuation & Appraisal Synthesizer",
-      "description": "Knowledge Work: Property data compilation, local market appraisal indexing, and trend report writing.",
+      "name": "Real Estate Transaction & Showing Desk",
+      "description": "Brokerage Operations: Transaction coordination, speed-to-lead showing response, and listing packets.",
       "industry": "Real Estate",
       "tags": [
         "real-estate",
@@ -597,12 +687,15 @@
         "read_file",
         "search_web",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "realestate-maintenance-procurement",
-      "name": "Maintenance Procurement & Contractor QA",
-      "description": "Edge Operations: Facilities purchasing, material inventory, shipping parts, and contractor SLA quality audits.",
+      "name": "Property Management & Maintenance Swarm",
+      "description": "Property Management: Tenant work-order dispatch, lease abstracting, and rent collection.",
       "industry": "Real Estate",
       "tags": [
         "real-estate",
@@ -616,12 +709,15 @@
       "required_skills": [
         "grep_search",
         "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "consultancy-expert-synthesizer",
-      "name": "Expert Knowledge Harvester",
-      "description": "Knowledge Work: Client interview transcription analysis, expert feedback harvesting, and methodology synthesis.",
+      "name": "Consulting Time, Billing & Scope Desk",
+      "description": "Consulting Operations: Time entry auditing, SOW proposal drafting, and client document collection.",
       "industry": "Specialized Consultancies",
       "tags": [
         "consultancy",
@@ -634,12 +730,15 @@
       "required_skills": [
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "consultancy-subcontractor-qa",
-      "name": "Subcontractor Procurement & QA",
-      "description": "Edge Operations: Consultant onboarding procurement, shipping materials, project timesheet QA, and ISO compliance.",
+      "name": "Consulting Subcontractor & Expense Swarm",
+      "description": "Consulting Operations: 1099 SME contractor recruiting, vendor purchasing, and time billing.",
       "industry": "Specialized Consultancies",
       "tags": [
         "consultancy",
@@ -653,12 +752,15 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "logistics-route-optimization",
-      "name": "Route & Transit Strategy Analyzer",
-      "description": "Knowledge Work: Freight data analysis, carrier performance indexing, transit delay prediction, and strategic synthesis.",
+      "name": "Logistics Dispatch & Route Maintenance Desk",
+      "description": "Supply Chain Operations: Delivery fleet maintenance, DOT driver hours audit, and transport costing.",
       "industry": "Logistics & Supply Chain",
       "tags": [
         "logistics",
@@ -671,12 +773,15 @@
       "required_skills": [
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "logistics-dock-shipping",
-      "name": "Loading Dock Shipping & Receiving QA",
-      "description": "Edge Operations: Freight loading, receiving, container seals inspections, inventory logging, and ISO 9000 audits.",
+      "name": "Warehouse Dock Receiving & QA Swarm",
+      "description": "Supply Chain Operations: Inbound dock traveler verification, vendor purchasing, and quality inspection.",
       "industry": "Logistics & Supply Chain",
       "tags": [
         "logistics",
@@ -691,12 +796,15 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "engineering-spec-compliance",
-      "name": "Engineering Spec & Code Compliance Auditor",
-      "description": "Knowledge Work: Reviewing structural specifications, municipal building codes indexing, and safety compliance audits.",
+      "name": "Construction RFI & Submittal Desk",
+      "description": "Engineering & Architecture: RFI tracking, specification compliance, and jobsite OSHA safety logs.",
       "industry": "Engineering & Architecture",
       "tags": [
         "engineering",
@@ -710,12 +818,15 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "engineering-parts-procurement",
-      "name": "CAD Material Purchasing & ISO 9000 QA",
-      "description": "Edge Operations: Raw materials purchasing, parts receiving, supplier testing certs, and metallurgical quality QA.",
+      "name": "Engineering Subcontractor & Bid Procurement",
+      "description": "Engineering & Architecture: Subcontractor bid leveling, procurement, and materials purchasing.",
       "industry": "Engineering & Architecture",
       "tags": [
         "engineering",
@@ -730,12 +841,15 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "edtech-curriculum-synthesizer",
-      "name": "EdTech Curriculum & Course Indexer",
-      "description": "Knowledge Work: Educational standards mapping, syllabus content synthesis, and training guideline indexing.",
+      "name": "EdTech Curriculum & Student Desk",
+      "description": "EdTech Operations: Student enrollment, curriculum course mapping, and parent communications.",
       "industry": "EdTech & Training",
       "tags": [
         "education",
@@ -748,12 +862,15 @@
       "required_skills": [
         "grep_search",
         "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "edtech-license-procurement",
-      "name": "Software License Procurement & Asset Audit",
-      "description": "Edge Operations: SaaS license purchasing, hardware cataloging, asset shipping, and software inventory audits.",
+      "name": "EdTech Software Licensing & Vendor Operations",
+      "description": "EdTech Operations: Educational software seats, vendor purchasing, and curriculum compliance.",
       "industry": "EdTech & Training",
       "tags": [
         "education",
@@ -767,12 +884,15 @@
       "required_skills": [
         "grep_search",
         "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "development-docs-synthesizer",
-      "name": "Tech Spec & API Documentation Indexer",
-      "description": "Knowledge Work: Parsing codebase schemas, indexing API documentation, and tech spec synthesis.",
+      "name": "Studio Delivery & Release Desk",
+      "description": "Software Studio: Client ticket triage, changelog release writing, and scope change-order drafting.",
       "industry": "Software Development",
       "tags": [
         "development",
@@ -786,12 +906,15 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "development-qa-iso9000",
-      "name": "Release Quality Assurance & ISO 9000",
-      "description": "Edge Operations: Software release QA, test compliance auditing, security asset shipping, and patch management.",
+      "name": "Software QA & Release Gate Swarm",
+      "description": "Software Studio: Automated test packaging, release gate audits, and client acceptance logs.",
       "industry": "Software Development",
       "tags": [
         "development",
@@ -806,6 +929,9 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
@@ -825,12 +951,15 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "manufacturing-iso9000-qa",
-      "name": "Factory Floor ISO 9000 QA & Inventory",
-      "description": "Edge Operations: Materials receiving, shipping finished goods, parts inventory audits, and ISO 9000 quality checks.",
+      "name": "Manufacturing ISO 9001 Quality & Maintenance",
+      "description": "Manufacturing Operations: Calibration logs, machine preventative maintenance, and vendor purchasing.",
       "industry": "Manufacturing",
       "tags": [
         "manufacturing",
@@ -843,12 +972,15 @@
       "company_size": 25,
       "required_skills": [
         "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "food-recipe-compliance",
-      "name": "Recipe & Safety Compliance Auditor",
-      "description": "Knowledge Work: Analyzing recipe regulations, health guidelines indexing, and labeling audit reporting.",
+      "name": "Food Safety & Recipe Compliance Desk",
+      "description": "Food & Beverage: HACCP safety logs, recipe allergen labeling, and dock receiving temperature checks.",
       "industry": "Food & Beverage",
       "tags": [
         "food",
@@ -861,12 +993,15 @@
       "required_skills": [
         "grep_search",
         "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "food-inventory-receiving",
-      "name": "Kitchen Inventory Receiving & Supplier QA",
-      "description": "Edge Operations: Purchasing ingredients, temperature shipping checks, receiving logs, and supplier quality audits.",
+      "name": "Catering Quotes & Food Purchasing Swarm",
+      "description": "Food & Beverage: Catering proposals, food distributor purchasing, and vendor AP reconciliation.",
       "industry": "Food & Beverage",
       "tags": [
         "food",
@@ -880,12 +1015,15 @@
       "required_skills": [
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "chemical-sds-synthesizer",
-      "name": "Safety Data Sheet (SDS) Policy Indexer",
-      "description": "Knowledge Work: SDS sheet parsing, OSHA hazard mapping, and health regulations synthesis.",
+      "name": "Chemical SDS & Environmental Compliance Desk",
+      "description": "Chemical Sector: 16-section SDS authoring, EPA/OSHA compliance, and batch record packaging.",
       "industry": "Chemical Sector",
       "tags": [
         "chemical",
@@ -899,12 +1037,15 @@
       "required_skills": [
         "grep_search",
         "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "chemical-hazmat-shipping",
-      "name": "Hazmat Shipping, Receiving & ISO QA",
-      "description": "Edge Operations: Hazmat container shipping, receiving checks, containment inventory, and ISO 9000 compliance audits.",
+      "name": "Hazmat Shipping & Chemical AP Swarm",
+      "description": "Chemical Sector: DOT 49 CFR dangerous goods manifests, hazmat shipping, and raw material AP.",
       "industry": "Chemical Sector",
       "tags": [
         "chemical",
@@ -918,12 +1059,15 @@
       "company_size": 25,
       "required_skills": [
         "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "transportation-policy-compliance",
-      "name": "DOT Regulations Compliance Auditor",
-      "description": "Knowledge Work: Analyzing transit laws, DOT regulation changes indexing, and compliance reporting.",
+      "name": "Transportation Regulatory & Safety Desk",
+      "description": "Transportation: FMCSA hours-of-service compliance, driver qualification files, and safety audits.",
       "industry": "Transportation & Logistics",
       "tags": [
         "transportation",
@@ -937,12 +1081,15 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "transportation-fleet-purchasing",
-      "name": "Spare Parts Inventory & Fleet Purchasing QA",
-      "description": "Edge Operations: Parts procurement, fleet shipping logs, inventory management, and maintenance QA.",
+      "name": "Fleet Fuel & Equipment Purchasing",
+      "description": "Transportation: Bulk diesel fuel contracts, fleet replacement leasing, and carrier AP.",
       "industry": "Transportation & Logistics",
       "tags": [
         "transportation",
@@ -957,6 +1104,9 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
@@ -976,6 +1126,9 @@
       "required_skills": [
         "grep_search",
         "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
@@ -996,12 +1149,15 @@
       "required_skills": [
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "agriculture-research-synthesizer",
-      "name": "Soil Science & Agronomy Database Indexer",
-      "description": "Knowledge Work: Soil telemetry data parsing, crop yields indexing, and agricultural research synthesis.",
+      "name": "Farm Operations & Harvest Logistics",
+      "description": "Agriculture Operations: Harvest equipment dispatch, grain lot tracking, and weather-window scheduling.",
       "industry": "Agriculture & AgTech",
       "tags": [
         "agriculture",
@@ -1016,12 +1172,15 @@
         "read_file",
         "search_web",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "agriculture-grain-shipping",
-      "name": "Harvest Shipping & Equipment Parts Inventory",
-      "description": "Edge Operations: Bulk crop shipping logistics, receiving farming parts, and equipment maintenance QA.",
+      "name": "Ag Input Purchasing & Farm Finance",
+      "description": "Agriculture Operations: Seed/chemical input purchasing, farm bill documentation, and crop budgeting.",
       "industry": "Agriculture & AgTech",
       "tags": [
         "agriculture",
@@ -1036,12 +1195,15 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "compliance-crosswalk-synthesizer",
-      "name": "SOC2/ISO Framework Crosswalk Synthesizer",
-      "description": "Knowledge Work: Regulatory framework mapping, control guidelines synthesis, and security standard crosswalk audits.",
+      "name": "Enterprise Security & Control Crosswalk",
+      "description": "Compliance Operations: Security control audits, access verification, and QA evidence aggregation.",
       "industry": "Governance & Compliance",
       "tags": [
         "compliance",
@@ -1055,12 +1217,15 @@
       "required_skills": [
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "compliance-vendor-purchasing-qa",
-      "name": "Vendor Security Assessment & Procurement QA",
-      "description": "Edge Operations: Vendor onboarding security checks, compliance audits, and procurement security QA.",
+      "name": "Vendor Compliance & Procurement Governance",
+      "description": "Compliance Operations: Supplier compliance audits, vendor risk packaging, and accounting AP.",
       "industry": "Governance & Compliance",
       "tags": [
         "compliance",
@@ -1073,12 +1238,15 @@
       "company_size": 25,
       "required_skills": [
         "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "security-threat-intelligence",
-      "name": "Threat Intel Feed Parser & Knowledge Base",
-      "description": "Knowledge Work: Scraping CVE bulletins, threat intel feed indexing, and security alert briefings synthesis.",
+      "name": "MSSP Security Operations & Incident Desk",
+      "description": "Cybersecurity: Threat detection, vulnerability patching, and security compliance audits.",
       "industry": "Cybersecurity",
       "tags": [
         "security",
@@ -1092,12 +1260,15 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "security-hardware-inventory",
-      "name": "Security Hardware Purchasing & Asset QA",
-      "description": "Edge Operations: Network hardware procurement, firewall shipping audits, asset receiving, and hardware QA.",
+      "name": "IT Asset & Access Governance Swarm",
+      "description": "IT & Security Operations: Asset licensing, offboarding access revocation, and backup drills.",
       "industry": "Cybersecurity",
       "tags": [
         "security",
@@ -1114,12 +1285,15 @@
         "read_file",
         "shell",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "hr-policy-synthesizer",
-      "name": "Employee Handbook & Compliance Indexer",
-      "description": "Knowledge Work: Parsing labor laws, employee handbook updates indexing, and compliance guidelines synthesis.",
+      "name": "HR Policy & Offboarding Security Swarm",
+      "description": "People Operations: Employee handbook policies, onboarding paperwork, and access deprovisioning.",
       "industry": "Human Resources",
       "tags": [
         "hr",
@@ -1133,12 +1307,15 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "hr-recruiter-purchasing",
-      "name": "Recruiting Tool Procurement & Contractor QA",
-      "description": "Edge Operations: Job board purchasing, external placement contractor QA, and invoice auditing.",
+      "name": "HR Vendor & Talent Operations",
+      "description": "People Operations: Recruiting agency contracts, HR software seat management, and background check audits.",
       "industry": "Human Resources",
       "tags": [
         "hr",
@@ -1150,12 +1327,15 @@
       "company_size": 25,
       "required_skills": [
         "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "education-accreditation-synthesizer",
-      "name": "Accreditation & Curriculum Audit Synthesizer",
-      "description": "Knowledge Work: Academic standards audits, accreditation compliance indexing, and curriculum synthesis.",
+      "name": "School Office & Accreditation Desk",
+      "description": "Education Operations: Student registrar intake, accreditation audit binders, and parent notices.",
       "industry": "Education",
       "tags": [
         "education",
@@ -1168,12 +1348,15 @@
       "required_skills": [
         "grep_search",
         "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "education-supplies-purchasing",
-      "name": "School Supplies Purchasing & Textbook Inventory",
-      "description": "Edge Operations: Textbook procurement, classroom supplies shipping, receiving audits, and inventory QA.",
+      "name": "School Supplies & Facilities Purchasing",
+      "description": "Education Operations: School supply purchasing, facility maintenance work orders, and accounting AP.",
       "industry": "Education",
       "tags": [
         "education",
@@ -1187,12 +1370,15 @@
       "required_skills": [
         "grep_search",
         "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "utilities-maintenance-synthesizer",
-      "name": "Grid Maintenance Manuals & SOP Indexer",
-      "description": "Knowledge Work: Processing telemetry manuals, emergency utility plans indexing, and maintenance reports synthesis.",
+      "name": "Utility Work Order & Infrastructure Costing",
+      "description": "Utilities Operations: Equipment preventative maintenance, job costing, and safety audits.",
       "industry": "Critical Infrastructure",
       "tags": [
         "utilities",
@@ -1206,12 +1392,15 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "utilities-scada-qa",
-      "name": "SCADA Device Shipping, Receiving & Hardware QA",
-      "description": "Edge Operations: Grid sensor procurement, SCADA equipment shipping logs, receiving inspections, and hardware QA.",
+      "name": "Utility SCADA & Cybersecurity Governance",
+      "description": "Utilities Operations: SCADA access compliance, backup restore drills, and equipment PM.",
       "industry": "Critical Infrastructure",
       "tags": [
         "utilities",
@@ -1229,12 +1418,15 @@
         "read_file",
         "shell",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "creative-script-synthesizer",
-      "name": "Script & Localization Knowledge Indexer",
-      "description": "Knowledge Work: Script parsing, dialog semantic mapping, cultural adaptation databases indexing, and localization synthesis.",
+      "name": "Media Production & Creative Brief Desk",
+      "description": "Media Production: Script brief tracking, production milestone recaps, and project estimate drafting.",
       "industry": "Media & Creative",
       "tags": [
         "creative",
@@ -1249,12 +1441,15 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
       "id": "creative-equipment-procurement",
-      "name": "Studio Equipment Purchasing & Asset Inventory",
-      "description": "Edge Operations: Camera/lens procurement, studio shipping logs, asset receiving, and hardware QA.",
+      "name": "Creative Studio Gear & Vendor Operations",
+      "description": "Creative Studio: Camera equipment rental POs, software licensing, and studio AP reconciliation.",
       "industry": "Media & Creative",
       "tags": [
         "creative",
@@ -1268,6 +1463,9 @@
       "required_skills": [
         "grep_search",
         "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
@@ -1290,6 +1488,9 @@
         "read_file",
         "shell",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
@@ -1311,6 +1512,9 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     },
     {
@@ -1333,6 +1537,9 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
       ]
     }
   ]

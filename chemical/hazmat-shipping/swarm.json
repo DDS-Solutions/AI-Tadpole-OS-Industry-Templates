@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Hazmat Shipping, Receiving & ISO QA",
+  "name": "Hazmat Shipping & Chemical AP Swarm",
   "version": "1.0.0",
-  "description": "Edge Operations: Hazmat container shipping, receiving checks, containment inventory, and ISO 9000 compliance audits.",
+  "description": "Chemical Sector: DOT 49 CFR dangerous goods manifests, hazmat shipping, and raw material AP.",
   "industry": "chemical-sector",
   "tags": [
     "chemical",
@@ -18,14 +18,14 @@
   },
   "roster": [
     {
-      "id": "specialized-supply-chain-strategist",
-      "path": "agents/specialized-supply-chain-strategist.json",
+      "id": "specialized-hazmat-shipping-clerk",
+      "path": "agents/specialized-hazmat-shipping-clerk.json",
       "supervisor": null,
-      "priority": "critical"
+      "priority": "normal"
     },
     {
-      "id": "security-security-compliance-auditor",
-      "path": "agents/security-security-compliance-auditor.json",
+      "id": "purchasing-vendor-purchasing-clerk",
+      "path": "agents/purchasing-vendor-purchasing-clerk.json",
       "supervisor": null,
       "priority": "normal"
     },
@@ -37,7 +37,9 @@
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/hazmat_receiving_sop.md"
+  "agents": [
+    "specialized-hazmat-shipping-clerk",
+    "purchasing-vendor-purchasing-clerk",
+    "finance-finance-bookkeeper-controller"
   ]
 }

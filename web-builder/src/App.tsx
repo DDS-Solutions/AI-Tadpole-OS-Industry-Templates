@@ -956,7 +956,7 @@ export default function App() {
           </a>
         </div>
         <div className="text-[10px] font-mono text-zinc-600 tracking-widest uppercase">
-          AI-Tadpole-OS Swarm Architect • 68 Contract-Validated Industry Templates • 223 Persona Catalog
+          AI-Tadpole-OS Swarm Architect • 68 Contract-Validated Industry Templates • 274 Persona Catalog
         </div>
         <button
           onClick={handleStartOver}

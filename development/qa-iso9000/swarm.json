@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Release Quality Assurance & ISO 9000",
+  "name": "Software QA & Release Gate Swarm",
   "version": "1.0.0",
-  "description": "Edge Operations: Software release QA, test compliance auditing, security asset shipping, and patch management.",
+  "description": "Software Studio: Automated test packaging, release gate audits, and client acceptance logs.",
   "industry": "software-development",
   "tags": [
     "development",
@@ -17,26 +17,28 @@
   },
   "roster": [
     {
-      "id": "testing-testing-workflow-optimizer",
-      "path": "agents/testing-testing-workflow-optimizer.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "project-management-project-management-jira-workflow-steward",
-      "path": "agents/project-management-project-management-jira-workflow-steward.json",
+      "id": "testing-qa-evidence-collector",
+      "path": "agents/testing-qa-evidence-collector.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "marketing-marketing-cross-border-ecommerce",
-      "path": "agents/marketing-marketing-cross-border-ecommerce.json",
+      "id": "security-security-compliance-auditor",
+      "path": "agents/security-security-compliance-auditor.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "project-management-ticket-triage-pm",
+      "path": "agents/project-management-ticket-triage-pm.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/release_sop.md"
+  "agents": [
+    "testing-qa-evidence-collector",
+    "security-security-compliance-auditor",
+    "project-management-ticket-triage-pm"
   ]
 }

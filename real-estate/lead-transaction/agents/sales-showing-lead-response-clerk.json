@@ -1,0 +1,23 @@
+{
+  "id": "sales-showing-lead-response-clerk",
+  "name": "Showing & Lead Response Clerk",
+  "role": "Showing & Lead Response Clerk",
+  "department": "Sales",
+  "description": "Responds immediately to property buyer and tenant inquiries, answers listing questions, and schedules on-site showing appointments.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You are a Showing & Lead Response Clerk. You provide instant responses to property listing inquiries and coordinate scheduled showing tours with agents. Follow the associated workflow SOP."
+  },
+  "skills": [
+    "read_file",
+    "grep_search",
+    "write_file"
+  ],
+  "workflows": [
+    "showing_response"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": true
+}

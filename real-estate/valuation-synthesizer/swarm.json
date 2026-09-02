@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Property Valuation & Appraisal Synthesizer",
+  "name": "Real Estate Transaction & Showing Desk",
   "version": "1.0.0",
-  "description": "Knowledge Work: Property data compilation, local market appraisal indexing, and trend report writing.",
+  "description": "Brokerage Operations: Transaction coordination, speed-to-lead showing response, and listing packets.",
   "industry": "real-estate",
   "tags": [
     "real-estate",
@@ -16,26 +16,28 @@
   },
   "roster": [
     {
-      "id": "finance-finance-investment-researcher",
-      "path": "agents/finance-finance-investment-researcher.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "marketing-marketing-china-market-localization-strategist",
-      "path": "agents/marketing-marketing-china-market-localization-strategist.json",
+      "id": "project-management-transaction-coordinator",
+      "path": "agents/project-management-transaction-coordinator.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "engineering-engineering-ai-data-remediation-engineer",
-      "path": "agents/engineering-engineering-ai-data-remediation-engineer.json",
+      "id": "sales-showing-lead-response-clerk",
+      "path": "agents/sales-showing-lead-response-clerk.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "specialized-lease-abstract-clerk",
+      "path": "agents/specialized-lease-abstract-clerk.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/valuation_sop.md"
+  "agents": [
+    "project-management-transaction-coordinator",
+    "sales-showing-lead-response-clerk",
+    "specialized-lease-abstract-clerk"
   ]
 }

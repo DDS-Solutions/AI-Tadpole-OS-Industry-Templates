@@ -1,9 +1,9 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Grid Telemetry Swarm",
+  "name": "Utility Grid Operations & Safety Desk",
   "version": "1.0.0",
   "author": "GridSafe Networks",
-  "description": "Designed for grid status logs auditing, alarm triage, and utility crew scheduling.",
+  "description": "Utilities Operations: Preventative maintenance logs, OSHA safety compliance, and parts purchasing.",
   "industry": "Critical Infrastructure",
   "tags": [
     "utilities",
@@ -17,23 +17,27 @@
   },
   "roster": [
     {
-      "id": "engineering-engineering-backend-architect",
-      "path": "agents/engineering-engineering-backend-architect.json",
+      "id": "operations-equipment-maintenance-clerk",
+      "path": "agents/operations-equipment-maintenance-clerk.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "compliance-osha-safety-clerk",
+      "path": "agents/compliance-osha-safety-clerk.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "engineering-engineering-data-engineer",
-      "path": "agents/engineering-engineering-data-engineer.json",
-      "supervisor": null,
-      "priority": "normal"
-    },
-    {
-      "id": "engineering-engineering-devops-automator",
-      "path": "agents/engineering-engineering-devops-automator.json",
+      "id": "purchasing-vendor-purchasing-clerk",
+      "path": "agents/purchasing-vendor-purchasing-clerk.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
-  "global_workflows": []
+  "agents": [
+    "operations-equipment-maintenance-clerk",
+    "compliance-osha-safety-clerk",
+    "purchasing-vendor-purchasing-clerk"
+  ]
 }

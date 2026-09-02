@@ -1,0 +1,22 @@
+{
+  "id": "compliance-osha-safety-clerk",
+  "name": "Jobsite Safety & OSHA Clerk",
+  "role": "Jobsite Safety & OSHA Clerk",
+  "department": "Compliance",
+  "description": "Maintains jobsite hazard analysis (JHA) forms, logs safety toolbox talks, and tracks worker OSHA training certifications.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You are a Jobsite Safety & OSHA Clerk. You verify daily job hazard analyses, log safety meeting attendance, and maintain compliance binders. Follow the associated workflow SOP."
+  },
+  "skills": [
+    "read_file",
+    "grep_search"
+  ],
+  "workflows": [
+    "confined_space_safety"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

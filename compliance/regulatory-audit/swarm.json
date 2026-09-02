@@ -1,9 +1,9 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Regulatory Compliance Swarm",
+  "name": "Corporate Compliance & Audit Evidence Desk",
   "version": "1.0.0",
   "author": "TrustGuard SecOps",
-  "description": "Continuous security posture assessment, SOC2/ISO readiness audits, and regulatory compliance mapping.",
+  "description": "Compliance Operations: Regulatory policy tracking, audit evidence collection, and vendor security packaging.",
   "industry": "Governance & Compliance",
   "tags": [
     "compliance",
@@ -13,27 +13,31 @@
   ],
   "defaults": {
     "model": "gemma4:31b",
-    "temperature": 0.1
+    "temperature": 0.2
   },
   "roster": [
     {
-      "id": "security-security-compliance-auditor",
-      "path": "agents/security-security-compliance-auditor.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "finance-finance-bookkeeper-controller",
-      "path": "agents/finance-finance-bookkeeper-controller.json",
+      "id": "support-support-legal-compliance-checker",
+      "path": "agents/support-support-legal-compliance-checker.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "specialized-automation-governance-architect",
-      "path": "agents/specialized-automation-governance-architect.json",
+      "id": "testing-qa-evidence-collector",
+      "path": "agents/testing-qa-evidence-collector.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "compliance-vendor-risk-questionnaire-packager",
+      "path": "agents/compliance-vendor-risk-questionnaire-packager.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
-  "global_workflows": []
+  "agents": [
+    "support-support-legal-compliance-checker",
+    "testing-qa-evidence-collector",
+    "compliance-vendor-risk-questionnaire-packager"
+  ]
 }

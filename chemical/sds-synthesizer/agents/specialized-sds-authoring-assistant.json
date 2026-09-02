@@ -1,0 +1,22 @@
+{
+  "id": "specialized-sds-authoring-assistant",
+  "name": "SDS & GHS Chemical Label Assistant",
+  "role": "SDS & GHS Chemical Label Assistant",
+  "department": "Specialized",
+  "description": "Compiles 16-section Safety Data Sheets (SDS) and OSHA/GHS hazard labeling statements from chemical blend formulations.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You are an SDS & GHS Chemical Label Assistant. You extract hazard statements and precautionary pictograms to draft 16-section Safety Data Sheets. Follow the associated workflow SOP."
+  },
+  "skills": [
+    "read_file",
+    "grep_search"
+  ],
+  "workflows": [
+    "sds_authoring"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

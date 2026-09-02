@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Loading Dock Shipping & Receiving QA",
+  "name": "Warehouse Dock Receiving & QA Swarm",
   "version": "1.0.0",
-  "description": "Edge Operations: Freight loading, receiving, container seals inspections, inventory logging, and ISO 9000 audits.",
+  "description": "Supply Chain Operations: Inbound dock traveler verification, vendor purchasing, and quality inspection.",
   "industry": "logistics-supply-chain",
   "tags": [
     "logistics",
@@ -17,26 +17,28 @@
   },
   "roster": [
     {
-      "id": "specialized-supply-chain-strategist",
-      "path": "agents/specialized-supply-chain-strategist.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "marketing-marketing-cross-border-ecommerce",
-      "path": "agents/marketing-marketing-cross-border-ecommerce.json",
+      "id": "operations-receiving-traveler-clerk",
+      "path": "agents/operations-receiving-traveler-clerk.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "security-security-compliance-auditor",
-      "path": "agents/security-security-compliance-auditor.json",
+      "id": "purchasing-vendor-purchasing-clerk",
+      "path": "agents/purchasing-vendor-purchasing-clerk.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "testing-quality-inspector-traveler",
+      "path": "agents/testing-quality-inspector-traveler.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/dock_receiving_sop.md"
+  "agents": [
+    "operations-receiving-traveler-clerk",
+    "purchasing-vendor-purchasing-clerk",
+    "testing-quality-inspector-traveler"
   ]
 }

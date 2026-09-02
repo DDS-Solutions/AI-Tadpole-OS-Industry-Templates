@@ -1,8 +1,8 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Maintenance Procurement & Contractor QA",
+  "name": "Property Management & Maintenance Swarm",
   "version": "1.0.0",
-  "description": "Edge Operations: Facilities purchasing, material inventory, shipping parts, and contractor SLA quality audits.",
+  "description": "Property Management: Tenant work-order dispatch, lease abstracting, and rent collection.",
   "industry": "real-estate",
   "tags": [
     "real-estate",
@@ -17,26 +17,28 @@
   },
   "roster": [
     {
-      "id": "specialized-accounts-payable-agent",
-      "path": "agents/specialized-accounts-payable-agent.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "engineering-engineering-it-service-manager",
-      "path": "agents/engineering-engineering-it-service-manager.json",
+      "id": "operations-tenant-work-order-dispatcher",
+      "path": "agents/operations-tenant-work-order-dispatcher.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "marketing-marketing-livestream-commerce-coach",
-      "path": "agents/marketing-marketing-livestream-commerce-coach.json",
+      "id": "specialized-lease-abstract-clerk",
+      "path": "agents/specialized-lease-abstract-clerk.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "finance-ar-collections-specialist",
+      "path": "agents/finance-ar-collections-specialist.json",
       "supervisor": null,
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
-  "global_workflows": [
-    "workflows/maintenance_sop.md"
+  "agents": [
+    "operations-tenant-work-order-dispatcher",
+    "specialized-lease-abstract-clerk",
+    "finance-ar-collections-specialist"
   ]
 }
