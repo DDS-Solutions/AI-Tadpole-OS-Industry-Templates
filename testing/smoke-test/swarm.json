@@ -1,4 +1,5 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
   "id": "smoke-test",
   "name": "Reference Lifecycle Smoke Test Swarm",
   "industry": "Governance & Compliance",

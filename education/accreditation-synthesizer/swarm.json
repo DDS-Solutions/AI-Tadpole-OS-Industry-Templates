@@ -28,8 +28,8 @@
       "priority": "normal"
     },
     {
-      "id": "marketing-marketing-baidu-seo-specialist",
-      "path": "agents/marketing-marketing-baidu-seo-specialist.json",
+      "id": "support-support-legal-compliance-checker",
+      "path": "agents/support-support-legal-compliance-checker.json",
       "supervisor": null,
       "priority": "normal"
     }

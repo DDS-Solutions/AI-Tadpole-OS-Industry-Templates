@@ -411,6 +411,35 @@ def validate_catalog_parity(root: Path, report: ValidationReport) -> list[dict[s
     index_contract = {(item.get("id"), item.get("path")) for item in index if isinstance(item, dict)}
     if public_registry_contract != index_contract:
         report.error("catalog", "registry.json (public entries) and index.json disagree on template IDs or paths")
+
+    # Verify index.json required_models matches actual models declared in each template
+    for index_entry in index:
+        if not isinstance(index_entry, dict):
+            continue
+        t_id = index_entry.get("id")
+        t_path = index_entry.get("path")
+        req_models = index_entry.get("required_models")
+        if not isinstance(req_models, list) or not req_models:
+            report.error(f"index.json[{t_id}]", "required_models must be a non-empty array of strings")
+            continue
+        template_dir = root / t_path
+        agents_dir = template_dir / "agents"
+        if agents_dir.is_dir():
+            actual_models = set()
+            for agent_file in sorted(agents_dir.glob("*.json")):
+                try:
+                    agent_data = json.loads(agent_file.read_text(encoding="utf-8"))
+                    m_id = agent_data.get("model_config", {}).get("model_id")
+                    if m_id:
+                        actual_models.add(m_id)
+                except Exception:
+                    pass
+            if actual_models and set(req_models) != actual_models:
+                report.error(
+                    f"index.json[{t_id}]",
+                    f"required_models {sorted(req_models)} does not match agents' declared models {sorted(actual_models)}"
+                )
+
     return templates
 
 

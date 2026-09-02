@@ -1,4 +1,5 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
   "id": "job-shop-25",
   "name": "Manufacturing Job Shop (25 Seats)",
   "industry": "Manufacturing",

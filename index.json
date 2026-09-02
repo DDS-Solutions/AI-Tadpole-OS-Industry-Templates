@@ -6,7 +6,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "legal/contract-review",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "read_file",
@@ -20,7 +20,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "healthcare/patient-intake",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -34,7 +34,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "development/code-reviewer",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -49,7 +49,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "financial-services/bookkeeping-audit",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "read_file",
@@ -63,7 +63,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "digital-marketing/full-funnel-automation",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -77,7 +77,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "real-estate/lead-transaction",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -92,7 +92,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "manufacturing/job-shop-25",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -106,7 +106,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "manufacturing/medium-plant-50",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "read_file",
@@ -120,7 +120,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "manufacturing/smart-factory-100",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "read_file",
@@ -134,7 +134,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "food/restaurant-ops",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "read_file",
@@ -148,7 +148,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "chemical/process-safety",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -162,7 +162,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "transportation/fleet-logistics",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -177,7 +177,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "pharma/clinical-trials",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -192,7 +192,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "agriculture/precision-farming",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "read_file",
@@ -206,7 +206,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "compliance/regulatory-audit",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "read_file"
@@ -219,7 +219,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "security/incident-response",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "execute_shell",
@@ -236,7 +236,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "hr/recruiting-triage",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "read_file",
@@ -250,7 +250,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "education/curriculum-planner",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "read_file",
@@ -264,7 +264,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "utilities/grid-telemetry",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -279,7 +279,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "creative/asset-pipeline",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -295,7 +295,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "legal/precedent-synthesis",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -310,7 +310,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "legal/procurement-qa",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -325,7 +325,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "healthcare/clinical-guidelines",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -339,7 +339,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "healthcare/inventory-qa",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -353,7 +353,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "financial-services/policy-synthesizer",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "read_file",
@@ -367,7 +367,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "financial-services/vendor-reconciliation",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "read_file",
@@ -381,7 +381,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "digital-marketing/seo-indexer",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -395,7 +395,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "digital-marketing/vendor-purchasing",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -410,7 +410,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "e-commerce/market-analysis",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -424,7 +424,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "e-commerce/dispatch-qa",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -439,7 +439,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "real-estate/valuation-synthesizer",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -455,7 +455,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "real-estate/maintenance-procurement",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -469,7 +469,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "specialized-consultancies/expert-synthesizer",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "read_file",
@@ -483,7 +483,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "specialized-consultancies/subcontractor-qa",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -498,7 +498,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "logistics-supply-chain/route-optimization",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "read_file",
@@ -512,7 +512,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "logistics-supply-chain/dock-shipping",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -527,7 +527,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "engineering-architecture/spec-compliance",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -542,7 +542,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "engineering-architecture/parts-procurement",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -557,7 +557,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "edtech-training/curriculum-synthesizer",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -571,7 +571,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "edtech-training/license-procurement",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -585,7 +585,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "development/docs-synthesizer",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -600,7 +600,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "development/qa-iso9000",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -615,7 +615,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "manufacturing/design-synthesizer",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -630,7 +630,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "manufacturing/iso9000-qa",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "read_file"
@@ -643,7 +643,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "food/recipe-compliance",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -657,7 +657,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "food/inventory-receiving",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "read_file",
@@ -671,7 +671,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "chemical/sds-synthesizer",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -685,7 +685,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "chemical/hazmat-shipping",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "read_file"
@@ -698,7 +698,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "transportation/policy-compliance",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -713,7 +713,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "transportation/fleet-purchasing",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -728,7 +728,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "pharma/research-synthesizer",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -742,7 +742,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "pharma/coldchain-shipping",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "read_file",
@@ -756,7 +756,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "agriculture/research-synthesizer",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "read_file",
@@ -771,7 +771,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "agriculture/grain-shipping",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -786,7 +786,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "compliance/crosswalk-synthesizer",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "read_file",
@@ -800,7 +800,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "compliance/vendor-purchasing-qa",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "read_file"
@@ -813,7 +813,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "security/threat-intelligence",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -828,7 +828,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "security/hardware-inventory",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "execute_shell",
@@ -845,7 +845,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "hr/policy-synthesizer",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -860,7 +860,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "hr/recruiter-purchasing",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "read_file"
@@ -873,7 +873,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "education/accreditation-synthesizer",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -887,7 +887,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "education/supplies-purchasing",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -901,7 +901,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "utilities/maintenance-synthesizer",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -916,7 +916,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "utilities/scada-qa",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "execute_shell",
@@ -933,7 +933,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "creative/script-synthesizer",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -948,7 +948,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "creative/equipment-procurement",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -962,7 +962,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "field-services/operations-25",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",
@@ -977,7 +977,7 @@
     "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
     "path": "wholesale-distribution/b2b-operations-25",
     "required_models": [
-      "gemini-pro-latest"
+      "gemma4:31b"
     ],
     "required_skills": [
       "grep_search",

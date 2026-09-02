@@ -28,8 +28,8 @@
       "priority": "normal"
     },
     {
-      "id": "security-security-blockchain-security-auditor",
-      "path": "agents/security-security-blockchain-security-auditor.json",
+      "id": "specialized-legal-client-intake",
+      "path": "agents/specialized-legal-client-intake.json",
       "supervisor": null,
       "priority": "normal"
     }

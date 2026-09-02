@@ -16,20 +16,20 @@
   },
   "roster": [
     {
-      "id": "security-security-architect",
-      "path": "agents/security-security-architect.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "security-security-compliance-auditor",
-      "path": "agents/security-security-compliance-auditor.json",
+      "id": "design-design-brand-guardian",
+      "path": "agents/design-design-brand-guardian.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "testing-testing-accessibility-auditor",
-      "path": "agents/testing-testing-accessibility-auditor.json",
+      "id": "engineering-engineering-autonomous-optimization-architect",
+      "path": "agents/engineering-engineering-autonomous-optimization-architect.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "testing-testing-reality-checker",
+      "path": "agents/testing-testing-reality-checker.json",
       "supervisor": null,
       "priority": "normal"
     }

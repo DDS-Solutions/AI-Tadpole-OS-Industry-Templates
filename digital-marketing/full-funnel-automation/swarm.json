@@ -1,4 +1,5 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
   "id": "full-funnel-automation",
   "name": "Full-Funnel Marketing Automation",
   "industry": "Digital Marketing",

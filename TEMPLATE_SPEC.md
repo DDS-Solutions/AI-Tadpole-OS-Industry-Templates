@@ -81,8 +81,8 @@ Native AI-Tadpole-OS agents are model-agnostic and capability-driven. They must 
 - `description` (string, required): A brief description of the agent's function.
 - `status` (string, required): Initial runtime state. Installable registry agents use the upstream-native `"idle"` state.
 - `model_config` (object, required):
-  - `provider` (string, required): Consumer model provider (for example, `"google"`).
-  - `model_id` (string, required by this registry): Explicit provider model ID.
+  - `provider` (string, required): Consumer model provider (e.g. `"google"`, `"anthropic"`, `"openai"`, `"ollama"`).
+  - `model_id` (string, required by this registry): Explicit provider model ID. Defaults to `"gemma4:31b"` with `provider: "google"` (compatible with Google AI / Vertex endpoints, or mapped to local Ollama inference slots).
   - `system_prompt` (string, required): Personality and high-level role definition (Max 800 characters). Must refer to the associated workflow SOP.
 - `skills` (array of strings): Exact Tadpole capability/tool IDs (e.g., `["read_file", "grep_search"]`). Use `write_file`, not legacy `write_to_file`. Shell-capable agents declare both `execute_shell` and the required `shell` marker.
 - `workflows` (array of strings): List of referenced workflow IDs (e.g., `["legal_document_review"]`). OKF playbooks cannot be referenced as executable agent workflows.

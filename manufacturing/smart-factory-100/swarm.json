@@ -1,4 +1,5 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
   "id": "smart-factory-100",
   "name": "Smart Factory Enterprise (100 Seats)",
   "industry": "Manufacturing",

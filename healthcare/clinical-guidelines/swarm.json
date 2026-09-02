@@ -16,20 +16,20 @@
   },
   "roster": [
     {
-      "id": "specialized-medical-billing-coding-specialist",
-      "path": "agents/specialized-medical-billing-coding-specialist.json",
-      "supervisor": null,
-      "priority": "critical"
-    },
-    {
-      "id": "specialized-healthcare-customer-service",
-      "path": "agents/specialized-healthcare-customer-service.json",
+      "id": "specialized-data-privacy-officer",
+      "path": "agents/specialized-data-privacy-officer.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "specialized-healthcare-marketing-compliance",
-      "path": "agents/specialized-healthcare-marketing-compliance.json",
+      "id": "specialized-specialized-workflow-architect",
+      "path": "agents/specialized-specialized-workflow-architect.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "specialized-specialized-model-qa",
+      "path": "agents/specialized-specialized-model-qa.json",
       "supervisor": null,
       "priority": "normal"
     }
@@ -39,8 +39,8 @@
     "workflows/guideline_sop.md"
   ],
   "agents": [
-    "specialized-medical-billing-coding-specialist",
-    "specialized-healthcare-customer-service",
-    "specialized-healthcare-marketing-compliance"
+    "specialized-data-privacy-officer",
+    "specialized-specialized-workflow-architect",
+    "specialized-specialized-model-qa"
   ]
 }

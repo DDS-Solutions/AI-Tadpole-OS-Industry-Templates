@@ -1,4 +1,5 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
   "id": "bookkeeping-audit",
   "name": "Bookkeeping & Audit Swarm",
   "industry": "Financial Services",

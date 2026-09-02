@@ -12,7 +12,7 @@ interface ModeSelectorProps {
 }
 
 export default function ModeSelector({
-  templateCount = 69,
+  templateCount = 68,
   onSelectMode,
   onBrowseTemplates,
   savedDraft,

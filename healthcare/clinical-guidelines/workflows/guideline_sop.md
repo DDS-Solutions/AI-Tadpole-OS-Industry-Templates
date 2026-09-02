@@ -1,11 +1,10 @@
-# Workflow: Clinical Guideline Indexing SOP
+# Clinical Guideline & Protocol Indexing SOP
 
-## Step 1
+## Step 1: Intake & Literature Screening
+De-identify clinical literature sources and classify evidence strength according to grading rubrics.
 
-Parse clinical trials and update practice checklists.
-## Step 2
+## Step 2: Protocol Synthesis & Verification
+Synthesize clinical guidelines into structured, verifiable operational pathways with citations.
 
-Crosscheck patient symptoms against updated guidelines.
-## Step 3
-
-Generate a clinical decision report for doctor review.
+## Step 3: Advisory Gate & Publication
+Submit structured guideline packages for chief medical officer review and signoff.

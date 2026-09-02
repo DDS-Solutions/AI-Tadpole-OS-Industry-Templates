@@ -1,4 +1,5 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
   "id": "lead-transaction-management",
   "name": "Real Estate Lead & Transaction Management",
   "industry": "Real Estate",

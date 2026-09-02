@@ -28,10 +28,10 @@
       "priority": "normal"
     },
     {
-      "id": "engineering-engineering-email-intelligence-engineer",
-      "path": "agents/engineering-engineering-email-intelligence-engineer.json",
+      "id": "specialized-data-privacy-officer",
+      "path": "agents/specialized-data-privacy-officer.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "high"
     }
   ],
   "required_mcps": "mcps.json",
