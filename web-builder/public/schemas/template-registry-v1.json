@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tadpoleos.dev/schemas/template-registry-v1.json",
+  "title": "AI-Tadpole-OS Template Registry Schema",
+  "type": "object",
+  "required": ["industries", "templates"],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "repository": {
+      "type": "string"
+    },
+    "industries": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "company_sizes": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "templates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "description", "industry", "path"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "internal": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "industry": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "path": {
+            "type": "string"
+          },
+          "company_size": {
+            "type": "integer"
+          },
+          "required_skills": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

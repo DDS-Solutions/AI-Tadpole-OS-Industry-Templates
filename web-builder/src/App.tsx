@@ -219,7 +219,7 @@ export default function App() {
       department: 'Operations',
       status: 'idle',
       provider: 'google',
-      model: 'gemini-pro-latest',
+      model: 'gemma4:31b',
       prompt: 'You serve as a custom domain specialist. Work strictly within approved context and factual records. Require human review and approval before final decisions.',
       description: 'Custom AI agent defined from scratch.',
       color: '#71717a',
@@ -809,7 +809,7 @@ export default function App() {
                                     <div className="text-zinc-500 font-mono text-[10px] mt-0.5">{agent.role || 'Specialist'}</div>
                                   </div>
                                   <span className="text-[9px] font-mono text-zinc-400 bg-zinc-900 border border-zinc-800 px-1.5 py-0.5 rounded">
-                                    {agent.model || 'gemini-pro-latest'}
+                                    {agent.model || 'gemma4:31b'}
                                   </span>
                                 </div>
                               ))

@@ -62,6 +62,25 @@ export default function GuidedWizard({
     return recommendTeam(companyInfo.goals || [], companyInfo.industry, companyInfo.size, catalog);
   }, [companyInfo.goals, companyInfo.industry, companyInfo.size, catalog]);
 
+  const applyGeneratedWorkflowsAndAgents = () => {
+    const generatedWorkflows = generateGoalWorkflows(companyInfo.goals || []);
+    if (setWorkflows) {
+      setWorkflows(generatedWorkflows);
+    }
+
+    if (recommendedSpecialists.length > 0) {
+      const mappedAgents = recommendedSpecialists.map(spec => {
+        const matchedWfs = generatedWorkflows.filter(gw => spec.matchedGoalIds?.includes(gw.generatedFromGoalId || ''));
+        const wfIds = matchedWfs.length > 0 ? matchedWfs.map(w => w.id) : generatedWorkflows.map(w => w.id);
+        return {
+          ...spec.agent,
+          workflows: wfIds,
+        };
+      });
+      setAgents(mappedAgents);
+    }
+  };
+
   const handleRecommendTeam = () => {
     // 1. Generate default mission if blank
     let activeMission = companyInfo.mission;
@@ -70,44 +89,13 @@ export default function GuidedWizard({
       setCompanyInfo({ ...companyInfo, mission: activeMission });
     }
 
-    // 2. Generate goal workflows and assign them
-    const generatedWorkflows = generateGoalWorkflows(companyInfo.goals || []);
-    if (setWorkflows) {
-      setWorkflows(generatedWorkflows);
-    }
-
-    // 3. Map workflows to recommended agents
-    if (recommendedSpecialists.length > 0) {
-      const mappedAgents = recommendedSpecialists.map(spec => {
-        const matchedWfs = generatedWorkflows.filter(gw => spec.matchedGoalIds?.includes(gw.generatedFromGoalId || ''));
-        const wfIds = matchedWfs.length > 0 ? matchedWfs.map(w => w.id) : generatedWorkflows.map(w => w.id);
-        return {
-          ...spec.agent,
-          workflows: wfIds,
-        };
-      });
-      setAgents(mappedAgents);
-    }
+    // 2. Generate and assign workflows and agents
+    applyGeneratedWorkflowsAndAgents();
     setCurrentStep(2);
   };
 
   const handleRegenerateTeam = () => {
-    const generatedWorkflows = generateGoalWorkflows(companyInfo.goals || []);
-    if (setWorkflows) {
-      setWorkflows(generatedWorkflows);
-    }
-
-    if (recommendedSpecialists.length > 0) {
-      const mappedAgents = recommendedSpecialists.map(spec => {
-        const matchedWfs = generatedWorkflows.filter(gw => spec.matchedGoalIds?.includes(gw.generatedFromGoalId || ''));
-        const wfIds = matchedWfs.length > 0 ? matchedWfs.map(w => w.id) : generatedWorkflows.map(w => w.id);
-        return {
-          ...spec.agent,
-          workflows: wfIds,
-        };
-      });
-      setAgents(mappedAgents);
-    }
+    applyGeneratedWorkflowsAndAgents();
   };
 
   const handleRemoveAgent = (id: string) => {

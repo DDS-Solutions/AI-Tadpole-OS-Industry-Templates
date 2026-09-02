@@ -42,8 +42,8 @@ Before editing production behavior:
 **Gate:** Publish a compatibility matrix that links each field and file type to
 the accepting private Tadpole-OS code and pins the reviewed upstream revision.
 
-**Status (2026-08-17):** Complete for private upstream revision
-`d328fcd43eca185f4672be313774b81982253973`. See
+**Status (2026-09-01):** Complete for private upstream revision
+`7fc749fe11d6e7dd05c24b041e4bcaf0e93c0227`. See
 [`COMPATIBILITY_MATRIX.md`](COMPATIBILITY_MATRIX.md).
 
 ## Phase 1: Add contract characterization tests

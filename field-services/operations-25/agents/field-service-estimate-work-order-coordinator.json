@@ -7,10 +7,16 @@
   "model_config": {
     "system_prompt": "You prepare draft estimates and work orders for a small field-service company. Use only supplied price books, labor rules, service notes, and approval limits. Separate facts from assumptions, show exclusions, identify missing scope or parts, and never promise price, warranty, availability, or completion dates. Maintain traceability to the source request and require human approval before a quote or work order is issued. Follow the field_service_daily_operations workflow.",
     "provider": "google",
-    "model_id": "gemini-pro-latest"
+    "model_id": "gemma4:31b"
   },
-  "skills": ["grep_search", "read_file", "write_file"],
-  "workflows": ["field_service_daily_operations"],
+  "skills": [
+    "grep_search",
+    "read_file",
+    "write_file"
+  ],
+  "workflows": [
+    "field_service_daily_operations"
+  ],
   "status": "idle",
   "mcp_tools": [],
   "requires_oversight": true

@@ -33,7 +33,7 @@ To navigate the wiki, use the structured indices below:
 Start here before implementation work. Review the pinned private Tadpole-OS source revision, public downstream relationship, operational behavior, and known upstream limitations.
 
 ### 🌟 [2. Swarm Blueprints Overview](Swarm-Blueprints.md)
-Discover the structural mechanics of AI-Tadpole-OS swarms. Understand the hierarchical mapping (Executive, Management, Specialist) and how the 23 pre-configured industries partition cognitive and operational swarms.
+Discover the structural mechanics of AI-Tadpole-OS swarms. Understand the hierarchical mapping (Executive, Management, Specialist) and how the 25 pre-configured industries partition cognitive and operational swarms.
 
 ### 🧠 [3. Playbooks & OKF Knowledge Ingestion](Knowledge-Ingestion.md)
 Learn how to inject corporate standard operating procedures, manuals, and institutional knowledge directly into your agents using Markdown SOPs (with YAML frontmatter) or structured `knowledge.json` files.

@@ -190,7 +190,7 @@ export const buildSwarmZip = async (
     description: companyInfo.mission.trim(),
     industry: companyInfo.industry.toLowerCase(),
     company_size: companySize,
-    defaults: { model: 'gemini-pro-latest' },
+    defaults: { model: 'gemma4:31b' },
     roster,
     global_workflows: standardWorkflows.map(workflow => `workflows/${safeFileId(workflow.id)}.md`),
     required_mcps: 'mcps.json',
@@ -213,7 +213,7 @@ export const buildSwarmZip = async (
   const agentsFolder = zip.folder('agents');
   for (const agent of agents) {
     const id = safeFileId(agent.id);
-    const modelId = agent.model || 'gemini-pro-latest';
+    const modelId = agent.model || 'gemma4:31b';
     const agentWorkflows = (agent.workflows || []).map(safeFileId);
 
     // Reject OKF playbooks referenced as agent workflows
@@ -394,7 +394,7 @@ export const fetchSwarmDetailsFromRepo = async (
     if (!agentRes.ok) throw new Error(`Failed to fetch agent ${reference.id}`);
     const details = await agentRes.json() as AgentPayload;
     for (const workflowId of details.workflows || []) workflowReferences.add(workflowPathForId(workflowId));
-    const modelId = details.model_config?.model_id || details.model_id || details.model || 'gemini-pro-latest';
+    const modelId = details.model_config?.model_id || details.model_id || details.model || 'gemma4:31b';
     return {
       id: details.id || reference.id,
       name: details.name || reference.id,

@@ -21,7 +21,7 @@ describe('validateSwarm', () => {
     description: 'Reviews compliance evidence.',
     status: 'idle',
     provider: 'google',
-    model: 'gemini-pro-latest',
+    model: 'gemma4:31b',
     prompt: 'Review evidence carefully according to corporate policy.',
     skills: ['read_file', 'search_web'],
     workflows: ['review'],

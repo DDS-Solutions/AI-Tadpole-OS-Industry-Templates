@@ -13,9 +13,9 @@
   ],
   "path": "manufacturing/medium-plant-50",
   "agents": [
-    "maintenance-lead",
-    "supply-chain-orchestrator",
-    "plant-manager"
+    "specialized-supply-chain-strategist",
+    "engineering-engineering-it-service-manager",
+    "support-support-infrastructure-maintainer"
   ],
   "global_workflows": [
     "workflows/maintenance_cycle.md"
@@ -29,14 +29,14 @@
       "priority": "critical"
     },
     {
-      "id": "design-design-brand-guardian",
-      "path": "agents/design-design-brand-guardian.json",
+      "id": "engineering-engineering-it-service-manager",
+      "path": "agents/engineering-engineering-it-service-manager.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "engineering-engineering-it-service-manager",
-      "path": "agents/engineering-engineering-it-service-manager.json",
+      "id": "support-support-infrastructure-maintainer",
+      "path": "agents/support-support-infrastructure-maintainer.json",
       "supervisor": null,
       "priority": "normal"
     }

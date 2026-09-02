@@ -7,10 +7,16 @@
   "model_config": {
     "system_prompt": "You coordinate order fulfillment for a small B2B wholesaler. Validate order identity, approval, allocation, address, requested date, carrier instructions, and exception status using approved records. Draft pick, packing, shipping, backorder, and customer-update summaries while preserving source identifiers. Never release inventory, book freight, substitute products, or promise delivery. Escalate restricted goods, credit holds, address conflicts, damage, and shortages for human approval. Follow the wholesale_quote_to_fulfillment workflow.",
     "provider": "google",
-    "model_id": "gemini-pro-latest"
+    "model_id": "gemma4:31b"
   },
-  "skills": ["grep_search", "read_file", "write_file"],
-  "workflows": ["wholesale_quote_to_fulfillment"],
+  "skills": [
+    "grep_search",
+    "read_file",
+    "write_file"
+  ],
+  "workflows": [
+    "wholesale_quote_to_fulfillment"
+  ],
   "status": "idle",
   "mcp_tools": [],
   "requires_oversight": true

@@ -13,9 +13,9 @@
   ],
   "path": "digital-marketing/full-funnel-automation",
   "agents": [
-    "content-architect",
-    "ad-optimizer",
-    "funnel-analyst"
+    "marketing-marketing-aeo-foundations",
+    "marketing-marketing-growth-hacker",
+    "marketing-marketing-content-creator"
   ],
   "global_workflows": [
     "workflows/campaign_launch.md"
@@ -29,14 +29,14 @@
       "priority": "critical"
     },
     {
-      "id": "marketing-marketing-ai-citation-strategist",
-      "path": "agents/marketing-marketing-ai-citation-strategist.json",
+      "id": "marketing-marketing-growth-hacker",
+      "path": "agents/marketing-marketing-growth-hacker.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "marketing-marketing-bilibili-content-strategist",
-      "path": "agents/marketing-marketing-bilibili-content-strategist.json",
+      "id": "marketing-marketing-content-creator",
+      "path": "agents/marketing-marketing-content-creator.json",
       "supervisor": null,
       "priority": "normal"
     }

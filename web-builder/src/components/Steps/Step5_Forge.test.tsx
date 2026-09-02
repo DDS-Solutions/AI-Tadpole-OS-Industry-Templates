@@ -7,7 +7,7 @@ const agent: Agent = {
   id: 'reviewer',
   name: 'Reviewer',
   role: 'Quality Reviewer',
-  model: 'gemini-pro-latest',
+  model: 'gemma4:31b',
   prompt: 'Review approved records and prepare a factual report for human review.',
   skills: ['read_file'],
   workflows: [],

@@ -162,6 +162,7 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
               value={model}
               onChange={e => setModel(e.target.value)}
             >
+              <option value="gemma4:31b">gemma4:31b (Default, Open Sovereign)</option>
               <option value="gemini-1.5-flash">gemini-1.5-flash (Fast, Edge Ops)</option>
               <option value="gemini-1.5-pro">gemini-1.5-pro (Reasoning, Knowledge Work)</option>
               <option value="gemini-2.0-flash">gemini-2.0-flash (High speed agentics)</option>

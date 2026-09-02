@@ -13,7 +13,7 @@
     "procurement"
   ],
   "defaults": {
-    "model": "gemini-pro-latest",
+    "model": "gemma4:31b",
     "temperature": 0.2
   },
   "roster": [

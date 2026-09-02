@@ -13,9 +13,9 @@
   ],
   "path": "financial-services/bookkeeping-audit",
   "agents": [
-    "bookkeeper-bot",
-    "tax-strategist",
-    "audit-overseer"
+    "finance-finance-bookkeeper-controller",
+    "finance-finance-financial-analyst",
+    "finance-finance-tax-strategist"
   ],
   "global_workflows": [
     "workflows/reconciliation_guide.md"

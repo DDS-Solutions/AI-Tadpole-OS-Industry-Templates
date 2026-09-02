@@ -13,9 +13,9 @@
   ],
   "path": "manufacturing/smart-factory-100",
   "agents": [
-    "digital-twin-sync",
-    "rd-liaison",
-    "erpsync-master"
+    "gis-gis-bim-specialist",
+    "engineering-engineering-devops-automator",
+    "specialized-supply-chain-strategist"
   ],
   "global_workflows": [
     "workflows/smart_factory_sync.md"
@@ -29,14 +29,14 @@
       "priority": "critical"
     },
     {
-      "id": "engineering-engineering-feishu-integration-developer",
-      "path": "agents/engineering-engineering-feishu-integration-developer.json",
+      "id": "engineering-engineering-devops-automator",
+      "path": "agents/engineering-engineering-devops-automator.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "engineering-engineering-solidity-smart-contract-engineer",
-      "path": "agents/engineering-engineering-solidity-smart-contract-engineer.json",
+      "id": "specialized-supply-chain-strategist",
+      "path": "agents/specialized-supply-chain-strategist.json",
       "supervisor": null,
       "priority": "normal"
     }

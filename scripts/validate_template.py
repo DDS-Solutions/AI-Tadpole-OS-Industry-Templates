@@ -265,6 +265,10 @@ def validate_agent_payload(agent: Any) -> list[str]:
         prompt = model_config.get("system_prompt")
         if isinstance(prompt, str) and len(prompt) > 800:
             errors.append(f"model_config.system_prompt exceeds 800 characters ({len(prompt)})")
+        provider = str(model_config.get("provider", "")).lower()
+        model_id = str(model_config.get("model_id", "")).lower()
+        if provider == "google" and "llama" in model_id:
+            errors.append(f"model_config: provider 'google' cannot be paired with '{model_config.get('model_id')}'")
 
     for key in ("skills", "workflows", "mcp_tools"):
         value = agent.get(key, [])
@@ -501,6 +505,17 @@ def validate_template(root: Path, template: dict[str, Any], report: ValidationRe
             roster_ids.add(reference_id)
         if not agent_path.is_file():
             report.error(ref_context, f"agent file does not exist: {reference.get('path')}")
+
+    manifest_agents = swarm.get("agents")
+    if manifest_agents is not None:
+        if not isinstance(manifest_agents, list):
+            report.error(context, "swarm agents must be an array")
+        elif set(manifest_agents) != roster_ids:
+            report.error(
+                context,
+                f"swarm agents array does not match roster IDs: "
+                f"agents={sorted(manifest_agents)} vs roster={sorted(roster_ids)}"
+            )
 
     referenced_workflows: set[Path] = set()
     global_workflows = swarm.get("global_workflows", [])

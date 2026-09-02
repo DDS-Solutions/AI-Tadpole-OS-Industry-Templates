@@ -15,7 +15,7 @@ from typing import Any
 
 
 DEFAULT_PROVIDER = "google"
-DEFAULT_MODEL_ID = "gemini-pro-latest"
+DEFAULT_MODEL_ID = "gemma4:31b"
 LEGACY_SKILL_REPLACEMENTS = {
     "write_to_file": ("write_file",),
     "run_command": ("execute_shell", "shell"),

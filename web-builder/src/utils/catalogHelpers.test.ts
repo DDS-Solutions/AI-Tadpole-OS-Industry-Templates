@@ -51,7 +51,7 @@ describe('catalogHelpers', () => {
     expect(runtimeAgent.name).toBe('Field Service Dispatch Coordinator');
     expect(runtimeAgent.status).toBe('idle');
     expect(runtimeAgent.provider).toBe('google');
-    expect(runtimeAgent.model).toBe('gemini-pro-latest');
+    expect(runtimeAgent.model).toBe('gemma4:31b');
     expect(runtimeAgent.prompt).toBe(sampleCatalogAgent.runtimePrompt);
     expect(runtimeAgent.prompt.length).toBeLessThanOrEqual(800);
     expect(runtimeAgent.skills).toEqual(['read_file']);

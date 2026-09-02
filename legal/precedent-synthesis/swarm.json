@@ -11,7 +11,7 @@
     "knowledge"
   ],
   "defaults": {
-    "model": "gemini-pro-latest",
+    "model": "gemma4:31b",
     "temperature": 0.2
   },
   "roster": [
@@ -22,14 +22,14 @@
       "priority": "critical"
     },
     {
-      "id": "security-security-architect",
-      "path": "agents/security-security-architect.json",
+      "id": "specialized-legal-client-intake",
+      "path": "agents/specialized-legal-client-intake.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "specialized-healthcare-marketing-compliance",
-      "path": "agents/specialized-healthcare-marketing-compliance.json",
+      "id": "support-support-legal-compliance-checker",
+      "path": "agents/support-support-legal-compliance-checker.json",
       "supervisor": null,
       "priority": "normal"
     }
@@ -37,5 +37,10 @@
   "required_mcps": "mcps.json",
   "global_workflows": [
     "workflows/precedent_sop.md"
+  ],
+  "agents": [
+    "specialized-legal-document-review",
+    "specialized-legal-client-intake",
+    "support-support-legal-compliance-checker"
   ]
 }

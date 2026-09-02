@@ -7,7 +7,7 @@ export const safeFileId = (value: string): string => {
   return normalized;
 };
 
-export const DANGEROUS_SKILLS = DANGEROUS_SKILL_SET;
+const DANGEROUS_SKILLS = DANGEROUS_SKILL_SET;
 
 export function catalogAgentToRuntimeAgent(
   catalogAgent: CatalogAgent,
@@ -38,7 +38,7 @@ export function catalogAgentToRuntimeAgent(
     description: customOverrides.description || defaultDescription,
     status: 'idle',
     provider: customOverrides.provider || 'google',
-    model: customOverrides.model || 'gemini-pro-latest',
+    model: customOverrides.model || 'gemma4:31b',
     prompt: runtimePrompt,
     skills,
     workflows: customOverrides.workflows || [],

@@ -159,8 +159,5 @@ The current compatibility review is pinned in [COMPATIBILITY_MATRIX.md](COMPATIB
 5. If you changed the Web Builder, run `npm ci`, `npm run lint`, `npm run test`, and `npm run build` from `/web-builder/`.
 6. Submit a Pull Request and complete the cross-repository audit checklist. CI repeats the migration, validation, characterization, lint, archive-test, and production-build gates.
 
-> [!NOTE]
-> Six preserved legacy workflow files are currently reported as unreferenced warnings. They are documented compatibility drift, not validation errors; do not delete or register them without first auditing consumer behavior and migration intent.
-
 ---
 *Built for [AI-Tadpole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS).*

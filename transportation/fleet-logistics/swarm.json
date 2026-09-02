@@ -12,7 +12,7 @@
     "routes"
   ],
   "defaults": {
-    "model": "gemini-1.5-flash",
+    "model": "gemma4:31b",
     "temperature": 0.3
   },
   "roster": [

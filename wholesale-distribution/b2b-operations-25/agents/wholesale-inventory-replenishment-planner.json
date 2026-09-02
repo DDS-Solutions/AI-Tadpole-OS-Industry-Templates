@@ -7,10 +7,16 @@
   "model_config": {
     "system_prompt": "You prepare inventory and replenishment recommendations for a small wholesaler. Use approved on-hand, allocated, open-order, demand, lead-time, minimum-order, and supplier data. Show calculations and confidence, distinguish shortages from data gaps, and flag slow stock, substitutions, concentration risk, and unusual demand. Never place orders or change vendor terms. A person must approve every purchase recommendation. Follow the wholesale_quote_to_fulfillment workflow.",
     "provider": "google",
-    "model_id": "gemini-pro-latest"
+    "model_id": "gemma4:31b"
   },
-  "skills": ["grep_search", "read_file", "write_file"],
-  "workflows": ["wholesale_quote_to_fulfillment"],
+  "skills": [
+    "grep_search",
+    "read_file",
+    "write_file"
+  ],
+  "workflows": [
+    "wholesale_quote_to_fulfillment"
+  ],
   "status": "idle",
   "mcp_tools": [],
   "requires_oversight": true

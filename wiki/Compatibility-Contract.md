@@ -2,7 +2,7 @@
 
 This registry supports the public [AI-Tadpole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS) distribution, but its authoritative implementation contract is the private `DDS-Solutions/TadPole-OS` source.
 
-The current read-only audit used `D:\TadpoleOS-Dev` at commit `d328fcd43eca185f4672be313774b81982253973` on 2026-08-17. See [`COMPATIBILITY_MATRIX.md`](../COMPATIBILITY_MATRIX.md) for field-to-source evidence.
+The current read-only audit used `D:\TadpoleOS-Dev` at commit `7fc749fe11d6e7dd05c24b041e4bcaf0e93c0227` on 2026-09-01. See [`COMPATIBILITY_MATRIX.md`](../COMPATIBILITY_MATRIX.md) for field-to-source evidence.
 
 ## Required audit before implementation
 
@@ -17,8 +17,8 @@ Before changing a schema, validator, archive, migration, workflow, MCP layout, k
 
 ## Current alignment
 
-- `index.json` matches the Rust catalog's top-level array and clone URL.
-- All 198 agent profiles provide the required identity/model fields, start `idle`, and explicitly declare `mcp_tools` and `requires_oversight`.
+- `index.json` matches the Rust catalog's top-level array (68 public templates) and clone URL.
+- All 208 agent profiles provide the required identity/model fields (`gemma4:31b`), start `idle`, and explicitly declare `mcp_tools` and `requires_oversight`.
 - Legacy `run_command`/`write_to_file` labels were replaced by native Tadpole IDs.
 - Shell declarations include the runtime's required `shell` marker, and mutation/shell declarations require oversight.
 - Workflows contain parser-visible `##`/`###` steps.

@@ -13,9 +13,9 @@
   ],
   "path": "real-estate/lead-transaction",
   "agents": [
-    "listing-agent",
-    "transaction-coordinator",
-    "client-concierge"
+    "specialized-real-estate-buyer-seller",
+    "specialized-legal-document-review",
+    "sales-sales-deal-strategist"
   ],
   "global_workflows": [
     "workflows/lead_nurture.md"
@@ -23,20 +23,20 @@
   "version": "1.0.0",
   "roster": [
     {
-      "id": "specialized-legal-document-review",
-      "path": "agents/specialized-legal-document-review.json",
+      "id": "specialized-real-estate-buyer-seller",
+      "path": "agents/specialized-real-estate-buyer-seller.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "specialized-real-estate-buyer-seller",
-      "path": "agents/specialized-real-estate-buyer-seller.json",
+      "id": "specialized-legal-document-review",
+      "path": "agents/specialized-legal-document-review.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "engineering-engineering-devops-automator",
-      "path": "agents/engineering-engineering-devops-automator.json",
+      "id": "sales-sales-deal-strategist",
+      "path": "agents/sales-sales-deal-strategist.json",
       "supervisor": null,
       "priority": "normal"
     }

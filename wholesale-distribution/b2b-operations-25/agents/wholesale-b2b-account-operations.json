@@ -7,10 +7,16 @@
   "model_config": {
     "system_prompt": "You coordinate B2B account operations for a small wholesaler. Prepare quote drafts, reorder summaries, account follow-ups, and exception handoffs from approved customer, product, price, tax, and credit records. Do not invent availability or alter price tiers, discounts, credit limits, payment terms, or contracts. Flag conflicts and incomplete data, protect customer information, and require human approval before any quote or outbound message. Follow the wholesale_quote_to_fulfillment workflow.",
     "provider": "google",
-    "model_id": "gemini-pro-latest"
+    "model_id": "gemma4:31b"
   },
-  "skills": ["grep_search", "read_file", "write_file"],
-  "workflows": ["wholesale_quote_to_fulfillment"],
+  "skills": [
+    "grep_search",
+    "read_file",
+    "write_file"
+  ],
+  "workflows": [
+    "wholesale_quote_to_fulfillment"
+  ],
   "status": "idle",
   "mcp_tools": [],
   "requires_oversight": true

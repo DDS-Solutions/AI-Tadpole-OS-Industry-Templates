@@ -13,19 +13,19 @@
     "qa"
   ],
   "defaults": {
-    "model": "gemini-pro-latest",
+    "model": "gemma4:31b",
     "temperature": 0.2
   },
   "roster": [
     {
-      "id": "gis-gis-qa-engineer",
-      "path": "agents/gis-gis-qa-engineer.json",
+      "id": "specialized-supply-chain-strategist",
+      "path": "agents/specialized-supply-chain-strategist.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "specialized-supply-chain-strategist",
-      "path": "agents/specialized-supply-chain-strategist.json",
+      "id": "testing-testing-workflow-optimizer",
+      "path": "agents/testing-testing-workflow-optimizer.json",
       "supervisor": null,
       "priority": "normal"
     },

@@ -52,7 +52,7 @@ The `swarm.json` configures the roster of agents and settings for the template.
   "industry": "legal",
   "tags": ["law", "contracts", "auditing"],
   "defaults": {
-    "model": "gemini-pro-latest",
+    "model": "gemma4:31b",
     "temperature": 0.2
   },
   "roster": [
@@ -100,7 +100,7 @@ Native AI-Tadpole-OS agents are model-agnostic and capability-driven. They must 
   "status": "idle",
   "model_config": {
     "provider": "google",
-    "model_id": "gemini-pro-latest",
+    "model_id": "gemma4:31b",
     "system_prompt": "You are a meticulous, legally-informed document analysis specialist. Frame all findings as 'flagged for attorney review'. Confidentiality is absolute. Follow the associated workflow SOP precisely."
   },
   "skills": [

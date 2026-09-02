@@ -12,13 +12,13 @@
     "procurement"
   ],
   "defaults": {
-    "model": "gemini-pro-latest",
+    "model": "gemma4:31b",
     "temperature": 0.2
   },
   "roster": [
     {
-      "id": "gis-gis-qa-engineer",
-      "path": "agents/gis-gis-qa-engineer.json",
+      "id": "specialized-medical-billing-coding-specialist",
+      "path": "agents/specialized-medical-billing-coding-specialist.json",
       "supervisor": null,
       "priority": "critical"
     },

@@ -50,7 +50,7 @@ describe('draftStorage', () => {
     id: 'dispatch-agent',
     name: 'Dispatch Agent',
     role: 'Coordinator',
-    model: 'gemini-pro-latest',
+    model: 'gemma4:31b',
     prompt: 'Dispatch technicians efficiently.',
     skills: ['read_file'],
     workflows: [],

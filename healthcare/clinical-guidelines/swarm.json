@@ -11,25 +11,25 @@
     "clinical"
   ],
   "defaults": {
-    "model": "gemini-pro-latest",
+    "model": "gemma4:31b",
     "temperature": 0.2
   },
   "roster": [
     {
-      "id": "academic-academic-psychologist",
-      "path": "agents/academic-academic-psychologist.json",
+      "id": "specialized-medical-billing-coding-specialist",
+      "path": "agents/specialized-medical-billing-coding-specialist.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "marketing-marketing-baidu-seo-specialist",
-      "path": "agents/marketing-marketing-baidu-seo-specialist.json",
+      "id": "specialized-healthcare-customer-service",
+      "path": "agents/specialized-healthcare-customer-service.json",
       "supervisor": null,
       "priority": "normal"
     },
     {
-      "id": "specialized-healthcare-customer-service",
-      "path": "agents/specialized-healthcare-customer-service.json",
+      "id": "specialized-healthcare-marketing-compliance",
+      "path": "agents/specialized-healthcare-marketing-compliance.json",
       "supervisor": null,
       "priority": "normal"
     }
@@ -37,5 +37,10 @@
   "required_mcps": "mcps.json",
   "global_workflows": [
     "workflows/guideline_sop.md"
+  ],
+  "agents": [
+    "specialized-medical-billing-coding-specialist",
+    "specialized-healthcare-customer-service",
+    "specialized-healthcare-marketing-compliance"
   ]
 }

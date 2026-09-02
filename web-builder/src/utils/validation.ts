@@ -5,9 +5,10 @@ const LEGACY_SKILLS = new Set(['run_command', 'write_to_file']);
 
 export function inferProvider(modelId: string): string {
   const model = modelId.toLowerCase();
-  if (model.includes('gemini')) return 'google';
+  if (model.includes('gemini') || model.includes('gemma')) return 'google';
   if (model.includes('claude')) return 'anthropic';
   if (model.includes('gpt') || model.startsWith('o1') || model.startsWith('o3')) return 'openai';
+  if (model.includes('llama')) return 'groq';
   throw new Error(`Choose an explicit provider for unrecognized model "${modelId}".`);
 }
 
@@ -139,7 +140,7 @@ export function validateSwarm(
     }
 
     // Model and provider validation
-    const modelId = agent.model || 'gemini-pro-latest';
+    const modelId = agent.model || 'gemma4:31b';
     if (!agent.provider) {
       try {
         inferProvider(modelId);

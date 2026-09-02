@@ -23,7 +23,7 @@ describe('GuidedWizard component', () => {
     description: 'Handles patient triage.',
     status: 'idle',
     provider: 'google',
-    model: 'gemini-pro-latest',
+    model: 'gemma4:31b',
     prompt: 'Assist patient triage.',
     skills: ['read_file'],
     workflows: ['workflow-scheduling'],

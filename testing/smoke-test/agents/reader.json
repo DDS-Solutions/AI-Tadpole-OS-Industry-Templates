@@ -7,7 +7,7 @@
   "status": "idle",
   "model_config": {
     "provider": "google",
-    "model_id": "gemini-pro-latest",
+    "model_id": "gemma4:31b",
     "system_prompt": "Read test artifacts and verify baseline system behavior following the smoke SOP."
   },
   "skills": [

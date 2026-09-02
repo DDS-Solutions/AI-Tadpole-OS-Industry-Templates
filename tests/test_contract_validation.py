@@ -5,28 +5,55 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from migrate_consumer_contract import (
-    migrated_agent,
-    migrated_mcp_config,
-    migrated_skills,
-    migrated_workflow,
-)
-from validate_template import (
-    TEMPLATE_FILE_SUFFIXES,
-    TEMPLATE_SKILL_FILE_SUFFIXES,
-    detect_embedded_secrets,
-    validate_agent_payload,
-    validate_connector_dependencies,
-    validate_connector_integrity,
-    validate_knowledge_payload,
-    validate_mcp_payload,
-    validate_package_file,
-    validate_package_tree,
-    validate_workflow_content,
-)
-from verify_compatibility_lock import generate_lock_data, verify_lockfile
+try:
+    from scripts.migrate_consumer_contract import (
+        migrated_agent,
+        migrated_mcp_config,
+        migrated_skills,
+        migrated_workflow,
+    )
+    from scripts.validate_template import (
+        TEMPLATE_FILE_SUFFIXES,
+        TEMPLATE_SKILL_FILE_SUFFIXES,
+        ValidationReport,
+        detect_embedded_secrets,
+        validate_agent_payload,
+        validate_connector_dependencies,
+        validate_connector_integrity,
+        validate_knowledge_payload,
+        validate_mcp_payload,
+        validate_package_file,
+        validate_package_tree,
+        validate_template,
+        validate_workflow_content,
+    )
+    from scripts.verify_compatibility_lock import generate_lock_data, verify_lockfile
+except ImportError:
+    from migrate_consumer_contract import (
+        migrated_agent,
+        migrated_mcp_config,
+        migrated_skills,
+        migrated_workflow,
+    )
+    from validate_template import (
+        TEMPLATE_FILE_SUFFIXES,
+        TEMPLATE_SKILL_FILE_SUFFIXES,
+        ValidationReport,
+        detect_embedded_secrets,
+        validate_agent_payload,
+        validate_connector_dependencies,
+        validate_connector_integrity,
+        validate_knowledge_payload,
+        validate_mcp_payload,
+        validate_package_file,
+        validate_package_tree,
+        validate_template,
+        validate_workflow_content,
+    )
+    from verify_compatibility_lock import generate_lock_data, verify_lockfile
 
 
 class ConsumerContractTests(unittest.TestCase):
@@ -40,7 +67,7 @@ class ConsumerContractTests(unittest.TestCase):
             "status": "idle",
             "model_config": {
                 "provider": "google",
-                "model_id": "gemini-pro-latest",
+                "model_id": "gemma4:31b",
                 "system_prompt": "Review carefully.",
             },
             "skills": ["read_file"],
@@ -63,8 +90,8 @@ class ConsumerContractTests(unittest.TestCase):
         source["model_config"].pop("provider")
         source["model_config"].pop("model_id")
         source["custom_extension"] = {"preserved": True}
-        once = migrated_agent(source, "gemini-pro-latest")
-        twice = migrated_agent(once, "gemini-pro-latest")
+        once = migrated_agent(source, "gemma4:31b")
+        twice = migrated_agent(once, "gemma4:31b")
         self.assertEqual(once, twice)
         self.assertTrue(once["custom_extension"]["preserved"])
         self.assertEqual([], validate_agent_payload(once))
@@ -75,7 +102,7 @@ class ConsumerContractTests(unittest.TestCase):
         source["skills"] = ["read_file", "run_command", "write_to_file"]
         source.pop("mcp_tools")
         source.pop("requires_oversight")
-        migrated = migrated_agent(source, "gemini-pro-latest")
+        migrated = migrated_agent(source, "gemma4:31b")
         self.assertEqual("idle", migrated["status"])
         self.assertEqual(
             ["read_file", "execute_shell", "shell", "write_file"],
@@ -108,7 +135,6 @@ class ConsumerContractTests(unittest.TestCase):
 
     def test_cross_validation_rejects_unused_active_mcp_server(self):
         import tempfile
-        from validate_template import validate_template, ValidationReport
         with tempfile.TemporaryDirectory() as tmpdir:
             tmproot = Path(tmpdir)
             swarm = {
@@ -137,7 +163,6 @@ class ConsumerContractTests(unittest.TestCase):
 
     def test_cross_validation_rejects_dangling_mcp_grants(self):
         import tempfile
-        from validate_template import validate_template, ValidationReport
         with tempfile.TemporaryDirectory() as tmpdir:
             tmproot = Path(tmpdir)
             swarm = {
@@ -161,7 +186,6 @@ class ConsumerContractTests(unittest.TestCase):
 
     def test_cross_validation_enforces_oversight_on_mutating_mcp_grants(self):
         import tempfile
-        from validate_template import validate_template, ValidationReport
         with tempfile.TemporaryDirectory() as tmpdir:
             tmproot = Path(tmpdir)
             swarm = {
