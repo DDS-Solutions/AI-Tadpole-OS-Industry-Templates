@@ -133,6 +133,46 @@ class ConsumerContractTests(unittest.TestCase):
         errors = validate_agent_payload(agent)
         self.assertTrue(any("wildcards server:* are prohibited" in error for error in errors))
 
+    def test_agent_rejects_incompatible_model_provider_pairings(self):
+        agent = self.valid_agent()
+        agent["model_config"]["provider"] = "google"
+        agent["model_config"]["model_id"] = "llama-3.3-70b-versatile"
+        errors = validate_agent_payload(agent)
+        self.assertTrue(any("cannot be paired with" in error for error in errors))
+
+    def test_agent_rejects_system_prompt_exceeding_800_chars(self):
+        agent = self.valid_agent()
+        agent["model_config"]["system_prompt"] = "A" * 801
+        errors = validate_agent_payload(agent)
+        self.assertTrue(any("exceeds 800 characters" in error for error in errors))
+
+        agent["model_config"]["system_prompt"] = "A" * 800
+        errors = validate_agent_payload(agent)
+        self.assertEqual([], errors)
+
+    def test_cross_validation_rejects_stale_swarm_agents_array(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmproot = Path(tmpdir)
+            swarm = {
+                "id": "test-swarm",
+                "name": "Test Swarm",
+                "description": "Test description",
+                "company_size": 25,
+                "agents": ["stale-agent-id"],
+                "roster": [{"id": "agent-one", "path": "agents/agent-one.json"}]
+            }
+            (tmproot / "swarm.json").write_text(json.dumps(swarm), encoding="utf-8")
+            (tmproot / "agents").mkdir()
+            agent = self.valid_agent()
+            (tmproot / "agents" / "agent-one.json").write_text(json.dumps(agent), encoding="utf-8")
+            (tmproot / "workflows").mkdir()
+            (tmproot / "workflows" / "review.md").write_text("# Review\n\n## Step 1\nInspect.", encoding="utf-8")
+            report = ValidationReport()
+            validate_template(tmproot, {"id": "test", "path": "."}, report)
+            self.assertTrue(any("swarm agents array does not match roster IDs" in error for error in report.errors))
+
+
     def test_cross_validation_rejects_unused_active_mcp_server(self):
         import tempfile
         with tempfile.TemporaryDirectory() as tmpdir:
