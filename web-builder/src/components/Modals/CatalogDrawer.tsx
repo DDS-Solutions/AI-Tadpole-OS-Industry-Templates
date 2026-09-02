@@ -206,7 +206,7 @@ export default function CatalogDrawer({
           </div>
 
           {/* Right Panel: Detailed Agent Preview */}
-          <div className="w-96 border-l border-zinc-850 overflow-y-auto custom-scrollbar p-6 bg-zinc-950/30 flex flex-col justify-between" style={{ borderColor: 'color-mix(in srgb, var(--color-zinc-800) 40%, transparent)' }}>
+          <div className="w-96 lg:w-[420px] border-l border-zinc-850 overflow-y-auto custom-scrollbar p-6 bg-zinc-950/30 flex flex-col justify-between" style={{ borderColor: 'color-mix(in srgb, var(--color-zinc-800) 40%, transparent)' }}>
             {selectedAgent ? (
               <div className="flex flex-col h-full justify-between gap-6">
                 <div className="space-y-4">
@@ -239,7 +239,7 @@ export default function CatalogDrawer({
                       <BookOpen className="w-3.5 h-3.5" />
                       <span className="mono-label text-[9px]">Base System Instructions</span>
                     </div>
-                    <div className="bg-zinc-950 border border-zinc-850 rounded-lg p-3 text-[10px] font-mono text-zinc-400 overflow-y-auto max-h-[220px] leading-normal whitespace-pre-wrap select-text custom-scrollbar">
+                    <div className="bg-zinc-950 border border-zinc-850 rounded-lg p-3.5 text-[10px] font-mono text-zinc-400 overflow-y-auto min-h-[160px] max-h-[330px] leading-relaxed whitespace-pre-wrap select-text custom-scrollbar">
                       {selectedAgent.prompt}
                     </div>
                   </div>
