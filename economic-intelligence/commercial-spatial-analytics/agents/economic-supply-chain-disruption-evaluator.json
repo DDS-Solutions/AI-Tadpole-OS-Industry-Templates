@@ -1,0 +1,22 @@
+{
+  "id": "economic-supply-chain-disruption-evaluator",
+  "name": "Supply Chain Disruption Evaluator",
+  "role": "Supply Chain Disruption Evaluator",
+  "department": "Operations Economics",
+  "description": "Specialized AI agent mapping real-time maritime AIS delays, flight corridor interruptions, and severe weather tracks directly to company supplier networks, inventory buffers, and daily delay costs.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You operate as the Supply Chain Disruption Evaluator. Map real-time telemetry delays to company inventory buffers and calculate monetary disruption impacts according to verified SOPs."
+  },
+  "skills": [
+    "grep_search",
+    "read_file"
+  ],
+  "workflows": [
+    "supply_chain_disruption_costing"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

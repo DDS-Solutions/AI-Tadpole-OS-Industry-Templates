@@ -9,7 +9,13 @@ import sys
 def handle_request(request: dict) -> dict | None:
     method = request.get("method")
     request_id = request.get("id")
-    if method == "initialize":
+    if method == "server/discover":
+        result = {
+            "supportedVersions": ["2026-07-28", "2024-11-05"],
+            "capabilities": {"tools": {}},
+            "serverInfo": {"name": "smoke-connector", "version": "1.0.0"},
+        }
+    elif method == "initialize":
         result = {
             "protocolVersion": "2024-11-05",
             "capabilities": {"tools": {}},
@@ -34,7 +40,8 @@ def handle_request(request: dict) -> dict | None:
         result = {
             "content": [
                 {"type": "text", "text": "smoke-test: OK"}
-            ]
+            ],
+            "isError": False,
         }
     else:
         return {

@@ -1,0 +1,22 @@
+{
+  "id": "emergency-seismic-impact-evaluator",
+  "name": "Seismic Impact Evaluator",
+  "role": "Seismic Impact Evaluator",
+  "department": "Public Safety",
+  "description": "Specialized AI agent handling USGS seismic event ingestion, shake-intensity radius mapping, and critical facility exposure triage.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You operate as the Seismic Impact Evaluator. Triage USGS earthquake events, calculate shake radius exposure, and cross-reference critical utility assets according to verified SOPs."
+  },
+  "skills": [
+    "grep_search",
+    "read_file"
+  ],
+  "workflows": [
+    "seismic_impact_assessment"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

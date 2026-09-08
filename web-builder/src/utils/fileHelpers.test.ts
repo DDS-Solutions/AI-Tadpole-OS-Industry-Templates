@@ -133,6 +133,69 @@ describe('Swarm Architect archive contract', () => {
     expect(fetchMock.mock.calls.every(([url]) => String(url).startsWith('./mcp-blueprints/'))).toBe(true);
   });
 
+  it('packages remote HTTP MCP connectors without requiring server scripts', async () => {
+    const httpConnector: MCPConnector = {
+      id: 'remote-analytics',
+      name: 'Remote Analytics Endpoint',
+      description: 'Streamable HTTP MCP connector',
+      category: 'Analytics',
+      path: 'mcp-blueprints/remote-analytics',
+      version: '1.0.0',
+      config: {
+        mcpServers: {
+          analytics: {
+            url: 'https://analytics.internal/mcp/sse',
+            headers: { Authorization: '${ANALYTICS_TOKEN}' },
+            protocol_version: '2026-07-28',
+          },
+        },
+      },
+    };
+    const zip = await buildSwarmZip(company, [agent], [workflow], [httpConnector.id], [httpConnector]);
+    const mcp = JSON.parse(await zip.file('mcps.json')!.async('string'));
+    expect(mcp.mcpServers.analytics.url).toBe('https://analytics.internal/mcp/sse');
+    expect(mcp.mcpServers.analytics.protocol_version).toBe('2026-07-28');
+    expect(zip.file('skills/remote-analytics-server.py')).toBeNull();
+  });
+
+  it('rejects connector configs missing both command and url', async () => {
+    const invalidConnector: MCPConnector = {
+      id: 'empty-server',
+      name: 'Empty Server',
+      description: 'Invalid connector',
+      category: 'Test',
+      path: 'mcp-blueprints/empty-server',
+      version: '1.0.0',
+      config: {
+        mcpServers: {
+          empty: {},
+        },
+      },
+    };
+    await expect(
+      buildSwarmZip(company, [agent], [workflow], [invalidConnector.id], [invalidConnector])
+    ).rejects.toThrow('must specify either "command" or "url"');
+  });
+
+  it('rejects stdio connector configs missing valid args array', async () => {
+    const invalidConnector: MCPConnector = {
+      id: 'no-args',
+      name: 'No Args Server',
+      description: 'Invalid stdio connector',
+      category: 'Test',
+      path: 'mcp-blueprints/no-args',
+      version: '1.0.0',
+      config: {
+        mcpServers: {
+          test: { command: 'python' },
+        },
+      },
+    };
+    await expect(
+      buildSwarmZip(company, [agent], [workflow], [invalidConnector.id], [invalidConnector])
+    ).rejects.toThrow('missing a valid arguments array');
+  });
+
   it('generates deterministic read-only, write-capable, and execution archives', async () => {
     const readOnlyAgent: Agent = {
       id: 'analyst',

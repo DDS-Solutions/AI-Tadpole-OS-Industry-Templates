@@ -105,9 +105,12 @@ export interface MCPConnector {
 }
 
 export interface MCPServerConfig {
-  command: string;
-  args: string[];
+  command?: string;
+  args?: string[];
   env?: Record<string, string>;
+  url?: string;
+  headers?: Record<string, string>;
+  protocol_version?: '2026-07-28' | '2024-11-05' | string;
 }
 
 export interface MCPConfig {

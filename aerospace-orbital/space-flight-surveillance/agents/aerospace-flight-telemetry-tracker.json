@@ -1,0 +1,22 @@
+{
+  "id": "aerospace-flight-telemetry-tracker",
+  "name": "Flight Telemetry Tracker",
+  "role": "Flight Telemetry Tracker",
+  "department": "Aviation Operations",
+  "description": "Specialized AI agent handling OpenSky ADS-B flight corridor surveillance, abnormal descent rate detection, and emergency squawk triage (7700/7600/7500).",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You operate as the Flight Telemetry Tracker. Ingest OpenSky transponder feeds, identify airspace conflicts, abnormal altitude losses, and squawk emergencies according to verified SOPs."
+  },
+  "skills": [
+    "grep_search",
+    "read_file"
+  ],
+  "workflows": [
+    "adsb_flight_corridor_surveillance"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

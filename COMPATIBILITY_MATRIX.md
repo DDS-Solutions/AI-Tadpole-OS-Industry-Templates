@@ -4,10 +4,10 @@ This matrix records the private upstream contract audited before registry or Swa
 
 - Authoritative source: private `DDS-Solutions/TadPole-OS`
 - Read-only checkout reviewed: `D:\TadpoleOS-Dev`
-- Reviewed base revision: `7fc749fe11d6e7dd05c24b041e4bcaf0e93c0227`
-- Runtime hardening: fully integrated and verified in the authoritative repository checkout
+- Reviewed base revision: `f3b53231bd1928b737e65cdbd210907d534246b6`
+- Runtime hardening: fully integrated and verified in the authoritative repository checkout (including MCP 2026-07-28 streamable HTTP & decomposed module architecture)
 - Reviewed branch: `main`
-- Audit date: 2026-09-01
+- Audit date: 2026-09-08
 - Public downstream: [DDS-Solutions/AI-TadPole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS)
 
 ## Operational contract
@@ -23,14 +23,14 @@ This matrix records the private upstream contract audited before registry or Swa
 | Agent capabilities | Runtime tool IDs include `read_file`, `write_file`, `grep_search`, `execute_shell`, and `search_web`. Shell execution also checks for a `shell` or `terminal` marker. | Reject legacy `run_command` and `write_to_file`. Represent shell intent as `execute_shell` plus `shell`; force oversight for mutation/shell declarations. |
 | `mcp_tools` and oversight | `mcp_tools` is deserialized, persisted, included in the tool-cache key, and enforced for external MCP tools both during advertisement and immediately before execution. Empty declarations grant no external MCP tools. | Emit only exact canonical `server:tool` declarations. Server-wide wildcards (`server:*`) are rejected. Mutating (`write` / `execute`) tool grants force `requires_oversight: true`. |
 | `workflows/*.md` | Markdown is copied to `directives`; deterministic loading reads `directives` first and retains `data/workflows` as a legacy fallback. Workflow names reject traversal syntax. | Require at least one executable `##`/`###` heading and filename-safe workflow IDs. OKF playbooks cannot be referenced as executable agent workflows. |
-| `mcps.json` | The root file is validated and merged as `{ "mcpServers": { ... } }`. Existing server-name collisions fail closed; the merged configuration is committed with backup/restore semantics. | Emit one root configuration. Commands, arguments, environment names, and placeholders must pass the runtime policy. Every active server must have at least one exact agent grant. |
-| File-backed MCP | Top-level reviewed skill source is scanned before any install write and copied to `execution`. MCP environment literals are applied; `${NAME}` placeholders resolve from the Tadpole process environment; missing or `CONFIGURE_LOCALLY` values fail transparently before spawn. | Place reviewed bundled server source in `skills/`, reference its post-install `execution/` path, and provision declared environment variables locally. Bundled dependency requirements travel in `connector-lock.json`. Dependency installation remains an operator responsibility. |
-| MCP discovery/authorization | The host initializes configured servers and advertises their actual tool names, descriptions, and input schemas using encoded runtime names. Discovery is concurrent and time-bounded. External exposure and execution require the agent's `mcp_tools` declaration in addition to ACL/policy checks. | Exact `server:tool` selection is an active authorization gate. Mutating grants require explicit human oversight. Automatic connector dependency installation and transactional knowledge activation remain upstream operator boundaries. |
+| `mcps.json` | The root file is validated and merged as `{ "mcpServers": { ... } }`. Supports stdio (`command`, `args`, `env`) and streamable HTTP (`url`, `headers`, `protocol_version`). Existing server-name collisions fail closed; the merged configuration is committed with backup/restore semantics. Double underscores `__` in server names are rejected. | Emit one root configuration. Commands, arguments, URLs, environment names, headers, and placeholders must pass the runtime policy. Every active server must have at least one exact agent grant. |
+| File-backed MCP | Top-level reviewed skill source is scanned before any install write and copied to `execution`. MCP environment literals are applied; `${NAME}` placeholders resolve from the Tadpole process environment; missing or `CONFIGURE_LOCALLY` values fail transparently before spawn. | Place reviewed bundled server source in `skills/`, reference its post-install `execution/` path, and provision declared environment variables locally. Remote HTTP servers require no bundled source. Bundled dependency requirements travel in `connector-lock.json`. Dependency installation remains an operator responsibility. |
+| MCP discovery/authorization | The host initializes configured servers and advertises their actual tool names, descriptions, and input schemas using encoded runtime names. Stdio probes `server/discover` for 2026-07-28 with fallback to 2024-11-05 `initialize`. Streamable HTTP endpoints use stateless per-request `_meta`. Discovery is concurrent and time-bounded. External exposure and execution require the agent's `mcp_tools` declaration in addition to ACL/policy checks. | Exact `server:tool` selection is an active authorization gate. Mutating grants require explicit human oversight. Automatic connector dependency installation and transactional knowledge activation remain upstream operator boundaries. |
 | `knowledge.json` | The current hardened install transaction does not claim knowledge-store ingestion; registry validation still requires non-empty `text` and `topic`. | Treat knowledge as publication-validated content until a separately transactional knowledge activation API is defined. |
 | `knowledge/*.md` | The current hardened install transaction does not claim knowledge-store ingestion. | Include real playbook content for preview/manual activation, not dangling references. |
 | `skills/*` security gate | All supported top-level source and workflows are validated and scanned before the first write. Scan errors and scores at the rejection threshold fail closed. Later copy/configuration errors trigger rollback. | Allow reviewed executable source only under `skills/`; run registry validation, Bandit, and malware scanning before publication. |
 | Registry lockfile | `compatibility.lock.json` pins the registry contract version and cryptographic SHA-256 hashes of critical contract files. The private runtime base revision is recorded in this matrix until an owner commit exists. | Keep `compatibility.lock.json` synchronized via `python scripts/verify_compatibility_lock.py --generate`. |
-| Smoke testing | `testing/smoke-test` serves as the canonical reference template validating catalog parsing, idle availability, workflow extraction, and MCP execution isolation. | Maintain `testing/smoke-test` and `tests/test_smoke_template.py` as mandatory CI gates. |
+| Smoke testing | `testing/smoke-test` serves as the canonical reference template validating catalog parsing, idle availability, workflow extraction, and MCP execution isolation across modern (2026-07-28) and legacy (2024-11-05) transports. | Maintain `testing/smoke-test` and `tests/test_smoke_template.py` as mandatory CI gates. |
 | Install result | Installation preflights all filesystem assets, uses create-only ordinary writes plus atomic MCP replacement, and rolls back prior writes on failure. Success includes the cloned revision and exact planned/installed counts for agents, workflows, skills, swarm manifest, and MCP servers. | Treat the structured receipt plus CI validation as evidence for the covered installation assets. |
 
 ## Upstream source anchors
@@ -41,7 +41,7 @@ This matrix records the private upstream contract audited before registry or Swa
 - Runtime tool IDs: `server-rs/src/agent/runner/tools/manifest.rs`
 - Capability/toolbelt behavior: `server-rs/src/agent/runner/synthesis/toolbelt.rs`
 - Workflow parser/loader: `server-rs/src/agent/workflows.rs`
-- MCP configuration/client: `server-rs/src/agent/mcp/mod.rs` and `server-rs/src/agent/mcp/client.rs`
+- MCP configuration/client: `server-rs/src/agent/mcp/{mod.rs, config.rs, host.rs, authz.rs, native.rs, client/mod.rs, client/stdio.rs, client/http.rs}`
 - Knowledge request: `server-rs/src/agent/knowledge_store/types.rs`
 - Security scan: `server-rs/src/security/skillspector.rs`
 
@@ -56,6 +56,7 @@ This matrix records the private upstream contract audited before registry or Swa
 | Installer workflow destination differed from deterministic loader source. | Upstream defect | Fixed by making `directives` canonical with a filename-safe legacy fallback and witness tests. |
 | Installer could partially install and still report generic success. | Upstream reliability/security defect | Fixed with validate-before-write, recoverable create/replace operations, collision rejection, source-revision capture, structured receipts, and rollback witnesses. |
 | Connector Python dependencies were implicit and mutable. | Dependency provenance gap | Fixed with exact direct dependency manifests plus package version, artifact, authoritative source, and SHA-256 provenance; validator/tests enforce parity. |
+| Upstream upgraded MCP to 2026-07-28 streamable HTTP transport with decomposed modules. | Upstream enhancement | Updated template validator, web-builder types/helpers, smoke server, and test suite to support both stdio and HTTP transports, dual probe discovery, and header placeholder resolution. |
 
 ## Re-audit trigger
 

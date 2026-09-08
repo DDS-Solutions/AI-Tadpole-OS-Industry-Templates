@@ -984,5 +984,75 @@
       "read_file",
       "write_file"
     ]
+  },
+  {
+    "id": "geoint-osint-desk",
+    "name": "GEOINT Tactical OSINT Operations Desk",
+    "description": "Geospatial Intelligence: Multi-layer global situational awareness, tactical scene serialization, Overpass spatial querying, and real-time open-source anomaly correlation.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "geospatial-intelligence/geoint-osint-desk",
+    "required_models": [
+      "gemma4:31b"
+    ],
+    "required_skills": [
+      "grep_search",
+      "read_file"
+    ]
+  },
+  {
+    "id": "disaster-response-coordination",
+    "name": "Disaster Response & Crisis Coordination Swarm",
+    "description": "Emergency Management: NASA FIRMS wildfire thermal perimeter monitoring, USGS seismic impact assessment, and NOAA severe weather radar triage.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "emergency-management/disaster-response",
+    "required_models": [
+      "gemma4:31b"
+    ],
+    "required_skills": [
+      "grep_search",
+      "read_file"
+    ]
+  },
+  {
+    "id": "maritime-domain-awareness",
+    "name": "Maritime Domain Awareness & Subsea Security Swarm",
+    "description": "Maritime Operations: AIS live vessel traffic tracking, dark ship gap detection, subsea telecommunications cable defense, and harbor navigation risk triage.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "maritime-operations/maritime-domain-awareness",
+    "required_models": [
+      "gemma4:31b"
+    ],
+    "required_skills": [
+      "grep_search",
+      "read_file"
+    ]
+  },
+  {
+    "id": "aerospace-flight-orbital-surveillance",
+    "name": "Aerospace & Orbital Flight Surveillance Swarm",
+    "description": "Aerospace & Defense: OpenSky ADS-B flight corridor tracking, emergency squawk triage (7500/7600/7700), CelesTrak satellite pass prediction, and rocket launch trajectory coordination.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "aerospace-orbital/space-flight-surveillance",
+    "required_models": [
+      "gemma4:31b"
+    ],
+    "required_skills": [
+      "grep_search",
+      "read_file"
+    ]
+  },
+  {
+    "id": "commercial-spatial-analytics",
+    "name": "Commercial Spatial & Economic Intelligence Swarm",
+    "description": "Economic Intelligence: Demographic market footprint analysis (Census ACS, CBP/ZBP), corporate supply chain disruption modeling, and facility hazard risk quantification for SMB digital twins.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "economic-intelligence/commercial-spatial-analytics",
+    "required_models": [
+      "gemma4:31b"
+    ],
+    "required_skills": [
+      "grep_search",
+      "read_file"
+    ]
   }
 ]

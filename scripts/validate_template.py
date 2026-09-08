@@ -6,6 +6,7 @@ import hashlib
 import json
 import re
 import sys
+import urllib.parse
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -25,6 +26,8 @@ TEMPLATE_FILE_SUFFIXES = frozenset({".json", ".md"})
 TEMPLATE_SKILL_FILE_SUFFIXES = frozenset({".json", ".py", ".js", ".ts"})
 CONNECTOR_FILE_SUFFIXES = frozenset({".json", ".py", ".js", ".ts", ".txt"})
 ALLOWED_MCP_COMMANDS = frozenset({"node", "npx", "python", "python3"})
+ALLOWED_MCP_PROTOCOLS = frozenset({"2026-07-28", "2024-11-05"})
+VALID_ENV_OR_HEADER_VAR = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 LEGACY_SKILLS = frozenset({"run_command", "write_to_file"})
 DANGEROUS_SKILLS = frozenset({
     "delete_file",
@@ -34,7 +37,7 @@ DANGEROUS_SKILLS = frozenset({
     "write_file",
 })
 SENSITIVE_ENV_NAME = re.compile(
-    r"(?:KEY|TOKEN|SECRET|PASSWORD|CREDENTIAL|CONNECTION_STRING|CONN_STR)",
+    r"(?:KEY|TOKEN|SECRET|PASSWORD|CREDENTIAL|CONNECTION_STRING|CONN_STR|AUTH)",
     re.IGNORECASE,
 )
 SAFE_PLACEHOLDER = re.compile(
@@ -321,47 +324,101 @@ def validate_mcp_payload(config: Any) -> list[str]:
         return ["mcpServers must be an object"]
     for server_name, server in servers.items():
         prefix = f"mcpServers.{server_name}"
-        if not isinstance(server_name, str) or not server_name:
+        if not isinstance(server_name, str) or not server_name.strip():
             errors.append("server names must be non-empty strings")
             continue
+        if "__" in server_name:
+            errors.append(f"{prefix} cannot contain double underscores '__'")
         if not isinstance(server, dict):
             errors.append(f"{prefix} must be an object")
             continue
-        command = server.get("command")
-        if not isinstance(command, str) or not command.strip():
-            errors.append(f"{prefix}.command must be a non-empty string")
-        elif command.strip().lower() not in ALLOWED_MCP_COMMANDS:
-            errors.append(
-                f"{prefix}.command must use an approved executable: "
-                f"{', '.join(sorted(ALLOWED_MCP_COMMANDS))}"
-            )
-        args = server.get("args")
-        if not isinstance(args, list) or not all(isinstance(arg, str) for arg in args):
-            errors.append(f"{prefix}.args must be an array of strings")
-        else:
-            for index, arg in enumerate(args):
-                if SHELL_CONTROL.search(arg):
-                    errors.append(f"{prefix}.args[{index}] contains shell control syntax")
-            normalized_command = command.strip().lower() if isinstance(command, str) else ""
-            if normalized_command in {"python", "python3"} and any(
-                arg in {"-c", "-m"} for arg in args
+
+        has_command = isinstance(server.get("command"), str) and bool(server["command"].strip())
+        has_url = isinstance(server.get("url"), str) and bool(server["url"].strip())
+
+        if not has_command and not has_url:
+            errors.append(f"{prefix} must specify either 'command' or 'url'")
+
+        if "command" in server:
+            command = server.get("command")
+            if not isinstance(command, str) or not command.strip():
+                errors.append(f"{prefix}.command must be a non-empty string")
+            elif command.strip().lower() not in ALLOWED_MCP_COMMANDS:
+                errors.append(
+                    f"{prefix}.command must use an approved executable: "
+                    f"{', '.join(sorted(ALLOWED_MCP_COMMANDS))}"
+                )
+            args = server.get("args")
+            if not isinstance(args, list) or not all(isinstance(arg, str) for arg in args):
+                errors.append(f"{prefix}.args must be an array of strings")
+            else:
+                for index, arg in enumerate(args):
+                    if SHELL_CONTROL.search(arg):
+                        errors.append(f"{prefix}.args[{index}] contains shell control syntax")
+                normalized_command = command.strip().lower() if isinstance(command, str) else ""
+                if normalized_command in {"python", "python3"} and any(
+                    arg in {"-c", "-m"} for arg in args
+                ):
+                    errors.append(f"{prefix}.args must reference a reviewed source file, not inline/module execution")
+                if normalized_command == "node" and any(
+                    arg in {"-e", "--eval", "-p", "--print"} for arg in args
+                ):
+                    errors.append(f"{prefix}.args must reference a reviewed source file, not inline execution")
+
+        if "url" in server:
+            url = server.get("url")
+            if not isinstance(url, str) or not url.strip():
+                errors.append(f"{prefix}.url must be a non-empty string")
+            else:
+                parsed = urllib.parse.urlparse(url.strip())
+                if parsed.scheme not in ("http", "https") or not parsed.netloc:
+                    errors.append(f"{prefix}.url must use http or https scheme with valid host")
+
+        if "env" in server:
+            env = server.get("env", {})
+            if not isinstance(env, dict) or not all(
+                isinstance(key, str) and isinstance(value, str) for key, value in env.items()
             ):
-                errors.append(f"{prefix}.args must reference a reviewed source file, not inline/module execution")
-            if normalized_command == "node" and any(
-                arg in {"-e", "--eval", "-p", "--print"} for arg in args
+                errors.append(f"{prefix}.env must be an object of string values")
+            else:
+                for key, value in env.items():
+                    if not VALID_ENV_OR_HEADER_VAR.fullmatch(key):
+                        errors.append(f"{prefix}.env.{key} has an invalid environment variable name")
+                    if value.startswith("${") and value.endswith("}"):
+                        var_name = value[2:-1]
+                        if not VALID_ENV_OR_HEADER_VAR.fullmatch(var_name):
+                            errors.append(f"{prefix}.env.{key} has an invalid environment placeholder '{value}'")
+                    elif SENSITIVE_ENV_NAME.search(key) and not SAFE_PLACEHOLDER.fullmatch(value.strip()):
+                        errors.append(
+                            f"{prefix}.env.{key} must be an explicit local-configuration placeholder"
+                        )
+
+        if "headers" in server:
+            headers = server.get("headers", {})
+            if not isinstance(headers, dict) or not all(
+                isinstance(key, str) and isinstance(value, str) for key, value in headers.items()
             ):
-                errors.append(f"{prefix}.args must reference a reviewed source file, not inline execution")
-        env = server.get("env", {})
-        if not isinstance(env, dict) or not all(
-            isinstance(key, str) and isinstance(value, str) for key, value in env.items()
-        ):
-            errors.append(f"{prefix}.env must be an object of string values")
-        else:
-            for key, value in env.items():
-                if SENSITIVE_ENV_NAME.search(key) and not SAFE_PLACEHOLDER.fullmatch(value.strip()):
-                    errors.append(
-                        f"{prefix}.env.{key} must be an explicit local-configuration placeholder"
-                    )
+                errors.append(f"{prefix}.headers must be an object of string values")
+            else:
+                for key, value in headers.items():
+                    if not key.strip():
+                        errors.append(f"{prefix}.headers has an empty header name")
+                    if value.startswith("${") and value.endswith("}"):
+                        var_name = value[2:-1]
+                        if not VALID_ENV_OR_HEADER_VAR.fullmatch(var_name):
+                            errors.append(f"{prefix}.headers.{key} has an invalid header placeholder '{value}'")
+                    elif SENSITIVE_ENV_NAME.search(key) and not SAFE_PLACEHOLDER.fullmatch(value.strip()):
+                        errors.append(
+                            f"{prefix}.headers.{key} must be an explicit local-configuration placeholder"
+                        )
+
+        if "protocol_version" in server:
+            protocol_version = server.get("protocol_version")
+            if not isinstance(protocol_version, str) or protocol_version not in ALLOWED_MCP_PROTOCOLS:
+                errors.append(
+                    f"{prefix}.protocol_version must be one of: {', '.join(sorted(ALLOWED_MCP_PROTOCOLS))}"
+                )
+
     return errors
 
 

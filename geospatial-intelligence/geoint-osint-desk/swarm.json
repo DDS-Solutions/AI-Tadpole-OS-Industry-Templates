@@ -1,0 +1,44 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "GEOINT Tactical OSINT Operations Desk",
+  "version": "1.0.0",
+  "description": "Geospatial Intelligence: Multi-layer global situational awareness, tactical scene serialization, Overpass spatial querying, and real-time open-source anomaly correlation.",
+  "industry": "geospatial-intelligence",
+  "tags": [
+    "geoint",
+    "osint",
+    "overpass",
+    "tactical-recon",
+    "cctv"
+  ],
+  "defaults": {
+    "model": "gemma4:31b",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "geoint-tactical-recon-specialist",
+      "path": "agents/geoint-tactical-recon-specialist.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "geoint-osint-correlation-analyst",
+      "path": "agents/geoint-osint-correlation-analyst.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "geoint-spatial-infrastructure-analyst",
+      "path": "agents/geoint-spatial-infrastructure-analyst.json",
+      "supervisor": null,
+      "priority": "normal"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "agents": [
+    "geoint-tactical-recon-specialist",
+    "geoint-osint-correlation-analyst",
+    "geoint-spatial-infrastructure-analyst"
+  ]
+}

@@ -103,11 +103,17 @@ class SmokeTemplateLifecycleTests(unittest.TestCase):
         self.assertIsNotNone(process.stdout)
         try:
             requests = [
-                {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}},
-                {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}},
                 {
                     "jsonrpc": "2.0",
-                    "id": 3,
+                    "id": 1,
+                    "method": "server/discover",
+                    "params": {"_meta": {"protocolVersion": "2026-07-28"}},
+                },
+                {"jsonrpc": "2.0", "id": 2, "method": "initialize", "params": {}},
+                {"jsonrpc": "2.0", "id": 3, "method": "tools/list", "params": {}},
+                {
+                    "jsonrpc": "2.0",
+                    "id": 4,
                     "method": "tools/call",
                     "params": {"name": "healthcheck", "arguments": {}},
                 },
@@ -118,9 +124,14 @@ class SmokeTemplateLifecycleTests(unittest.TestCase):
                 process.stdin.flush()
                 responses.append(json.loads(process.stdout.readline()))
 
-            self.assertEqual("2024-11-05", responses[0]["result"]["protocolVersion"])
-            self.assertEqual("healthcheck", responses[1]["result"]["tools"][0]["name"])
-            self.assertEqual("smoke-test: OK", responses[2]["result"]["content"][0]["text"])
+            # Modern 2026-07-28 discover response
+            self.assertIn("2026-07-28", responses[0]["result"]["supportedVersions"])
+            self.assertIn("2024-11-05", responses[0]["result"]["supportedVersions"])
+            # Legacy initialize fallback response
+            self.assertEqual("2024-11-05", responses[1]["result"]["protocolVersion"])
+            self.assertEqual("healthcheck", responses[2]["result"]["tools"][0]["name"])
+            self.assertEqual("smoke-test: OK", responses[3]["result"]["content"][0]["text"])
+            self.assertFalse(responses[3]["result"].get("isError", True))
         finally:
             process.stdin.close()
             process.terminate()

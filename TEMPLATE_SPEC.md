@@ -32,7 +32,7 @@ Registered template directories are source-only data packages:
 
 - UTF-8 `.json` and `.md` are allowed throughout a template. Reviewed `.py`, `.js`, and `.ts` source is allowed only directly under `skills/`, which the upstream installer scans and copies to `execution/`.
 - Symbolic links, binary or unapproved file types, embedded binary data, files over 1 MB, and high-confidence credential patterns are rejected.
-- Sensitive values in `mcps.json` must be placeholders for local configuration. MCP commands are restricted to reviewed runtimes, and arguments must not use shell control syntax or inline interpreter execution.
+- Sensitive values in `mcps.json` must be placeholders for local configuration. MCP commands are restricted to reviewed runtimes, and arguments must not use shell control syntax or inline interpreter execution. Remote streamable HTTP endpoints (`url`) must use valid http/https schemes and approved protocol versions (`2026-07-28` or `2024-11-05`). Server names cannot contain double underscores `__`.
 - Passing these checks establishes registry admission only. It does not grant runtime permissions or repair the pinned consumer's non-transactional installer.
 
 See [The Sapphire Shield Security Boundaries](wiki/Security-Policy.md) for the layer-by-layer policy.
@@ -148,3 +148,42 @@ Perform thorough, accurate, and attorney-ready first-pass document review that s
 1. Map the document structure (sections, exhibits, attachments).
 2. Check for missing standard provisions.
 ```
+
+---
+
+## MCP Server Configuration (`mcps.json`)
+The root `mcps.json` file configures local stdio sub-processes or remote streamable HTTP endpoints available to agents in the template swarm.
+
+### Schema Properties
+- `mcpServers` (object, required): Map of unique server names to server configurations. Server names must not contain double underscores (`__`).
+  - **stdio transport**:
+    - `command` (string, required if `url` omitted): Approved runtime executable (`python`, `python3`, `node`, `npx`).
+    - `args` (array of strings, required with `command`): Command-line arguments. Must reference reviewed source files; shell control syntax is rejected.
+    - `env` (object, optional): Key-value pairs for environment variables. Sensitive variables must use `${VAR}` placeholders or `CONFIGURE_LOCALLY`.
+  - **streamable HTTP transport** (MCP 2026-07-28):
+    - `url` (string, required if `command` omitted): Valid `http://` or `https://` endpoint supporting SSE.
+    - `headers` (object, optional): Request headers. Values support `${VAR}` placeholders or `CONFIGURE_LOCALLY`.
+    - `protocol_version` (string, optional): `"2026-07-28"` (default) or `"2024-11-05"`.
+
+### Example
+```json
+{
+  "mcpServers": {
+    "local-crm": {
+      "command": "python",
+      "args": ["execution/mcp-generic-crm-server.py"],
+      "env": {
+        "CRM_API_KEY": "${CRM_API_KEY}"
+      }
+    },
+    "remote-gateway": {
+      "url": "https://mcp.internal.example.com/v1/sse",
+      "headers": {
+        "Authorization": "${MCP_GATEWAY_TOKEN}"
+      },
+      "protocol_version": "2026-07-28"
+    }
+  }
+}
+```
+

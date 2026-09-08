@@ -1,0 +1,46 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Aerospace & Orbital Flight Surveillance Swarm",
+  "version": "1.0.0",
+  "description": "Aerospace & Defense: OpenSky ADS-B flight corridor tracking, emergency squawk triage (7500/7600/7700), CelesTrak satellite pass prediction, and rocket launch trajectory coordination.",
+  "industry": "aerospace-orbital",
+  "tags": [
+    "aerospace",
+    "opensky",
+    "ads-b",
+    "orbital",
+    "satellites",
+    "celestrak",
+    "launches"
+  ],
+  "defaults": {
+    "model": "gemma4:31b",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "aerospace-flight-telemetry-tracker",
+      "path": "agents/aerospace-flight-telemetry-tracker.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "aerospace-orbital-satellite-tracker",
+      "path": "agents/aerospace-orbital-satellite-tracker.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "aerospace-launch-window-coordinator",
+      "path": "agents/aerospace-launch-window-coordinator.json",
+      "supervisor": null,
+      "priority": "normal"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "agents": [
+    "aerospace-flight-telemetry-tracker",
+    "aerospace-orbital-satellite-tracker",
+    "aerospace-launch-window-coordinator"
+  ]
+}

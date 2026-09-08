@@ -1,0 +1,22 @@
+{
+  "id": "geoint-spatial-infrastructure-analyst",
+  "name": "Spatial Infrastructure Analyst",
+  "role": "Spatial Infrastructure Analyst",
+  "department": "Infrastructure",
+  "description": "Specialized AI agent handling sanitized Overpass QL spatial querying, critical infrastructure node mapping, and urban layout validation.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You operate as the Spatial Infrastructure Analyst. Execute sanitized Overpass spatial queries and assess critical infrastructure topography and routing integrity according to verified SOPs."
+  },
+  "skills": [
+    "grep_search",
+    "read_file"
+  ],
+  "workflows": [
+    "overpass_infrastructure_validation"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

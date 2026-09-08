@@ -1,0 +1,46 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Disaster Response & Crisis Coordination Swarm",
+  "version": "1.0.0",
+  "description": "Emergency Management: NASA FIRMS wildfire thermal perimeter monitoring, USGS seismic impact assessment, and NOAA severe weather radar triage.",
+  "industry": "emergency-management",
+  "tags": [
+    "emergency",
+    "wildfire",
+    "firms",
+    "seismic",
+    "usgs",
+    "radar",
+    "disaster-response"
+  ],
+  "defaults": {
+    "model": "gemma4:31b",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "emergency-wildfire-thermal-analyst",
+      "path": "agents/emergency-wildfire-thermal-analyst.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "emergency-seismic-impact-evaluator",
+      "path": "agents/emergency-seismic-impact-evaluator.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "emergency-meteorological-coordinator",
+      "path": "agents/emergency-meteorological-coordinator.json",
+      "supervisor": null,
+      "priority": "normal"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "agents": [
+    "emergency-wildfire-thermal-analyst",
+    "emergency-seismic-impact-evaluator",
+    "emergency-meteorological-coordinator"
+  ]
+}

@@ -312,6 +312,122 @@ class ConsumerContractTests(unittest.TestCase):
         }
         self.assertEqual([], validate_mcp_payload(safe))
 
+    def test_mcp_http_transport_validation(self):
+        valid_http = {
+            "mcpServers": {
+                "remote-gateway": {
+                    "url": "https://mcp.internal.example.com/v1/sse",
+                    "headers": {
+                        "Authorization": "${MCP_GATEWAY_TOKEN}",
+                        "X-Client-Id": "swarm-node-1",
+                    },
+                    "protocol_version": "2026-07-28",
+                },
+                "local-test": {
+                    "url": "http://127.0.0.1:8080/mcp",
+                    "headers": {
+                        "X-Api-Key": "CONFIGURE_LOCALLY",
+                    },
+                    "protocol_version": "2024-11-05",
+                },
+            }
+        }
+        self.assertEqual([], validate_mcp_payload(valid_http))
+
+    def test_mcp_validation_edge_cases_and_rejections(self):
+        # Malformed payloads
+        self.assertTrue(any("must be a JSON object" in err for err in validate_mcp_payload([])))
+        self.assertTrue(any("mcpServers must be an object" in err for err in validate_mcp_payload({"mcpServers": "not-an-object"})))
+        self.assertTrue(any("server names must be non-empty" in err for err in validate_mcp_payload({"mcpServers": {"": {}}})))
+        self.assertTrue(any("must be an object" in err for err in validate_mcp_payload({"mcpServers": {"server1": "not-an-object"}})))
+
+        # Missing both command and url
+        self.assertTrue(
+            any("specify either 'command' or 'url'" in err
+                for err in validate_mcp_payload({"mcpServers": {"empty": {}}}))
+        )
+        # Double underscore in server name
+        self.assertTrue(
+            any("double underscores" in err
+                for err in validate_mcp_payload({"mcpServers": {"server__nested": {"url": "https://example.com"}}}))
+        )
+        # Invalid URL scheme
+        self.assertTrue(
+            any("http or https scheme" in err
+                for err in validate_mcp_payload({"mcpServers": {"bad-url": {"url": "ftp://files.example.com"}}}))
+        )
+        # Empty header name
+        self.assertTrue(
+            any("empty header name" in err
+                for err in validate_mcp_payload({"mcpServers": {"bad-hdr": {"url": "https://example.com", "headers": {"": "val"}}}}))
+        )
+        # Invalid header placeholder syntax
+        self.assertTrue(
+            any("invalid header placeholder" in err
+                for err in validate_mcp_payload({"mcpServers": {"bad-var": {"url": "https://example.com", "headers": {"Auth": "${INVALID-VAR!}"}}}}))
+        )
+        # Sensitive header with raw secret
+        self.assertTrue(
+            any("local-configuration placeholder" in err
+                for err in validate_mcp_payload({"mcpServers": {"bad-sec": {"url": "https://example.com", "headers": {"Authorization": "raw-secret-12345"}}}}))
+        )
+        # Invalid protocol version
+        self.assertTrue(
+            any("protocol_version must be one of" in err
+                for err in validate_mcp_payload({"mcpServers": {"bad-ver": {"url": "https://example.com", "protocol_version": "3.0.0"}}}))
+        )
+        # Invalid env variable key name
+        self.assertTrue(
+            any("invalid environment variable name" in err
+                for err in validate_mcp_payload({"mcpServers": {"bad-env": {"command": "python", "args": ["server.py"], "env": {"BAD-NAME": "val"}}}}))
+        )
+        # Invalid env placeholder
+        self.assertTrue(
+            any("invalid environment placeholder" in err
+                for err in validate_mcp_payload({"mcpServers": {"bad-ph": {"command": "python", "args": ["server.py"], "env": {"SAFE_KEY": "${123-BAD}"}}}}))
+        )
+        # Inline code execution prohibition
+        self.assertTrue(
+            any("inline/module execution" in err
+                for err in validate_mcp_payload({"mcpServers": {"bad-inline": {"command": "python", "args": ["-c", "print('boom')"]}}}))
+        )
+        self.assertTrue(
+            any("inline execution" in err
+                for err in validate_mcp_payload({"mcpServers": {"bad-eval": {"command": "node", "args": ["-e", "process.exit()"]}}}))
+        )
+
+    def test_cross_validation_with_http_mcp_servers(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmproot = Path(tmpdir)
+            swarm = {
+                "id": "http-swarm",
+                "name": "HTTP Swarm",
+                "description": "Test HTTP description",
+                "company_size": 25,
+                "connector_ids": ["remote-crm"],
+                "roster": [{"id": "agent-one", "path": "agents/agent-one.json"}],
+            }
+            (tmproot / "swarm.json").write_text(json.dumps(swarm), encoding="utf-8")
+            (tmproot / "agents").mkdir()
+            agent = self.valid_agent()
+            agent["mcp_tools"] = ["remote-crm:query_customer"]
+            (tmproot / "agents" / "agent-one.json").write_text(json.dumps(agent), encoding="utf-8")
+            (tmproot / "workflows").mkdir()
+            (tmproot / "workflows" / "review.md").write_text("# Review\n\n## Step 1\nInspect.", encoding="utf-8")
+            (tmproot / "mcps.json").write_text(json.dumps({
+                "mcpServers": {
+                    "remote-crm": {
+                        "url": "https://crm.internal.example.com/sse",
+                        "headers": {"Authorization": "${CRM_TOKEN}"},
+                        "protocol_version": "2026-07-28",
+                    }
+                }
+            }), encoding="utf-8")
+            report = ValidationReport()
+            validate_template(tmproot, {"id": "http-test", "path": "."}, report)
+            self.assertEqual([], report.errors)
+
     def test_package_security_contract_rejects_binary_types_and_embedded_secrets(self):
         errors = validate_package_file(
             "payload.exe", ".exe", 9, b"MZ\x00payload", TEMPLATE_FILE_SUFFIXES

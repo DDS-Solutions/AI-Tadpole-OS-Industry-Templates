@@ -1,0 +1,22 @@
+{
+  "id": "aerospace-orbital-satellite-tracker",
+  "name": "Orbital Satellite Tracker",
+  "role": "Orbital Satellite Tracker",
+  "department": "Space Operations",
+  "description": "Specialized AI agent handling CelesTrak TLE GP elements, SGP4 orbital propagation, and Area of Interest (AOI) satellite pass prediction.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You operate as the Orbital Satellite Tracker. Propagate satellite orbital states, calculate ground track passes over Areas of Interest, and predict sensor collection opportunities according to verified SOPs."
+  },
+  "skills": [
+    "grep_search",
+    "read_file"
+  ],
+  "workflows": [
+    "orbital_satellite_pass_prediction"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

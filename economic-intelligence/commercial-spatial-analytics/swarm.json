@@ -1,0 +1,45 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Commercial Spatial & Economic Intelligence Swarm",
+  "version": "1.0.0",
+  "description": "Economic Intelligence: Demographic market footprint analysis (Census ACS, CBP/ZBP), corporate supply chain disruption modeling, and facility hazard risk quantification for SMB digital twins.",
+  "industry": "economic-intelligence",
+  "tags": [
+    "economic",
+    "business-intelligence",
+    "supply-chain",
+    "census",
+    "asset-risk",
+    "market-footprint"
+  ],
+  "defaults": {
+    "model": "gemma4:31b",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "economic-market-footprint-analyst",
+      "path": "agents/economic-market-footprint-analyst.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "economic-supply-chain-disruption-evaluator",
+      "path": "agents/economic-supply-chain-disruption-evaluator.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "economic-asset-risk-quantifier",
+      "path": "agents/economic-asset-risk-quantifier.json",
+      "supervisor": null,
+      "priority": "normal"
+    }
+  ],
+  "required_mcps": "mcps.json",
+  "agents": [
+    "economic-market-footprint-analyst",
+    "economic-supply-chain-disruption-evaluator",
+    "economic-asset-risk-quantifier"
+  ]
+}

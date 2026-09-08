@@ -110,17 +110,27 @@ const loadConnectorAssets = async (
   let needsServerSource = false;
 
   for (const [serverName, server] of Object.entries(config.mcpServers)) {
-    if (!server || typeof server !== 'object' || !Array.isArray(server.args)) {
-      throw new Error(`MCP server "${serverName}" is missing a valid arguments array.`);
+    if (!server || typeof server !== 'object') {
+      throw new Error(`MCP server "${serverName}" is invalid.`);
     }
-    const args = server.args.map(arg => {
-      if (arg === 'server.py' || arg === './server.py') {
-        needsServerSource = true;
-        return installedServerPath;
+    if (!server.command && !server.url) {
+      throw new Error(`MCP server "${serverName}" must specify either "command" or "url".`);
+    }
+    if (server.command) {
+      if (!Array.isArray(server.args)) {
+        throw new Error(`MCP server "${serverName}" is missing a valid arguments array.`);
       }
-      return arg;
-    });
-    rewritten[serverName] = { ...server, args };
+      const args = server.args.map(arg => {
+        if (arg === 'server.py' || arg === './server.py') {
+          needsServerSource = true;
+          return installedServerPath;
+        }
+        return arg;
+      });
+      rewritten[serverName] = { ...server, args };
+    } else {
+      rewritten[serverName] = { ...server };
+    }
   }
 
   if (needsServerSource) {
