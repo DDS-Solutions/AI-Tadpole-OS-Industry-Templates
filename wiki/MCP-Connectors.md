@@ -71,13 +71,14 @@ If you are writing a template manually, place the accepted MCP configuration at 
 
 Place the corresponding reviewed source at `skills/mcp-generic-crm-server.py`. The installer scans it, then copies it to `execution/mcp-generic-crm-server.py` before deleting the clone.
 
-## 🔒 Security Model
+## 🔒 Security Model & Protocol Parity
 
-In alignment with the Sapphire Shield policy, MCP servers are intended to run locally and require operator review.
-- MCP server configuration uses a command and string argument list suitable for stdio startup.
-- Sensitive environment values in this registry must be explicit placeholders. The pinned MCP client parses but does not apply config `env`; set real values in the AI-Tadpole-OS process environment.
-- The registry validator allows only reviewed runtime commands and rejects shell control syntax and inline interpreter execution.
-- AI-Tadpole-OS authorization is not inferred from a connector description or the builder's prompt keyword advisory. Write/mutation access must be constrained by the deployed connector and consumer runtime configuration.
+In alignment with the Sapphire Shield policy and the MCP 2026-07-28 protocol upgrade:
+- **Dual Transport Support**: Configuration supports both stdio (`command`, `args`, `env`) and streamable HTTP (`url`, `headers`, `protocol_version`).
+- **Probe-First Discovery**: Stdio probes `server/discover` negotiating version `2026-07-28`, falling back to `initialize` (`2024-11-05`) if unsupported. HTTP servers utilize stateless per-request `_meta`.
+- **Placeholder Security**: Sensitive environment and header values must use explicit placeholders (`CONFIGURE_LOCALLY`, `YOUR_API_KEY_HERE`, or `${API_TOKEN}`). Placeholders resolve from the host process environment.
+- **Runtime Command Whitelist**: Stdio commands are strictly limited to approved runtimes (`node`, `npx`, `python`, `python3`). Shell control syntax, redirection, inline interpreter code, and double underscores (`__`) in server names are rejected.
+- **Explicit Tool Authorization**: AI-Tadpole-OS authorization is not inferred from a connector description. External MCP tools require explicit agent `mcp_tools` declarations (`server:tool`), and mutating tool grants enforce `requires_oversight: true`.
 
 > [!WARNING]
-> Swarm Architect now routes bundled source through `skills/` so the installer retains it in `execution/`. This does not install Python/npm dependencies, apply MCP config `env`, make `mcp_tools` an active authorization filter, or repair the pinned runtime's incomplete external-tool discovery. Those remain operator/upstream responsibilities.
+> Swarm Architect routes bundled stdio source through `skills/` so the installer retains it in `execution/`. Remote HTTP servers do not require bundled source. Automatic dependency installation remains an operator responsibility.

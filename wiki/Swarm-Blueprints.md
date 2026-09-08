@@ -24,7 +24,7 @@ graph TD
 
 ## 🏢 Roster Design: Knowledge Work vs. Edge Operations
 
-Across the 25 industries represented in the catalog, swarms use one of two core archetypes. Field Services and Wholesale & Distribution also include compact three-agent starter teams for businesses with up to 25 seats:
+Across the 30 industries represented in the catalog, swarms use one of two core archetypes. Field Services and Wholesale & Distribution also include compact three-agent starter teams for businesses with up to 25 seats:
 
 ### 1. Knowledge Work Swarms (Cognitive Layer)
 - **Focus**: High-context information retrieval, document audits, policy synthesis, case law precedent research, and regulatory reporting.
