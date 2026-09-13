@@ -75,6 +75,10 @@ def verify_lockfile() -> bool:
     recorded_hashes = lock_data.get("critical_contract_files", {})
     mismatches: list[str] = []
 
+    stale_entries = set(recorded_hashes.keys()) - set(CRITICAL_CONTRACT_FILES)
+    for stale in sorted(stale_entries):
+        mismatches.append(f"Stale contract file in lock: {stale}")
+
     for relative_path in CRITICAL_CONTRACT_FILES:
         full_path = ROOT / relative_path
         if not full_path.is_file():
@@ -103,7 +107,7 @@ def verify_lockfile() -> bool:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Verify or regenerate compatibility.lock.json")
     parser.add_argument("--generate", action="store_true", help="Regenerate the compatibility lockfile")
-    parser.add_argument("--check", action="store_true", default=True, help="Verify lockfile against current files")
+    parser.add_argument("--check", action="store_true", help="Verify lockfile against current files (default mode)")
     args = parser.parse_args()
 
     if args.generate:

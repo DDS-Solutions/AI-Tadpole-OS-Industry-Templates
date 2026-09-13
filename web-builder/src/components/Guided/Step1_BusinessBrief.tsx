@@ -1,6 +1,7 @@
+import { useEffect } from 'react';
 import { Building2, Users, Sparkles, Check } from 'lucide-react';
 import type { CompanyInfo } from '../../types';
-import { BUSINESS_GOALS } from '../../utils/catalogHelpers';
+import { getGoalsForIndustry, getDefaultGoalsForIndustry } from '../../utils/catalogHelpers';
 
 interface Industry {
   name: string;
@@ -22,11 +23,46 @@ export default function Step1_BusinessBrief({
   onRecommendTeam,
 }: Step1BusinessBriefProps) {
   const selectedGoals = companyInfo.goals || [];
+  const activeIndustryKey = companyInfo.industryPath || companyInfo.industry;
+  const availableGoals = getGoalsForIndustry(activeIndustryKey);
+
+  // When industry changes or on initial mount, if current goals don't belong to the active industry, preselect top 3
+  useEffect(() => {
+    if (companyInfo.industry) {
+      const activeIds = new Set(availableGoals.map(g => g.id));
+      const hasMatchingGoal = companyInfo.goals && companyInfo.goals.some(gId => activeIds.has(gId));
+      if (!hasMatchingGoal) {
+        const defaultGoals = getDefaultGoalsForIndustry(activeIndustryKey);
+        setCompanyInfo({
+          ...companyInfo,
+          goals: defaultGoals,
+        });
+      }
+    }
+  }, [companyInfo.industry, companyInfo.industryPath, activeIndustryKey, availableGoals, companyInfo, setCompanyInfo]);
+
+  const isGoalSelected = (goalId: string) => {
+    if (selectedGoals.includes(goalId)) return true;
+    if (goalId === 'fs-dispatch-coordination' && selectedGoals.includes('scheduling')) return true;
+    if (goalId === 'fs-estimate-quoting' && selectedGoals.includes('quoting')) return true;
+    if (goalId === 'fs-customer-care' && selectedGoals.includes('customer-follow-up')) return true;
+    return false;
+  };
 
   const toggleGoal = (goalId: string) => {
-    const updated = selectedGoals.includes(goalId)
-      ? selectedGoals.filter(id => id !== goalId)
-      : [...selectedGoals, goalId];
+    const isSelected = isGoalSelected(goalId);
+    let updated: string[];
+    if (isSelected) {
+      updated = selectedGoals.filter(id => {
+        if (id === goalId) return false;
+        if (goalId === 'fs-dispatch-coordination' && id === 'scheduling') return false;
+        if (goalId === 'fs-estimate-quoting' && id === 'quoting') return false;
+        if (goalId === 'fs-customer-care' && id === 'customer-follow-up') return false;
+        return true;
+      });
+    } else {
+      updated = [...selectedGoals, goalId];
+    }
     setCompanyInfo({
       ...companyInfo,
       goals: updated,
@@ -36,10 +72,13 @@ export default function Step1_BusinessBrief({
   const handleIndustryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selected = e.target.value;
     const match = dynamicIndustries.find(i => i.name === selected);
+    const targetPath = match?.path || selected.toLowerCase().replace(/\s+/g, '-');
+    const defaultTop3 = getDefaultGoalsForIndustry(targetPath || selected);
     setCompanyInfo({
       ...companyInfo,
       industry: selected,
-      industryPath: match?.path || selected.toLowerCase().replace(/\s+/g, '-'),
+      industryPath: targetPath,
+      goals: defaultTop3,
     });
   };
 
@@ -123,12 +162,17 @@ export default function Step1_BusinessBrief({
 
       {/* Goal Selector */}
       <div className="space-y-3 pt-2">
-        <label className="block text-xs font-semibold uppercase text-zinc-400">
-          What kind of work would you like help with? <span className="text-zinc-500 text-xs font-normal">(Select all that apply)</span>
-        </label>
+        <div className="flex items-center justify-between">
+          <label className="block text-xs font-semibold uppercase text-zinc-400">
+            What kind of work would you like help with? <span className="text-zinc-500 text-xs font-normal">(Select all that apply)</span>
+          </label>
+          <span className="text-xs text-cyber-green/80 font-mono">
+            {availableGoals.length} tasks tailored for {companyInfo.industry || 'general operations'}
+          </span>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {BUSINESS_GOALS.map(goal => {
-            const isSelected = selectedGoals.includes(goal.id);
+          {availableGoals.map(goal => {
+            const isSelected = isGoalSelected(goal.id);
             return (
               <button
                 type="button"
@@ -146,7 +190,10 @@ export default function Step1_BusinessBrief({
                     <span className="text-sm font-semibold flex items-center gap-1.5">
                       {goal.label}
                     </span>
-                    <span className="block text-xs text-zinc-400 mt-1 leading-snug">
+                    <span className="inline-block px-1.5 py-0.5 mt-1 rounded text-[10px] font-mono uppercase tracking-wider bg-zinc-800/80 text-zinc-400 border border-zinc-700/50">
+                      {goal.category}
+                    </span>
+                    <span className="block text-xs text-zinc-400 mt-1.5 leading-snug">
                       {goal.description}
                     </span>
                   </span>

@@ -27,7 +27,7 @@ export function catalogAgentToRuntimeAgent(
   const defaultDepartment = catalogAgent.departmentLabel || catalogAgent.department || 'Operations';
   const defaultDescription = catalogAgent.description || `${catalogAgent.name} - ${defaultRole}`;
 
-  const skills = customOverrides.skills || ['read_file'];
+  const skills = customOverrides.skills || (catalogAgent.skills && catalogAgent.skills.length > 0 ? [...catalogAgent.skills] : ['read_file', 'grep_search']);
   const hasDangerousSkill = skills.some(s => DANGEROUS_SKILLS.has(s));
 
   return {
@@ -37,16 +37,21 @@ export function catalogAgentToRuntimeAgent(
     department: customOverrides.department || defaultDepartment,
     description: customOverrides.description || defaultDescription,
     status: 'idle',
-    provider: customOverrides.provider || 'google',
-    model: customOverrides.model || 'gemma4:31b',
+    provider: customOverrides.provider || catalogAgent.provider || 'google',
+    model: customOverrides.model || catalogAgent.model || 'gemma4:31b',
     prompt: runtimePrompt,
     skills,
     workflows: customOverrides.workflows || [],
     mcpTools: customOverrides.mcpTools || [],
     requiresOversight: Boolean(
-      customOverrides.requiresOversight !== undefined
-        ? customOverrides.requiresOversight
-        : hasDangerousSkill
+      hasDangerousSkill
+        || (customOverrides.requiresOversight !== undefined
+          ? customOverrides.requiresOversight
+          : catalogAgent.requiresOversight !== undefined
+            ? catalogAgent.requiresOversight
+            : catalogAgent.requires_oversight !== undefined
+              ? catalogAgent.requires_oversight
+              : false)
     ),
     emoji: customOverrides.emoji || catalogAgent.emoji || '🤖',
     color: customOverrides.color || catalogAgent.color || '#3B82F6',
@@ -56,142 +61,18 @@ export function catalogAgentToRuntimeAgent(
   };
 }
 
-export interface BusinessGoalDef {
-  id: string;
-  label: string;
-  category: string;
-  description: string;
-  recommendedAgentIds: string[];
-  whyReason: string;
-  canRead: string[];
-  canPrepare: string[];
-  cannotApprove: string[];
-  requiresApproval: boolean;
-}
+import {
+  type BusinessGoalDef,
+  ALL_BUSINESS_GOALS,
+  DEFAULT_BUSINESS_GOALS,
+  LEGACY_BUSINESS_GOALS,
+  getGoalsForIndustry,
+  getDefaultGoalsForIndustry,
+} from '../constants/industryGoals';
 
-export const BUSINESS_GOALS: BusinessGoalDef[] = [
-  {
-    id: 'scheduling',
-    label: 'Scheduling & Dispatch',
-    category: 'Schedule and deliver work',
-    description: 'Coordinate appointments, route technicians, and prevent schedule conflicts.',
-    recommendedAgentIds: [
-      'operations-intake-scheduling-coordinator',
-      'operations-production-scheduler',
-      'project-management-field-service-dispatch-coordinator',
-      'support-customer-care-front-desk',
-    ],
-    whyReason: 'Recommended because you selected scheduling and service dispatch.',
-    canRead: ['Approved service requests', 'Technician availability records', 'Service zones'],
-    canPrepare: ['Draft technician schedules', 'Route plans', 'Schedule conflict exception reports'],
-    cannotApprove: ['Final technician assignments', 'Emergency schedule overrides', 'Overtime authorization'],
-    requiresApproval: true,
-  },
-  {
-    id: 'quoting',
-    label: 'Quotes & Work Orders',
-    category: 'Prepare quotes and orders',
-    description: 'Prepare accurate estimate drafts, work orders, and price breakdown sheets.',
-    recommendedAgentIds: [
-      'sales-quote-proposal-drafter',
-      'finance-job-costing-estimator',
-      'finance-time-billing-coder',
-      'finance-field-service-estimate-work-order-coordinator',
-    ],
-    whyReason: 'Recommended because you selected quote and work order preparation.',
-    canRead: ['Approved price books', 'Labor rate tables', 'Customer scope notes'],
-    canPrepare: ['Draft estimate sheets', 'Work order proposals', 'Material cost summaries'],
-    cannotApprove: ['Customer pricing commitments', 'Custom discount overrides', 'Credit term extensions'],
-    requiresApproval: true,
-  },
-  {
-    id: 'customer-follow-up',
-    label: 'Customer Follow-up & Care',
-    category: 'Win and retain customers',
-    description: 'Draft post-service updates, maintenance reminders, and satisfaction surveys.',
-    recommendedAgentIds: [
-      'support-customer-care-front-desk',
-      'support-returns-wismo-clerk',
-      'support-review-reputation-clerk',
-      'support-field-service-customer-care-coordinator',
-    ],
-    whyReason: 'Recommended because you selected customer follow-up and communication.',
-    canRead: ['Approved customer tickets', 'Completed job summaries', 'Maintenance schedules'],
-    canPrepare: ['Appointment reminders', 'Follow-up draft messages', 'Feedback summaries'],
-    cannotApprove: ['Outbound message sending', 'Customer refunds or credits', 'Policy exceptions'],
-    requiresApproval: true,
-  },
-  {
-    id: 'inventory',
-    label: 'Inventory & Purchasing',
-    category: 'Manage inventory and purchasing',
-    description: 'Track stock thresholds, detect shortages, and draft purchase orders.',
-    recommendedAgentIds: [
-      'purchasing-vendor-purchasing-clerk',
-      'operations-receiving-traveler-clerk',
-      'specialized-wholesale-inventory-replenishment-planner',
-      'support-wholesale-order-fulfillment-coordinator',
-    ],
-    whyReason: 'Recommended because you selected inventory planning and purchasing.',
-    canRead: ['On-hand stock levels', 'Allocated order lists', 'Supplier lead-time tables'],
-    canPrepare: ['Reorder recommendations', 'Stockout risk warnings', 'Stock transfer plans'],
-    cannotApprove: ['Purchase order placement', 'Supplier contract modifications', 'Stock write-offs'],
-    requiresApproval: true,
-  },
-  {
-    id: 'order-fulfillment',
-    label: 'Order Fulfillment & Logistics',
-    category: 'Prepare quotes and orders',
-    description: 'Verify order allocations, validate shipping details, and draft packing plans.',
-    recommendedAgentIds: [
-      'support-wholesale-order-fulfillment-coordinator',
-      'operations-receiving-traveler-clerk',
-      'sales-wholesale-b2b-account-operations',
-      'specialized-wholesale-inventory-replenishment-planner',
-    ],
-    whyReason: 'Recommended because you selected order fulfillment and delivery logistics.',
-    canRead: ['Approved sales orders', 'Warehouse inventory records', 'Shipping instructions'],
-    canPrepare: ['Pick/pack draft lists', 'Shipment staging summaries', 'Delivery update drafts'],
-    cannotApprove: ['Inventory release', 'Freight carrier booking', 'Product substitutions'],
-    requiresApproval: true,
-  },
-  {
-    id: 'compliance-review',
-    label: 'Compliance & Safety Review',
-    category: 'Improve quality and compliance',
-    description: 'Review operational evidence against regulatory rules and internal policies.',
-    recommendedAgentIds: [
-      'support-support-legal-compliance-checker',
-      'testing-qa-evidence-collector',
-      'compliance-food-safety-haccp-clerk',
-      'security-security-compliance-auditor',
-      'testing-quality-inspector-traveler',
-      'specialized-data-privacy-officer',
-    ],
-    whyReason: 'Recommended because you selected compliance and policy verification.',
-    canRead: ['Standard operating procedures', 'Audit checklists', 'Activity logs'],
-    canPrepare: ['Compliance check summaries', 'Gap analysis drafts', 'Policy verification logs'],
-    cannotApprove: ['Regulatory sign-offs', 'Audit exemptions', 'Security overrides'],
-    requiresApproval: true,
-  },
-  {
-    id: 'bookkeeping',
-    label: 'Bookkeeping & Cash Operations',
-    category: 'Manage finances and documents',
-    description: 'Reconcile transaction drafts, manage AR collections aging, and prepare invoice summaries.',
-    recommendedAgentIds: [
-      'finance-finance-bookkeeper-controller',
-      'finance-ar-collections-specialist',
-      'support-client-document-coordinator',
-      'finance-time-billing-coder',
-    ],
-    whyReason: 'Recommended because you selected financial preparation and billing workflows.',
-    canRead: ['Approved work order records', 'Vendor invoice drafts', 'Standard rate schedules'],
-    canPrepare: ['Draft invoice summaries', 'Expense categorization sheets', 'Ledger pre-checks'],
-    cannotApprove: ['Bank transfers', 'Tax submissions', 'Direct invoice issuance'],
-    requiresApproval: true,
-  },
-];
+export type { BusinessGoalDef };
+export { ALL_BUSINESS_GOALS, DEFAULT_BUSINESS_GOALS, LEGACY_BUSINESS_GOALS, getGoalsForIndustry, getDefaultGoalsForIndustry };
+export const BUSINESS_GOALS: BusinessGoalDef[] = ALL_BUSINESS_GOALS;
 
 export function generateGoalWorkflows(selectedGoalIds: string[]): import('../types').WorkflowItem[] {
   const chosenGoals = selectedGoalIds.length > 0 ? selectedGoalIds : ['scheduling', 'quoting', 'customer-follow-up'];

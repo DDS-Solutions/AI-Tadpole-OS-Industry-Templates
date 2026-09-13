@@ -364,6 +364,10 @@ def validate_mcp_payload(config: Any) -> list[str]:
                     arg in {"-e", "--eval", "-p", "--print"} for arg in args
                 ):
                     errors.append(f"{prefix}.args must reference a reviewed source file, not inline execution")
+                if normalized_command == "npx" and not any(
+                    arg in {"--no-install", "--offline"} for arg in args
+                ) and not any(arg.endswith((".js", ".mjs", ".cjs", ".ts")) for arg in args):
+                    errors.append(f"{prefix}.args must reference a local script file or enforce --no-install / --offline")
 
         if "url" in server:
             url = server.get("url")
@@ -525,7 +529,12 @@ def load_tool_manifest_map(root: Path) -> dict[str, dict[str, Any]]:
     return manifest_map
 
 
-def validate_template(root: Path, template: dict[str, Any], report: ValidationReport) -> None:
+def validate_template(
+    root: Path,
+    template: dict[str, Any],
+    report: ValidationReport,
+    tool_manifest_map: dict[str, dict[str, Any]] | None = None,
+) -> None:
     template_id = str(template.get("id") or "<missing-id>")
     context = f"template {template_id}"
     template_root = safe_relative_path(root, template.get("path"))
@@ -572,6 +581,7 @@ def validate_template(root: Path, template: dict[str, Any], report: ValidationRe
 
     roster_paths: set[Path] = set()
     roster_ids: set[str] = set()
+    roster_by_path: dict[Path, dict[str, Any]] = {}
     for index, reference in enumerate(roster):
         ref_context = f"{context} roster[{index}]"
         if not isinstance(reference, dict):
@@ -582,6 +592,7 @@ def validate_template(root: Path, template: dict[str, Any], report: ValidationRe
             report.error(ref_context, "path is missing, absolute, or escapes the template")
             continue
         roster_paths.add(agent_path)
+        roster_by_path[agent_path] = reference
         reference_id = reference.get("id")
         if not isinstance(reference_id, str) or not reference_id:
             report.error(ref_context, "id must be a non-empty string")
@@ -636,7 +647,8 @@ def validate_template(root: Path, template: dict[str, Any], report: ValidationRe
         if not isinstance(connector_ids, list) or not connector_ids:
             report.error(context, "swarm.json must define non-empty connector_ids when active mcps.json is present")
 
-    tool_manifest_map = load_tool_manifest_map(root)
+    if tool_manifest_map is None:
+        tool_manifest_map = load_tool_manifest_map(root)
     server_agent_grants: dict[str, list[str]] = {s: [] for s in active_mcp_servers}
 
     # Load knowledge items to check OKF playbook references
@@ -670,11 +682,8 @@ def validate_template(root: Path, template: dict[str, Any], report: ValidationRe
             continue
         for message in validate_agent_payload(agent):
             report.error(agent_context, message)
-        if isinstance(agent, dict) and agent_path in roster_paths:
-            matching = next(
-                (item for item in roster if isinstance(item, dict) and safe_relative_path(template_root, item.get("path")) == agent_path),
-                None,
-            )
+        if isinstance(agent, dict) and agent_path in roster_by_path:
+            matching = roster_by_path[agent_path]
             if matching and matching.get("id") != agent.get("id"):
                 report.error(agent_context, "agent id does not match its roster reference")
         if isinstance(agent, dict):
@@ -841,9 +850,10 @@ def validate_mcp_registry(root: Path, report: ValidationReport) -> None:
 def validate_repository(root: Path) -> ValidationReport:
     report = ValidationReport()
     templates = validate_catalog_parity(root, report)
+    tool_manifest_map = load_tool_manifest_map(root)
     for template in templates:
         if isinstance(template, dict):
-            validate_template(root, template, report)
+            validate_template(root, template, report, tool_manifest_map=tool_manifest_map)
         else:
             report.error("registry.json", "each template must be an object")
     validate_mcp_registry(root, report)

@@ -40,17 +40,27 @@ def selected_agents(template: dict[str, Any], catalog: list[dict[str, Any]]) -> 
 
 
 def agent_payload(agent: dict[str, Any]) -> dict[str, Any]:
+    prompt = agent.get("prompt", "")
+    if len(prompt) > 800:
+        import sys
+        print(
+            f"WARNING: Agent {agent.get('id', '<unknown>')} prompt truncated from {len(prompt)} to 800 chars",
+            file=sys.stderr,
+        )
+    description = agent.get("description")
+    if not isinstance(description, str) or not description.strip():
+        description = f"Specialized agent for {agent.get('role') or agent['name']}"
     return {
         "id": agent["id"],
         "name": agent["name"],
         "role": agent.get("role") or agent["name"],
         "department": agent.get("departmentLabel", "Operations"),
-        "description": agent["description"],
+        "description": description,
         "status": "idle",
         "model_config": {
             "provider": "google",
             "model_id": "gemini-pro-latest",
-            "system_prompt": agent["prompt"][:800],
+            "system_prompt": prompt[:800],
         },
         "skills": ["read_file"],
         "workflows": [],

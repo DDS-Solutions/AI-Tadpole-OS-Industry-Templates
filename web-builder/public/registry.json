@@ -26,7 +26,12 @@
     "Critical Infrastructure",
     "Media & Creative",
     "Field Services",
-    "Wholesale & Distribution"
+    "Wholesale & Distribution",
+    "Geospatial Intelligence & OSINT",
+    "Emergency Management & Disaster Response",
+    "Maritime Operations & Domain Awareness",
+    "Aerospace & Orbital Surveillance",
+    "Economic & Commercial Spatial Intelligence"
   ],
   "company_sizes": [
     25,
@@ -1537,6 +1542,121 @@
         "grep_search",
         "read_file",
         "write_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
+      ]
+    },
+    {
+      "id": "geoint-osint-desk",
+      "name": "GEOINT Tactical OSINT Operations Desk",
+      "description": "Geospatial Intelligence: Multi-layer global situational awareness, tactical scene serialization, Overpass spatial querying, and real-time open-source anomaly correlation.",
+      "industry": "Geospatial Intelligence & OSINT",
+      "tags": [
+        "geoint",
+        "osint",
+        "overpass",
+        "tactical-recon",
+        "cctv"
+      ],
+      "path": "geospatial-intelligence/geoint-osint-desk",
+      "company_size": 50,
+      "required_skills": [
+        "grep_search",
+        "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
+      ]
+    },
+    {
+      "id": "disaster-response-coordination",
+      "name": "Disaster Response & Crisis Coordination Swarm",
+      "description": "Emergency Management: NASA FIRMS wildfire thermal perimeter monitoring, USGS seismic impact assessment, and NOAA severe weather radar triage.",
+      "industry": "Emergency Management & Disaster Response",
+      "tags": [
+        "emergency",
+        "wildfire",
+        "firms",
+        "seismic",
+        "usgs",
+        "radar",
+        "disaster-response"
+      ],
+      "path": "emergency-management/disaster-response",
+      "company_size": 100,
+      "required_skills": [
+        "grep_search",
+        "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
+      ]
+    },
+    {
+      "id": "maritime-domain-awareness",
+      "name": "Maritime Domain Awareness & Subsea Security Swarm",
+      "description": "Maritime Operations: AIS live vessel traffic tracking, dark ship gap detection, subsea telecommunications cable defense, and harbor navigation risk triage.",
+      "industry": "Maritime Operations & Domain Awareness",
+      "tags": [
+        "maritime",
+        "ais",
+        "vessel-tracking",
+        "submarine-cables",
+        "harbor-safety"
+      ],
+      "path": "maritime-operations/maritime-domain-awareness",
+      "company_size": 100,
+      "required_skills": [
+        "grep_search",
+        "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
+      ]
+    },
+    {
+      "id": "aerospace-flight-orbital-surveillance",
+      "name": "Aerospace & Orbital Flight Surveillance Swarm",
+      "description": "Aerospace & Defense: OpenSky ADS-B flight corridor tracking, emergency squawk triage (7500/7600/7700), CelesTrak satellite pass prediction, and rocket launch trajectory coordination.",
+      "industry": "Aerospace & Orbital Surveillance",
+      "tags": [
+        "aerospace",
+        "opensky",
+        "ads-b",
+        "orbital",
+        "satellites",
+        "celestrak",
+        "launches"
+      ],
+      "path": "aerospace-orbital/space-flight-surveillance",
+      "company_size": 150,
+      "required_skills": [
+        "grep_search",
+        "read_file"
+      ],
+      "required_models": [
+        "gemma4:31b"
+      ]
+    },
+    {
+      "id": "commercial-spatial-analytics",
+      "name": "Commercial Spatial & Economic Intelligence Swarm",
+      "description": "Economic Intelligence: Demographic market footprint analysis (Census ACS, CBP/ZBP), corporate supply chain disruption modeling, and facility hazard risk quantification for SMB digital twins.",
+      "industry": "Economic & Commercial Spatial Intelligence",
+      "tags": [
+        "economic",
+        "business-intelligence",
+        "supply-chain",
+        "census",
+        "asset-risk",
+        "market-footprint"
+      ],
+      "path": "economic-intelligence/commercial-spatial-analytics",
+      "company_size": 50,
+      "required_skills": [
+        "grep_search",
+        "read_file"
       ],
       "required_models": [
         "gemma4:31b"

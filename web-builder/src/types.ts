@@ -57,6 +57,11 @@ export interface CatalogAgent {
   departmentLabel: string;
   color: string;
   emoji: string;
+  skills?: string[];
+  requires_oversight?: boolean;
+  requiresOversight?: boolean;
+  provider?: string;
+  model?: string;
 }
 
 export interface SwarmDetails {

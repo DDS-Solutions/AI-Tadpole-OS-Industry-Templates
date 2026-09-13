@@ -55,6 +55,16 @@ def migrated_agent(agent: dict[str, Any], default_model: str) -> dict[str, Any]:
     )
     config.setdefault("provider", DEFAULT_PROVIDER)
     config.setdefault("model_id", model_id)
+    prompt = (
+        config.get("system_prompt")
+        or result.get("system_prompt")
+        or result.get("prompt")
+        or result.get("description")
+        or "Execute sovereign tasks per directive."
+    )
+    if isinstance(prompt, str) and len(prompt) > 800:
+        prompt = prompt[:800]
+    config.setdefault("system_prompt", prompt)
     result["model_config"] = config
     return result
 

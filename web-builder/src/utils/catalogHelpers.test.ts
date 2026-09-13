@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import type { CatalogAgent } from '../types';
-import { catalogAgentToRuntimeAgent, recommendTeam, BUSINESS_GOALS } from './catalogHelpers';
+import {
+  catalogAgentToRuntimeAgent,
+  recommendTeam,
+  BUSINESS_GOALS,
+  DEFAULT_BUSINESS_GOALS,
+  getGoalsForIndustry,
+  getDefaultGoalsForIndustry,
+} from './catalogHelpers';
 
 describe('catalogHelpers', () => {
   const sampleCatalogAgent: CatalogAgent = {
@@ -54,8 +61,23 @@ describe('catalogHelpers', () => {
     expect(runtimeAgent.model).toBe('gemma4:31b');
     expect(runtimeAgent.prompt).toBe(sampleCatalogAgent.runtimePrompt);
     expect(runtimeAgent.prompt.length).toBeLessThanOrEqual(800);
-    expect(runtimeAgent.skills).toEqual(['read_file']);
+    expect(runtimeAgent.skills).toEqual(['read_file', 'grep_search']);
     expect(runtimeAgent.requiresOversight).toBe(false);
+  });
+
+  it('inherits skills, oversight, provider, and model from catalog agent definition', () => {
+    const catalogAgentWithSkills: CatalogAgent = {
+      ...sampleCatalogAgent,
+      skills: ['read_file', 'write_file', 'grep_search'],
+      requiresOversight: true,
+      provider: 'ollama',
+      model: 'gemma4:e4b',
+    };
+    const runtimeAgent = catalogAgentToRuntimeAgent(catalogAgentWithSkills);
+    expect(runtimeAgent.skills).toEqual(['read_file', 'write_file', 'grep_search']);
+    expect(runtimeAgent.requiresOversight).toBe(true);
+    expect(runtimeAgent.provider).toBe('ollama');
+    expect(runtimeAgent.model).toBe('gemma4:e4b');
   });
 
   it('rejects oversized prompts rather than silently truncating them', () => {
@@ -136,4 +158,103 @@ describe('catalogHelpers', () => {
       expect(goal.recommendedAgentIds.length).toBeGreaterThan(0);
     }
   });
+
+  it('provides exactly 9 tailored business tasks for every one of the 30 industry sectors', () => {
+    const sectorKeys = [
+      'legal',
+      'healthcare',
+      'financial-services',
+      'digital-marketing',
+      'e-commerce',
+      'real-estate',
+      'specialized-consultancies',
+      'logistics-supply-chain',
+      'engineering-architecture',
+      'edtech-training',
+      'development',
+      'manufacturing',
+      'food',
+      'chemical',
+      'transportation',
+      'pharma',
+      'agriculture',
+      'compliance',
+      'security',
+      'hr',
+      'education',
+      'utilities',
+      'creative',
+      'field-services',
+      'wholesale-distribution',
+      'geospatial-intelligence',
+      'emergency-management',
+      'maritime-operations',
+      'aerospace-orbital',
+      'economic-intelligence',
+    ];
+
+    expect(sectorKeys.length).toBe(30);
+
+    for (const sector of sectorKeys) {
+      const tasks = getGoalsForIndustry(sector);
+      expect(tasks.length).toBe(9);
+
+      // Verify each task has valid required fields
+      for (const task of tasks) {
+        expect(task.id.length).toBeGreaterThan(0);
+        expect(task.label.length).toBeGreaterThan(0);
+        expect(task.category.length).toBeGreaterThan(0);
+        expect(task.description.length).toBeGreaterThan(0);
+        expect(task.recommendedAgentIds.length).toBeGreaterThan(0);
+        expect(task.rationale.length).toBeGreaterThan(0);
+        expect(task.requiredDataSources.length).toBeGreaterThan(0);
+        expect(task.expectedOutputs.length).toBeGreaterThan(0);
+        expect(task.humanCheckpoints.length).toBeGreaterThan(0);
+        expect(task.requiresApproval).toBe(true);
+      }
+
+      // Verify top 3 default pre-selection
+      const defaults = getDefaultGoalsForIndustry(sector);
+      expect(defaults.length).toBe(3);
+      expect(defaults[0]).toBe(tasks[0].id);
+      expect(defaults[1]).toBe(tasks[1].id);
+      expect(defaults[2]).toBe(tasks[2].id);
+    }
+  });
+
+  it('falls back to 9 default general goals when no industry is specified or matched', () => {
+    const fallbackEmpty = getGoalsForIndustry('');
+    expect(fallbackEmpty.length).toBe(9);
+    expect(fallbackEmpty).toEqual(DEFAULT_BUSINESS_GOALS);
+
+    const fallbackUndefined = getGoalsForIndustry(undefined);
+    expect(fallbackUndefined.length).toBe(9);
+    expect(fallbackUndefined).toEqual(DEFAULT_BUSINESS_GOALS);
+
+    const defaultTop3 = getDefaultGoalsForIndustry();
+    expect(defaultTop3.length).toBe(3);
+  });
+
+  it('recommends specialists using industry-specific task selections', () => {
+    const catalog: CatalogAgent[] = [
+      {
+        ...sampleCatalogAgent,
+        id: 'field-service-dispatch-coordinator',
+      },
+      {
+        ...sampleQuoteAgent,
+        id: 'field-service-estimate-work-order-coordinator',
+      },
+      {
+        ...sampleCareAgent,
+        id: 'field-service-customer-care-coordinator',
+      },
+    ];
+
+    const fieldTasks = ['fs-dispatch-coordination', 'fs-estimate-quoting', 'fs-customer-care'];
+    const team = recommendTeam(fieldTasks, 'Field Services', '25', catalog);
+    expect(team.length).toBeGreaterThanOrEqual(1);
+    expect(team[0].agent.id).toBeDefined();
+  });
 });
+

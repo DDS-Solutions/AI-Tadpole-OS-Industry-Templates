@@ -296,6 +296,68 @@ export const INDUSTRY_MAP = [
       "bulk",
       "merchant"
     ]
+  },
+  {
+    "name": "Geospatial Intelligence & OSINT",
+    "path": "geospatial-intelligence",
+    "keywords": [
+      "geospatial",
+      "osint",
+      "gis",
+      "satellite",
+      "mapping",
+      "reconnaissance"
+    ]
+  },
+  {
+    "name": "Emergency Management & Disaster Response",
+    "path": "emergency-management",
+    "keywords": [
+      "emergency",
+      "disaster",
+      "wildfire",
+      "seismic",
+      "weather",
+      "evacuation"
+    ]
+  },
+  {
+    "name": "Maritime Operations & Domain Awareness",
+    "path": "maritime-operations",
+    "keywords": [
+      "maritime",
+      "vessel",
+      "ais",
+      "shipping",
+      "coastal",
+      "subsea",
+      "ports"
+    ]
+  },
+  {
+    "name": "Aerospace & Orbital Surveillance",
+    "path": "aerospace-orbital",
+    "keywords": [
+      "aerospace",
+      "orbital",
+      "satellite",
+      "celestrak",
+      "opensky",
+      "flight",
+      "launch"
+    ]
+  },
+  {
+    "name": "Economic & Commercial Spatial Intelligence",
+    "path": "economic-intelligence",
+    "keywords": [
+      "economic",
+      "market",
+      "spatial",
+      "supply chain",
+      "footprint",
+      "macroeconomics"
+    ]
   }
 ];
 

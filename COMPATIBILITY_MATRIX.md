@@ -33,6 +33,18 @@ This matrix records the private upstream contract audited before registry or Swa
 | Smoke testing | `testing/smoke-test` serves as the canonical reference template validating catalog parsing, idle availability, workflow extraction, and MCP execution isolation across modern (2026-07-28) and legacy (2024-11-05) transports. | Maintain `testing/smoke-test` and `tests/test_smoke_template.py` as mandatory CI gates. |
 | Install result | Installation preflights all filesystem assets, uses create-only ordinary writes plus atomic MCP replacement, and rolls back prior writes on failure. Success includes the cloned revision and exact planned/installed counts for agents, workflows, skills, swarm manifest, and MCP servers. | Treat the structured receipt plus CI validation as evidence for the covered installation assets. |
 
+## Toolchain and Build Environment Parity
+
+The repository suite maintains an intentional version split between the primary Tadpole-OS host/runtime and the Industry-Templates independent web-builder artifact:
+
+| Component | Node.js | TypeScript | ESLint | Vitest | Vite | React |
+| --- | --- | --- | --- | --- | --- | --- |
+| **AI-Tadpole-OS (Core / Host)** | `^22.0.0` | `~5.9.3` | `^10.1.0` | `^5.0.0` | `^8.0.4` | `^19.2.5` |
+| **Industry-Templates (Web-Builder)** | `^22.0.0` | `~6.0.2` | `^9.39.4` | `^3.0.5` | `^8.0.4` | `^19.2.4` |
+
+- **Design intent**: The `web-builder` is an isolated, client-side static application used for offline catalog browsing and custom bundle compilation. It operates independently of the host runtime environment and does not share dependencies with `AI-Tadpole-OS`.
+- **Ecosystem boundaries**: Changes to either package manifest must not introduce coupled version constraints or assume unified workspace hoisting.
+
 ## Upstream source anchors
 
 - Catalog and installer: `server-rs/src/routes/templates.rs`
@@ -57,6 +69,7 @@ This matrix records the private upstream contract audited before registry or Swa
 | Installer could partially install and still report generic success. | Upstream reliability/security defect | Fixed with validate-before-write, recoverable create/replace operations, collision rejection, source-revision capture, structured receipts, and rollback witnesses. |
 | Connector Python dependencies were implicit and mutable. | Dependency provenance gap | Fixed with exact direct dependency manifests plus package version, artifact, authoritative source, and SHA-256 provenance; validator/tests enforce parity. |
 | Upstream upgraded MCP to 2026-07-28 streamable HTTP transport with decomposed modules. | Upstream enhancement | Updated template validator, web-builder types/helpers, smoke server, and test suite to support both stdio and HTTP transports, dual probe discovery, and header placeholder resolution. |
+| Toolchain version split was undocumented across repositories. | Ecosystem clarity | Documented intentional version split between host runtime and template web-builder in `COMPATIBILITY_MATRIX.md`. |
 
 ## Re-audit trigger
 
