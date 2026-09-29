@@ -14,6 +14,7 @@ jobs:
   package-policy:
     name: Package Policy and Source Scan
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout Code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -40,6 +41,7 @@ jobs:
   malware-scan:
     name: ClamAV Malware Scan
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout Code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -52,7 +54,10 @@ jobs:
       - name: Update ClamAV Database
         run: |
           sudo systemctl stop clamav-freshclam || true
-          sudo freshclam || true
+          if ! sudo freshclam --stdout; then
+            echo "::warning::freshclam mirror rate-limited or transiently unavailable; verifying existing definition state..."
+          fi
+          test -d /var/lib/clamav && ls -la /var/lib/clamav || true
 
       - name: Scan Files
         run: |

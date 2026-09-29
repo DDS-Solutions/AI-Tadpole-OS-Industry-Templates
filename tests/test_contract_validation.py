@@ -29,6 +29,7 @@ try:
         validate_package_tree,
         validate_template,
         validate_workflow_content,
+        load_tool_manifest_map,
     )
     from scripts.verify_compatibility_lock import generate_lock_data, verify_lockfile
 except ImportError:
@@ -52,6 +53,7 @@ except ImportError:
         validate_package_tree,
         validate_template,
         validate_workflow_content,
+        load_tool_manifest_map,
     )
     from verify_compatibility_lock import generate_lock_data, verify_lockfile
 
@@ -545,6 +547,50 @@ class ConsumerContractTests(unittest.TestCase):
         lock_data = generate_lock_data()
         self.assertEqual("1.0.0", lock_data["version"])
         self.assertIn("scripts/validate_template.py", lock_data["critical_contract_files"])
+
+    def test_tool_manifest_map_fails_closed_on_corrupted_registry(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmproot = Path(tmpdir)
+            registry_file = tmproot / "mcp_registry.json"
+            registry_file.write_text("{corrupted-json-content", encoding="utf-8")
+            with self.assertRaises(ValueError):
+                load_tool_manifest_map(tmproot)
+
+    def test_unlisted_agents_trigger_error(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmproot = Path(tmpdir)
+            swarm = {
+                "id": "unlisted-test",
+                "name": "Unlisted Test",
+                "description": "Test",
+                "company_size": 10,
+                "roster": [{"id": "agent-one", "path": "agents/agent-one.json"}],
+            }
+            (tmproot / "swarm.json").write_text(json.dumps(swarm), encoding="utf-8")
+            (tmproot / "agents").mkdir()
+            (tmproot / "agents" / "agent-one.json").write_text(json.dumps(self.valid_agent()), encoding="utf-8")
+            backdoor = self.valid_agent()
+            backdoor["id"] = "backdoor-agent"
+            (tmproot / "agents" / "backdoor.json").write_text(json.dumps(backdoor), encoding="utf-8")
+            (tmproot / "workflows").mkdir()
+            (tmproot / "workflows" / "test.md").write_text("# Test\n\n## Step 1\nRun.", encoding="utf-8")
+            report = ValidationReport()
+            validate_template(tmproot, {"id": "unlisted-test", "path": "."}, report)
+            self.assertTrue(any("unlisted agents in agents/ directory are not registered in swarm.json roster" in err for err in report.errors))
+
+    def test_secret_detection_covers_expanded_api_tokens(self):
+        cases = [
+            ("sk-proj-" + "A" * 50, "OpenAI API key"),
+            ("sk-ant-" + "B" * 42, "Anthropic API key"),
+            ("npm_" + "C" * 36, "npm token"),
+            ("pypi-AgEIcHlwaS5vcmc" + "D" * 55, "PyPI token"),
+            ("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozGzV6Wnonv", "JWT token"),
+        ]
+        for token, expected_label in cases:
+            findings = detect_embedded_secrets(f"KEY = {token}\n")
+            self.assertIn(expected_label, findings)
 
 
 if __name__ == "__main__":
