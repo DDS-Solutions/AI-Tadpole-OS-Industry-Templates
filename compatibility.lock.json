@@ -19,6 +19,6 @@
     "registry.json": "08dfd6e2b5ca0aff741d1faf1025beae84d345a3b19f0cf25e1146ae0a9e3899",
     "scripts/capabilities.py": "0788a9949d7eb245703562579971a35d8ff7f7b83ccd211bd8052fe236808afa",
     "scripts/migrate_consumer_contract.py": "77d1a521e75c51b2f1eb23b23ec98cb29d507084f970f06add4e51e99ff3c5d3",
-    "scripts/validate_template.py": "9b15b907a28a7753c011e9baa3359847596e4385c4117ef350e65e085f39008a"
+    "scripts/validate_template.py": "f3c563d59e077717a67b2e2a4da9471b4aba31a2da5738cc0b5d7637cb166594"
   }
 }

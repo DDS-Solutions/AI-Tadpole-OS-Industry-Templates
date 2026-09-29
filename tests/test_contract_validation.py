@@ -29,6 +29,9 @@ try:
         validate_package_tree,
         validate_template,
         validate_workflow_content,
+        validate_repository,
+        validate_catalog_parity,
+        validate_mcp_registry,
         load_tool_manifest_map,
     )
     from scripts.verify_compatibility_lock import generate_lock_data, verify_lockfile
@@ -53,6 +56,9 @@ except ImportError:
         validate_package_tree,
         validate_template,
         validate_workflow_content,
+        validate_repository,
+        validate_catalog_parity,
+        validate_mcp_registry,
         load_tool_manifest_map,
     )
     from verify_compatibility_lock import generate_lock_data, verify_lockfile
@@ -591,6 +597,212 @@ class ConsumerContractTests(unittest.TestCase):
         for token, expected_label in cases:
             findings = detect_embedded_secrets(f"KEY = {token}\n")
             self.assertIn(expected_label, findings)
+
+    def test_quarantine_directory_checks_file_size_and_embedded_secrets(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmproot = Path(tmpdir)
+            quarantine_dir = tmproot / "quarantine"
+            quarantine_dir.mkdir()
+            # Non-JSON file in quarantine must be rejected
+            (quarantine_dir / "backdoor.sh").write_text("#!/bin/bash\necho hi", encoding="utf-8")
+            errors = validate_package_tree(tmproot, TEMPLATE_FILE_SUFFIXES)
+            self.assertTrue(any("quarantined file must be JSON format" in err for err in errors))
+
+            # Secret in quarantined JSON must be detected
+            (quarantine_dir / "backdoor.sh").unlink()
+            (quarantine_dir / "leaked_secret.json").write_text(
+                json.dumps({"token": "AKIAIOSFODNN7EXAMPLE"}), encoding="utf-8"
+            )
+            errors = validate_package_tree(tmproot, TEMPLATE_FILE_SUFFIXES)
+            self.assertTrue(any("AWS access key" in err for err in errors))
+
+    def test_unknown_tool_grant_on_registered_connector_is_rejected(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmproot = Path(tmpdir)
+            swarm = {
+                "id": "unknown-tool-test",
+                "name": "Unknown Tool Test",
+                "description": "Test",
+                "company_size": 10,
+                "connector_ids": ["generic-crm"],
+                "roster": [{"id": "agent-one", "path": "agents/agent-one.json"}],
+            }
+            (tmproot / "swarm.json").write_text(json.dumps(swarm), encoding="utf-8")
+            (tmproot / "agents").mkdir()
+            agent = self.valid_agent()
+            agent["mcp_tools"] = ["generic-crm:drop_everything"]
+            agent["requires_oversight"] = True
+            (tmproot / "agents" / "agent-one.json").write_text(json.dumps(agent), encoding="utf-8")
+            (tmproot / "workflows").mkdir()
+            (tmproot / "workflows" / "test.md").write_text("# Test\n\n## Step 1\nRun.", encoding="utf-8")
+            (tmproot / "mcps.json").write_text(
+                json.dumps({"mcpServers": {"generic-crm": {"command": "python", "args": ["server.py"]}}}),
+                encoding="utf-8",
+            )
+            (tmproot / "mcp_registry.json").write_text((ROOT / "mcp_registry.json").read_text(encoding="utf-8"), encoding="utf-8")
+            report = ValidationReport()
+            validate_template(tmproot, {"id": "unknown-tool-test", "path": "."}, report)
+            self.assertTrue(
+                any("unknown MCP tool grant 'generic-crm:drop_everything': tool is not declared by connector 'generic-crm'" in err for err in report.errors)
+            )
+
+    def test_connector_ids_element_validation(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmproot = Path(tmpdir)
+            swarm = {
+                "id": "cid-test",
+                "name": "CID Test",
+                "description": "Test",
+                "company_size": 10,
+                "connector_ids": ["valid-connector", "", "  "],
+                "roster": [{"id": "agent-one", "path": "agents/agent-one.json"}],
+            }
+            (tmproot / "swarm.json").write_text(json.dumps(swarm), encoding="utf-8")
+            (tmproot / "agents").mkdir()
+            (tmproot / "agents" / "agent-one.json").write_text(json.dumps(self.valid_agent()), encoding="utf-8")
+            (tmproot / "workflows").mkdir()
+            (tmproot / "workflows" / "test.md").write_text("# Test\n\n## Step 1\nRun.", encoding="utf-8")
+            report = ValidationReport()
+            validate_template(tmproot, {"id": "cid-test", "path": "."}, report)
+            self.assertTrue(any("swarm.json connector_ids[1] must be a non-empty string" in err for err in report.errors))
+
+    def test_validate_repository_catches_corrupted_manifest_gracefully(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmproot = Path(tmpdir)
+            (tmproot / "registry.json").write_text("[]", encoding="utf-8")
+            (tmproot / "index.json").write_text("[]", encoding="utf-8")
+            (tmproot / "mcp_registry.json").write_text("{corrupt-json", encoding="utf-8")
+            report = validate_repository(tmproot)
+            self.assertTrue(any("cannot parse tool manifest" in err for err in report.errors))
+
+    def test_validate_mcp_payload_handles_missing_and_non_list_args_without_crashing(self):
+        # E1 / G1 characterization: missing args key
+        res1 = validate_mcp_payload({"mcpServers": {"x": {"command": "python"}}})
+        self.assertIn("mcpServers.x.args must be an array of strings", res1)
+
+        # Non-list args
+        res2 = validate_mcp_payload({"mcpServers": {"x": {"command": "python", "args": "not-a-list"}}})
+        self.assertIn("mcpServers.x.args must be an array of strings", res2)
+
+        # None args
+        res3 = validate_mcp_payload({"mcpServers": {"x": {"command": "python", "args": None}}})
+        self.assertIn("mcpServers.x.args must be an array of strings", res3)
+
+    def test_root_catalog_secret_scanning_detects_credentials(self):
+        # E4 / G4 characterization
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmproot = Path(tmpdir)
+            (tmproot / "registry.json").write_text(json.dumps([{"token": "ghp_" + "a" * 36}]), encoding="utf-8")
+            (tmproot / "index.json").write_text("[]", encoding="utf-8")
+            (tmproot / "mcp_registry.json").write_text(json.dumps({"version": "2.0.0", "connectors": []}), encoding="utf-8")
+            report = validate_repository(tmproot)
+            self.assertTrue(any("registry.json: contains likely GitHub token" in err for err in report.errors))
+
+    def test_embedded_connector_config_is_validated(self):
+        # E4: embedded connector config invalidity
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmproot = Path(tmpdir)
+            connector_dir = tmproot / "conn"
+            connector_dir.mkdir()
+            (connector_dir / "server.py").write_text("print('ok')", encoding="utf-8")
+            import hashlib
+            digest = hashlib.sha256(b"print('ok')").hexdigest()
+            (connector_dir / "requirements.txt").write_text("mcp==1.29.1\n", encoding="utf-8")
+            (connector_dir / "mcps.json").write_text(json.dumps({
+                "mcpServers": {"test": {"command": "python", "args": ["server.py"]}}
+            }), encoding="utf-8")
+
+            bad_mcp_registry = {
+                "version": "2.0.0",
+                "connectors": [{
+                    "id": "mcp-test",
+                    "status": "verified",
+                    "path": "conn",
+                    "integrity_hash": f"sha256:{digest}",
+                    "dependency_manifest": "requirements.txt",
+                    "dependency_provenance": [{
+                        "package": "mcp", "version": "1.29.1",
+                        "artifact": "mcp-1.29.1.whl", "sha256": "a" * 64,
+                        "source": "https://pypi.org/project/mcp/1.29.1/"
+                    }],
+                    "tools": [{
+                        "id": "test:tool1", "name": "tool1", "description": "desc", "risk": "read"
+                    }],
+                    "config": {
+                        "mcpServers": {
+                            "test": {
+                                "command": "python",
+                                "args": ["server.py"],
+                                "env": {"SECRET_KEY": "unmasked_real_secret_value"}
+                            }
+                        }
+                    }
+                }]
+            }
+            (tmproot / "mcp_registry.json").write_text(json.dumps(bad_mcp_registry), encoding="utf-8")
+            report = ValidationReport()
+            validate_mcp_registry(tmproot, report)
+            self.assertTrue(any("must be an explicit local-configuration placeholder" in err for err in report.errors))
+
+    def test_catalog_parity_handles_malformed_entries_safely(self):
+        # E6: non-string path or id in registry.json / index.json
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmproot = Path(tmpdir)
+            (tmproot / "registry.json").write_text(json.dumps({
+                "templates": [{"id": "t1", "path": ["bad", "path"]}]
+            }), encoding="utf-8")
+            (tmproot / "index.json").write_text(json.dumps([
+                {"id": 123, "path": "good/path"}
+            ]), encoding="utf-8")
+            report = ValidationReport()
+            validate_catalog_parity(tmproot, report)
+            self.assertTrue(any("registry.json: entry[0].path must be a non-empty string" in err for err in report.errors))
+            self.assertTrue(any("index.json: entry[0].id must be a non-empty string" in err for err in report.errors))
+
+    def test_swarm_name_is_required(self):
+        # E15: missing swarm name
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmproot = Path(tmpdir)
+            swarm = {
+                "id": "no-name-swarm",
+                "description": "Test mission",
+                "roster": [],
+            }
+            (tmproot / "swarm.json").write_text(json.dumps(swarm), encoding="utf-8")
+            report = ValidationReport()
+            validate_template(tmproot, {"id": "no-name-swarm", "path": "."}, report)
+            self.assertTrue(any("swarm.json requires a non-empty name" in err for err in report.errors))
+
+    def test_okf_playbook_workflow_reference_emits_single_clean_error(self):
+        # E12: OKF playbook name referenced as workflow emits single specific error
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmproot = Path(tmpdir)
+            swarm = {
+                "id": "okf-test",
+                "name": "OKF Test",
+                "description": "Test",
+                "roster": [{"id": "agent-one", "path": "agents/agent-one.json"}],
+            }
+            (tmproot / "swarm.json").write_text(json.dumps(swarm), encoding="utf-8")
+            (tmproot / "agents").mkdir()
+            agent = self.valid_agent()
+            agent["workflows"] = ["Full Funnel SEO"]
+            (tmproot / "agents" / "agent-one.json").write_text(json.dumps(agent), encoding="utf-8")
+            (tmproot / "knowledge").mkdir()
+            (tmproot / "knowledge" / "Full Funnel SEO.md").write_text("# Knowledge", encoding="utf-8")
+            report = ValidationReport()
+            validate_template(tmproot, {"id": "okf-test", "path": "."}, report)
+            self.assertTrue(any("agent cannot reference OKF playbook 'Full Funnel SEO' as an executable workflow" in err for err in report.errors))
+            self.assertFalse(any("workflow does not exist: workflows/Full Funnel SEO.md" in err for err in report.errors))
 
 
 if __name__ == "__main__":
