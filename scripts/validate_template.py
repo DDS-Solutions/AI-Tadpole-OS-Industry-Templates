@@ -61,6 +61,11 @@ SECRET_PATTERNS = (
     ("Google API key", re.compile(r"\bAIza[0-9A-Za-z_-]{35}\b")),
     ("Slack token", re.compile(r"\bxox[baprs]-[A-Za-z0-9-]{10,}\b")),
     ("Stripe secret key", re.compile(r"\bsk_(?:live|test)_[0-9A-Za-z]{20,}\b")),
+    ("OpenAI API key", re.compile(r"\bsk-proj-[A-Za-z0-9_-]{48,}\b")),
+    ("Anthropic API key", re.compile(r"\bsk-ant-[A-Za-z0-9_-]{40,}\b")),
+    ("npm token", re.compile(r"\bnpm_[A-Za-z0-9]{36}\b")),
+    ("PyPI token", re.compile(r"\bpypi-AgEIcHlwaS5vcmc[A-Za-z0-9_-]{50,}\b")),
+    ("JWT token", re.compile(r"\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b")),
 )
 
 
@@ -519,13 +524,13 @@ def load_tool_manifest_map(root: Path) -> dict[str, dict[str, Any]]:
     if registry_path.is_file():
         try:
             registry = load_json(registry_path)
-            for connector in registry.get("connectors", []):
-                for tool in connector.get("tools", []):
-                    tool_id = tool.get("id")
-                    if tool_id:
-                        manifest_map[tool_id] = tool
-        except Exception:
-            pass
+        except Exception as exc:
+            raise ValueError(f"Failed to load MCP tool manifest from {registry_path}: {exc}") from exc
+        for connector in registry.get("connectors", []):
+            for tool in connector.get("tools", []):
+                tool_id = tool.get("id")
+                if tool_id:
+                    manifest_map[tool_id] = tool
     return manifest_map
 
 
@@ -738,7 +743,7 @@ def validate_template(
 
     if set(agent_paths) - roster_paths:
         names = ", ".join(path.name for path in sorted(set(agent_paths) - roster_paths))
-        report.warning(context, f"unlisted agents are still installed by the consumer: {names}")
+        report.error(context, f"unlisted agents in agents/ directory are not registered in swarm.json roster: {names}")
 
     workflows_root = template_root / "workflows"
     workflow_paths = sorted(workflows_root.glob("*.md")) if workflows_root.is_dir() else []
