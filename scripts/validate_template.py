@@ -145,9 +145,9 @@ def validate_package_tree(
         if not path.is_file():
             continue
         # Quarantine directory is non-installable isolated storage
-        if relative.startswith("quarantine/"):
-            if path.suffix.lower() != ".json":
-                errors.append(f"{relative} quarantined file must be JSON format")
+        is_quarantine = relative.startswith("quarantine/")
+        if is_quarantine and path.suffix.lower() != ".json":
+            errors.append(f"{relative} quarantined file must be JSON format")
             continue
         try:
             size = path.stat().st_size
@@ -155,8 +155,8 @@ def validate_package_tree(
         except OSError as exc:
             errors.append(f"{relative} cannot be inspected: {exc}")
             continue
-        suffixes = allowed_suffixes
-        if executable_subdir and relative.startswith(f"{executable_subdir}/"):
+        suffixes = frozenset({".json"}) if is_quarantine else allowed_suffixes
+        if not is_quarantine and executable_subdir and relative.startswith(f"{executable_subdir}/"):
             suffixes = TEMPLATE_SKILL_FILE_SUFFIXES
         errors.extend(validate_package_file(relative, path.suffix, size, raw, suffixes))
     return errors
@@ -462,8 +462,22 @@ def validate_catalog_parity(root: Path, report: ValidationReport) -> list[dict[s
         return templates
 
     for label, entries in (("registry.json", templates), ("index.json", index)):
-        ids = [entry.get("id") for entry in entries if isinstance(entry, dict)]
-        paths = [entry.get("path") for entry in entries if isinstance(entry, dict)]
+        ids: list[str] = []
+        paths: list[str] = []
+        for e_idx, entry in enumerate(entries):
+            if not isinstance(entry, dict):
+                report.error(label, f"entry[{e_idx}] must be an object")
+                continue
+            e_id = entry.get("id")
+            e_path = entry.get("path")
+            if not isinstance(e_id, str) or not e_id.strip():
+                report.error(label, f"entry[{e_idx}].id must be a non-empty string")
+            else:
+                ids.append(e_id)
+            if not isinstance(e_path, str) or not e_path.strip():
+                report.error(label, f"entry[{e_idx}].path must be a non-empty string")
+            else:
+                paths.append(e_path)
         if len(ids) != len(set(ids)):
             report.error(label, "contains duplicate template IDs")
         if len(paths) != len(set(paths)):
@@ -472,9 +486,18 @@ def validate_catalog_parity(root: Path, report: ValidationReport) -> list[dict[s
     public_registry_contract = {
         (item.get("id"), item.get("path"))
         for item in templates
-        if isinstance(item, dict) and not item.get("internal")
+        if isinstance(item, dict)
+        and not item.get("internal")
+        and isinstance(item.get("id"), str)
+        and isinstance(item.get("path"), str)
     }
-    index_contract = {(item.get("id"), item.get("path")) for item in index if isinstance(item, dict)}
+    index_contract = {
+        (item.get("id"), item.get("path"))
+        for item in index
+        if isinstance(item, dict)
+        and isinstance(item.get("id"), str)
+        and isinstance(item.get("path"), str)
+    }
     if public_registry_contract != index_contract:
         report.error("catalog", "registry.json (public entries) and index.json disagree on template IDs or paths")
 
@@ -488,7 +511,10 @@ def validate_catalog_parity(root: Path, report: ValidationReport) -> list[dict[s
         if not isinstance(req_models, list) or not req_models:
             report.error(f"index.json[{t_id}]", "required_models must be a non-empty array of strings")
             continue
-        template_dir = root / t_path
+        template_dir = safe_relative_path(root, t_path)
+        if template_dir is None or not template_dir.is_dir():
+            report.error(f"index.json[{t_id}]", f"template directory does not exist or escapes root: {t_path!r}")
+            continue
         agents_dir = template_dir / "agents"
         if agents_dir.is_dir():
             actual_models = set()
@@ -527,10 +553,15 @@ def load_tool_manifest_map(root: Path) -> dict[str, dict[str, Any]]:
         except Exception as exc:
             raise ValueError(f"Failed to load MCP tool manifest from {registry_path}: {exc}") from exc
         for connector in registry.get("connectors", []):
+            server_keys = list(connector.get("config", {}).get("mcpServers", {}).keys()) if isinstance(connector.get("config"), dict) else []
+            default_server = server_keys[0] if server_keys else ""
             for tool in connector.get("tools", []):
                 tool_id = tool.get("id")
                 if tool_id:
-                    manifest_map[tool_id] = tool
+                    tool_desc = dict(tool)
+                    if "server" not in tool_desc:
+                        tool_desc["server"] = tool_id.split(":", 1)[0] if ":" in tool_id else default_server
+                    manifest_map[tool_id] = tool_desc
     return manifest_map
 
 
@@ -571,6 +602,10 @@ def validate_template(
     mission = swarm.get("description") or swarm.get("mission")
     if not isinstance(mission, str) or not mission.strip():
         report.error(context, "swarm.json requires a non-empty description or mission")
+
+    swarm_name = swarm.get("name")
+    if not isinstance(swarm_name, str) or not swarm_name.strip():
+        report.error(context, "swarm.json requires a non-empty name")
 
     company_size = swarm.get("company_size")
     if company_size is not None:
@@ -647,32 +682,55 @@ def validate_template(
             if isinstance(mcp_payload, dict):
                 active_mcp_servers = mcp_payload.get("mcpServers", {})
 
+    connector_ids = swarm.get("connector_ids")
     if active_mcp_servers:
-        connector_ids = swarm.get("connector_ids")
         if not isinstance(connector_ids, list) or not connector_ids:
             report.error(context, "swarm.json must define non-empty connector_ids when active mcps.json is present")
+    if connector_ids is not None:
+        if not isinstance(connector_ids, list):
+            report.error(context, "swarm.json connector_ids must be an array")
+        else:
+            for idx, cid in enumerate(connector_ids):
+                if not isinstance(cid, str) or not cid.strip():
+                    report.error(context, f"swarm.json connector_ids[{idx}] must be a non-empty string")
 
     if tool_manifest_map is None:
-        tool_manifest_map = load_tool_manifest_map(root)
+        try:
+            tool_manifest_map = load_tool_manifest_map(root)
+        except Exception as exc:
+            report.error(f"{context} mcp_registry.json", f"cannot parse tool manifest: {exc}")
+            tool_manifest_map = {}
+    registered_mcp_servers = {
+        d.get("server") for d in tool_manifest_map.values() if isinstance(d, dict) and d.get("server")
+    }
     server_agent_grants: dict[str, list[str]] = {s: [] for s in active_mcp_servers}
 
-    # Load knowledge items to check OKF playbook references
+    # Load and validate knowledge items once to check OKF playbook references
     okf_playbook_names: set[str] = set()
     knowledge_path = template_root / "knowledge.json"
     if knowledge_path.is_file():
         try:
             knowledge = load_json(knowledge_path)
-            for item in knowledge if isinstance(knowledge, list) else []:
-                if isinstance(item, dict) and item.get("title"):
-                    okf_playbook_names.add(item["title"].lower().replace(" ", "_"))
-                    okf_playbook_names.add(item["title"].lower().replace(" ", "-"))
-        except Exception:
-            pass
+        except (OSError, json.JSONDecodeError) as exc:
+            report.error(f"{context} knowledge.json", f"cannot parse JSON: {exc}")
+        else:
+            for message in validate_knowledge_payload(knowledge):
+                report.error(f"{context} knowledge.json", message)
+            if isinstance(knowledge, list):
+                for item in knowledge:
+                    if isinstance(item, dict) and isinstance(item.get("title"), str):
+                        t_lower = item["title"].lower()
+                        okf_playbook_names.add(t_lower)
+                        okf_playbook_names.add(t_lower.replace(" ", "_"))
+                        okf_playbook_names.add(t_lower.replace(" ", "-"))
 
     knowledge_dir = template_root / "knowledge"
     if knowledge_dir.is_dir():
         for k_file in knowledge_dir.glob("*.md"):
-            okf_playbook_names.add(k_file.stem.lower())
+            stem_lower = k_file.stem.lower()
+            okf_playbook_names.add(stem_lower)
+            okf_playbook_names.add(stem_lower.replace(" ", "_"))
+            okf_playbook_names.add(stem_lower.replace(" ", "-"))
 
     agents_root = template_root / "agents"
     agent_paths = sorted(agents_root.glob("*.json")) if agents_root.is_dir() else []
@@ -700,11 +758,11 @@ def validate_template(
                     continue
                 referenced_workflows.add(workflow_path)
                 if not workflow_path.is_file():
-                    report.error(agent_context, f"workflow does not exist: workflows/{workflow_name}")
-                # OKF playbook reference check
-                wf_clean = str(workflow_id).lower().replace(".md", "")
-                if wf_clean in okf_playbook_names and not (template_root / "workflows" / workflow_name).is_file():
-                    report.error(agent_context, f"agent cannot reference OKF playbook {workflow_id!r} as an executable workflow")
+                    wf_clean = str(workflow_id).lower().removesuffix(".md")
+                    if wf_clean in okf_playbook_names:
+                        report.error(agent_context, f"agent cannot reference OKF playbook {workflow_id!r} as an executable workflow")
+                    else:
+                        report.error(agent_context, f"workflow does not exist: workflows/{workflow_name}")
 
             # Cross-validate agent MCP grants
             for grant in agent.get("mcp_tools", []):
@@ -729,9 +787,11 @@ def validate_template(
                 else:
                     server_agent_grants[server_name].append(agent.get("id", agent_path.stem))
 
-                # Check tool descriptor risk level
+                # Check tool descriptor risk level and registered connector declaration
                 descriptor = tool_manifest_map.get(canonical_grant) or tool_manifest_map.get(grant)
-                if descriptor:
+                if server_name in registered_mcp_servers and not descriptor:
+                    report.error(agent_context, f"unknown MCP tool grant {grant!r}: tool is not declared by connector {server_name!r}")
+                elif descriptor:
                     risk = descriptor.get("risk", "read")
                     if risk in ("write", "execute") and not agent.get("requires_oversight"):
                         report.error(agent_context, f"mutating MCP tool grant {grant!r} requires oversight (requires_oversight must be true)")
@@ -755,14 +815,7 @@ def validate_template(
         names = ", ".join(path.name for path in sorted(orphan_workflows))
         report.warning(context, f"unreferenced workflows: {names}")
 
-    if knowledge_path.is_file():
-        try:
-            knowledge = load_json(knowledge_path)
-        except (OSError, json.JSONDecodeError) as exc:
-            report.error(f"{context} knowledge.json", f"cannot parse JSON: {exc}")
-        else:
-            for message in validate_knowledge_payload(knowledge):
-                report.error(f"{context} knowledge.json", message)
+
 
 
 def validate_mcp_registry(root: Path, report: ValidationReport) -> None:
@@ -842,6 +895,11 @@ def validate_mcp_registry(root: Path, report: ValidationReport) -> None:
         for message in validate_mcp_payload(config):
             report.error(context, message)
 
+        embedded_config = connector.get("config")
+        if embedded_config is not None:
+            for message in validate_mcp_payload(embedded_config):
+                report.error(f"{context} config", message)
+
         server_keys = set(config.get("mcpServers", {}).keys()) if isinstance(config, dict) else set()
         if tools and server_keys:
             for tool in tools:
@@ -854,8 +912,21 @@ def validate_mcp_registry(root: Path, report: ValidationReport) -> None:
 
 def validate_repository(root: Path) -> ValidationReport:
     report = ValidationReport()
+    for filename in ("registry.json", "index.json", "mcp_registry.json", "compatibility.lock.json"):
+        file_path = root / filename
+        if file_path.is_file():
+            try:
+                raw_text = file_path.read_text(encoding="utf-8")
+                for finding in detect_embedded_secrets(raw_text):
+                    report.error(filename, f"contains likely {finding}")
+            except Exception as exc:
+                report.error(filename, f"cannot read file for secret scanning: {exc}")
     templates = validate_catalog_parity(root, report)
-    tool_manifest_map = load_tool_manifest_map(root)
+    try:
+        tool_manifest_map = load_tool_manifest_map(root)
+    except Exception as exc:
+        report.error("mcp_registry.json", f"cannot parse tool manifest: {exc}")
+        tool_manifest_map = {}
     for template in templates:
         if isinstance(template, dict):
             validate_template(root, template, report, tool_manifest_map=tool_manifest_map)
