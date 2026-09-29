@@ -1,0 +1,48 @@
+version: 2
+updates:
+  # Maintain dependencies for web-builder (React / Vite Swarm Architect)
+  - package-ecosystem: "npm"
+    directory: "/web-builder"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 10
+    groups:
+      core-dependencies:
+        patterns:
+          - "react*"
+          - "@types/react*"
+          - "vite*"
+          - "@vitejs/*"
+          - "vitest*"
+          - "@vitest/*"
+          - "tailwindcss*"
+          - "@tailwindcss/*"
+      tooling:
+        patterns:
+          - "eslint*"
+          - "@eslint/*"
+          - "typescript*"
+          - "globals"
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+
+  # Maintain GitHub Actions across all CI/CD workflows
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 10
+    groups:
+      actions:
+        patterns:
+          - "actions/*"
+    commit-message:
+      prefix: "ci(actions)"
+      include: "scope"
