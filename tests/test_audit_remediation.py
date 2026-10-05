@@ -241,5 +241,120 @@ class DocumentationConsistencyTests(unittest.TestCase):
         self.assertEqual({expected}, stated)
 
 
+class ConsumerIngestionCompatibilityTests(unittest.TestCase):
+    """Rigorous verification of all templates against the Tadpole-OS consumer application wire schemas."""
+
+    def test_index_json_matches_consumer_template_catalog_entry(self):
+        index_file = ROOT / "index.json"
+        self.assertTrue(index_file.is_file(), "index.json must exist")
+        data = json.loads(index_file.read_text(encoding="utf-8"))
+        self.assertIsInstance(data, list)
+        self.assertGreaterEqual(len(data), 70)
+        for entry in data:
+            for req in ["id", "name", "description", "repository_url", "path"]:
+                val = entry.get(req)
+                self.assertIsInstance(val, str, f"Entry {entry.get('id')} field {req} must be str")
+                self.assertTrue(val.strip(), f"Entry {entry.get('id')} field {req} must not be empty")
+            self.assertIsInstance(entry.get("required_models"), list)
+            self.assertIsInstance(entry.get("required_skills"), list)
+            template_path = ROOT / entry["path"]
+            self.assertTrue(template_path.is_dir(), f"Path {entry['path']} does not exist on disk")
+
+    def test_registry_json_matches_consumer_template_store(self):
+        reg_file = ROOT / "registry.json"
+        self.assertTrue(reg_file.is_file(), "registry.json must exist")
+        data = json.loads(reg_file.read_text(encoding="utf-8"))
+        self.assertIn("templates", data)
+        templates = data["templates"]
+        self.assertGreaterEqual(len(templates), 70)
+        for t in templates:
+            for req in ["id", "name", "description", "industry", "path", "tags"]:
+                if req == "tags":
+                    self.assertIsInstance(t.get(req), list)
+                else:
+                    val = t.get(req)
+                    self.assertIsInstance(val, str, f"Template {t.get('id')} field {req} must be str")
+                    self.assertTrue(val.strip(), f"Template {t.get('id')} field {req} must not be empty")
+            template_path = ROOT / t["path"]
+            self.assertTrue(template_path.is_dir(), f"Path {t['path']} does not exist on disk")
+
+    def test_mcp_registry_json_matches_consumer_mcp_store(self):
+        mcp_file = ROOT / "mcp_registry.json"
+        self.assertTrue(mcp_file.is_file(), "mcp_registry.json must exist")
+        data = json.loads(mcp_file.read_text(encoding="utf-8"))
+        self.assertIn("connectors", data)
+        connectors = data["connectors"]
+        self.assertGreaterEqual(len(connectors), 1)
+        for c in connectors:
+            for req in ["id", "name", "description", "category", "path", "version", "author"]:
+                val = c.get(req)
+                self.assertIsInstance(val, str, f"Connector {c.get('id')} field {req} must be str")
+                self.assertTrue(val.strip(), f"Connector {c.get('id')} field {req} must not be empty")
+            c_path = ROOT / c["path"]
+            self.assertTrue(c_path.is_dir(), f"Connector path {c['path']} does not exist on disk")
+            disk_mcps = c_path / "mcps.json"
+            self.assertTrue(disk_mcps.is_file(), f"Connector {c['id']} missing mcps.json")
+            disk_conf = json.loads(disk_mcps.read_text(encoding="utf-8"))
+            self.assertEqual(c.get("config"), disk_conf, f"Connector {c['id']} embedded config mismatch")
+
+    def test_all_agents_conform_to_engine_agent_wire(self):
+        safe_id_regex = re.compile(r"^[a-zA-Z0-9_\-]+$")
+        agent_count = 0
+        for agent_file in sorted(ROOT.glob("*/*/agents/*.json")):
+            agent_count += 1
+            rel_path = agent_file.relative_to(ROOT).as_posix()
+            agent = json.loads(agent_file.read_text(encoding="utf-8"))
+            for req in ["id", "name", "role", "department", "description", "status"]:
+                val = agent.get(req)
+                self.assertIsInstance(val, str, f"{rel_path} field {req} must be str")
+                self.assertTrue(val.strip(), f"{rel_path} field {req} must not be empty")
+            aid = agent["id"]
+            self.assertTrue(safe_id_regex.match(aid), f"{rel_path} id '{aid}' contains invalid characters")
+            for arr in ["skills", "workflows", "mcp_tools"]:
+                self.assertIsInstance(agent.get(arr), list, f"{rel_path} field {arr} must be list")
+            self.assertIsInstance(agent.get("requires_oversight"), bool, f"{rel_path} requires_oversight must be bool")
+            mc = agent.get("model_config")
+            if mc is not None:
+                self.assertIsInstance(mc, dict, f"{rel_path} model_config must be dict")
+        self.assertGreaterEqual(agent_count, 220)
+
+    def test_all_workflows_conform_to_consumer_step_parser_and_security(self):
+        forbidden_heuristics = [
+            "<<<", ">>>",
+            "ignore all previous instructions",
+            "ignore previous instructions",
+            "disregard all previous instructions",
+            "bypass oversight",
+            "disable oversight",
+            "system prompt override",
+            "you are now in developer mode",
+        ]
+        wf_count = 0
+        for wf_file in sorted(ROOT.glob("*/*/workflows/*.md")):
+            wf_count += 1
+            rel_path = wf_file.relative_to(ROOT).as_posix()
+            content = wf_file.read_text(encoding="utf-8")
+            self.assertTrue(content.strip(), f"{rel_path} must not be empty")
+            has_heading = any(
+                line.startswith("## ") or line.startswith("### ")
+                for line in content.splitlines()
+            )
+            self.assertTrue(has_heading, f"{rel_path} missing ## or ### headings required for step execution")
+            lower = content.lower()
+            for pattern in forbidden_heuristics:
+                self.assertNotIn(pattern, lower, f"{rel_path} contains forbidden injection pattern: {pattern}")
+        self.assertGreaterEqual(wf_count, 220)
+
+    def test_all_skills_conform_to_consumer_allowed_extensions(self):
+        allowed_extensions = {"json", "py", "js", "ts", "sh", "ps1", "bat", "md"}
+        for skill_dir in sorted(ROOT.glob("*/*/skills")):
+            for child in skill_dir.iterdir():
+                rel_path = child.relative_to(ROOT).as_posix()
+                self.assertTrue(child.is_file(), f"{rel_path}: nested directories in skills are forbidden")
+                ext = child.suffix.lstrip(".").lower()
+                self.assertIn(ext, allowed_extensions, f"{rel_path}: skill extension .{ext} is not allowed")
+
+
 if __name__ == "__main__":
     unittest.main()
+
