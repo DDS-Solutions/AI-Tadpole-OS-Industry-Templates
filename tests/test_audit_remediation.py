@@ -21,6 +21,7 @@ from scripts.validate_template import (  # noqa: E402
     validate_agent_payload,
     validate_catalog_parity,
     validate_mcp_registry,
+    validate_persona_catalog,
     validate_template,
 )
 
@@ -355,6 +356,75 @@ class ConsumerIngestionCompatibilityTests(unittest.TestCase):
                 self.assertIn(ext, allowed_extensions, f"{rel_path}: skill extension .{ext} is not allowed")
 
 
+class CrossLanguageCapabilityParityTests(unittest.TestCase):
+    """Enforces that TypeScript frontend and Python backend capability catalogs are identical."""
+
+    def test_canonical_capabilities_parity(self):
+        ts_path = ROOT / "web-builder" / "src" / "constants" / "capabilities.ts"
+        self.assertTrue(ts_path.is_file(), "capabilities.ts missing")
+        content = ts_path.read_text(encoding="utf-8")
+
+        # Extract IDs declared in CANONICAL_CAPABILITIES (the selectable tools)
+        ts_canonical_ids = re.findall(r"id:\s*['\"]([^'\"]+)['\"]", content)[:6]
+        py_canonical_ids = [c.id for c in CAPABILITIES if c.id not in ("shell", "terminal")]
+        self.assertEqual(ts_canonical_ids, py_canonical_ids, "TypeScript CANONICAL_CAPABILITIES do not match Python tools")
+
+        # Verify full runtime capabilities set matches Python VALID_CAPABILITY_IDS
+        ts_runtime_ids = set(re.findall(r"['\"]([a-z_]+)['\"]", content)) & set(VALID_CAPABILITY_IDS)
+        self.assertEqual(ts_runtime_ids, set(VALID_CAPABILITY_IDS), "TypeScript VALID_RUNTIME_CAPABILITIES do not match VALID_CAPABILITY_IDS")
+
+        # Verify risk level and oversight flags match for each capability
+        for c in CAPABILITIES:
+            if c.id in ("shell", "terminal"):
+                continue
+            block = re.search(
+                rf"id:\s*['\"]{c.id}['\"].*?risk:\s*['\"]([^'\"]+)['\"].*?requiresOversight:\s*(true|false)",
+                content,
+                re.DOTALL,
+            )
+            self.assertIsNotNone(block, f"Could not find descriptor block for capability '{c.id}'")
+            ts_risk = block.group(1)
+            ts_oversight = block.group(2) == "true"
+            self.assertEqual(ts_risk, c.risk, f"Risk mismatch for capability '{c.id}'")
+            self.assertEqual(ts_oversight, c.requires_oversight, f"requiresOversight mismatch for capability '{c.id}'")
+
+
+class PersonaCatalogValidationTests(unittest.TestCase):
+    """Verifies that the web builder persona catalog is strictly validated by validate_persona_catalog."""
+
+    def test_catalog_on_disk_passes_validation(self):
+        report = ValidationReport()
+        validate_persona_catalog(ROOT, report)
+        self.assertEqual(report.errors, [], f"Unexpected validation errors in persona catalog: {report.errors}")
+
+    def test_catalog_with_invalid_capability_fails_validation(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_root = Path(tmpdir)
+            pub_dir = tmp_root / "web-builder" / "public"
+            pub_dir.mkdir(parents=True)
+            mock_catalog = [{
+                "id": "mock-agent",
+                "name": "Mock Agent",
+                "description": "Mock description.",
+                "color": "#000000",
+                "emoji": "🤖",
+                "vibe": "analytical",
+                "prompt": "Prompt text.",
+                "runtimePrompt": "Short runtime prompt.",
+                "department": "operations",
+                "departmentLabel": "Operations",
+                "skills": ["read_file", "invalid_custom_skill"],
+            }]
+            (pub_dir / "ai-tadpole-catalog.json").write_text(json.dumps(mock_catalog), encoding="utf-8")
+            report = ValidationReport()
+            validate_persona_catalog(tmp_root, report)
+            self.assertTrue(
+                any("unknown capability IDs in skills" in err and "invalid_custom_skill" in err for err in report.errors),
+                f"Expected error for invalid capability, got: {report.errors}",
+            )
+
+
 if __name__ == "__main__":
     unittest.main()
+
 

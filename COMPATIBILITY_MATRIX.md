@@ -8,7 +8,7 @@ This matrix records the private upstream contract audited before registry or Swa
 - Runtime hardening: fully integrated and verified in the authoritative repository checkout (including MCP 2026-07-28 streamable HTTP & decomposed module architecture)
 - Reviewed branch: `main`
 - Audit date: 2026-09-08
-- Public downstream: [DDS-Solutions/AI-TadPole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS)
+- Public downstream: [DDS-Solutions/AI-TadPole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS) (Release v1.1.463, revision `bbcf0d4b001e6e2d0a9ffeebc71fb49f219cd61c`, verified 2026-10-05)
 
 ## Operational contract
 

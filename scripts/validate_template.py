@@ -946,6 +946,85 @@ def validate_mcp_registry(root: Path, report: ValidationReport) -> None:
                         report.error(context, f"tool id {t_id!r} prefix {t_server!r} does not match any server in config.mcpServers: {sorted(server_keys)}")
 
 
+def validate_persona_catalog(root: Path, report: ValidationReport) -> None:
+    catalog_path = root / "web-builder" / "public" / "ai-tadpole-catalog.json"
+    if not catalog_path.is_file():
+        if (root / "web-builder").is_dir():
+            report.error("ai-tadpole-catalog.json", "persona catalog file missing from web-builder/public")
+        return
+
+    try:
+        raw_text = catalog_path.read_text(encoding="utf-8")
+        for finding in detect_embedded_secrets(raw_text):
+            report.error("ai-tadpole-catalog.json", f"contains likely {finding}")
+        catalog = json.loads(raw_text)
+    except Exception as exc:
+        report.error("ai-tadpole-catalog.json", f"cannot parse JSON: {exc}")
+        return
+
+    if not isinstance(catalog, list):
+        report.error("ai-tadpole-catalog.json", "must be a JSON array")
+        return
+
+    required_fields = (
+        "id",
+        "name",
+        "description",
+        "color",
+        "emoji",
+        "vibe",
+        "prompt",
+        "runtimePrompt",
+        "department",
+        "departmentLabel",
+    )
+    seen_ids: set[str] = set()
+    safe_id_regex = re.compile(r"^[a-zA-Z0-9_\-]+$")
+
+    for idx, persona in enumerate(catalog):
+        ctx = f"ai-tadpole-catalog.json[{idx}]"
+        if not isinstance(persona, dict):
+            report.error(ctx, "must be an object")
+            continue
+        pid = persona.get("id")
+        if not isinstance(pid, str) or not pid.strip():
+            report.error(ctx, "missing or empty id")
+            pid = f"item_{idx}"
+        else:
+            ctx = f"ai-tadpole-catalog.json agent '{pid}'"
+            if not safe_id_regex.match(pid):
+                report.error(ctx, f"id contains invalid characters: {pid!r}")
+            if pid in seen_ids:
+                report.error(ctx, f"duplicate persona id: {pid!r}")
+            seen_ids.add(pid)
+
+        for req in required_fields:
+            val = persona.get(req)
+            if not isinstance(val, str) or not val.strip():
+                report.error(ctx, f"missing or empty required field: {req}")
+
+        runtime_prompt = persona.get("runtimePrompt")
+        if isinstance(runtime_prompt, str) and len(runtime_prompt) > 800:
+            report.error(ctx, f"runtimePrompt exceeds 800 characters ({len(runtime_prompt)})")
+
+        skills = persona.get("skills")
+        if skills is not None:
+            if not isinstance(skills, list):
+                report.error(ctx, "skills must be an array")
+            else:
+                unknown_skills = [s for s in skills if s not in VALID_CAPABILITY_IDS]
+                if unknown_skills:
+                    report.error(ctx, f"unknown capability IDs in skills: {unknown_skills}")
+
+        workflows = persona.get("workflows")
+        if workflows is not None and not isinstance(workflows, list):
+            report.error(ctx, "workflows must be an array")
+
+        mcp_tools = persona.get("mcp_tools")
+        if mcp_tools is not None and not isinstance(mcp_tools, list):
+            report.error(ctx, "mcp_tools must be an array")
+
+
 def validate_repository(root: Path) -> ValidationReport:
     report = ValidationReport()
     for filename in ("registry.json", "index.json", "mcp_registry.json", "compatibility.lock.json"):
@@ -969,7 +1048,9 @@ def validate_repository(root: Path) -> ValidationReport:
         else:
             report.error("registry.json", "each template must be an object")
     validate_mcp_registry(root, report)
+    validate_persona_catalog(root, report)
     return report
+
 
 
 def main() -> int:

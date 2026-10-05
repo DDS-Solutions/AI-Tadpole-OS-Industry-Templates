@@ -51,6 +51,23 @@ function validateAgentCatalog(path) {
       throw new Error(`Agent catalog contains duplicate id: ${agent.id}`);
     }
     ids.add(agent.id);
+
+    if (Array.isArray(agent.skills)) {
+      const validCapabilities = new Set([
+        'read_file',
+        'grep_search',
+        'search_web',
+        'write_file',
+        'delete_file',
+        'execute_shell',
+        'shell',
+      ]);
+      for (const skill of agent.skills) {
+        if (!validCapabilities.has(skill)) {
+          throw new Error(`Agent catalog entry ${index} (${agent.id}) has invalid skill: ${skill}`);
+        }
+      }
+    }
   }
 }
 

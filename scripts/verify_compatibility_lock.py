@@ -43,10 +43,10 @@ def generate_lock_data() -> dict[str, Any]:
     return {
         "version": "1.0.0",
         "consumer": {
-            "repository": "https://github.com/DDS-Solutions/TadPole-OS",
+            "repository": "https://github.com/DDS-Solutions/AI-TadPole-OS",
             "branch": "main",
-            "pinned_revision": "f3b53231bd1928b737e65cdbd210907d534246b6",
-            "review_date": "2026-09-08",
+            "pinned_revision": "bbcf0d4b001e6e2d0a9ffeebc71fb49f219cd61c",
+            "review_date": "2026-10-05",
         },
         "upstream": {
             "repository": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates",

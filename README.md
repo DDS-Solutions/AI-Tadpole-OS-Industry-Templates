@@ -15,7 +15,7 @@ Don't want to start from scratch? Use our **[Swarm Architect](https://dds-soluti
 *   **Unified State & Bidirectional Switching**: Switch between Guided and Advanced modes at any time without losing configuration state.
 *   **Draft Recovery**: Non-sensitive blueprint state is persisted automatically to browser local storage, with clear session recovery and discard controls.
 *   **Curated 295-Persona Catalog**: All 295 catalog personas feature validated `runtimePrompt` definitions (&le; 800 chars) with explicit domain guardrails, SMB operational competencies, and human review requirements.
-*   **73 Pre-Configured Templates**: 73 public industry swarms across 30 sectors, composed of 224 installable agent profile files across 110 distinct persona specializations.
+*   **73 Pre-Configured Templates**: 73 public industry swarms across 30 sectors, composed of 222 installable agent profile files across 110 distinct persona specializations.
 *   **AI-Tadpole-OS Contract Validation**: Live continuous checking guarantees model inference compatibility, capability safety, workflow reference integrity, and agent-level `requires_oversight` enforcement.
 
 ---
@@ -150,11 +150,12 @@ The current compatibility review is pinned in [COMPATIBILITY_MATRIX.md](COMPATIB
 3. Ensure your template passes the [TEMPLATE_SPEC.md](TEMPLATE_SPEC.md) requirements.
 4. Run the local validators to audit your template structure:
    ```bash
-   # Check for pending contract migrations and validate all registry assets
+   # Verify compatibility lockfile, check for pending migrations, and validate registry assets
+   python scripts/verify_compatibility_lock.py --check
    python scripts/migrate_consumer_contract.py --check
    python scripts/validate_template.py
 
-   # Run validator characterization tests
+   # Run contract and characterization test suites
    python -m unittest discover -s tests -p "test_*.py"
    ```
 5. If you changed the Web Builder, run `npm ci`, `npm run lint`, `npm run test`, and `npm run build` from `/web-builder/`.
