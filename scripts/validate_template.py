@@ -11,6 +11,11 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+try:
+    from scripts.capabilities import DANGEROUS_CAPABILITY_IDS, VALID_CAPABILITY_IDS
+except ImportError:  # executed directly as `python scripts/validate_template.py`
+    from capabilities import DANGEROUS_CAPABILITY_IDS, VALID_CAPABILITY_IDS
+
 
 REQUIRED_AGENT_STRINGS = (
     "id",
@@ -29,13 +34,10 @@ ALLOWED_MCP_COMMANDS = frozenset({"node", "npx", "python", "python3"})
 ALLOWED_MCP_PROTOCOLS = frozenset({"2026-07-28", "2024-11-05"})
 VALID_ENV_OR_HEADER_VAR = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 LEGACY_SKILLS = frozenset({"run_command", "write_to_file"})
-DANGEROUS_SKILLS = frozenset({
-    "delete_file",
-    "execute_shell",
-    "shell",
-    "terminal",
-    "write_file",
-})
+# Single source of truth: scripts/capabilities.py
+DANGEROUS_SKILLS = DANGEROUS_CAPABILITY_IDS
+# Catalog fields shared by registry.json and index.json that must agree
+CATALOG_PARITY_FIELDS = ("name", "description", "required_skills", "required_models")
 SENSITIVE_ENV_NAME = re.compile(
     r"(?:KEY|TOKEN|SECRET|PASSWORD|CREDENTIAL|CONNECTION_STRING|CONN_STR|AUTH)",
     re.IGNORECASE,
@@ -278,6 +280,8 @@ def validate_agent_payload(agent: Any) -> list[str]:
         if provider == "google" and "llama" in model_id:
             errors.append(f"model_config: provider 'google' cannot be paired with '{model_config.get('model_id')}'")
 
+    if "mcp_tools" not in agent:
+        errors.append("mcp_tools is required (use [] when no MCP tools are granted)")
     for key in ("skills", "workflows", "mcp_tools"):
         value = agent.get(key, [])
         if not isinstance(value, list) or not all(isinstance(item, str) and item for item in value):
@@ -300,6 +304,11 @@ def validate_agent_payload(agent: Any) -> list[str]:
     if isinstance(skills, list):
         for legacy_skill in sorted(LEGACY_SKILLS.intersection(skills)):
             errors.append(f"skills contains legacy Tadpole capability: {legacy_skill}")
+        unknown = sorted(
+            {s for s in skills if isinstance(s, str)} - VALID_CAPABILITY_IDS - LEGACY_SKILLS
+        )
+        if unknown:
+            errors.append(f"skills contains unknown capability IDs: {unknown}")
         if "execute_shell" in skills and not ({"shell", "terminal"} & set(skills)):
             errors.append("execute_shell requires the shell or terminal capability marker")
 
@@ -501,6 +510,23 @@ def validate_catalog_parity(root: Path, report: ValidationReport) -> list[dict[s
     if public_registry_contract != index_contract:
         report.error("catalog", "registry.json (public entries) and index.json disagree on template IDs or paths")
 
+    registry_by_id = {
+        item["id"]: item for item in templates
+        if isinstance(item, dict) and isinstance(item.get("id"), str) and not item.get("internal")
+    }
+    for index_entry in index:
+        if not isinstance(index_entry, dict):
+            continue
+        registry_entry = registry_by_id.get(index_entry.get("id"))
+        if registry_entry is None:
+            continue
+        for field_name in CATALOG_PARITY_FIELDS:
+            if index_entry.get(field_name) != registry_entry.get(field_name):
+                report.error(
+                    "catalog",
+                    f"registry.json and index.json disagree on {field_name!r} for template {index_entry.get('id')!r}",
+                )
+
     # Verify index.json required_models matches actual models declared in each template
     for index_entry in index:
         if not isinstance(index_entry, dict):
@@ -680,7 +706,11 @@ def validate_template(
             for message in validate_mcp_payload(mcp_payload):
                 report.error(f"{context} mcps.json", message)
             if isinstance(mcp_payload, dict):
-                active_mcp_servers = mcp_payload.get("mcpServers", {})
+                servers = mcp_payload.get("mcpServers", {})
+                if isinstance(servers, dict):
+                    active_mcp_servers = servers
+                else:
+                    report.error(f"{context} mcps.json", "mcpServers must be an object keyed by server name")
 
     connector_ids = swarm.get("connector_ids")
     if active_mcp_servers:
@@ -899,8 +929,14 @@ def validate_mcp_registry(root: Path, report: ValidationReport) -> None:
         if embedded_config is not None:
             for message in validate_mcp_payload(embedded_config):
                 report.error(f"{context} config", message)
+            if embedded_config != config:
+                report.error(
+                    f"{context} config",
+                    f"embedded config must exactly match {connector.get('path')}/mcps.json",
+                )
 
-        server_keys = set(config.get("mcpServers", {}).keys()) if isinstance(config, dict) else set()
+        connector_servers = config.get("mcpServers") if isinstance(config, dict) else None
+        server_keys = set(connector_servers) if isinstance(connector_servers, dict) else set()
         if tools and server_keys:
             for tool in tools:
                 if isinstance(tool, dict):

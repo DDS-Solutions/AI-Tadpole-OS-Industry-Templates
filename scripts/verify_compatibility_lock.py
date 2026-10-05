@@ -16,6 +16,8 @@ CRITICAL_CONTRACT_FILES = [
     "scripts/validate_template.py",
     "scripts/migrate_consumer_contract.py",
     "scripts/capabilities.py",
+    # The verifier pins itself so edits to this list cannot silently drop coverage.
+    "scripts/verify_compatibility_lock.py",
     "registry.json",
     "mcp_registry.json",
     "index.json",
@@ -106,14 +108,16 @@ def verify_lockfile() -> bool:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Verify or regenerate compatibility.lock.json")
-    parser.add_argument("--generate", action="store_true", help="Regenerate the compatibility lockfile")
-    parser.add_argument("--check", action="store_true", help="Verify lockfile against current files (default mode)")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--generate", action="store_true", help="Regenerate the compatibility lockfile")
+    mode.add_argument("--check", action="store_true", help="Verify lockfile against current files (default mode)")
     args = parser.parse_args()
 
     if args.generate:
         write_lockfile()
         return 0
 
+    # --check and the bare invocation are both verify-only and never write.
     return 0 if verify_lockfile() else 1
 
 

@@ -2006,7 +2006,7 @@
     "skills": [
       "read_file",
       "grep_search",
-      "web_search"
+      "search_web"
     ],
     "requires_oversight": false,
     "requiresOversight": false,
@@ -2763,7 +2763,7 @@
     "skills": [
       "read_file",
       "grep_search",
-      "web_search",
+      "search_web",
       "write_file"
     ],
     "requires_oversight": true,
@@ -2930,7 +2930,7 @@
     "skills": [
       "read_file",
       "grep_search",
-      "web_search"
+      "search_web"
     ],
     "requires_oversight": false,
     "requiresOversight": false,
@@ -3717,7 +3717,7 @@
     "skills": [
       "read_file",
       "grep_search",
-      "web_search",
+      "search_web",
       "write_file"
     ],
     "requires_oversight": true,
@@ -5333,7 +5333,7 @@
     "skills": [
       "read_file",
       "grep_search",
-      "web_search"
+      "search_web"
     ],
     "requires_oversight": false,
     "requiresOversight": false,
@@ -7161,7 +7161,7 @@
     "skills": [
       "read_file",
       "grep_search",
-      "web_search"
+      "search_web"
     ],
     "requires_oversight": false,
     "requiresOversight": false,
@@ -7848,7 +7848,7 @@
     "skills": [
       "read_file",
       "grep_search",
-      "web_search"
+      "search_web"
     ],
     "requires_oversight": false,
     "requiresOversight": false,
@@ -9270,7 +9270,7 @@
     "skills": [
       "read_file",
       "grep_search",
-      "web_search"
+      "search_web"
     ],
     "requires_oversight": false,
     "requiresOversight": false,
