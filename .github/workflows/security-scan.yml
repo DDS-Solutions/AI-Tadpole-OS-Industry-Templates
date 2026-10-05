@@ -59,9 +59,14 @@ jobs:
         run: |
           sudo systemctl stop clamav-freshclam || true
           if ! sudo freshclam --stdout; then
-            echo "::warning::freshclam mirror rate-limited or transiently unavailable; verifying existing definition state..."
+            echo "::warning::freshclam mirror rate-limited or transiently unavailable; falling back to the packaged signature database..."
           fi
-          test -d /var/lib/clamav && ls -la /var/lib/clamav || true
+          # Fail closed: never scan with an empty/missing signature database.
+          if [ -z "$(sudo find /var/lib/clamav -maxdepth 1 \( -name '*.cvd' -o -name '*.cld' \) -print -quit 2>/dev/null)" ]; then
+            echo "::error::No ClamAV signature database found; refusing to report a clean scan."
+            exit 1
+          fi
+          ls -la /var/lib/clamav
 
       - name: Scan Files
         run: |

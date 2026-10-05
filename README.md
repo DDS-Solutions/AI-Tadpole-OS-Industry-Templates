@@ -14,7 +14,7 @@ Don't want to start from scratch? Use our **[Swarm Architect](https://dds-soluti
     *   **Advanced Setup (Developers & Administrators)**: Granular technical control over agent runtime prompts, model configurations (`gemma4:31b`), capabilities (`read_file`, `write_file`, `grep_search`, `execute_shell`, `search_web`), raw/structured playbook editors, MCP server parameters, and live contract diagnostics.
 *   **Unified State & Bidirectional Switching**: Switch between Guided and Advanced modes at any time without losing configuration state.
 *   **Draft Recovery**: Non-sensitive blueprint state is persisted automatically to browser local storage, with clear session recovery and discard controls.
-*   **Curated 289-Persona Catalog**: All 289 catalog personas feature validated `runtimePrompt` definitions (&le; 800 chars) with explicit domain guardrails, SMB operational competencies, and human review requirements.
+*   **Curated 295-Persona Catalog**: All 295 catalog personas feature validated `runtimePrompt` definitions (&le; 800 chars) with explicit domain guardrails, SMB operational competencies, and human review requirements.
 *   **73 Pre-Configured Templates**: 73 public industry swarms across 30 sectors, composed of 224 installable agent profile files across 110 distinct persona specializations.
 *   **AI-Tadpole-OS Contract Validation**: Live continuous checking guarantees model inference compatibility, capability safety, workflow reference integrity, and agent-level `requires_oversight` enforcement.
 

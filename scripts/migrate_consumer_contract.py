@@ -14,19 +14,20 @@ from pathlib import Path
 from typing import Any
 
 
+try:
+    from scripts.capabilities import DANGEROUS_CAPABILITY_IDS
+except ImportError:  # executed directly as `python scripts/migrate_consumer_contract.py`
+    from capabilities import DANGEROUS_CAPABILITY_IDS
+
+
 DEFAULT_PROVIDER = "google"
 DEFAULT_MODEL_ID = "gemma4:31b"
 LEGACY_SKILL_REPLACEMENTS = {
     "write_to_file": ("write_file",),
     "run_command": ("execute_shell", "shell"),
 }
-DANGEROUS_SKILLS = frozenset({
-    "delete_file",
-    "execute_shell",
-    "shell",
-    "terminal",
-    "write_file",
-})
+# Single source of truth: scripts/capabilities.py
+DANGEROUS_SKILLS = DANGEROUS_CAPABILITY_IDS
 EXECUTABLE_HEADING = re.compile(r"^#{2,3}\s+\S", re.MULTILINE)
 NUMBERED_INSTRUCTION = re.compile(r"^(\s*)(\d+)[.)]\s+(.+)$")
 

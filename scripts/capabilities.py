@@ -34,15 +34,8 @@ CAPABILITIES: tuple[CapabilitySpec, ...] = (
         requires_oversight=False,
     ),
     CapabilitySpec(
-        id="list_dir",
-        label="List Directory",
-        description="List and explore directories and file trees.",
-        risk="read_only",
-        requires_oversight=False,
-    ),
-    CapabilitySpec(
-        id="web_search",
-        label="Web Search",
+        id="search_web",
+        label="Search Web",
         description="Search public internet resources and documentation.",
         risk="read_only",
         requires_oversight=False,
@@ -86,6 +79,7 @@ CAPABILITIES: tuple[CapabilitySpec, ...] = (
 )
 
 CAPABILITY_MAP: dict[str, CapabilitySpec] = {spec.id: spec for spec in CAPABILITIES}
+VALID_CAPABILITY_IDS: frozenset[str] = frozenset(CAPABILITY_MAP)
 DANGEROUS_CAPABILITY_IDS: frozenset[str] = frozenset(
     spec.id for spec in CAPABILITIES if spec.requires_oversight
 )
