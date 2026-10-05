@@ -12,30 +12,17 @@ from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-sys.path.insert(0, str(ROOT / "scripts"))
 
-try:
-    from scripts import migrate_consumer_contract as migrator
-    from scripts import verify_compatibility_lock as lock
-    from scripts.capabilities import CAPABILITIES, VALID_CAPABILITY_IDS
-    from scripts.validate_template import (
-        ValidationReport,
-        validate_agent_payload,
-        validate_catalog_parity,
-        validate_mcp_registry,
-        validate_template,
-    )
-except ImportError:
-    import migrate_consumer_contract as migrator
-    import verify_compatibility_lock as lock
-    from capabilities import CAPABILITIES, VALID_CAPABILITY_IDS
-    from validate_template import (
-        ValidationReport,
-        validate_agent_payload,
-        validate_catalog_parity,
-        validate_mcp_registry,
-        validate_template,
-    )
+from scripts import migrate_consumer_contract as migrator  # noqa: E402
+from scripts import verify_compatibility_lock as lock  # noqa: E402
+from scripts.capabilities import CAPABILITIES, VALID_CAPABILITY_IDS  # noqa: E402
+from scripts.validate_template import (  # noqa: E402
+    ValidationReport,
+    validate_agent_payload,
+    validate_catalog_parity,
+    validate_mcp_registry,
+    validate_template,
+)
 
 
 def valid_agent():
