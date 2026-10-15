@@ -1,6 +1,7 @@
-import { Database, Plus, Sliders, Trash2 } from 'lucide-react';
+import { Database, Info, Plus, Sliders, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import type { MCPConnector } from '../../types';
+import { hasRuntimeDefinition } from '../../utils/connectorReadiness';
 
 interface Step4Props {
   mcpCatalog: MCPConnector[];
@@ -23,11 +24,11 @@ export default function Step4_Connectors({
   onPrevious,
   onNext
 }: Step4Props) {
-  const toggleConnector = (connectorId: string) => {
-    if (selectedConnectors.includes(connectorId)) {
-      setSelectedConnectors(selectedConnectors.filter(id => id !== connectorId));
-    } else {
-      setSelectedConnectors([...selectedConnectors, connectorId]);
+  const toggleConnector = (connector: MCPConnector) => {
+    if (selectedConnectors.includes(connector.id)) {
+      setSelectedConnectors(selectedConnectors.filter(id => id !== connector.id));
+    } else if (hasRuntimeDefinition(connector)) {
+      setSelectedConnectors([...selectedConnectors, connector.id]);
     }
   };
 
@@ -38,9 +39,9 @@ export default function Step4_Connectors({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
       data-tooltip="Phase 4 Data Connectors: Attach MCP-compatible data connectors to provide swarms with real-time external data access."
-      className="w-full sovereign-panel p-8"
+      className="w-full sovereign-panel p-5 sm:p-8"
     >
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-5">
         <div className="flex items-center gap-3 text-cyber-green">
           <Database className="w-5 h-5 shrink-0" />
           <div>
@@ -53,11 +54,19 @@ export default function Step4_Connectors({
         <button
           type="button"
           onClick={onAddNewMcp}
-          className="flex items-center gap-2 bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white px-4 py-2 rounded-lg text-xs font-mono tracking-wider uppercase transition-all cursor-pointer hover:bg-zinc-800"
+          aria-describedby="custom-connector-help"
+          className="focus-sovereign min-h-11 shrink-0 flex items-center gap-2 bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white px-4 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer hover:bg-zinc-800"
         >
-          <Plus className="w-3.5 h-3.5" /> Add Connector
+          <Plus className="w-3.5 h-3.5" /> Add custom blueprint
         </button>
       </div>
+
+      <p id="custom-connector-help" className="flex items-start gap-2 text-xs text-zinc-400 leading-relaxed mb-6">
+        <Info aria-hidden="true" className="w-4 h-4 shrink-0 mt-0.5 text-busy" />
+        <span>
+          The custom editor saves a connector's name, path, and description. Add its runtime configuration and tool manifest to the registry before selecting it. Package checks run again at export.
+        </span>
+      </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {mcpCatalog.length === 0 ? (
@@ -67,6 +76,9 @@ export default function Step4_Connectors({
         ) : (
           mcpCatalog.map(connector => {
             const isSelected = selectedConnectors.includes(connector.id);
+            const hasRuntime = hasRuntimeDefinition(connector);
+            const isQuarantined = connector.status === 'quarantined';
+            const readinessId = `connector-${connector.id}-readiness`;
             return (
               <div
                 key={connector.id}
@@ -78,19 +90,34 @@ export default function Step4_Connectors({
               >
                 <button
                   type="button"
-                  onClick={() => toggleConnector(connector.id)}
+                  onClick={() => toggleConnector(connector)}
                   aria-pressed={isSelected}
-                  className="w-full cursor-pointer text-left focus-sovereign rounded-lg"
+                  aria-label={`${isSelected ? 'Deselect' : 'Select'} ${connector.name}`}
+                  aria-describedby={!hasRuntime ? readinessId : undefined}
+                  disabled={!hasRuntime && !isSelected}
+                  className="w-full cursor-pointer text-left focus-sovereign rounded-lg disabled:cursor-not-allowed"
                 >
                   <span className="flex justify-between items-start mb-2">
                     <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">{connector.category} v{connector.version}</span>
                     <span className="flex items-center gap-2">
-                      {isSelected && <span className="w-2 h-2 bg-cyber-green rounded-full shadow-[0_0_8px_rgba(34,197,94,0.8)] animate-pulse" />}
+                      {isSelected && <span className="text-[10px] font-mono text-cyber-green">Selected</span>}
                     </span>
                   </span>
                   <span className="block font-bold text-sm text-zinc-100">{connector.name}</span>
                   <span className="block text-xs text-zinc-500 mt-2 leading-relaxed">{connector.description}</span>
                 </button>
+
+                {!hasRuntime && (
+                  <div id={readinessId} className="mt-3 text-xs leading-relaxed">
+                    <p className="font-medium text-warning">{isQuarantined ? 'Quarantined connector' : 'Requires runtime configuration'}</p>
+                    <p className="text-zinc-400 mt-1">
+                      {isQuarantined
+                        ? 'This connector is unavailable for new selections.'
+                        : 'This blueprint needs a server configuration and tool manifest in the registry. Editing its details does not add these assets.'}
+                      {isSelected && ' Deselect it before export.'}
+                    </p>
+                  </div>
+                )}
 
                 <div className="mt-4 pt-3 border-t border-zinc-850/50 flex justify-between items-center text-[10px] font-mono text-zinc-500" style={{ borderColor: 'color-mix(in srgb, var(--color-zinc-800) 25%, transparent)' }}>
                   <span className="truncate max-w-[150px]" title={connector.path}>{connector.path}</span>
@@ -98,14 +125,16 @@ export default function Step4_Connectors({
                     <button
                       type="button"
                       onClick={() => onEditMcp(connector)}
-                      className="text-zinc-500 hover:text-white flex items-center gap-1 transition-colors cursor-pointer"
+                      aria-label={`Edit ${connector.name}`}
+                      className="focus-sovereign rounded min-h-9 px-1 text-zinc-400 hover:text-white flex items-center gap-1 transition-colors cursor-pointer"
                     >
                       <Sliders className="w-3 h-3" /> Edit
                     </button>
                     <button
                       type="button"
                       onClick={(e) => onDeleteMcp(connector.id, e)}
-                      className="text-zinc-500 hover:text-rose-450 flex items-center gap-1 transition-colors cursor-pointer"
+                      aria-label={`Delete ${connector.name}`}
+                      className="focus-sovereign rounded min-h-9 px-1 text-zinc-400 hover:text-danger flex items-center gap-1 transition-colors cursor-pointer"
                     >
                       <Trash2 className="w-3 h-3" /> Delete
                     </button>

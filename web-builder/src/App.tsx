@@ -28,9 +28,9 @@ import { INDUSTRY_MAP, REGISTRY, INDUSTRY_CODES_MAP } from './constants';
 
 import ModeSelector from './components/ModeSelector';
 import { exportSwarmZip, fetchSwarmDetailsFromRepo } from './utils/fileHelpers';
-import { catalogAgentToRuntimeAgent, recommendTeam } from './utils/catalogHelpers';
+import { catalogAgentToRuntimeAgent, recommendTeam, generateDefaultMission, generateGoalWorkflows } from './utils/catalogHelpers';
 import { validateSwarm } from './utils/validation';
-import { saveDraft, loadDraft, clearDraft, type SavedDraft } from './utils/draftStorage';
+import { saveDraft, loadDraft, clearDraft, restoreDraftConnectors, type SavedDraft } from './utils/draftStorage';
 
 // Lazy load dialogs & steps for optimal bundle splitting
 const GuidedWizard = lazy(() => import('./components/Guided/GuidedWizard'));
@@ -43,6 +43,10 @@ const CatalogDrawer = lazy(() => import('./components/Modals/CatalogDrawer'));
 const AgentEditor = lazy(() => import('./components/Modals/AgentEditor'));
 const McpEditor = lazy(() => import('./components/Modals/McpEditor'));
 
+function scrollToWorkspace() {
+  window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+}
+
 export default function App() {
   const [experienceMode, setExperienceMode] = useState<ExperienceMode>('guided');
   const [hasSelectedMode, setHasSelectedMode] = useState(false);
@@ -50,6 +54,10 @@ export default function App() {
   const [savedDraftState, setSavedDraftState] = useState<SavedDraft | null>(() => loadDraft());
 
   const [step, setStep] = useState(1);
+  const [guidedStep, setGuidedStep] = useState(1);
+  const [assetRetry, setAssetRetry] = useState(0);
+  const [catalogLoadError, setCatalogLoadError] = useState<string | null>(null);
+  const [connectorLoadError, setConnectorLoadError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
 
   // Custom State Inputs
@@ -76,6 +84,7 @@ export default function App() {
   const [swarmLoadError, setSwarmLoadError] = useState<string | null>(null);
   const swarmRequestController = useRef<AbortController | null>(null);
   const swarmRequestSequence = useRef(0);
+  const workspaceRef = useRef<HTMLElement>(null);
 
   // MCP Connectors State
   const [mcpCatalog, setMcpCatalog] = useState<MCPConnector[]>([]);
@@ -99,6 +108,10 @@ export default function App() {
   const [isExporting, setIsExporting] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
   const [draftToast, setDraftToast] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (hasSelectedMode || showTemplatesLibrary) workspaceRef.current?.focus({ preventScroll: true });
+  }, [hasSelectedMode, showTemplatesLibrary, experienceMode, step, guidedStep]);
 
   const departments = [
     { id: 'all', label: 'All Departments', color: '#71717a', desc: 'Browse the complete index of sovereign agent personas.' },
@@ -170,21 +183,31 @@ export default function App() {
       });
 
     fetch('./mcp_registry.json', { signal: controller.signal })
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.connectors) setMcpCatalog(data.connectors);
+      .then(res => {
+        if (!res.ok) throw new Error('Business connections could not be loaded. Please retry.');
+        return res.json();
       })
-      .catch(err => {
-        if (err.name !== 'AbortError') console.error("Error loading mcp_registry.json:", err);
+      .then(data => {
+        if (!data || !Array.isArray(data.connectors)) throw new Error('The connections catalog is unavailable. Please retry.');
+        if (data && data.connectors) {
+          setMcpCatalog(current => restoreDraftConnectors(data.connectors, current));
+        }
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) setConnectorLoadError('Business connections could not be loaded. Your blueprint is preserved.');
       });
 
     fetch('./ai-tadpole-catalog.json', { signal: controller.signal })
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) setCatalog(data);
+      .then(res => {
+        if (!res.ok) throw new Error('The specialist catalog could not be loaded. Please retry.');
+        return res.json();
       })
-      .catch(err => {
-        if (err.name !== 'AbortError') console.error("Error loading ai-tadpole-catalog.json:", err);
+      .then(data => {
+        if (!Array.isArray(data) || data.length === 0) throw new Error('The specialist catalog is empty. Please retry.');
+        setCatalog(data);
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) setCatalogLoadError('The specialist catalog could not be loaded. Your blueprint is preserved.');
       })
       .finally(() => {
         if (!controller.signal.aborted) setIsCatalogLoading(false);
@@ -193,7 +216,7 @@ export default function App() {
     return () => {
       controller.abort();
     };
-  }, []);
+  }, [assetRetry]);
 
   // Compute live continuous validation
   const validationIssues = useMemo(() => {
@@ -203,9 +226,9 @@ export default function App() {
   // Draft autosave effect
   useEffect(() => {
     if (hasSelectedMode && (companyInfo.name || agents.length > 0)) {
-      saveDraft(experienceMode, companyInfo, agents, workflows, selectedConnectors);
+      saveDraft(experienceMode, companyInfo, agents, workflows, selectedConnectors, mcpCatalog);
     }
-  }, [hasSelectedMode, experienceMode, companyInfo, agents, workflows, selectedConnectors]);
+  }, [hasSelectedMode, experienceMode, companyInfo, agents, workflows, selectedConnectors, mcpCatalog]);
 
   const handleResumeDraft = () => {
     if (!savedDraftState) return;
@@ -214,18 +237,19 @@ export default function App() {
     setAgents(savedDraftState.agents);
     setWorkflows(savedDraftState.workflows || []);
     setSelectedConnectors(savedDraftState.selectedConnectors || []);
+    setMcpCatalog(current => restoreDraftConnectors(current, savedDraftState.connectorDefinitions));
     setHasSelectedMode(true);
     setSavedDraftState(null);
   };
 
   const handleDiscardDraft = () => {
-    clearDraft();
-    setSavedDraftState(null);
+    resetBlueprint();
   };
 
   const handleSelectMode = (mode: ExperienceMode) => {
     setExperienceMode(mode);
     setHasSelectedMode(true);
+    setShowTemplatesLibrary(false);
   };
 
   const removeAgent = (id: string) => {
@@ -321,6 +345,7 @@ export default function App() {
   };
 
   const handleAiAssist = () => {
+    if (isCatalogLoading || catalogLoadError) return;
     const recommended = recommendTeam(
       companyInfo.goals || [],
       companyInfo.industry,
@@ -329,10 +354,19 @@ export default function App() {
     );
 
     if (recommended.length > 0) {
-      setAgents(recommended.map(r => r.agent));
+      if (agents.length > 0 && !window.confirm('Replace the current team with recommended specialists? Your custom agent settings and tool grants will be replaced. Your mission and playbooks will be kept.')) return;
+      const teamWorkflows = workflows.length > 0 ? workflows : generateGoalWorkflows(companyInfo.goals || []);
+      const readToolIds = mcpCatalog.filter(connector => selectedConnectors.includes(connector.id))
+        .flatMap(connector => (connector.tools || []).filter(tool => tool.risk === 'read').map(tool => tool.id));
+      setWorkflows(teamWorkflows);
+      setAgents(recommended.map(recommendation => ({
+        ...recommendation.agent,
+        workflows: teamWorkflows.filter(workflow => !workflow.isOkfPlaybook).map(workflow => workflow.id),
+        mcpTools: [...new Set([...(recommendation.agent.mcpTools || []), ...readToolIds])],
+      })));
       setCompanyInfo(prev => ({
         ...prev,
-        mission: `To revolutionize ${prev.industry || 'operations'} through sovereign multi-agent intelligence and automated workflows.`
+        mission: prev.mission.trim() || generateDefaultMission(prev.name, prev.industry, prev.goals || []),
       }));
     }
   };
@@ -426,34 +460,52 @@ export default function App() {
     setHasSelectedMode(true);
     setShowTemplatesLibrary(false);
     setStep(1);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setGuidedStep(1);
+    scrollToWorkspace();
   };
 
   const handleManualSaveDraft = () => {
-    saveDraft(experienceMode, companyInfo, agents, workflows, selectedConnectors);
-    setDraftToast('Draft saved locally!');
+    const saved = saveDraft(experienceMode, companyInfo, agents, workflows, selectedConnectors, mcpCatalog);
+    setDraftToast(saved ? 'Draft saved locally!' : 'Draft could not be saved. Browser storage may be unavailable or full.');
     setTimeout(() => setDraftToast(null), 3000);
+    return saved;
   };
 
+  function resetBlueprint() {
+    swarmRequestController.current?.abort();
+    swarmRequestSequence.current += 1;
+    setIsLoadingSwarmDetails(false);
+    clearDraft();
+    setSavedDraftState(null);
+    setSelectedTemplate(null);
+    setSelectedTemplateId(null);
+    setLoadedSwarmDetails(null);
+    setSwarmLoadError(null);
+    setIsCustomIndustry(false);
+    setCustomIndustryName('');
+    setCustomIndustryPath('');
+    setShowCustomCodeInput(false);
+    setShowTemplatesLibrary(false);
+    setGuidedStep(1);
+    setCompanyInfo({
+      name: '',
+      size: '25',
+      description: '',
+      mission: '',
+      industry: '',
+      industryPath: '',
+      industryCode: '',
+      goals: ['scheduling', 'quoting', 'customer-follow-up'],
+    });
+    setAgents([]);
+    setWorkflows([]);
+    setSelectedConnectors([]);
+    setHasSelectedMode(false);
+    setStep(1);
+  }
+
   const handleStartOver = () => {
-    if (window.confirm('Are you sure you want to reset the builder? This will clear your current blueprint draft.')) {
-      clearDraft();
-      setCompanyInfo({
-        name: '',
-        size: '25',
-        description: '',
-        mission: '',
-        industry: '',
-        industryPath: '',
-        industryCode: '',
-        goals: ['scheduling', 'quoting', 'customer-follow-up'],
-      });
-      setAgents([]);
-      setWorkflows([]);
-      setSelectedConnectors([]);
-      setHasSelectedMode(false);
-      setStep(1);
-    }
+    if (window.confirm('Reset this blueprint and discard its saved draft?')) resetBlueprint();
   };
 
   const filteredTemplates = dynamicRegistry.filter(t =>
@@ -465,7 +517,7 @@ export default function App() {
   // If user has not chosen mode yet, render ModeSelector
   if (!hasSelectedMode && !showTemplatesLibrary) {
     return (
-      <div className="min-h-screen p-4 md:p-8 flex flex-col items-center justify-center max-w-5xl mx-auto">
+      <div className="min-h-screen">
         <ModeSelector
           templateCount={dynamicRegistry.length}
           onSelectMode={handleSelectMode}
@@ -479,17 +531,18 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen p-4 md:p-8 flex flex-col items-center max-w-5xl mx-auto animate-fadeIn">
+    <div className="workspace-shell min-h-screen flex flex-col items-center animate-fadeIn">
+      <a href="#workspace-content" className="skip-link">Skip to workspace</a>
       {/* Toast */}
       {draftToast && (
-        <div className="fixed top-5 right-5 z-50 px-4 py-2 rounded-xl bg-cyber-green text-zinc-950 text-xs font-bold shadow-lg flex items-center gap-2 animate-bounce">
+        <div role="status" className="fixed top-5 right-5 left-5 sm:left-auto sm:max-w-md z-50 px-4 py-3 rounded-xl bg-zinc-900 border border-zinc-700 text-zinc-100 text-sm shadow-lg flex items-center gap-2">
           <BookmarkCheck className="w-4 h-4" /> {draftToast}
         </div>
       )}
 
       {/* Export Error Alert Banner */}
       {exportError && (
-        <div className="w-full mb-6 p-4 rounded-xl bg-red-950/80 border border-red-800 text-red-200 text-xs flex items-center justify-between gap-3">
+        <div role="alert" className="w-full mb-6 p-4 rounded-xl bg-red-950/80 border border-red-800 text-red-200 text-xs flex items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
             <span><strong>Export Blocked:</strong> {exportError}</span>
@@ -504,8 +557,8 @@ export default function App() {
       )}
 
       {/* Persistent Header with Segmented Mode Switcher */}
-      <header className="w-full flex flex-col sm:flex-row justify-between items-center gap-4 mb-8 pb-6 border-b border-zinc-850">
-        <div className="flex items-center gap-3">
+      <header className="workspace-header w-full flex flex-col lg:flex-row justify-between lg:items-center">
+        <button type="button" onClick={() => { setSavedDraftState(loadDraft()); setHasSelectedMode(false); setShowTemplatesLibrary(false); }} aria-label="Swarm Architect home" className="flex items-center gap-3 text-left rounded-lg">
           <div className="bg-cyber-green/20 p-2.5 rounded-xl border border-cyber-green/30">
             <Shield className="text-cyber-green w-6 h-6" />
           </div>
@@ -516,14 +569,14 @@ export default function App() {
             </div>
             <p className="text-xs text-zinc-500 font-mono uppercase tracking-widest">AI-Tadpole-OS Engine</p>
           </div>
-        </div>
+        </button>
 
         {/* Persistent Mode Switcher */}
-        <div className="flex items-center gap-3">
-          <div className="p-1 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center gap-1">
+        <div className="workspace-toolbar">
+          <div className="mode-switch p-1 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center gap-1">
             <button
               type="button"
-              onClick={() => setExperienceMode('guided')}
+              onClick={() => handleSelectMode('guided')}
               aria-pressed={experienceMode === 'guided'}
               className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
                 experienceMode === 'guided'
@@ -536,7 +589,7 @@ export default function App() {
             </button>
             <button
               type="button"
-              onClick={() => setExperienceMode('advanced')}
+              onClick={() => handleSelectMode('advanced')}
               aria-pressed={experienceMode === 'advanced'}
               className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
                 experienceMode === 'advanced'
@@ -552,7 +605,8 @@ export default function App() {
           <button
             type="button"
             onClick={() => setShowTemplatesLibrary(!showTemplatesLibrary)}
-            aria-label={`Browse ${dynamicRegistry.length} pre-built industry templates`}
+            aria-label={showTemplatesLibrary ? 'Return to setup' : 'Browse industry templates'}
+            aria-pressed={showTemplatesLibrary}
             className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-white transition-colors cursor-pointer"
             title={`Browse ${dynamicRegistry.length} pre-built industry templates`}
           >
@@ -572,6 +626,13 @@ export default function App() {
         </div>
       </header>
 
+      {(catalogLoadError || connectorLoadError) && (
+        <div role="alert" className="w-full mb-6 p-4 rounded-xl border border-amber-500/25 bg-amber-500/5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-sm">
+          <div className="flex items-start gap-2 text-amber-200"><AlertCircle className="w-4 h-4 shrink-0 mt-0.5" /><div>{catalogLoadError && <p>{catalogLoadError}</p>}{connectorLoadError && <p>{connectorLoadError}</p>}</div></div>
+          <button type="button" onClick={() => { setIsCatalogLoading(true); setCatalogLoadError(null); setConnectorLoadError(null); setAssetRetry(value => value + 1); }} className="button-secondary shrink-0"><RotateCcw className="w-4 h-4" /> Retry loading</button>
+        </div>
+      )}
+      <main ref={workspaceRef} tabIndex={-1} id="workspace-content" className="workspace-content w-full">
       {/* Main Experience Router */}
       <Suspense fallback={<div className="w-full py-16 text-center text-zinc-500 font-mono text-xs animate-pulse">Loading experience...</div>}>
         {experienceMode === 'guided' && !showTemplatesLibrary ? (
@@ -587,6 +648,10 @@ export default function App() {
             selectedConnectors={selectedConnectors}
             setSelectedConnectors={setSelectedConnectors}
             catalog={catalog}
+            isCatalogLoading={isCatalogLoading}
+            catalogLoadError={catalogLoadError}
+            currentStep={guidedStep}
+            onStepChange={nextStep => { setGuidedStep(nextStep); scrollToWorkspace(); }}
             onOpenCatalogModal={() => setIsCatalogModalOpen(true)}
             validationIssues={validationIssues}
             isExporting={isExporting}
@@ -598,7 +663,7 @@ export default function App() {
         ) : experienceMode === 'advanced' && !showTemplatesLibrary ? (
           <div className="w-full space-y-6">
             {/* Advanced Progress Header */}
-            <div className="flex justify-center gap-3 mb-4">
+            <nav aria-label="Advanced setup progress" className="builder-progress advanced-progress mb-4">
               {[
                 { id: 1, label: 'Identity' },
                 { id: 2, label: 'Agents' },
@@ -613,7 +678,7 @@ export default function App() {
                   aria-current={s.id === step ? 'step' : undefined}
                   className="flex flex-col items-center gap-1.5 cursor-pointer group"
                 >
-                  <span className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${s.id === step ? 'text-cyber-green font-bold' : 'text-zinc-500 group-hover:text-zinc-300'}`}>
+                  <span className={`font-mono transition-colors ${s.id === step ? 'text-cyber-green font-bold' : 'text-zinc-400 group-hover:text-zinc-200'}`}>
                     {s.label}
                   </span>
                   <div
@@ -621,7 +686,14 @@ export default function App() {
                   />
                 </button>
               ))}
-            </div>
+            </nav>
+
+            {(isLoadingSwarmDetails || swarmLoadError) && (
+              <div role={swarmLoadError ? 'alert' : 'status'} className={`p-4 rounded-xl border text-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${swarmLoadError ? 'border-red-500/30 text-red-200 bg-red-500/5' : 'border-zinc-700 text-zinc-300 bg-zinc-900/50'}`}>
+                <span>{isLoadingSwarmDetails ? 'Loading the selected template. Your current team stays in place until it is ready.' : `Template could not be loaded: ${swarmLoadError}`}</span>
+                {swarmLoadError && selectedTemplateId && <button type="button" onClick={() => { const template = dynamicRegistry.find(item => item.id === selectedTemplateId); if (template) void fetchSwarmDetails(template.path, true); }} className="button-secondary shrink-0">Retry template</button>}
+              </div>
+            )}
 
             <AnimatePresence mode="wait">
               {step === 1 && (
@@ -642,7 +714,7 @@ export default function App() {
                   setShowCustomCodeInput={setShowCustomCodeInput}
                   onAiAssist={handleAiAssist}
                   onLoadSwarmDetails={(path) => { void fetchSwarmDetails(path, true); }}
-                  onNext={() => { setStep(2); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  onNext={() => { setStep(2); scrollToWorkspace(); }}
                 />
               )}
 
@@ -653,8 +725,8 @@ export default function App() {
                   onEditAgent={(agent) => { setEditingAgent(agent); setIsEditorModalOpen(true); }}
                   onOpenCatalog={() => setIsCatalogModalOpen(true)}
                   onCreateCustomAgent={handleCreateCustomAgent}
-                  onPrevious={() => { setStep(1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                  onNext={() => { setStep(3); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  onPrevious={() => { setStep(1); scrollToWorkspace(); }}
+                  onNext={() => { setStep(3); scrollToWorkspace(); }}
                 />
               )}
 
@@ -665,8 +737,8 @@ export default function App() {
                   companyInfo={companyInfo}
                   onAddWorkflow={addWorkflow}
                   onRemoveWorkflow={removeWorkflow}
-                  onPrevious={() => { setStep(2); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                  onNext={() => { setStep(4); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  onPrevious={() => { setStep(2); scrollToWorkspace(); }}
+                  onNext={() => { setStep(4); scrollToWorkspace(); }}
                 />
               )}
 
@@ -678,8 +750,8 @@ export default function App() {
                   onAddNewMcp={handleAddNewMcp}
                   onEditMcp={(connector) => { setEditingMcp(connector); setIsMcpEditorModalOpen(true); }}
                   onDeleteMcp={handleDeleteMcp}
-                  onPrevious={() => { setStep(3); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                  onNext={() => { setStep(5); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  onPrevious={() => { setStep(3); scrollToWorkspace(); }}
+                  onNext={() => { setStep(5); scrollToWorkspace(); }}
                 />
               )}
 
@@ -691,7 +763,7 @@ export default function App() {
                   validationIssues={validationIssues}
                   isExporting={isExporting}
                   onExport={handleExport}
-                  onPrevious={() => { setStep(4); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  onPrevious={() => { setStep(4); scrollToWorkspace(); }}
                   onReset={handleStartOver}
                 />
               )}
@@ -702,8 +774,8 @@ export default function App() {
 
       {/* Community Templates Library Card / Drawer */}
       {showTemplatesLibrary && (
-        <section className="w-full my-6 animate-fadeIn">
-          <div data-tooltip="Templates Registry: Public database of pre-packaged industrial multi-agent swarms." className="sovereign-panel p-6 flex flex-col min-h-[600px] border-zinc-800/80 bg-zinc-950">
+        <section className="w-full my-6 animate-fadeIn" aria-label="Industry template library">
+          <div className="template-library sovereign-panel p-6 flex flex-col min-h-[600px] border-zinc-800/80 bg-zinc-950">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center pb-6 border-b border-zinc-800 gap-4 mb-6">
               <div>
                 <div className="flex items-center gap-2">
@@ -721,7 +793,9 @@ export default function App() {
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
                   <input
                     className="w-full bg-zinc-900 border border-zinc-800 rounded-full py-2 pl-10 pr-4 text-xs focus:border-cyber-green outline-none text-zinc-300"
-                    placeholder="Search templates..."
+                    placeholder="Search industries, teams, or tasks..."
+                    aria-label="Search industry templates"
+                    type="search"
                     value={searchTerm}
                     onChange={e => setSearchTerm(e.target.value)}
                   />
@@ -774,6 +848,7 @@ export default function App() {
                         <div className="flex-1">
                           <span className="mono-label text-[10px] text-zinc-500">Selected Template</span>
                           <input
+                            aria-label="Template name"
                             className="bg-transparent text-lg font-bold text-white border-b border-zinc-800 hover:border-zinc-700 focus:border-cyber-green outline-none w-full pb-1 mt-1"
                             value={selectedTemplate.name}
                             onChange={e => handleUpdateSelectedTemplate('name', e.target.value)}
@@ -790,6 +865,7 @@ export default function App() {
                       <div>
                         <span className="mono-label text-[10px] text-zinc-500">Description</span>
                         <textarea
+                          aria-label="Template description"
                           className="w-full bg-zinc-950/60 border border-zinc-800 rounded-lg p-3 text-xs text-zinc-300 focus:border-cyber-green outline-none min-h-[60px] resize-y mt-1"
                           value={selectedTemplate.description}
                           onChange={e => handleUpdateSelectedTemplate('description', e.target.value)}
@@ -875,6 +951,8 @@ export default function App() {
           </div>
         </section>
       )}
+
+      </main>
 
       {/* Catalog Modal */}
       <Suspense fallback={null}>

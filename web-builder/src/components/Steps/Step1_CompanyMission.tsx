@@ -65,7 +65,7 @@ export default function Step1_CompanyMission({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
       data-tooltip="Phase 1: Configures your organization's metadata, NAICS/SIC industry code classification, and target directory paths."
-      className="w-full sovereign-panel p-8"
+      className="w-full sovereign-panel p-5 sm:p-8"
     >
       <div className="flex items-center gap-3 mb-6 text-cyber-green">
         <Globe className="w-5 h-5 shrink-0" />
@@ -79,8 +79,11 @@ export default function Step1_CompanyMission({
 
       <div className="space-y-6">
         <div>
-          <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="Specify the primary organization or business name associated with this multi-agent swarm blueprint.">Company / Swarm Name</label>
+          <label htmlFor="advanced-company-name" className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="Specify the primary organization or business name associated with this multi-agent swarm blueprint.">Company / Swarm Name</label>
           <input
+            id="advanced-company-name"
+            autoComplete="organization"
+            required
             className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none transition-colors text-zinc-300"
             placeholder="e.g. My Enterprise Swarm"
             value={companyInfo.name}
@@ -91,8 +94,9 @@ export default function Step1_CompanyMission({
         {isCustomIndustry && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-zinc-950 border border-zinc-800 rounded-lg">
             <div>
-              <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="Set the custom industry sector label if not matching the pre-defined catalog options.">Custom Industry Name</label>
+              <label htmlFor="advanced-custom-industry" className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="Set the custom industry sector label if not matching the pre-defined catalog options.">Custom Industry Name</label>
               <input
+                id="advanced-custom-industry"
                 className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none transition-colors text-zinc-300"
                 placeholder="e.g. Biotech Research"
                 value={customIndustryName}
@@ -109,8 +113,9 @@ export default function Step1_CompanyMission({
               />
             </div>
             <div>
-              <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="The relative directory name that will store agent configuration profiles inside the repository.">Custom Target Directory Path</label>
+              <label htmlFor="advanced-custom-directory" className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="The relative directory name that will store agent configuration profiles inside the repository.">Custom Target Directory Path</label>
               <input
+                id="advanced-custom-directory"
                 className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none transition-colors text-zinc-300"
                 placeholder="e.g. biotech"
                 value={customIndustryPath}
@@ -128,8 +133,10 @@ export default function Step1_CompanyMission({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="Choose from pre-defined industry templates to populate standard playbook steps and agent configurations.">Industry / Sector</label>
+            <label htmlFor="advanced-industry" className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="Choose from pre-defined industry templates to populate standard playbook steps and agent configurations.">Industry / Sector</label>
             <select
+              id="advanced-industry"
+              required
               className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none text-zinc-300 cursor-pointer"
               value={isCustomIndustry ? "CUSTOM" : companyInfo.industry}
               onChange={e => {
@@ -162,7 +169,7 @@ export default function Step1_CompanyMission({
             </select>
           </div>
           <div>
-            <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="Standardized industry registry code (North American Industry Classification System) for template matching.">NAICS / SIC Code</label>
+            <label htmlFor="advanced-industry-code" className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="Standardized industry registry code (North American Industry Classification System) for template matching.">NAICS / SIC Code</label>
             {(() => {
               const codes = INDUSTRY_CODES_MAP[companyInfo.industry] || [];
               const isCodeCustom = companyInfo.industryCode !== '' && !codes.some(c => c.code === companyInfo.industryCode);
@@ -172,7 +179,8 @@ export default function Step1_CompanyMission({
                 return (
                   <div className="flex flex-col md:flex-row gap-3">
                     <select
-                      className="flex-1 bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none text-zinc-300 cursor-pointer"
+                      id="advanced-industry-code"
+                      className="min-w-0 flex-1 bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none text-zinc-300 cursor-pointer"
                       value={(showCustomCodeInput || isCodeCustom) ? "CUSTOM" : companyInfo.industryCode}
                       onChange={e => {
                         if (e.target.value === "CUSTOM") {
@@ -193,7 +201,9 @@ export default function Step1_CompanyMission({
 
                     {showInput && (
                       <input
-                        className="flex-1 bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none transition-colors text-zinc-300"
+                        id="advanced-custom-industry-code"
+                        aria-label="Custom NAICS or SIC code"
+                        className="min-w-0 flex-1 bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none transition-colors text-zinc-300"
                         placeholder="Enter Custom Code..."
                         value={companyInfo.industryCode}
                         onChange={e => setCompanyInfo({...companyInfo, industryCode: e.target.value})}
@@ -204,6 +214,7 @@ export default function Step1_CompanyMission({
               } else {
                 return (
                   <input
+                    id="advanced-industry-code"
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none transition-colors text-zinc-300"
                     placeholder="e.g. 541511"
                     value={companyInfo.industryCode}
@@ -217,30 +228,37 @@ export default function Step1_CompanyMission({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-             <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="The exact relative folder destination inside the cloned repository context.">Target Repo Path</label>
+             <div className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="The exact relative folder destination inside the cloned repository context.">Target Repo Path</div>
              <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-zinc-400 flex items-center gap-2">
                <Shield className="w-3 h-3 text-cyber-green" />
                {companyInfo.industryPath || 'select-industry'}/
              </div>
           </div>
           <div>
-            <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="Determines concurrent agent execution quotas and performance thresholds.">Company Size</label>
+            <label htmlFor="advanced-company-size" className="block text-xs font-mono uppercase text-zinc-500 mb-2">Company Size (Employees)</label>
             <select
+              id="advanced-company-size"
               className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 focus:border-cyber-green outline-none text-zinc-300 cursor-pointer"
               value={companyInfo.size}
               onChange={e => setCompanyInfo({...companyInfo, size: e.target.value})}
             >
-              <option value="25">25 Seats (Startup)</option>
-              <option value="50">50 Seats (Growth)</option>
-              <option value="100">100 Seats (Enterprise)</option>
+              <option value="5">1 - 10 employees (Small team)</option>
+              <option value="25">11 - 50 employees (Growing business)</option>
+              <option value="50">50 employees (Existing size)</option>
+              <option value="100">51 - 250 employees (Mid-sized operation)</option>
+              <option value="500">250+ employees (Enterprise)</option>
+              {!['5', '25', '50', '100', '500'].includes(companyInfo.size) && (
+                <option value={companyInfo.size}>{companyInfo.size} employees (Current size)</option>
+              )}
             </select>
           </div>
         </div>
 
         <div>
-          <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="Enter a paragraph explaining your core services, tools, or target workflows to calculate recommended agent catalog profiles.">What does your company do?</label>
+          <label htmlFor="advanced-company-description" className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="Enter a paragraph explaining your core services, tools, or target workflows to calculate recommended agent catalog profiles.">What does your company do?</label>
           <div className="relative">
             <textarea
+              id="advanced-company-description"
               className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 min-h-[100px] focus:border-cyber-green outline-none text-zinc-300"
               placeholder="Describe your core business..."
               value={companyInfo.description}
@@ -256,8 +274,9 @@ export default function Step1_CompanyMission({
         </div>
 
         <div>
-          <label className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="The core mandate or strategic goal defining the swarm's overarching purpose.">Mission Objective</label>
+          <label htmlFor="advanced-mission" className="block text-xs font-mono uppercase text-zinc-500 mb-2 cursor-help" data-tooltip="The core mandate or strategic goal defining the swarm's overarching purpose.">Mission Objective</label>
           <textarea
+            id="advanced-mission"
             className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 min-h-[60px] focus:border-cyber-green outline-none text-zinc-300"
             placeholder="The core goal of this swarm..."
             value={companyInfo.mission}
@@ -269,8 +288,8 @@ export default function Step1_CompanyMission({
       {/* Preset Swarms Registry */}
       {dynamicRegistry.filter(t => t.industry.toLowerCase() === companyInfo.industry.toLowerCase()).length > 0 && (
         <div className="mt-8 pt-8 border-t border-zinc-900/60" style={{ borderColor: 'color-mix(in srgb, var(--color-zinc-800) 25%, transparent)' }}>
-          <label className="block text-xs font-mono uppercase text-zinc-500 mb-3 cursor-help" data-tooltip="Pick a pre-assembled role layout to auto-configure this swarm.">Select Swarm Template Base</label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <h3 id="advanced-template-bases" className="block text-xs font-mono uppercase text-zinc-500 mb-3 cursor-help" data-tooltip="Pick a pre-assembled role layout to auto-configure this swarm.">Select Swarm Template Base</h3>
+          <div role="group" aria-labelledby="advanced-template-bases" className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {dynamicRegistry
               .filter(t => t.industry.toLowerCase() === companyInfo.industry.toLowerCase())
               .map(t => (
@@ -297,11 +316,11 @@ export default function Step1_CompanyMission({
         </div>
       )}
 
-      <div className="mt-12 flex justify-end">
+      <div className="mt-8 sm:mt-12 flex flex-wrap justify-end gap-3">
         <button
           onClick={onNext}
-          disabled={!companyInfo.name || !companyInfo.industry}
-          className="bg-neural-pulse text-zinc-950 font-bold px-8 py-3 rounded-lg hover:bg-white disabled:opacity-50 transition-all cursor-pointer"
+          disabled={!companyInfo.name.trim() || !companyInfo.industry.trim()}
+          className="w-full sm:w-auto bg-neural-pulse text-zinc-950 font-bold px-8 py-3 rounded-lg hover:bg-white disabled:opacity-50 transition-all cursor-pointer"
         >
           Next Architecture
         </button>

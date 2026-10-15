@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import { Download, Shield, CheckCircle2, AlertTriangle, AlertCircle, ArrowLeft, Terminal, BookmarkCheck, RotateCcw } from 'lucide-react';
 import type { Agent, CompanyInfo, MCPConnector, ValidationIssue, WorkflowItem } from '../../types';
+import { DANGEROUS_SKILL_SET, VALID_RUNTIME_CAPABILITIES } from '../../constants/capabilities';
 
 interface Step4GuidedReviewProps {
   companyInfo: CompanyInfo;
@@ -11,7 +11,7 @@ interface Step4GuidedReviewProps {
   validationIssues: ValidationIssue[];
   isExporting: boolean;
   onExport: () => void;
-  onSaveDraft: () => void;
+  onSaveDraft: () => boolean;
   onSwitchToAdvanced: () => void;
   onStartOver: () => void;
   onBack: () => void;
@@ -33,18 +33,19 @@ export default function Step4_GuidedReview({
   onBack,
   onJumpToStep,
 }: Step4GuidedReviewProps) {
-  const [saveSuccess, setSaveSuccess] = useState(false);
-
   const errors = validationIssues.filter(i => i.severity === 'error');
   const warnings = validationIssues.filter(i => i.severity === 'warning');
 
   const isReady = errors.length === 0;
-
-  const handleSaveDraftClick = () => {
-    onSaveDraft();
-    setSaveSuccess(true);
-    setTimeout(() => setSaveSuccess(false), 3000);
-  };
+  const activeTools = new Map(mcpCatalog
+    .filter(connector => selectedConnectors.includes(connector.id))
+    .flatMap(connector => (connector.tools || []).map(tool => [tool.id, tool.risk] as const)));
+  const oversightAgents = agents.filter(agent => Boolean(agent.requiresOversight)
+    || (agent.skills || ['read_file']).some(skill => DANGEROUS_SKILL_SET.has(skill))
+    || (agent.mcpTools || []).some(grant => ['write', 'execute'].includes(activeTools.get(grant) || '')));
+  const hasUnknownPermissions = agents.some(agent =>
+    (agent.skills || ['read_file']).some(skill => !VALID_RUNTIME_CAPABILITIES.has(skill))
+    || (agent.mcpTools || []).some(grant => !activeTools.has(grant)));
 
   return (
     <div className="w-full sovereign-panel p-8 space-y-8 animate-fadeIn">
@@ -96,7 +97,7 @@ export default function Step4_GuidedReview({
           </div>
         </div>
 
-        <div className="flex items-center gap-2 font-mono text-xs shrink-0">
+        <div className="flex flex-wrap items-center gap-2 font-mono text-xs">
           <span className="px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300">
             {agents.length} Specialists
           </span>
@@ -227,38 +228,45 @@ export default function Step4_GuidedReview({
         <div className="p-5 rounded-xl bg-zinc-950 border border-zinc-800/80 space-y-3">
           <div className="flex items-center justify-between text-xs font-mono text-zinc-400 border-b border-zinc-800/60 pb-2">
             <span className="uppercase">Human Oversight</span>
-            <span className={agents.some(a => a.requiresOversight) ? 'text-amber-400 font-semibold' : 'text-cyber-green'}>
-              {agents.some(a => a.requiresOversight)
-                ? `${agents.filter(a => a.requiresOversight).length} of ${agents.length} Agents Enforced`
-                : 'Read-Only Mode'}
+            <span className={oversightAgents.length > 0 || hasUnknownPermissions ? 'text-amber-400 font-semibold' : 'text-cyber-green'}>
+              {oversightAgents.length > 0
+                ? `${oversightAgents.length} of ${agents.length} Require Oversight`
+                : hasUnknownPermissions
+                ? 'Permissions Need Review'
+                : agents.length > 0 ? 'Read-only Capabilities' : 'No Specialists Configured'}
             </span>
           </div>
           <div className="space-y-1.5 text-xs text-zinc-400">
-            {agents.some(a => a.requiresOversight) ? (
+            {oversightAgents.length > 0 ? (
               <>
                 <div className="flex items-start gap-1.5 text-amber-200/90">
                   <Shield className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
                   <span>
-                    Operator approval required for mutating agents: {agents.filter(a => a.requiresOversight).map(a => a.name).join(', ')}.
+                    Operator oversight is required for: {oversightAgents.map(agent => agent.name).join(', ')}.
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5 text-zinc-400 text-[11px]">
                   <CheckCircle2 className="w-3.5 h-3.5 text-cyber-green shrink-0" />
-                  <span>Outbound communications generated as reviewable drafts.</span>
+                  <span>Review declared capabilities and approval settings before deployment.</span>
                 </div>
               </>
-            ) : (
+            ) : hasUnknownPermissions ? (
+              <div className="flex items-start gap-1.5 text-amber-200/90">
+                <AlertTriangle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                <span>Some capabilities or tool grants could not be verified. Resolve the permission diagnostics before deployment.</span>
+              </div>
+            ) : agents.length > 0 ? (
               <>
                 <div className="flex items-center gap-1.5 text-zinc-300">
                   <CheckCircle2 className="w-3.5 h-3.5 text-cyber-green shrink-0" />
-                  <span>All specialists operate in safe read-only draft mode.</span>
+                  <span>The configured specialists declare only read-only capabilities and tool grants.</span>
                 </div>
                 <div className="flex items-center gap-1.5 text-zinc-400 text-[11px]">
                   <Shield className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
-                  <span>No autonomous file mutations or external commitments.</span>
+                  <span>Recheck permissions whenever you change agents or connectors.</span>
                 </div>
               </>
-            )}
+            ) : <p>Add a specialist to review its approval requirements.</p>}
           </div>
         </div>
       </div>
@@ -275,7 +283,7 @@ export default function Step4_GuidedReview({
         <button
           onClick={onExport}
           disabled={!isReady || isExporting}
-          className={`px-6 py-3.5 rounded-xl font-bold text-sm transition-all flex items-center gap-2 cursor-pointer shadow-lg ${
+          className={`w-full sm:w-auto px-5 py-3.5 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg ${
             isReady && !isExporting
               ? 'bg-cyber-green hover:bg-cyber-green-light text-zinc-950 shadow-cyber-green/20'
               : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
@@ -288,7 +296,7 @@ export default function Step4_GuidedReview({
 
       {/* Secondary Actions & Advanced Transition */}
       <div className="pt-4 border-t border-zinc-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={onBack}
             className="px-4 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors flex items-center gap-1.5 cursor-pointer border border-zinc-800"
@@ -296,15 +304,15 @@ export default function Step4_GuidedReview({
             <ArrowLeft className="w-3.5 h-3.5" /> Return to Tools
           </button>
           <button
-            onClick={handleSaveDraftClick}
+            onClick={onSaveDraft}
             className="px-4 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-300 transition-colors flex items-center gap-1.5 cursor-pointer border border-zinc-800"
           >
             <BookmarkCheck className="w-3.5 h-3.5 text-cyber-green" />
-            {saveSuccess ? 'Draft Saved!' : 'Save Draft'}
+            Save Draft
           </button>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={onSwitchToAdvanced}
             className="px-4 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer border border-zinc-800"

@@ -13,7 +13,7 @@ The authoritative consumer review is the private `DDS-Solutions/TadPole-OS` chec
 - High-confidence private-key and provider-token patterns are rejected without printing the matched material.
 - Sensitive MCP environment values must be explicit local placeholders such as `CONFIGURE_LOCALLY`, `YOUR_API_KEY_HERE`, or `${API_TOKEN}`.
 - MCP commands are limited to `node`, `npx`, `python`, and `python3`. Shell control syntax and inline interpreter/module execution are prohibited.
-- Agent profiles must start `idle`, use native Tadpole capability IDs, declare `mcp_tools` and `requires_oversight`, and enable oversight for write/delete/shell declarations.
+- Agent profiles must start `idle`, use native AI-Tadpole-OS capability IDs, declare `mcp_tools` and `requires_oversight`, and enable oversight for write/delete/shell declarations.
 - Shell-capable profiles must include both `execute_shell` and the runtime's `shell` or `terminal` marker.
 - Template paths/references and agent, workflow, MCP, and knowledge payloads must satisfy the pinned contract.
 - Contract definitions must match cryptographic SHA-256 hashes recorded in `compatibility.lock.json`.

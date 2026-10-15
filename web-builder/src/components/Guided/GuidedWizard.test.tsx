@@ -1,7 +1,21 @@
 import { renderToStaticMarkup } from 'react-dom/server';
+import type { ComponentProps } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import type { Agent, CompanyInfo, MCPConnector, ValidationIssue, WorkflowItem } from '../../types';
 import GuidedWizard from './GuidedWizard';
+import type Step1_BusinessBrief from './Step1_BusinessBrief';
+
+const briefCapture = vi.hoisted(() => ({ props: undefined as ComponentProps<typeof Step1_BusinessBrief> | undefined }));
+
+vi.mock('./Step1_BusinessBrief', async importOriginal => {
+  const { default: BusinessBrief } = await importOriginal<typeof import('./Step1_BusinessBrief')>();
+  return {
+    default: (props: ComponentProps<typeof BusinessBrief>) => {
+      briefCapture.props = props;
+      return <BusinessBrief {...props} />;
+    },
+  };
+});
 
 describe('GuidedWizard component', () => {
   const companyInfo: CompanyInfo = {
@@ -59,7 +73,7 @@ describe('GuidedWizard component', () => {
     config: { mcpServers: { crm: { command: 'python', args: ['server.py'] } } },
   }];
 
-  const renderWizard = (validationIssues: ValidationIssue[] = []) => renderToStaticMarkup(
+  const renderWizard = (validationIssues: ValidationIssue[] = [], overrides: Partial<ComponentProps<typeof GuidedWizard>> = {}) => renderToStaticMarkup(
     <GuidedWizard
       companyInfo={companyInfo}
       setCompanyInfo={vi.fn()}
@@ -79,6 +93,7 @@ describe('GuidedWizard component', () => {
       onSaveDraft={vi.fn()}
       onSwitchToAdvanced={vi.fn()}
       onStartOver={vi.fn()}
+      {...overrides}
     />,
   );
 
@@ -98,5 +113,35 @@ describe('GuidedWizard component', () => {
 
     expect(html).toContain('Business Brief');
     expect(html).toContain('Recommended Team');
+  });
+
+  it('continues an existing blueprint without replacing its team, playbooks, or grants', () => {
+    const setAgents = vi.fn();
+    const setWorkflows = vi.fn();
+    const html = renderWizard([], { setAgents, setWorkflows });
+
+    expect(html).toContain('Continue with Current Team');
+    briefCapture.props?.onRecommendTeam();
+    expect(setAgents).not.toHaveBeenCalled();
+    expect(setWorkflows).not.toHaveBeenCalled();
+  });
+
+  it('waits for the catalog before recommending an empty team', () => {
+    const setAgents = vi.fn();
+    const setWorkflows = vi.fn();
+    const html = renderWizard([], { agents: [], workflows: [], isCatalogLoading: true, setAgents, setWorkflows });
+
+    expect(html).toContain('Loading Specialists');
+    briefCapture.props?.onRecommendTeam();
+    expect(setAgents).not.toHaveBeenCalled();
+    expect(setWorkflows).not.toHaveBeenCalled();
+  });
+
+  it('retains intentionally deselected goals and explains the disabled recommendation action', () => {
+    const setCompanyInfo = vi.fn();
+    const html = renderWizard([], { companyInfo: { ...companyInfo, goals: [] }, agents: [], setCompanyInfo });
+    expect(html).toContain('Select at least one task to recommend a team.');
+    expect(html).not.toContain('aria-pressed="true"');
+    expect(setCompanyInfo).not.toHaveBeenCalled();
   });
 });

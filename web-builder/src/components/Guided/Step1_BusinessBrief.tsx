@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Building2, Users, Sparkles, Check } from 'lucide-react';
 import type { CompanyInfo } from '../../types';
 import { getGoalsForIndustry, getDefaultGoalsForIndustry } from '../../utils/catalogHelpers';
@@ -14,6 +13,10 @@ interface Step1BusinessBriefProps {
   setCompanyInfo: (info: CompanyInfo) => void;
   dynamicIndustries: Industry[];
   onRecommendTeam: () => void;
+  hasExistingTeam?: boolean;
+  isCatalogLoading?: boolean;
+  catalogLoadError?: string | null;
+  hasRecommendations?: boolean;
 }
 
 export default function Step1_BusinessBrief({
@@ -21,25 +24,14 @@ export default function Step1_BusinessBrief({
   setCompanyInfo,
   dynamicIndustries,
   onRecommendTeam,
+  hasExistingTeam = false,
+  isCatalogLoading = false,
+  catalogLoadError = null,
+  hasRecommendations = true,
 }: Step1BusinessBriefProps) {
   const selectedGoals = companyInfo.goals || [];
   const activeIndustryKey = companyInfo.industryPath || companyInfo.industry;
   const availableGoals = getGoalsForIndustry(activeIndustryKey);
-
-  // When industry changes or on initial mount, if current goals don't belong to the active industry, preselect top 3
-  useEffect(() => {
-    if (companyInfo.industry) {
-      const activeIds = new Set(availableGoals.map(g => g.id));
-      const hasMatchingGoal = companyInfo.goals && companyInfo.goals.some(gId => activeIds.has(gId));
-      if (!hasMatchingGoal) {
-        const defaultGoals = getDefaultGoalsForIndustry(activeIndustryKey);
-        setCompanyInfo({
-          ...companyInfo,
-          goals: defaultGoals,
-        });
-      }
-    }
-  }, [companyInfo.industry, companyInfo.industryPath, activeIndustryKey, availableGoals, companyInfo, setCompanyInfo]);
 
   const isGoalSelected = (goalId: string) => {
     if (selectedGoals.includes(goalId)) return true;
@@ -82,7 +74,22 @@ export default function Step1_BusinessBrief({
     });
   };
 
-  const canProceed = companyInfo.name.trim() !== '' && companyInfo.industry.trim() !== '';
+  const hasIdentity = companyInfo.name.trim() !== '' && companyInfo.industry.trim() !== '';
+  const canRecommend = selectedGoals.length > 0 && !isCatalogLoading && !catalogLoadError && hasRecommendations;
+  const canProceed = hasIdentity && (hasExistingTeam || canRecommend);
+  const actionHint = !hasIdentity
+    ? 'Enter your business name and industry to continue.'
+    : hasExistingTeam
+    ? 'Your current team and playbooks will be preserved.'
+    : selectedGoals.length === 0
+    ? 'Select at least one task to recommend a team.'
+    : isCatalogLoading
+    ? 'Loading the specialist catalog…'
+    : catalogLoadError
+    ? 'The specialist catalog is unavailable. Retry loading it above.'
+    : !hasRecommendations
+    ? 'No specialists match these tasks. Choose another task or browse the catalog.'
+    : 'Ready to recommend your specialist team.';
 
   return (
     <div className="w-full sovereign-panel p-8 space-y-8 animate-fadeIn">
@@ -99,10 +106,13 @@ export default function Step1_BusinessBrief({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-xs font-semibold uppercase text-zinc-400 mb-2">
+          <label htmlFor="guided-business-name" className="block text-xs font-semibold uppercase text-zinc-400 mb-2">
             Business or Team Name <span className="text-cyber-green">*</span>
           </label>
           <input
+            id="guided-business-name"
+            autoComplete="organization"
+            required
             className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3.5 focus:border-cyber-green outline-none transition-colors text-white placeholder-zinc-600 text-sm"
             placeholder="e.g. Apex Plumbing & HVAC"
             value={companyInfo.name}
@@ -111,10 +121,12 @@ export default function Step1_BusinessBrief({
         </div>
 
         <div>
-          <label className="block text-xs font-semibold uppercase text-zinc-400 mb-2">
+          <label htmlFor="guided-business-industry" className="block text-xs font-semibold uppercase text-zinc-400 mb-2">
             Industry Sector <span className="text-cyber-green">*</span>
           </label>
           <select
+            id="guided-business-industry"
+            required
             className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3.5 focus:border-cyber-green outline-none text-white text-sm cursor-pointer"
             value={companyInfo.industry}
             onChange={handleIndustryChange}
@@ -129,29 +141,33 @@ export default function Step1_BusinessBrief({
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div>
-          <label className="block text-xs font-semibold uppercase text-zinc-400 mb-2">
+          <label htmlFor="guided-company-size" className="block text-xs font-semibold uppercase text-zinc-400 mb-2">
             Company Size (Employees)
           </label>
           <div className="relative">
             <Users className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <select
+              id="guided-company-size"
               className="w-full bg-zinc-950 border border-zinc-800 rounded-xl pl-10 pr-4 py-3.5 focus:border-cyber-green outline-none text-white text-sm cursor-pointer"
               value={companyInfo.size || '25'}
               onChange={e => setCompanyInfo({ ...companyInfo, size: e.target.value })}
             >
               <option value="5">1 - 10 employees (Small team)</option>
               <option value="25">11 - 50 employees (Growing business)</option>
+              <option value="50">50 employees</option>
               <option value="100">51 - 250 employees (Mid-sized operation)</option>
               <option value="500">250+ employees (Enterprise)</option>
+              {companyInfo.size && !['5', '25', '50', '100', '500'].includes(companyInfo.size) && <option value={companyInfo.size}>{companyInfo.size} employees</option>}
             </select>
           </div>
         </div>
 
         <div className="md:col-span-2">
-          <label className="block text-xs font-semibold uppercase text-zinc-400 mb-2">
+          <label htmlFor="guided-business-description" className="block text-xs font-semibold uppercase text-zinc-400 mb-2">
             Optional Business Description
           </label>
           <input
+            id="guided-business-description"
             className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3.5 focus:border-cyber-green outline-none transition-colors text-white placeholder-zinc-600 text-sm"
             placeholder="e.g. Commercial and residential emergency dispatch and maintenance contracts"
             value={companyInfo.description}
@@ -163,14 +179,14 @@ export default function Step1_BusinessBrief({
       {/* Goal Selector */}
       <div className="space-y-3 pt-2">
         <div className="flex items-center justify-between">
-          <label className="block text-xs font-semibold uppercase text-zinc-400">
+          <h3 id="guided-goals-label" className="block text-xs font-semibold uppercase text-zinc-400">
             What kind of work would you like help with? <span className="text-zinc-500 text-xs font-normal">(Select all that apply)</span>
-          </label>
+          </h3>
           <span className="text-xs text-cyber-green/80 font-mono">
             {availableGoals.length} tasks tailored for {companyInfo.industry || 'general operations'}
           </span>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div role="group" aria-labelledby="guided-goals-label" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {availableGoals.map(goal => {
             const isSelected = isGoalSelected(goal.id);
             return (
@@ -214,9 +230,9 @@ export default function Step1_BusinessBrief({
       </div>
 
       {/* Action Footer */}
-      <div className="pt-6 border-t border-zinc-800/80 flex items-center justify-between">
-        <span className="text-xs text-zinc-500 font-mono">
-          {!canProceed ? 'Enter business name & industry to continue' : 'Ready to recommend specialist agents'}
+      <div className="pt-6 border-t border-zinc-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <span role="status" className="text-xs text-zinc-400">
+          {actionHint}
         </span>
         <button
           onClick={onRecommendTeam}
@@ -228,7 +244,7 @@ export default function Step1_BusinessBrief({
           }`}
         >
           <Sparkles className="w-4 h-4" />
-          Recommend a Team
+          {hasExistingTeam ? 'Continue with Current Team' : isCatalogLoading ? 'Loading Specialists…' : 'Recommend a Team'}
         </button>
       </div>
     </div>

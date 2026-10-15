@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Users, Shield, Plus, Trash2, Eye, EyeOff, Info, ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
-import type { Agent, RecommendedSpecialist } from '../../types';
+import type { Agent, MCPConnector, RecommendedSpecialist } from '../../types';
+import { DANGEROUS_SKILL_SET, VALID_RUNTIME_CAPABILITIES } from '../../constants/capabilities';
 
 interface Step2TeamRecommendationsProps {
   agents: Agent[];
   catalogCount?: number;
   recommendedSpecialists: RecommendedSpecialist[];
+  mcpCatalog?: MCPConnector[];
   onRegenerateTeam?: () => void;
   onAddSpecialistFromCatalog: () => void;
   onRemoveAgent: (id: string) => void;
@@ -17,6 +19,7 @@ export default function Step2_TeamRecommendations({
   agents,
   catalogCount = 223,
   recommendedSpecialists,
+  mcpCatalog = [],
   onRegenerateTeam,
   onAddSpecialistFromCatalog,
   onRemoveAgent,
@@ -24,6 +27,7 @@ export default function Step2_TeamRecommendations({
   onNext,
 }: Step2TeamRecommendationsProps) {
   const [showTechnicalDetails, setShowTechnicalDetails] = useState(false);
+  const toolRisks = new Map(mcpCatalog.flatMap(connector => (connector.tools || []).map(tool => [tool.id, tool.risk] as const)));
 
   return (
     <div className="w-full sovereign-panel p-8 space-y-8 animate-fadeIn">
@@ -89,6 +93,12 @@ export default function Step2_TeamRecommendations({
             const canPrepare = spec?.canPrepare || ['Draft work documents and status updates'];
             const cannotApprove = spec?.cannotApprove || ['Final external publication without review'];
             const whyReason = agent.recommendationReason || spec?.whyRecommended || 'Added as a domain specialist for your team.';
+            const skills = agent.skills || ['read_file'];
+            const requiresApproval = Boolean(agent.requiresOversight)
+              || skills.some(skill => DANGEROUS_SKILL_SET.has(skill))
+              || (agent.mcpTools || []).some(grant => ['write', 'execute'].includes(toolRisks.get(grant) || ''));
+            const hasUnknownPermissions = skills.some(skill => !VALID_RUNTIME_CAPABILITIES.has(skill))
+              || (agent.mcpTools || []).some(grant => !toolRisks.has(grant));
 
             return (
               <div
@@ -186,9 +196,13 @@ export default function Step2_TeamRecommendations({
 
                 {/* Oversight Badge */}
                 <div className="pt-3 border-t border-zinc-900 flex items-center justify-between">
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-cyber-green/10 border border-cyber-green/30 text-cyber-green text-[11px] font-medium">
+                  <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-medium ${
+                    requiresApproval || hasUnknownPermissions
+                      ? 'bg-amber-950/30 border-amber-800/60 text-amber-300'
+                      : 'bg-cyber-green/10 border-cyber-green/30 text-cyber-green'
+                  }`}>
                     <Shield className="w-3 h-3" />
-                    <span>Human Approval Required</span>
+                    <span>{requiresApproval ? 'Human Approval Required' : hasUnknownPermissions ? 'Review Tool Permissions' : 'Read-only Capabilities'}</span>
                   </div>
                   <span className="text-xs text-zinc-500 font-mono">State: Idle</span>
                 </div>
@@ -199,7 +213,7 @@ export default function Step2_TeamRecommendations({
       )}
 
       {/* Navigation Footer */}
-      <div className="pt-6 border-t border-zinc-800/80 flex items-center justify-between">
+      <div className="pt-6 border-t border-zinc-800/80 flex flex-wrap gap-3 items-center justify-between">
         <button
           onClick={onBack}
           className="px-5 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-300 text-sm font-medium transition-colors flex items-center gap-2 cursor-pointer border border-zinc-800"
@@ -210,7 +224,7 @@ export default function Step2_TeamRecommendations({
         <button
           onClick={onNext}
           disabled={agents.length === 0}
-          className={`px-6 py-3 rounded-xl font-semibold text-sm transition-all flex items-center gap-2 cursor-pointer shadow-md ${
+          className={`w-full sm:w-auto px-6 py-3 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md ${
             agents.length > 0
               ? 'bg-cyber-green hover:bg-cyber-green-light text-zinc-950 shadow-cyber-green/20'
               : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'

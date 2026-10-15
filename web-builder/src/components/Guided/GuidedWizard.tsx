@@ -26,11 +26,15 @@ interface GuidedWizardProps {
   selectedConnectors: string[];
   setSelectedConnectors: (connectors: string[]) => void;
   catalog: CatalogAgent[];
+  isCatalogLoading?: boolean;
+  catalogLoadError?: string | null;
+  currentStep?: number;
+  onStepChange?: (step: number) => void;
   onOpenCatalogModal: () => void;
   validationIssues: ValidationIssue[];
   isExporting: boolean;
   onExport: () => void;
-  onSaveDraft: () => void;
+  onSaveDraft: () => boolean;
   onSwitchToAdvanced: () => void;
   onStartOver: () => void;
 }
@@ -47,6 +51,10 @@ export default function GuidedWizard({
   selectedConnectors,
   setSelectedConnectors,
   catalog,
+  isCatalogLoading = false,
+  catalogLoadError = null,
+  currentStep: controlledStep,
+  onStepChange,
   onOpenCatalogModal,
   validationIssues,
   isExporting,
@@ -55,26 +63,38 @@ export default function GuidedWizard({
   onSwitchToAdvanced,
   onStartOver,
 }: GuidedWizardProps) {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [localStep, setLocalStep] = useState(1);
+  const currentStep = controlledStep ?? localStep;
+  const setCurrentStep = (nextStep: number) => {
+    setLocalStep(nextStep);
+    onStepChange?.(nextStep);
+  };
 
   // Compute recommended specialists whenever companyInfo or catalog changes
   const recommendedSpecialists = useMemo(() => {
     return recommendTeam(companyInfo.goals || [], companyInfo.industry, companyInfo.size, catalog);
   }, [companyInfo.goals, companyInfo.industry, companyInfo.size, catalog]);
 
-  const applyGeneratedWorkflowsAndAgents = () => {
-    const generatedWorkflows = generateGoalWorkflows(companyInfo.goals || []);
+  const applyGeneratedWorkflowsAndAgents = (replaceExistingWorkflows: boolean) => {
+    const generatedWorkflows = !replaceExistingWorkflows && workflows.length > 0
+      ? workflows
+      : generateGoalWorkflows(companyInfo.goals || []);
     if (setWorkflows) {
       setWorkflows(generatedWorkflows);
     }
 
     if (recommendedSpecialists.length > 0) {
       const mappedAgents = recommendedSpecialists.map(spec => {
-        const matchedWfs = generatedWorkflows.filter(gw => spec.matchedGoalIds?.includes(gw.generatedFromGoalId || ''));
-        const wfIds = matchedWfs.length > 0 ? matchedWfs.map(w => w.id) : generatedWorkflows.map(w => w.id);
+        const executableWorkflows = generatedWorkflows.filter(workflow => !workflow.isOkfPlaybook);
+        const matchedWfs = executableWorkflows.filter(gw => spec.matchedGoalIds?.includes(gw.generatedFromGoalId || ''));
+        const wfIds = matchedWfs.length > 0 ? matchedWfs.map(w => w.id) : executableWorkflows.map(w => w.id);
+        const readToolIds = mcpCatalog
+          .filter(connector => selectedConnectors.includes(connector.id))
+          .flatMap(connector => (connector.tools || []).filter(tool => tool.risk === 'read').map(tool => tool.id));
         return {
           ...spec.agent,
           workflows: wfIds,
+          mcpTools: [...new Set([...(spec.agent.mcpTools || []), ...readToolIds])],
         };
       });
       setAgents(mappedAgents);
@@ -82,6 +102,11 @@ export default function GuidedWizard({
   };
 
   const handleRecommendTeam = () => {
+    if (agents.length > 0) {
+      setCurrentStep(2);
+      return;
+    }
+    if (isCatalogLoading || catalogLoadError || recommendedSpecialists.length === 0) return;
     // 1. Generate default mission if blank
     let activeMission = companyInfo.mission;
     if (!activeMission || activeMission.trim() === '') {
@@ -90,12 +115,16 @@ export default function GuidedWizard({
     }
 
     // 2. Generate and assign workflows and agents
-    applyGeneratedWorkflowsAndAgents();
+    applyGeneratedWorkflowsAndAgents(false);
     setCurrentStep(2);
   };
 
   const handleRegenerateTeam = () => {
-    applyGeneratedWorkflowsAndAgents();
+    if (isCatalogLoading || catalogLoadError || recommendedSpecialists.length === 0) return;
+    if ((agents.length > 0 || workflows.length > 0) && !window.confirm(
+      'Replace your current team and playbooks with new recommendations? Custom agent settings, tool grants, and playbook edits will be replaced.',
+    )) return;
+    applyGeneratedWorkflowsAndAgents(true);
   };
 
   const handleRemoveAgent = (id: string) => {
@@ -103,29 +132,28 @@ export default function GuidedWizard({
   };
 
   const steps = [
-    { num: 1, label: 'Business Brief', icon: Building2 },
-    { num: 2, label: 'Recommended Team', icon: Users },
-    { num: 3, label: 'Tools & Approvals', icon: Layers },
-    { num: 4, label: 'Review & Download', icon: CheckCircle2 },
+    { num: 1, label: 'Business Brief', shortLabel: 'Brief', icon: Building2 },
+    { num: 2, label: 'Recommended Team', shortLabel: 'Team', icon: Users },
+    { num: 3, label: 'Tools & Approvals', shortLabel: 'Tools', icon: Layers },
+    { num: 4, label: 'Review & Download', shortLabel: 'Review', icon: CheckCircle2 },
   ];
 
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-6">
+    <div className="w-full mx-auto space-y-6">
       {/* Step Progress Header */}
-      <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800/80 flex items-center justify-between overflow-x-auto">
-        <div className="flex items-center gap-2 sm:gap-6 min-w-max mx-auto">
-          {steps.map((s, idx) => {
+      <nav aria-label="Guided setup progress" className="builder-progress grid grid-cols-4">
+          {steps.map(s => {
             const Icon = s.icon;
             const isCompleted = currentStep > s.num;
             const isCurrent = currentStep === s.num;
 
             return (
-              <div key={s.num} className="flex items-center gap-2 sm:gap-4">
                 <button
+                  key={s.num}
                   type="button"
                   onClick={() => setCurrentStep(s.num)}
                   aria-current={isCurrent ? 'step' : undefined}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-xl transition-all cursor-pointer text-xs font-semibold ${
+                  className={`min-w-0 flex items-center justify-center gap-1.5 sm:gap-2 px-1.5 sm:px-3 py-3 rounded-xl transition-all cursor-pointer text-xs font-semibold ${
                     isCurrent
                       ? 'bg-cyber-green text-zinc-950 shadow-sm shadow-cyber-green/20'
                       : isCompleted
@@ -139,19 +167,12 @@ export default function GuidedWizard({
                     {s.num}
                   </span>
                   <Icon className="w-3.5 h-3.5 hidden sm:inline-block" />
-                  <span>{s.label}</span>
+                  <span className="sm:hidden">{s.shortLabel}</span>
+                  <span className="hidden sm:inline">{s.label}</span>
                 </button>
-
-                {idx < steps.length - 1 && (
-                  <div className={`w-6 sm:w-12 h-0.5 rounded ${
-                    currentStep > s.num ? 'bg-cyber-green/50' : 'bg-zinc-800'
-                  }`} />
-                )}
-              </div>
             );
           })}
-        </div>
-      </div>
+      </nav>
 
       {/* Step Content */}
       {currentStep === 1 && (
@@ -160,15 +181,20 @@ export default function GuidedWizard({
           setCompanyInfo={setCompanyInfo}
           dynamicIndustries={dynamicIndustries}
           onRecommendTeam={handleRecommendTeam}
+          hasExistingTeam={agents.length > 0}
+          isCatalogLoading={isCatalogLoading}
+          catalogLoadError={catalogLoadError}
+          hasRecommendations={recommendedSpecialists.length > 0}
         />
       )}
 
       {currentStep === 2 && (
         <Step2_TeamRecommendations
           agents={agents}
+          mcpCatalog={mcpCatalog}
           catalogCount={catalog.length}
           recommendedSpecialists={recommendedSpecialists}
-          onRegenerateTeam={handleRegenerateTeam}
+          onRegenerateTeam={!isCatalogLoading && !catalogLoadError && recommendedSpecialists.length > 0 ? handleRegenerateTeam : undefined}
           onAddSpecialistFromCatalog={onOpenCatalogModal}
           onRemoveAgent={handleRemoveAgent}
           onBack={() => setCurrentStep(1)}

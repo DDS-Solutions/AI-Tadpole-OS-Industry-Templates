@@ -1,4 +1,4 @@
-# Tadpole-OS Consumer Compatibility Contract
+# AI-Tadpole-OS Consumer Compatibility Contract
 
 This registry supports the public [AI-Tadpole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS) distribution, but its authoritative implementation contract is the private `DDS-Solutions/TadPole-OS` source.
 
@@ -20,7 +20,7 @@ Before changing a schema, validator, archive, migration, workflow, MCP layout, k
 - `index.json` matches the Rust catalog's top-level array (73 public templates with `required_models: ["gemma4:31b"]`) and clone URL.
 - All 224 installed template agent profiles (instantiated from 110 distinct persona specializations across 73 public swarms + 1 internal test harness) provide the required identity/model fields (`gemma4:31b`), start `idle`, and explicitly declare `mcp_tools` and `requires_oversight`.
 - The Swarm Architect visual builder indexes a 295-persona global catalog with bounded prompts, domain guardrails, and core SMB operational competencies.
-- Legacy `run_command`/`write_to_file` labels were replaced by native Tadpole IDs.
+- Legacy `run_command`/`write_to_file` labels were replaced by native AI-Tadpole-OS IDs.
 - Shell declarations include the runtime's required `shell` marker, and mutation/shell declarations require oversight.
 - Workflows contain parser-visible `##`/`###` steps.
 - Root MCP configs use the accepted `mcpServers` shape.

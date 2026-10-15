@@ -1,6 +1,10 @@
-import type { Agent, CompanyInfo, ExperienceMode, WorkflowItem } from '../types';
+import type { Agent, CompanyInfo, ExperienceMode, MCPConnector, WorkflowItem } from '../types';
 
 export const DRAFT_STORAGE_KEY = 'tadpole_builder_draft_v1';
+
+// The editor exposes metadata only. Never persist runtime config, environment
+// values, or headers from a connector into browser storage.
+export type DraftConnectorDefinition = Pick<MCPConnector, 'id' | 'name' | 'description' | 'category' | 'path' | 'version'>;
 
 export interface SavedDraft {
   version: 1;
@@ -10,6 +14,38 @@ export interface SavedDraft {
   agents: Agent[];
   workflows: WorkflowItem[];
   selectedConnectors: string[];
+  connectorDefinitions?: DraftConnectorDefinition[];
+}
+
+function connectorMetadata(connector: DraftConnectorDefinition): DraftConnectorDefinition {
+  return {
+    id: connector.id,
+    name: connector.name,
+    description: connector.description,
+    category: connector.category,
+    path: connector.path,
+    version: connector.version,
+  };
+}
+
+function isConnectorDefinition(obj: unknown): obj is DraftConnectorDefinition {
+  if (!obj || typeof obj !== 'object') return false;
+  const connector = obj as Record<string, unknown>;
+  return ['id', 'name', 'description', 'category', 'path', 'version']
+    .every(key => typeof connector[key] === 'string');
+}
+
+export function restoreDraftConnectors(
+  catalog: MCPConnector[],
+  definitions: DraftConnectorDefinition[] = [],
+): MCPConnector[] {
+  const merged = new Map(catalog.map(connector => [connector.id, connector]));
+  for (const definition of definitions) {
+    // Reapply metadata over the current release's config and tool manifests.
+    // A draft cannot replace executable configuration or verified provenance.
+    merged.set(definition.id, { ...merged.get(definition.id), ...connectorMetadata(definition) });
+  }
+  return [...merged.values()];
 }
 
 function getStorage(): Storage | null {
@@ -17,6 +53,10 @@ function getStorage(): Storage | null {
     return globalThis.localStorage;
   }
   return null;
+}
+
+function isOptionalStringArray(value: unknown): boolean {
+  return value === undefined || (Array.isArray(value) && value.every(item => typeof item === 'string'));
 }
 
 function isCompanyInfo(obj: unknown): obj is CompanyInfo {
@@ -30,7 +70,7 @@ function isCompanyInfo(obj: unknown): obj is CompanyInfo {
     typeof c.industry === 'string' &&
     typeof c.industryPath === 'string' &&
     typeof c.industryCode === 'string' &&
-    (!c.goals || Array.isArray(c.goals))
+    isOptionalStringArray(c.goals)
   );
 }
 
@@ -43,9 +83,9 @@ function isAgent(obj: unknown): obj is Agent {
     typeof a.role === 'string' &&
     typeof a.model === 'string' &&
     typeof a.prompt === 'string' &&
-    (!a.skills || Array.isArray(a.skills)) &&
-    (!a.workflows || Array.isArray(a.workflows)) &&
-    (!a.mcpTools || Array.isArray(a.mcpTools))
+    isOptionalStringArray(a.skills) &&
+    isOptionalStringArray(a.workflows) &&
+    isOptionalStringArray(a.mcpTools)
   );
 }
 
@@ -65,10 +105,11 @@ export function saveDraft(
   agents: Agent[],
   workflows: WorkflowItem[],
   selectedConnectors: string[],
-): void {
+  connectors: MCPConnector[] = [],
+): boolean {
   try {
     const storage = getStorage();
-    if (!storage) return;
+    if (!storage) return false;
 
     const draft: SavedDraft = {
       version: 1,
@@ -78,10 +119,12 @@ export function saveDraft(
       agents,
       workflows,
       selectedConnectors,
+      connectorDefinitions: connectors.map(connectorMetadata),
     };
     storage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
+    return true;
   } catch {
-    // Fail-safe storage write
+    return false;
   }
 }
 
@@ -98,6 +141,7 @@ export function loadDraft(): SavedDraft | null {
       parsed &&
       parsed.version === 1 &&
       typeof parsed.savedAt === 'string' &&
+      Number.isFinite(Date.parse(parsed.savedAt)) &&
       (parsed.experienceMode === 'guided' || parsed.experienceMode === 'advanced') &&
       isCompanyInfo(parsed.companyInfo) &&
       Array.isArray(parsed.agents) &&
@@ -105,9 +149,16 @@ export function loadDraft(): SavedDraft | null {
       Array.isArray(parsed.workflows) &&
       parsed.workflows.every(isWorkflowItem) &&
       Array.isArray(parsed.selectedConnectors) &&
-      parsed.selectedConnectors.every(c => typeof c === 'string')
+      parsed.selectedConnectors.every(c => typeof c === 'string') &&
+      (parsed.connectorDefinitions === undefined || (
+        Array.isArray(parsed.connectorDefinitions)
+        && parsed.connectorDefinitions.every(isConnectorDefinition)
+      ))
     ) {
-      return parsed as SavedDraft;
+      return {
+        ...(parsed as SavedDraft),
+        connectorDefinitions: parsed.connectorDefinitions?.map(connectorMetadata),
+      };
     }
     return null;
   } catch {

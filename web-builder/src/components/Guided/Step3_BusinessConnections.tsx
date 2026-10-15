@@ -1,5 +1,6 @@
 import { Layers, Shield, Check, CheckCircle2, ArrowLeft, ArrowRight, KeyRound, Info, Wrench } from 'lucide-react';
 import type { Agent, MCPConnector } from '../../types';
+import { hasRuntimeDefinition } from '../../utils/connectorReadiness';
 
 interface Step3BusinessConnectionsProps {
   agents: Agent[];
@@ -23,6 +24,7 @@ export default function Step3_BusinessConnections({
   const toggleConnector = (connectorId: string) => {
     const isCurrentlySelected = selectedConnectors.includes(connectorId);
     const targetConnector = mcpCatalog.find(c => c.id === connectorId);
+    if (!isCurrentlySelected && (!targetConnector || !hasRuntimeDefinition(targetConnector))) return;
 
     if (isCurrentlySelected) {
       // Deselect connector and clean up its tool grants from all agents
@@ -85,7 +87,7 @@ export default function Step3_BusinessConnections({
           <h3 className="text-base font-semibold text-white flex items-center gap-2">
             <span>Connect your business tools</span>
             <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-400 font-normal">
-              {selectedConnectors.length} connected
+              {selectedConnectors.length} selected
             </span>
           </h3>
           <span className="text-xs text-zinc-500 font-mono">AI-Tadpole-OS MCP Connectors</span>
@@ -96,6 +98,7 @@ export default function Step3_BusinessConnections({
             const isSelected = selectedConnectors.includes(connector.id);
             const envCount = Object.keys(connector.required_env || {}).length;
             const tools = connector.tools || [];
+            const hasRuntime = hasRuntimeDefinition(connector);
 
             return (
               <div
@@ -121,8 +124,10 @@ export default function Step3_BusinessConnections({
                       role="checkbox"
                       aria-checked={isSelected}
                       aria-label={`Toggle ${connector.name} connector`}
+                      disabled={!hasRuntime && !isSelected}
+                      aria-describedby={!hasRuntime ? `guided-${connector.id}-readiness` : undefined}
                       onClick={() => toggleConnector(connector.id)}
-                      className={`w-6 h-6 rounded-md flex items-center justify-center shrink-0 border transition-colors cursor-pointer ${
+                      className={`w-11 h-11 rounded-lg flex items-center justify-center shrink-0 border transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
                         isSelected
                           ? 'bg-cyber-green border-cyber-green text-zinc-950'
                           : 'border-zinc-700 bg-zinc-900 hover:border-zinc-500'
@@ -135,6 +140,7 @@ export default function Step3_BusinessConnections({
                   <p className="text-xs text-zinc-400 leading-snug">
                     {connector.description}
                   </p>
+                  {!hasRuntime && <p id={`guided-${connector.id}-readiness`} className="text-xs text-warning">{connector.status === 'quarantined' ? 'This connector is quarantined.' : 'Runtime configuration is required before this connector can be selected.'}{isSelected && ' Deselect it before export.'}</p>}
 
                   {/* Tools List */}
                   {tools.length > 0 && (
@@ -162,8 +168,8 @@ export default function Step3_BusinessConnections({
 
                 <div className="pt-3 border-t border-zinc-800/60 flex items-center justify-between text-[11px] font-mono text-zinc-400">
                   <span className="inline-flex items-center gap-1">
-                    <CheckCircle2 className="w-3 h-3 text-cyber-green" />
-                    <span>{connector.status || 'reviewed'}</span>
+                    <CheckCircle2 className={`w-3 h-3 ${hasRuntime ? 'text-cyber-green' : 'text-warning'}`} />
+                    <span>{connector.status || (hasRuntime ? 'Configured' : 'Metadata only')}</span>
                   </span>
 
                   {envCount > 0 && (
@@ -233,7 +239,7 @@ export default function Step3_BusinessConnections({
       </div>
 
       {/* Navigation Footer */}
-      <div className="flex justify-between items-center pt-4 border-t border-zinc-850">
+      <div className="flex flex-wrap justify-between items-center gap-3 pt-4 border-t border-zinc-850">
         <button
           type="button"
           onClick={onBack}
@@ -246,7 +252,7 @@ export default function Step3_BusinessConnections({
         <button
           type="button"
           onClick={onNext}
-          className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-cyber-green text-zinc-950 text-xs font-bold hover:bg-white hover:shadow-lg hover:shadow-cyber-green/20 transition-all cursor-pointer"
+          className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-2.5 rounded-xl bg-cyber-green text-zinc-950 text-xs font-bold hover:bg-white hover:shadow-lg hover:shadow-cyber-green/20 transition-all cursor-pointer"
         >
           <span>Next: Review & Download</span>
           <ArrowRight className="w-4 h-4" />
