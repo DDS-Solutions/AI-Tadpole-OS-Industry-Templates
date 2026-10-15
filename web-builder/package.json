@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "sync-catalog": "node scripts/sync-catalog.mjs",
+    "generate-prompts": "node scripts/generate-runtime-prompts.mjs",
     "dev": "npm run sync-catalog && vite",
     "build": "npm run sync-catalog && tsc -b && vite build",
     "lint": "eslint .",

@@ -1,6 +1,7 @@
 import { Building2, Users, Sparkles, Check } from 'lucide-react';
 import type { CompanyInfo } from '../../types';
 import { getGoalsForIndustry, getDefaultGoalsForIndustry } from '../../utils/catalogHelpers';
+import { COMPANY_SIZE_OPTIONS } from '../../constants/companySizes';
 
 interface Industry {
   name: string;
@@ -152,12 +153,12 @@ export default function Step1_BusinessBrief({
               value={companyInfo.size || '25'}
               onChange={e => setCompanyInfo({ ...companyInfo, size: e.target.value })}
             >
-              <option value="5">1 - 10 employees (Small team)</option>
-              <option value="25">11 - 50 employees (Growing business)</option>
-              <option value="50">50 employees</option>
-              <option value="100">51 - 250 employees (Mid-sized operation)</option>
-              <option value="500">250+ employees (Enterprise)</option>
-              {companyInfo.size && !['5', '25', '50', '100', '500'].includes(companyInfo.size) && <option value={companyInfo.size}>{companyInfo.size} employees</option>}
+              {COMPANY_SIZE_OPTIONS.map(opt => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+              {companyInfo.size && !COMPANY_SIZE_OPTIONS.some(opt => opt.value === companyInfo.size) && (
+                <option value={companyInfo.size}>{companyInfo.size} employees</option>
+              )}
             </select>
           </div>
         </div>

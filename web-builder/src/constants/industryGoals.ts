@@ -408,7 +408,7 @@ export const DEFAULT_BUSINESS_GOALS: BusinessGoalDef[] = [
   }
 ];
 
-export const LEGACY_BUSINESS_GOALS: BusinessGoalDef[] = [
+const LEGACY_BUSINESS_GOALS: BusinessGoalDef[] = [
   {
     "id": "scheduling",
     "label": "Scheduling & Dispatch",
@@ -729,7 +729,7 @@ export const LEGACY_BUSINESS_GOALS: BusinessGoalDef[] = [
   }
 ];
 
-export const INDUSTRY_GOALS_MAP: Record<string, BusinessGoalDef[]> = {
+const INDUSTRY_GOALS_MAP: Record<string, BusinessGoalDef[]> = {
   "legal": [
     {
       "id": "legal-contract-triage",
@@ -12406,7 +12406,7 @@ export const INDUSTRY_GOALS_MAP: Record<string, BusinessGoalDef[]> = {
 /**
  * Normalizes an industry identifier or pathname to the canonical sector key.
  */
-export function normalizeIndustryKey(industryOrPath?: string): string {
+function normalizeIndustryKey(industryOrPath?: string): string {
   if (!industryOrPath) return '';
   const cleaned = industryOrPath.trim().toLowerCase().replace(/ & /g, '-').replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
   

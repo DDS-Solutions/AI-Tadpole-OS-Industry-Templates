@@ -12,7 +12,7 @@ export function inferProvider(modelId: string): string {
   throw new Error(`Choose an explicit provider for unrecognized model "${modelId}".`);
 }
 
-export function tryNormalizeId(value: string | undefined): string | null {
+function tryNormalizeId(value: string | undefined): string | null {
   if (!value) return null;
   const normalized = value.toLowerCase().replace(/[^a-z0-9_-]+/g, '-').replace(/^-+|-+$/g, '');
   return normalized || null;

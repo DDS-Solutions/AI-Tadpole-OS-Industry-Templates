@@ -1,6 +1,7 @@
 import { Globe, Zap, Shield } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { INDUSTRY_CODES_MAP } from '../../constants';
+import { COMPANY_SIZE_OPTIONS } from '../../constants/companySizes';
 import type { TemplateItem } from '../../types';
 
 interface Industry {
@@ -242,12 +243,10 @@ export default function Step1_CompanyMission({
               value={companyInfo.size}
               onChange={e => setCompanyInfo({...companyInfo, size: e.target.value})}
             >
-              <option value="5">1 - 10 employees (Small team)</option>
-              <option value="25">11 - 50 employees (Growing business)</option>
-              <option value="50">50 employees (Existing size)</option>
-              <option value="100">51 - 250 employees (Mid-sized operation)</option>
-              <option value="500">250+ employees (Enterprise)</option>
-              {!['5', '25', '50', '100', '500'].includes(companyInfo.size) && (
+              {COMPANY_SIZE_OPTIONS.map(opt => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+              {companyInfo.size && !COMPANY_SIZE_OPTIONS.some(opt => opt.value === companyInfo.size) && (
                 <option value={companyInfo.size}>{companyInfo.size} employees (Current size)</option>
               )}
             </select>

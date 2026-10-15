@@ -65,13 +65,12 @@ import {
   type BusinessGoalDef,
   ALL_BUSINESS_GOALS,
   DEFAULT_BUSINESS_GOALS,
-  LEGACY_BUSINESS_GOALS,
   getGoalsForIndustry,
   getDefaultGoalsForIndustry,
 } from '../constants/industryGoals';
 
 export type { BusinessGoalDef };
-export { ALL_BUSINESS_GOALS, DEFAULT_BUSINESS_GOALS, LEGACY_BUSINESS_GOALS, getGoalsForIndustry, getDefaultGoalsForIndustry };
+export { DEFAULT_BUSINESS_GOALS, getGoalsForIndustry, getDefaultGoalsForIndustry };
 export const BUSINESS_GOALS: BusinessGoalDef[] = ALL_BUSINESS_GOALS;
 
 export function generateGoalWorkflows(selectedGoalIds: string[]): import('../types').WorkflowItem[] {
