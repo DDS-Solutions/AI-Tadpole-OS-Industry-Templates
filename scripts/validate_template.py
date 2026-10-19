@@ -114,7 +114,8 @@ def compute_template_digest(template_root: Path) -> str:
             digest = hashlib.sha256(content).hexdigest()
             rel = path.relative_to(template_root).as_posix()
             lines.append(f"{rel}\0{digest}")
-    return f"sha256:{hashlib.sha256('\n'.join(lines).encode('utf-8')).hexdigest()}"
+    payload = "\n".join(lines).encode("utf-8")
+    return f"sha256:{hashlib.sha256(payload).hexdigest()}"
 
 
 def detect_embedded_secrets(content: str) -> list[str]:
