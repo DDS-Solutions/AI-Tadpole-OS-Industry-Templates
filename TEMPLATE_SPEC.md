@@ -63,7 +63,7 @@ The `swarm.json` configures the roster of agents and settings for the template.
       "priority": "critical"
     }
   ],
-  "required_mcps": "mcps.json",
+  "connector_ids": ["generic-crm"],
   "global_workflows": []
 }
 ```
@@ -184,6 +184,23 @@ The root `mcps.json` file configures local stdio sub-processes or remote streama
       "protocol_version": "2026-07-28"
     }
   }
+}
+```
+
+---
+
+## Template Integrity Digest (`content_sha256`)
+
+Every template in `registry.json` and `index.json` declares a canonical `content_sha256` digest computed over the sorted, CRLF-normalized files of the template directory tree (`<relative-posix-path>\0<file-sha256>`).
+
+Consumers must verify `content_sha256` prior to copying files from `skills/` to the execution directory:
+
+```json
+{
+  "id": "legal-contract-review",
+  "name": "Legal Matter Intake & Contract Review",
+  "path": "legal/contract-review",
+  "content_sha256": "sha256:a0ee8a6ecce1b5921d0cbe466ae14285145d093f6b8aee50d631024f4c51edad"
 }
 ```
 

@@ -32,7 +32,10 @@ def compute_sha256(path: Path) -> str:
 
 
 
-def generate_lock_data() -> dict[str, Any]:
+def generate_lock_data(
+    pinned_revision: str | None = None,
+    review_date: str | None = None,
+) -> dict[str, Any]:
     file_hashes: dict[str, str] = {}
     for relative_path in sorted(CRITICAL_CONTRACT_FILES):
         full_path = ROOT / relative_path
@@ -40,13 +43,33 @@ def generate_lock_data() -> dict[str, Any]:
             raise FileNotFoundError(f"Critical contract file missing: {relative_path}")
         file_hashes[relative_path] = compute_sha256(full_path)
 
+    existing_consumer: dict[str, Any] = {}
+    if LOCKFILE_PATH.is_file():
+        try:
+            existing_data = json.loads(LOCKFILE_PATH.read_text(encoding="utf-8"))
+            if isinstance(existing_data.get("consumer"), dict):
+                existing_consumer = existing_data["consumer"]
+        except Exception:
+            pass
+
+    resolved_revision = (
+        pinned_revision
+        or existing_consumer.get("pinned_revision")
+        or "bbcf0d4b001e6e2d0a9ffeebc71fb49f219cd61c"
+    )
+    resolved_date = (
+        review_date
+        or existing_consumer.get("review_date")
+        or "2026-10-05"
+    )
+
     return {
         "version": "1.0.0",
         "consumer": {
             "repository": "https://github.com/DDS-Solutions/AI-TadPole-OS",
             "branch": "main",
-            "pinned_revision": "bbcf0d4b001e6e2d0a9ffeebc71fb49f219cd61c",
-            "review_date": "2026-10-05",
+            "pinned_revision": resolved_revision,
+            "review_date": resolved_date,
         },
         "upstream": {
             "repository": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates",
@@ -57,8 +80,11 @@ def generate_lock_data() -> dict[str, Any]:
     }
 
 
-def write_lockfile() -> None:
-    data = generate_lock_data()
+def write_lockfile(
+    pinned_revision: str | None = None,
+    review_date: str | None = None,
+) -> None:
+    data = generate_lock_data(pinned_revision=pinned_revision, review_date=review_date)
     LOCKFILE_PATH.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
     print(f"Generated {LOCKFILE_PATH.relative_to(ROOT)} successfully.")
 
@@ -111,10 +137,15 @@ def main() -> int:
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--generate", action="store_true", help="Regenerate the compatibility lockfile")
     mode.add_argument("--check", action="store_true", help="Verify lockfile against current files (default mode)")
+    parser.add_argument("--pinned-revision", help="Override pinned consumer git commit revision")
+    parser.add_argument("--review-date", help="Override consumer review date (YYYY-MM-DD)")
     args = parser.parse_args()
 
     if args.generate:
-        write_lockfile()
+        write_lockfile(
+            pinned_revision=args.pinned_revision,
+            review_date=args.review_date,
+        )
         return 0
 
     # --check and the bare invocation are both verify-only and never write.

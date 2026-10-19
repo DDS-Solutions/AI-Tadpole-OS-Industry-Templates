@@ -43,6 +43,7 @@ export interface TemplateItem {
   tags: string[];
   company_size?: number;
   internal?: boolean;
+  content_sha256?: string;
 }
 
 export interface CatalogAgent {

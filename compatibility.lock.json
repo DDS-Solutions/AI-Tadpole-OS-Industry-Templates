@@ -13,13 +13,13 @@
   },
   "critical_contract_files": {
     "COMPATIBILITY_MATRIX.md": "c70f7df23ee3315e6c2393fe604bf76e80c41e136d9f4ab2f75c9646c761f8b4",
-    "TEMPLATE_SPEC.md": "0b4efacadeff1db05f71010185fbba00647e100452de7867c66394614c19288b",
-    "index.json": "1e969071460488662cb2168e7ce050a67d8bd68cfd2a95d3d6ebe43fac8c97c9",
+    "TEMPLATE_SPEC.md": "9f7b195696654fc622eb1740a58e2cbf0d85bbe1eba420fd98fafd1df9b09571",
+    "index.json": "0dcd2a3a59edb3637f646cd8157873dc1a2f45f735068e5392197b876886af46",
     "mcp_registry.json": "1cd1e0420e7eddd7ebc4f0f5432ff8d5a662cc6e7f06eebe128b063921a432df",
-    "registry.json": "08dfd6e2b5ca0aff741d1faf1025beae84d345a3b19f0cf25e1146ae0a9e3899",
+    "registry.json": "8b52a41954c7cb47456a110dd28c17921dff2272681da37e3dd6c65affe2210e",
     "scripts/capabilities.py": "f89ddae0a540c57693b56953f8158212f3b3bdfc11eb87a06105f724ef9e1bd4",
-    "scripts/migrate_consumer_contract.py": "5ea1f7889c9eccf8f173124f5a4160f4cc2b35eae060dd6f81cdd4ac54cbf31a",
-    "scripts/validate_template.py": "896460101ee795e9ed9ba706e1b4ae006dc0f946b2c8d1a017fe15450350f0e5",
-    "scripts/verify_compatibility_lock.py": "fed8a5022e7df99c6a21d5d8415d004117039ca7e9fd0cfe1e6b3fe38799d6f9"
+    "scripts/migrate_consumer_contract.py": "0c6768fc69eda118644edd5182e1c1ea6ec81383455532c4628a79534d652c23",
+    "scripts/validate_template.py": "e9afb3c26c734afeac9caae9775b15a43292374503406e0a5b6f0e4b89a5bbd7",
+    "scripts/verify_compatibility_lock.py": "8620388b25d263ad1556ee3020c546bf27b13f5a3de3f523d09d0171b89e21eb"
   }
 }

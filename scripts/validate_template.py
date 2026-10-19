@@ -11,6 +11,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+import jsonschema
+
 try:
     from scripts.capabilities import DANGEROUS_CAPABILITY_IDS, VALID_CAPABILITY_IDS
 except ImportError:  # executed directly as `python scripts/validate_template.py`
@@ -25,7 +27,7 @@ REQUIRED_AGENT_STRINGS = (
     "description",
     "status",
 )
-EXECUTABLE_HEADING = re.compile(r"^#{2,3}\s+\S", re.MULTILINE)
+EXECUTABLE_HEADING = re.compile(r"^#{2,3}[ \t]+\S", re.MULTILINE)
 MAX_PACKAGE_FILE_BYTES = 1_000_000
 TEMPLATE_FILE_SUFFIXES = frozenset({".json", ".md"})
 TEMPLATE_SKILL_FILE_SUFFIXES = frozenset({".json", ".py", ".js", ".ts"})
@@ -37,18 +39,18 @@ LEGACY_SKILLS = frozenset({"run_command", "write_to_file"})
 # Single source of truth: scripts/capabilities.py
 DANGEROUS_SKILLS = DANGEROUS_CAPABILITY_IDS
 # Catalog fields shared by registry.json and index.json that must agree
-CATALOG_PARITY_FIELDS = ("name", "description", "required_skills", "required_models")
+CATALOG_PARITY_FIELDS = ("name", "description", "required_skills", "required_models", "content_sha256")
 SENSITIVE_ENV_NAME = re.compile(
     r"(?:KEY|TOKEN|SECRET|PASSWORD|CREDENTIAL|CONNECTION_STRING|CONN_STR|AUTH)",
     re.IGNORECASE,
 )
 SAFE_PLACEHOLDER = re.compile(
     r"(?:YOUR_[A-Z0-9_]+|CONFIGURE_LOCALLY|REPLACE_ME|CHANGEME|"
-    r"DUMMY(?:_[A-Z0-9_]+)?|\$\{[A-Z0-9_]+\}|<[^>]+>)",
+    r"DUMMY(?:_[A-Z0-9_]+)?|\$\{[A-Z0-9_]+\}|<[A-Za-z0-9_ -]+>)",
     re.IGNORECASE,
 )
 PINNED_REQUIREMENT = re.compile(
-    r"^(?P<package>[A-Za-z0-9][A-Za-z0-9_.-]*)==(?P<version>[A-Za-z0-9][A-Za-z0-9_.+!-]*)$"
+    r"^(?P<package>[A-Za-z0-9][A-Za-z0-9_.-]*(?:\[[A-Za-z0-9_, -]+\])?)==(?P<version>[A-Za-z0-9][A-Za-z0-9_.+!-]*)$"
 )
 SHA256_HEX = re.compile(r"^[0-9a-f]{64}$")
 MCP_TOOL_DECLARATION = re.compile(
@@ -63,11 +65,12 @@ SECRET_PATTERNS = (
     ("Google API key", re.compile(r"\bAIza[0-9A-Za-z_-]{35}\b")),
     ("Slack token", re.compile(r"\bxox[baprs]-[A-Za-z0-9-]{10,}\b")),
     ("Stripe secret key", re.compile(r"\bsk_(?:live|test)_[0-9A-Za-z]{20,}\b")),
-    ("OpenAI API key", re.compile(r"\bsk-proj-[A-Za-z0-9_-]{48,}\b")),
-    ("Anthropic API key", re.compile(r"\bsk-ant-[A-Za-z0-9_-]{40,}\b")),
+    ("OpenAI API key", re.compile(r"\bsk-(?:proj-|svcacct-)?[A-Za-z0-9_-]{20,}\b")),
+    ("Anthropic API key", re.compile(r"\bsk-ant-[A-Za-z0-9_-]{20,}\b")),
     ("npm token", re.compile(r"\bnpm_[A-Za-z0-9]{36}\b")),
     ("PyPI token", re.compile(r"\bpypi-AgEIcHlwaS5vcmc[A-Za-z0-9_-]{50,}\b")),
     ("JWT token", re.compile(r"\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b")),
+    ("database connection secret", re.compile(r"\b(?:postgres|postgresql|mysql|mongodb(?:\+srv)?|redis)://[^\s:@/]+:[^\s@/]+@")),
 )
 
 
@@ -100,6 +103,18 @@ def safe_relative_path(root: Path, relative: Any) -> Path | None:
     except ValueError:
         return None
     return candidate
+
+
+def compute_template_digest(template_root: Path) -> str:
+    """Compute a deterministic, cross-platform SHA-256 digest over the template tree."""
+    lines: list[str] = []
+    for path in sorted(template_root.rglob("*")):
+        if path.is_file() and not path.is_symlink():
+            content = path.read_bytes().replace(b"\r\n", b"\n")
+            digest = hashlib.sha256(content).hexdigest()
+            rel = path.relative_to(template_root).as_posix()
+            lines.append(f"{rel}\0{digest}")
+    return f"sha256:{hashlib.sha256('\n'.join(lines).encode('utf-8')).hexdigest()}"
 
 
 def detect_embedded_secrets(content: str) -> list[str]:
@@ -238,7 +253,7 @@ def validate_connector_dependencies(connector_root: Path, connector: dict) -> li
 
 
 def validate_connector_integrity(connector_root: Path, connector: dict) -> list[str]:
-    """Verify that the registry digest authenticates the executable entrypoint."""
+    """Verify that the registry digest authenticates the executable entrypoint and companion files."""
     server_path = connector_root / "server.py"
     if not server_path.is_file():
         return ["server.py is missing"]
@@ -249,6 +264,18 @@ def validate_connector_integrity(connector_root: Path, connector: dict) -> list[
     expected = connector.get("integrity_hash")
     if not isinstance(expected, str) or expected != f"sha256:{actual}":
         return ["integrity_hash does not match the SHA-256 digest of server.py"]
+
+    companion_sources = [
+        p.name for p in sorted(connector_root.glob("*"))
+        if p.is_file() and p.name != "server.py" and p.suffix.lower() in {".py", ".js", ".ts"}
+    ]
+    if companion_sources:
+        manifest_hash = connector.get("manifest_sha256") or connector.get("content_sha256")
+        if not manifest_hash:
+            return [
+                f"connector has companion source files ({', '.join(companion_sources)}) "
+                f"requiring full directory content_sha256 verification"
+            ]
     return []
 
 
@@ -527,6 +554,61 @@ def validate_catalog_parity(root: Path, report: ValidationReport) -> list[dict[s
                     f"registry.json and index.json disagree on {field_name!r} for template {index_entry.get('id')!r}",
                 )
 
+    registry_schema_path = root / "schemas" / "template-registry-v1.json"
+    if registry_schema_path.is_file():
+        try:
+            registry_schema = load_json(registry_schema_path)
+            validator = jsonschema.Draft7Validator(registry_schema)
+            for err in validator.iter_errors(registry):
+                path_str = "/".join(map(str, err.path)) or "root"
+                report.error("registry.json", f"schema validation error at '{path_str}': {err.message}")
+        except Exception as exc:
+            report.error("registry.json", f"cannot validate against schema: {exc}")
+
+    # Check for orphan templates on disk not registered in registry.json
+    registered_paths = {
+        safe_relative_path(root, t.get("path"))
+        for t in templates
+        if isinstance(t, dict) and isinstance(t.get("path"), str)
+    }
+    for candidate in sorted(root.glob("*/*/swarm.json")):
+        template_dir = candidate.parent.resolve()
+        if template_dir not in registered_paths:
+            report.error(
+                "catalog",
+                f"unregistered template directory on disk: {candidate.parent.relative_to(root).as_posix()}",
+            )
+
+    # Verify index.json required_skills matches actual skills declared in each template
+    for index_entry in index:
+        if not isinstance(index_entry, dict):
+            continue
+        t_id = index_entry.get("id")
+        t_path = index_entry.get("path")
+        req_skills = index_entry.get("required_skills")
+        if not isinstance(req_skills, list) or not req_skills:
+            report.error(f"index.json[{t_id}]", "required_skills must be a non-empty array of strings")
+            continue
+        unknown_skills = [s for s in req_skills if s not in VALID_CAPABILITY_IDS]
+        if unknown_skills:
+            report.error(f"index.json[{t_id}]", f"unknown capability IDs in required_skills: {unknown_skills}")
+        template_dir = safe_relative_path(root, t_path)
+        if template_dir and template_dir.is_dir():
+            agents_dir = template_dir / "agents"
+            if agents_dir.is_dir():
+                actual_skills = set()
+                for agent_file in sorted(agents_dir.glob("*.json")):
+                    try:
+                        agent_data = json.loads(agent_file.read_text(encoding="utf-8"))
+                        actual_skills.update(agent_data.get("skills", []))
+                    except Exception:
+                        pass
+                if actual_skills and set(req_skills) != actual_skills:
+                    report.error(
+                        f"index.json[{t_id}]",
+                        f"required_skills {sorted(req_skills)} does not match agents' declared skills {sorted(actual_skills)}",
+                    )
+
     # Verify index.json required_models matches actual models declared in each template
     for index_entry in index:
         if not isinstance(index_entry, dict):
@@ -614,6 +696,18 @@ def validate_template(
     ):
         report.error(context, message)
 
+    expected_digest = template.get("content_sha256")
+    if expected_digest is not None:
+        if not isinstance(expected_digest, str) or SHA256_HEX.fullmatch(expected_digest.removeprefix("sha256:")) is None:
+            report.error(context, "content_sha256 must be in the format sha256:<64-hex>")
+        else:
+            actual_digest = compute_template_digest(template_root)
+            if actual_digest != expected_digest:
+                report.error(
+                    context,
+                    f"template content digest mismatch (expected {expected_digest}, computed {actual_digest})",
+                )
+
     swarm_path = template_root / "swarm.json"
     try:
         swarm = load_json(swarm_path)
@@ -623,6 +717,17 @@ def validate_template(
     if not isinstance(swarm, dict):
         report.error(context, "swarm.json must be an object")
         return
+
+    swarm_schema_path = root / "schemas" / "swarm-v1.json"
+    if swarm_schema_path.is_file():
+        try:
+            swarm_schema = load_json(swarm_schema_path)
+            validator = jsonschema.Draft7Validator(swarm_schema)
+            for err in validator.iter_errors(swarm):
+                path_str = "/".join(map(str, err.path)) or "root"
+                report.error(f"{context} swarm.json", f"schema validation error at '{path_str}': {err.message}")
+        except Exception as exc:
+            report.error(f"{context} swarm.json", f"cannot validate against schema: {exc}")
 
     # Swarm mission and company_size validation
     mission = swarm.get("description") or swarm.get("mission")
@@ -635,7 +740,7 @@ def validate_template(
 
     company_size = swarm.get("company_size")
     if company_size is not None:
-        if not isinstance(company_size, int) or company_size <= 0:
+        if type(company_size) is not int or isinstance(company_size, bool) or company_size <= 0:
             report.error(context, f"company_size must be a positive integer (found {company_size!r})")
 
     roster = swarm.get("roster", [])
@@ -1044,6 +1149,8 @@ def validate_repository(root: Path) -> ValidationReport:
         tool_manifest_map = {}
     for template in templates:
         if isinstance(template, dict):
+            if not template.get("internal") and "content_sha256" not in template:
+                report.error("registry.json", f"template {template.get('id')} missing content_sha256")
             validate_template(root, template, report, tool_manifest_map=tool_manifest_map)
         else:
             report.error("registry.json", "each template must be an object")

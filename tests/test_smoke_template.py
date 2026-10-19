@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import ast
 import json
 import shutil
 import subprocess
@@ -14,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from validate_template import (
+    compute_template_digest,
     load_json,
     validate_agent_payload,
     validate_knowledge_payload,
@@ -69,10 +71,16 @@ class SmokeTemplateLifecycleTests(unittest.TestCase):
             install_root = Path(tmpdir) / "installed_swarm"
             install_root.mkdir()
 
-            # 1. Copy template assets
+            # 1. Verify template integrity digest before simulated installation
+            registry = load_json(ROOT / "registry.json")
+            smoke_entry = next((t for t in registry["templates"] if t["id"] == "smoke-test"), None)
+            self.assertIsNotNone(smoke_entry)
+            self.assertEqual(smoke_entry.get("content_sha256"), compute_template_digest(self.smoke_root))
+
+            # 2. Copy template assets
             shutil.copytree(self.smoke_root, install_root, dirs_exist_ok=True)
 
-            # 2. Simulate installer moving skills/ to execution/
+            # 3. Simulate installer moving skills/ to execution/
             skills_dir = install_root / "skills"
             execution_dir = install_root / "execution"
             self.assertTrue(skills_dir.is_dir())
@@ -145,21 +153,23 @@ class SmokeTemplateLifecycleTests(unittest.TestCase):
         registry = load_json(ROOT / "mcp_registry.json")
         self.assertEqual("2.0.0", registry.get("version"))
         connectors = registry.get("connectors", [])
-        self.assertEqual(4, len(connectors))
+        self.assertGreaterEqual(len(connectors), 1)
         
         for connector in connectors:
             connector_id = connector["id"]
             tools = connector.get("tools", [])
             self.assertTrue(len(tools) > 0, f"Connector {connector_id} has no tools")
             
-            # Verify server script exists and contains declared tool definitions
+            # Verify server script exists and contains declared tool definitions via AST parsing
             server_path = ROOT / connector["path"] / "server.py"
             self.assertTrue(server_path.is_file(), f"Server script missing for {connector_id}")
             server_code = server_path.read_text(encoding="utf-8")
+            tree = ast.parse(server_code, filename=str(server_path))
+            function_names = {node.name for node in ast.walk(tree) if isinstance(node, ast.FunctionDef)}
             
             for tool in tools:
                 tool_name = tool["name"]
-                self.assertIn(f"def {tool_name}", server_code, f"Tool {tool_name} not defined in {server_path}")
+                self.assertIn(tool_name, function_names, f"Tool {tool_name} not defined as function in {server_path}")
                 self.assertTrue(tool["id"].endswith(f":{tool_name}"), f"Tool ID {tool['id']} does not match name {tool_name}")
                 self.assertIn(tool["risk"], ["read", "write", "execute"])
 

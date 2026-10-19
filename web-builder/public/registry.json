@@ -54,12 +54,13 @@
       "path": "legal/contract-review",
       "company_size": 25,
       "required_skills": [
-        "read_file",
-        "write_file"
+        "grep_search",
+        "read_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:a0ee8a6ecce1b5921d0cbe466ae14285145d093f6b8aee50d631024f4c51edad"
     },
     {
       "id": "healthcare-patient-intake",
@@ -75,11 +76,13 @@
       "company_size": 25,
       "required_skills": [
         "grep_search",
-        "read_file"
+        "read_file",
+        "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:0a5126e7f00b11c2393789e48317e2edeb1fde7cd10a48e5bf4761c878301aa0"
     },
     {
       "id": "development-code-reviewer",
@@ -100,7 +103,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:3de74d86c11428d3cc9ba6fda0c8e4f99ad20f9675ff9649fd2c7d38d6584c29"
     },
     {
       "id": "bookkeeping-audit",
@@ -116,12 +120,14 @@
       "path": "financial-services/bookkeeping-audit",
       "company_size": 50,
       "required_skills": [
+        "grep_search",
         "read_file",
         "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:1c80a87ad2ac5da8b53057a6a864973c7dc56decaed19450eaa29a9288ed9999"
     },
     {
       "id": "full-funnel-automation",
@@ -142,7 +148,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:a703392fe21f5e2cbb381c825dc19055ead7ceaad7431e2fa2913bd0ef2e55a5"
     },
     {
       "id": "lead-transaction-management",
@@ -164,7 +171,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:e5d05c9377d6e7eb2d581cdd04f88619108f391031332837c843cb97c97e664c"
     },
     {
       "id": "manufacturing-job-shop-25",
@@ -180,11 +188,13 @@
       "company_size": 25,
       "required_skills": [
         "grep_search",
-        "read_file"
+        "read_file",
+        "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:964ffb063d63afa9ff84e0b3289b6a70e594c957780ac49cc1ade3c236414db6"
     },
     {
       "id": "manufacturing-medium-plant-50",
@@ -199,12 +209,13 @@
       "path": "manufacturing/medium-plant-50",
       "company_size": 50,
       "required_skills": [
-        "read_file",
-        "write_file"
+        "grep_search",
+        "read_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:f8f270006b7349ffe9a43295fa3635a53b72ea57d1abb68731a7e1ca9691eab2"
     },
     {
       "id": "manufacturing-smart-factory-100",
@@ -219,12 +230,13 @@
       "path": "manufacturing/smart-factory-100",
       "company_size": 100,
       "required_skills": [
-        "read_file",
-        "write_file"
+        "grep_search",
+        "read_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:16cb820734683aa4bc6b3b07a723c0ae1009b5c4eda6c271babb011c9cbcad4b"
     },
     {
       "id": "food-restaurant-ops",
@@ -240,12 +252,14 @@
       "path": "food/restaurant-ops",
       "company_size": 25,
       "required_skills": [
+        "grep_search",
         "read_file",
         "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:efa309f99b267133c2fef22e11133bba589a1e2aacf6e4f3db26da3418a42b59"
     },
     {
       "id": "chemical-process-safety",
@@ -265,7 +279,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:ce73d31b3f254515ef87cd42ebac0e22f03093da15fd91f85b5559e4f46e7f71"
     },
     {
       "id": "transportation-fleet-logistics",
@@ -286,7 +301,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:722505973871b61954362c21ad7b3de457c428249acd9f38aa0be90efef6d64f"
     },
     {
       "id": "pharma-clinical-trials",
@@ -307,7 +323,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:43bcd91c1f7c979dc729fc69998f1f32d35788357623100824c9e82b79e5e8ee"
     },
     {
       "id": "agriculture-precision-farming",
@@ -327,7 +344,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:2d503132168125b263fbcdbece3bef1cb862e1ff5025eb1e3bef347a7e623a46"
     },
     {
       "id": "compliance-regulatory-audit",
@@ -342,11 +360,14 @@
       "path": "compliance/regulatory-audit",
       "company_size": 25,
       "required_skills": [
-        "read_file"
+        "grep_search",
+        "read_file",
+        "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:90d71bc3db6d738a5a60eb43c68497389aef4364eaba83dad62c23ff1c971c80"
     },
     {
       "id": "security-incident-response",
@@ -369,7 +390,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:d9347ff49f73b1ae2fb80e5a2aa795e45103825cd018b2b8dda4f21519fd91ed"
     },
     {
       "id": "hr-recruiting-triage",
@@ -384,12 +406,14 @@
       "path": "hr/recruiting-triage",
       "company_size": 25,
       "required_skills": [
+        "grep_search",
         "read_file",
         "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:a74c7ea55e40ec2c63981c60cb488b14a141da9059fc0b8c37d51552ecf8d4e5"
     },
     {
       "id": "education-curriculum-planner",
@@ -404,12 +428,14 @@
       "path": "education/curriculum-planner",
       "company_size": 25,
       "required_skills": [
+        "grep_search",
         "read_file",
         "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:fd3f99ef7a89b477149fcbf71404f579ac991a0c9e39c8bf4cc65bfdd117b2e5"
     },
     {
       "id": "utilities-grid-telemetry",
@@ -431,7 +457,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:e8e312632570fcdc67d346a9a41a15909dcfeb17acce1ea22b5235b328ee945f"
     },
     {
       "id": "creative-asset-pipeline",
@@ -449,12 +476,12 @@
       "required_skills": [
         "grep_search",
         "read_file",
-        "search_web",
         "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:ffd09ee63b43f28d2442e8cbaecaf89eaa02fb6d9de3022459854ee104253567"
     },
     {
       "id": "legal-precedent-synthesis",
@@ -476,7 +503,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:0990f5ae2023fd51baafb1f7de2a04c307f03aaa925001b880d94f7831f99ed4"
     },
     {
       "id": "legal-procurement-qa",
@@ -498,7 +526,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:c194f99265b7744c022dc62a18c1f10c01ecef4a9b1c2c5a6448bcad9ef45e6f"
     },
     {
       "id": "medical-clinical-guidelines",
@@ -515,11 +544,13 @@
       "company_size": 25,
       "required_skills": [
         "grep_search",
-        "read_file"
+        "read_file",
+        "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:0ed133e5b5c30d1dc848482793d09e6e2865560c45acc6cdcbd9752134ac596b"
     },
     {
       "id": "medical-inventory-qa",
@@ -537,11 +568,13 @@
       "company_size": 25,
       "required_skills": [
         "grep_search",
-        "read_file"
+        "read_file",
+        "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:33b8be94d850ef2157e22c61a5756da8b19af258369b58f5a0327a77dc1595fd"
     },
     {
       "id": "financial-policy-synthesizer",
@@ -557,12 +590,14 @@
       "path": "financial-services/policy-synthesizer",
       "company_size": 25,
       "required_skills": [
+        "grep_search",
         "read_file",
         "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:be00a9a83ff2dae2ff804bd12ead93c7ed7016d3c02536273dd9eb1c94a6ae5a"
     },
     {
       "id": "financial-vendor-reconciliation",
@@ -579,12 +614,14 @@
       "path": "financial-services/vendor-reconciliation",
       "company_size": 25,
       "required_skills": [
+        "grep_search",
         "read_file",
         "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:02e9a806706e82339c44c4d282c310bf6bce918e63219c5e7adc8966824d62b2"
     },
     {
       "id": "marketing-seo-indexer",
@@ -601,11 +638,13 @@
       "company_size": 25,
       "required_skills": [
         "grep_search",
-        "read_file"
+        "read_file",
+        "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:7fec15ecda15212a007459074f60bf8f9f5e197cdd2c9133ebc57bd86dab39c1"
     },
     {
       "id": "marketing-vendor-purchasing",
@@ -628,7 +667,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:8c58b884f34af07351cc4ef8c48b8438596d48b0d6e74d0661b2d2d584f89471"
     },
     {
       "id": "ecommerce-market-analysis",
@@ -645,11 +685,13 @@
       "company_size": 25,
       "required_skills": [
         "grep_search",
-        "read_file"
+        "read_file",
+        "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:016d7767d25619d355bdce7549fe45fdd16fb9915c9171b8060822dbb3f69bee"
     },
     {
       "id": "ecommerce-dispatch-qa",
@@ -672,7 +714,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:577800dd0bbe771a70c0211d5bf51237ac6e578d25abab34b25f30b466fdc15d"
     },
     {
       "id": "realestate-valuation-synthesizer",
@@ -690,12 +733,12 @@
       "required_skills": [
         "grep_search",
         "read_file",
-        "search_web",
         "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:077de6e29f7379e1176803d77db676c2236e5224b470fab68fb386fc812bc8ea"
     },
     {
       "id": "realestate-maintenance-procurement",
@@ -713,11 +756,13 @@
       "company_size": 25,
       "required_skills": [
         "grep_search",
-        "read_file"
+        "read_file",
+        "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:75cf1fc0f7585618a673e92d9cb0af04734b21d08d35e2e29fff8d2466dcc97e"
     },
     {
       "id": "consultancy-expert-synthesizer",
@@ -733,12 +778,14 @@
       "path": "specialized-consultancies/expert-synthesizer",
       "company_size": 25,
       "required_skills": [
+        "grep_search",
         "read_file",
         "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:5f1cd4f2344137f793721e190b3a324a2b529fd28f3fc5636591fb58483f92ed"
     },
     {
       "id": "consultancy-subcontractor-qa",
@@ -760,7 +807,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:0853b88d6f0e66885331b6813088b2e87f0e7d2b873e2fb1572b6b78da37acb8"
     },
     {
       "id": "logistics-route-optimization",
@@ -776,12 +824,14 @@
       "path": "logistics-supply-chain/route-optimization",
       "company_size": 25,
       "required_skills": [
+        "grep_search",
         "read_file",
         "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:cd7c568262929ac0323625b41be77e30afbfdc281dbcdeea23df2747a16aa053"
     },
     {
       "id": "logistics-dock-shipping",
@@ -804,7 +854,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:cd0cafd5a1999928fcccbd1e5649b683229773de2a2043c1a0c0d5f8d99cf915"
     },
     {
       "id": "engineering-spec-compliance",
@@ -826,7 +877,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:098159cd089a8aaebdce58f823f82313d0bf2872dc2f111e8cf8d2acdb9e980d"
     },
     {
       "id": "engineering-parts-procurement",
@@ -849,7 +901,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:780f3fce143060b8470e4e200221dba43535a9516e891d5e3fb43666e69022dc"
     },
     {
       "id": "edtech-curriculum-synthesizer",
@@ -866,11 +919,13 @@
       "company_size": 25,
       "required_skills": [
         "grep_search",
-        "read_file"
+        "read_file",
+        "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:6731b7f712c64ccf64a3217a95647f9ec0d0c9d08372005b78ce6bde099fe4a8"
     },
     {
       "id": "edtech-license-procurement",
@@ -888,11 +943,13 @@
       "company_size": 25,
       "required_skills": [
         "grep_search",
-        "read_file"
+        "read_file",
+        "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:fff998a79679c3812e55ce2a268e91325f135f041a3d20b32951de714e02002f"
     },
     {
       "id": "development-docs-synthesizer",
@@ -914,7 +971,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:3a99f0d547b44d0a045dc3e1fb07ec9bfcfa59e26c7d7c107b506d99c0f7c50b"
     },
     {
       "id": "development-qa-iso9000",
@@ -937,7 +995,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:b32e7961af9b90562b73a0ed3f9b8ef634e248bf66d6e304a9c05748874c6ea1"
     },
     {
       "id": "manufacturing-design-synthesizer",
@@ -953,13 +1012,12 @@
       "path": "manufacturing/design-synthesizer",
       "company_size": 25,
       "required_skills": [
-        "grep_search",
-        "read_file",
-        "write_file"
+        "read_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:e05d8d5abd65df54c81ae97ce033f12ecfe0afc80a8da8c057f9018c439c7bd2"
     },
     {
       "id": "manufacturing-iso9000-qa",
@@ -976,11 +1034,14 @@
       "path": "manufacturing/iso9000-qa",
       "company_size": 25,
       "required_skills": [
-        "read_file"
+        "grep_search",
+        "read_file",
+        "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:2c577704fc3db64746ad18ae765282becd0d7ae9385682130f197b8523c3f42b"
     },
     {
       "id": "food-recipe-compliance",
@@ -997,11 +1058,13 @@
       "company_size": 25,
       "required_skills": [
         "grep_search",
-        "read_file"
+        "read_file",
+        "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:b74e1f872e86f0f894b5adc7ca41bdce2ba58994154f8228ec348604e7f29fdc"
     },
     {
       "id": "food-inventory-receiving",
@@ -1018,12 +1081,14 @@
       "path": "food/inventory-receiving",
       "company_size": 25,
       "required_skills": [
+        "grep_search",
         "read_file",
         "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:02f720d32ecf447240f6b1e5f48265a000eb608e42578bc59bfabc0a2651349a"
     },
     {
       "id": "chemical-sds-synthesizer",
@@ -1041,11 +1106,13 @@
       "company_size": 25,
       "required_skills": [
         "grep_search",
-        "read_file"
+        "read_file",
+        "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:67dd530b177044c099da2e9d88f4b0ec7908d8f3287fd17a60bc9900e440b21a"
     },
     {
       "id": "chemical-hazmat-shipping",
@@ -1063,11 +1130,14 @@
       "path": "chemical/hazmat-shipping",
       "company_size": 25,
       "required_skills": [
-        "read_file"
+        "grep_search",
+        "read_file",
+        "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:0f6b482100ba22cb6e94d08b376d787b0b41b3013a3ece6e75e4e65678d692f0"
     },
     {
       "id": "transportation-policy-compliance",
@@ -1089,7 +1159,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:3860052568b502360b0974573cc729d113aa8c7a97a57f08b5d6acf44f198fb9"
     },
     {
       "id": "transportation-fleet-purchasing",
@@ -1112,7 +1183,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:e5018e43bc35991b5ba5b067fd9926aac05de5980956b72d7454662e81ccdb28"
     },
     {
       "id": "pharma-research-synthesizer",
@@ -1134,7 +1206,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:28c496b45bf3a6e272f12fe59624ff02c55b211bae510be420aec6bac137b27f"
     },
     {
       "id": "pharma-coldchain-shipping",
@@ -1152,12 +1225,13 @@
       "path": "pharma/coldchain-shipping",
       "company_size": 25,
       "required_skills": [
-        "read_file",
-        "write_file"
+        "grep_search",
+        "read_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:f9175eada5b73fc2a323f108b91f79755381f139c48cdb1f52c7802b52796eda"
     },
     {
       "id": "agriculture-research-synthesizer",
@@ -1174,13 +1248,14 @@
       "path": "agriculture/research-synthesizer",
       "company_size": 25,
       "required_skills": [
+        "grep_search",
         "read_file",
-        "search_web",
         "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:5e937493e11171ab11a61dbcb53bee636b289992bbbc47ab56134ff208033534"
     },
     {
       "id": "agriculture-grain-shipping",
@@ -1203,7 +1278,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:c2446149ed0908cea23a0fe13bd1cd75f2990b84973be7c2c9abfb824b18aa7e"
     },
     {
       "id": "compliance-crosswalk-synthesizer",
@@ -1220,12 +1296,13 @@
       "path": "compliance/crosswalk-synthesizer",
       "company_size": 25,
       "required_skills": [
-        "read_file",
-        "write_file"
+        "grep_search",
+        "read_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:02954ea3d8fc628b064c0fa50faf968c4440f7e482f0255dc9bcc8e5603afd5c"
     },
     {
       "id": "compliance-vendor-purchasing-qa",
@@ -1242,11 +1319,14 @@
       "path": "compliance/vendor-purchasing-qa",
       "company_size": 25,
       "required_skills": [
-        "read_file"
+        "grep_search",
+        "read_file",
+        "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:32d0d5b5cbf002de04c7df03d00a7b5f00fe1258aef6e4bbc0a5e687406eac11"
     },
     {
       "id": "security-threat-intelligence",
@@ -1263,12 +1343,12 @@
       "company_size": 25,
       "required_skills": [
         "grep_search",
-        "read_file",
-        "write_file"
+        "read_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:468bce22c5a1a324b4a1ebf76f4a22eadacbf0bb93b549b667df72de49894426"
     },
     {
       "id": "security-hardware-inventory",
@@ -1285,15 +1365,14 @@
       "path": "security/hardware-inventory",
       "company_size": 25,
       "required_skills": [
-        "execute_shell",
         "grep_search",
         "read_file",
-        "shell",
         "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:d259739f62f0f3f5f5ed60b9a39b51e637b8c7be1851a00f2c7c3da687704bd8"
     },
     {
       "id": "hr-policy-synthesizer",
@@ -1315,7 +1394,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:c925b31272fb3f6cdefc6896e9f50225f9a0a92f3c57ec9d2e20c3d76286a46f"
     },
     {
       "id": "hr-recruiter-purchasing",
@@ -1331,11 +1411,14 @@
       "path": "hr/recruiter-purchasing",
       "company_size": 25,
       "required_skills": [
-        "read_file"
+        "grep_search",
+        "read_file",
+        "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:74927f56273eb5ab13f3db12de7e249d2c9c084dd8c078eee08fb0a405dd54da"
     },
     {
       "id": "education-accreditation-synthesizer",
@@ -1352,11 +1435,13 @@
       "company_size": 25,
       "required_skills": [
         "grep_search",
-        "read_file"
+        "read_file",
+        "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:de017774a14c39eec7d67e614589b436762804eb0d2889a482b76e5411d827af"
     },
     {
       "id": "education-supplies-purchasing",
@@ -1374,11 +1459,13 @@
       "company_size": 25,
       "required_skills": [
         "grep_search",
-        "read_file"
+        "read_file",
+        "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:4fd74128a711aa257af3d7eaa01e51d6cea0c33ed64883fcde45954411a9bc16"
     },
     {
       "id": "utilities-maintenance-synthesizer",
@@ -1400,7 +1487,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:68583f59b99d4337d5581c77d4eff5cf7003d930aa2220627c733105bdd090d7"
     },
     {
       "id": "utilities-scada-qa",
@@ -1418,15 +1506,14 @@
       "path": "utilities/scada-qa",
       "company_size": 25,
       "required_skills": [
-        "execute_shell",
         "grep_search",
         "read_file",
-        "shell",
         "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:8220e4ff2e5ba81b3fe05778b7ef089d1963a126ea59ac75b579787203799dde"
     },
     {
       "id": "creative-script-synthesizer",
@@ -1449,7 +1536,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:1b3c137ce42b650354bbe9bb24bca0249b3d3ba68dfc65e4245a2159e0efaf6c"
     },
     {
       "id": "creative-equipment-procurement",
@@ -1467,11 +1555,13 @@
       "company_size": 25,
       "required_skills": [
         "grep_search",
-        "read_file"
+        "read_file",
+        "write_file"
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:e5394d83363cdcea2408cd6807e07b5c41bbe4b0750e6019e277d3b2b0fef5e8"
     },
     {
       "id": "smoke-test",
@@ -1496,7 +1586,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:564feb588a2847ed0076a54975cd9fc4a963f3b71131ee4086a3431f8b4db09f"
     },
     {
       "id": "field-service-operations-25",
@@ -1520,7 +1611,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:f639fd3c1f33bb55b087151f8e01fa05735188f48bcee083733c16dc26b5e899"
     },
     {
       "id": "wholesale-b2b-operations-25",
@@ -1545,7 +1637,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:ae2d6e57d6406010939995f8b228a6837c980f280e45cc1f5a30bc3bc5826b83"
     },
     {
       "id": "geoint-osint-desk",
@@ -1567,7 +1660,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:6c9c261d8516025881f6ad4dc0e7091e3c480c37c875bc24ad3c58de75c6ff19"
     },
     {
       "id": "disaster-response-coordination",
@@ -1591,7 +1685,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:4349a4e40b22634f34bf50e7f4c100e090f71cf9eb16ce18ee547ae87f84bc6d"
     },
     {
       "id": "maritime-domain-awareness",
@@ -1613,7 +1708,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:e784d8e0263e77bf09e0fae94b0b0f782e40e6c2ec8d65f4968c898badab5f04"
     },
     {
       "id": "aerospace-flight-orbital-surveillance",
@@ -1637,7 +1733,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:02988d8dd9352dd05687f90aba624ffe4849815cc72ae79bd86c65e487db8d81"
     },
     {
       "id": "commercial-spatial-analytics",
@@ -1660,7 +1757,8 @@
       ],
       "required_models": [
         "gemma4:31b"
-      ]
+      ],
+      "content_sha256": "sha256:eb94c09330f47bd6fe26968f898cab18e2c95a203ac18b9fb78a8da2829b7650"
     }
   ]
 }

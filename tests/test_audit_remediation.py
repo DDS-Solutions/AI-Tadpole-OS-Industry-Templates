@@ -18,6 +18,7 @@ from scripts import verify_compatibility_lock as lock  # noqa: E402
 from scripts.capabilities import CAPABILITIES, VALID_CAPABILITY_IDS  # noqa: E402
 from scripts.validate_template import (  # noqa: E402
     ValidationReport,
+    compute_template_digest,
     validate_agent_payload,
     validate_catalog_parity,
     validate_mcp_registry,
@@ -422,6 +423,93 @@ class PersonaCatalogValidationTests(unittest.TestCase):
                 any("unknown capability IDs in skills" in err and "invalid_custom_skill" in err for err in report.errors),
                 f"Expected error for invalid capability, got: {report.errors}",
             )
+
+
+class HardeningPhaseRemediationTests(unittest.TestCase):
+    """Regression tests covering content digests, jsonschema enforcement, orphan checking, and PINNED_REQUIREMENT extras."""
+
+    def test_content_sha256_detects_tampered_template(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmproot = Path(tmpdir)
+            t_dir = tmproot / "industry" / "template"
+            (t_dir / "agents").mkdir(parents=True)
+            agent = valid_agent()
+            agent["workflows"] = []
+            (t_dir / "agents" / "agent.json").write_text(json.dumps(agent), encoding="utf-8")
+            (t_dir / "swarm.json").write_text(json.dumps({
+                "id": "t", "name": "T", "description": "d", "industry": "Ind",
+                "roster": [{"id": "agent-one", "path": "agents/agent.json"}]
+            }), encoding="utf-8")
+            valid_digest = compute_template_digest(t_dir)
+            report = ValidationReport()
+            validate_template(tmproot, {"id": "t", "path": "industry/template", "content_sha256": valid_digest}, report)
+            self.assertEqual([], report.errors)
+
+            # Modify file in template
+            (t_dir / "swarm.json").write_text(json.dumps({
+                "id": "t", "name": "T-tampered", "description": "d", "industry": "Ind",
+                "roster": [{"id": "agent-one", "path": "agents/agent.json"}]
+            }), encoding="utf-8")
+            report_tampered = ValidationReport()
+            validate_template(tmproot, {"id": "t", "path": "industry/template", "content_sha256": valid_digest}, report_tampered)
+            self.assertTrue(any("template content digest mismatch" in err for err in report_tampered.errors))
+
+    def test_company_size_boolean_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmproot = Path(tmpdir)
+            t_dir = tmproot / "t"
+            t_dir.mkdir()
+            (t_dir / "swarm.json").write_text(json.dumps({
+                "id": "t", "name": "T", "description": "d", "industry": "Ind", "company_size": True, "roster": []
+            }), encoding="utf-8")
+            report = ValidationReport()
+            validate_template(tmproot, {"id": "t", "path": "t"}, report)
+            self.assertTrue(any("company_size must be a positive integer" in err for err in report.errors))
+
+    def test_pinned_requirement_accepts_extras(self):
+        from scripts.validate_template import PINNED_REQUIREMENT
+        self.assertIsNotNone(PINNED_REQUIREMENT.fullmatch("mcp[cli]==1.29.1"))
+        self.assertIsNotNone(PINNED_REQUIREMENT.fullmatch("uvicorn[standard]==0.29.0"))
+        self.assertIsNone(PINNED_REQUIREMENT.fullmatch("mcp>=1.29.1"))
+
+    def test_secret_patterns_catch_generic_openai_and_database_urls(self):
+        from scripts.validate_template import detect_embedded_secrets
+        self.assertIn("OpenAI API key", detect_embedded_secrets("sk-abcdefghijklmnopqrstuvwxyz123456"))
+        self.assertIn("database connection secret", detect_embedded_secrets("postgres://user:secretpass@localhost:5432/db"))
+
+    def test_orphan_template_directory_is_flagged(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmproot = Path(tmpdir)
+            t_dir = tmproot / "orphaned" / "unregistered"
+            t_dir.mkdir(parents=True)
+            (t_dir / "swarm.json").write_text(json.dumps({"id": "orphan"}), encoding="utf-8")
+            (tmproot / "registry.json").write_text(json.dumps({"templates": []}), encoding="utf-8")
+            (tmproot / "index.json").write_text(json.dumps([]), encoding="utf-8")
+            report = ValidationReport()
+            validate_catalog_parity(tmproot, report)
+            self.assertTrue(any("unregistered template directory on disk" in err for err in report.errors))
+
+    def test_verify_lockfile_pinned_revision_flag(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmproot = Path(tmpdir)
+            with mock.patch.object(lock, "ROOT", tmproot), \
+                 mock.patch.object(lock, "LOCKFILE_PATH", tmproot / "compatibility.lock.json"):
+                for rel in lock.CRITICAL_CONTRACT_FILES:
+                    f = tmproot / rel
+                    f.parent.mkdir(parents=True, exist_ok=True)
+                    f.write_text("test content\n", encoding="utf-8")
+                with contextlib.redirect_stdout(io.StringIO()):
+                    lock.write_lockfile(pinned_revision="custom-sha", review_date="2026-12-31")
+                data = json.loads((tmproot / "compatibility.lock.json").read_text(encoding="utf-8"))
+                self.assertEqual("custom-sha", data["consumer"]["pinned_revision"])
+                self.assertEqual("2026-12-31", data["consumer"]["review_date"])
+
+                # Generating without flags preserves the custom-sha and date!
+                with contextlib.redirect_stdout(io.StringIO()):
+                    lock.write_lockfile()
+                data_preserved = json.loads((tmproot / "compatibility.lock.json").read_text(encoding="utf-8"))
+                self.assertEqual("custom-sha", data_preserved["consumer"]["pinned_revision"])
+                self.assertEqual("2026-12-31", data_preserved["consumer"]["review_date"])
 
 
 if __name__ == "__main__":

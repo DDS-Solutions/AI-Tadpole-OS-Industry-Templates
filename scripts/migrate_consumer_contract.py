@@ -19,6 +19,11 @@ try:
 except ImportError:  # executed directly as `python scripts/migrate_consumer_contract.py`
     from capabilities import DANGEROUS_CAPABILITY_IDS
 
+try:
+    from scripts.validate_template import safe_relative_path
+except ImportError:
+    from validate_template import safe_relative_path
+
 
 DEFAULT_PROVIDER = "google"
 DEFAULT_MODEL_ID = "gemma4:31b"
@@ -140,7 +145,9 @@ def collect_changes(root: Path) -> list[tuple[Path, str]]:
         changes.append((index_path, json_text(migrated_index)))
 
     for template in migrated_registry["templates"]:
-        template_root = root / Path(template["path"])
+        template_root = safe_relative_path(root, template.get("path"))
+        if template_root is None or not template_root.is_dir():
+            continue
         swarm_path = template_root / "swarm.json"
         if not swarm_path.is_file():
             continue
