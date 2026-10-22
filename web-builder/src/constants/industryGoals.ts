@@ -12400,6 +12400,3118 @@ const INDUSTRY_GOALS_MAP: Record<string, BusinessGoalDef[]> = {
       ],
       "requiresApproval": true
     }
+  ],
+  "construction": [
+      {
+          "id": "const-site-safety-briefing",
+          "label": "Daily Jobsite Safety Briefings & Hazard Mitigation",
+          "category": "Safety & Compliance",
+          "description": "Inspect jobsite hazard logs, track subcontractor OSHA compliance, verify PPE logs, and deliver daily toolbox talk safety briefs.",
+          "recommendedAgentIds": [
+              "construction-safety-officer",
+              "specialized-field-service-safety-officer"
+          ],
+          "rationale": "Prevents catastrophic jobsite injuries and guarantees strict compliance with OSHA safety standards.",
+          "whyReason": "Prevents catastrophic jobsite injuries and guarantees strict compliance with OSHA safety standards.",
+          "requiredDataSources": [
+              "Jobsite hazard inspection logs",
+              "Subcontractor OSHA compliance certificates",
+              "OSHA safety standards"
+          ],
+          "canRead": [
+              "Jobsite hazard inspection logs",
+              "Subcontractor OSHA compliance certificates",
+              "OSHA safety standards"
+          ],
+          "expectedOutputs": [
+              "Daily toolbox safety talk briefs",
+              "Jobsite hazard abatement notices",
+              "OSHA inspection readiness dossiers"
+          ],
+          "canPrepare": [
+              "Daily toolbox safety talk briefs",
+              "Jobsite hazard abatement notices",
+              "OSHA inspection readiness dossiers"
+          ],
+          "humanCheckpoints": [
+              "Approval of stop-work orders",
+              "Sign-off on OSHA regulatory filings",
+              "Hot-work permit issuance"
+          ],
+          "cannotApprove": [
+              "Approval of stop-work orders",
+              "Sign-off on OSHA regulatory filings",
+              "Hot-work permit issuance"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "const-subcontractor-milestone-tracking",
+          "label": "Subcontractor Trade Milestone & Schedule Tracking",
+          "category": "Project Operations",
+          "description": "Coordinate trade milestone schedules, track framing/electrical/plumbing dependencies, and prevent critical-path delays.",
+          "recommendedAgentIds": [
+              "construction-subcontractor-coordinator",
+              "operations-production-scheduler"
+          ],
+          "rationale": "Keeps specialty trade subcontractors synchronized and prevents compounding critical-path schedule delays.",
+          "whyReason": "Keeps specialty trade subcontractors synchronized and prevents compounding critical-path schedule delays.",
+          "requiredDataSources": [
+              "Master construction schedule",
+              "Daily trade superintendent logs",
+              "Subcontractor contract milestones"
+          ],
+          "canRead": [
+              "Master construction schedule",
+              "Daily trade superintendent logs",
+              "Subcontractor contract milestones"
+          ],
+          "expectedOutputs": [
+              "Weekly trade coordination matrices",
+              "Critical-path delay exception reports",
+              "Subcontractor milestone sign-off sheets"
+          ],
+          "canPrepare": [
+              "Weekly trade coordination matrices",
+              "Critical-path delay exception reports",
+              "Subcontractor milestone sign-off sheets"
+          ],
+          "humanCheckpoints": [
+              "Approval of schedule extension requests",
+              "Liquidated damages assessments",
+              "Trade mobilization authorizations"
+          ],
+          "cannotApprove": [
+              "Approval of schedule extension requests",
+              "Liquidated damages assessments",
+              "Trade mobilization authorizations"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "const-aia-pay-app-verification",
+          "label": "AIA G702/G703 Pay Application Auditing & Lien Waivers",
+          "category": "Finance & Accounting",
+          "description": "Audit subcontractor AIA G702/G703 progress billing sheets, verify schedule of values completion, and collect lien waivers.",
+          "recommendedAgentIds": [
+              "construction-subcontractor-coordinator",
+              "accounting-vendor-invoice-clerk"
+          ],
+          "rationale": "Guarantees progress disbursements match ground-truth work completed and protects the property from mechanic's liens.",
+          "whyReason": "Guarantees progress disbursements match ground-truth work completed and protects the property from mechanic's liens.",
+          "requiredDataSources": [
+              "Subcontractor AIA G702/G703 submissions",
+              "Certified payroll affidavits",
+              "Unconditional lien waiver archives"
+          ],
+          "canRead": [
+              "Subcontractor AIA G702/G703 submissions",
+              "Certified payroll affidavits",
+              "Unconditional lien waiver archives"
+          ],
+          "expectedOutputs": [
+              "AIA pay-application audit scorecards",
+              "Lien waiver reconciliation tables",
+              "Disbursement recommendation sheets"
+          ],
+          "canPrepare": [
+              "AIA pay-application audit scorecards",
+              "Lien waiver reconciliation tables",
+              "Disbursement recommendation sheets"
+          ],
+          "humanCheckpoints": [
+              "Approval of progress payments above retainage threshold",
+              "Retainage release authorizations",
+              "Dispute withholding notices"
+          ],
+          "cannotApprove": [
+              "Approval of progress payments above retainage threshold",
+              "Retainage release authorizations",
+              "Dispute withholding notices"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "const-materials-takeoff-estimating",
+          "label": "Plan Spec Materials Takeoff & Quantity Surveys",
+          "category": "Estimating & Inventory",
+          "description": "Calculate precision lumber, concrete, structural steel, and drywall takeoffs from architectural blueprints and engineering specs.",
+          "recommendedAgentIds": [
+              "construction-materials-takeoff-specialist",
+              "engineering-cad-structural-model-auditor"
+          ],
+          "rationale": "Prevents costly over-ordering, eliminates jobsite scrap waste, and ensures accurate project bidding.",
+          "whyReason": "Prevents costly over-ordering, eliminates jobsite scrap waste, and ensures accurate project bidding.",
+          "requiredDataSources": [
+              "Architectural & structural CAD drawings",
+              "Engineering spec sheets",
+              "Building supplier price books"
+          ],
+          "canRead": [
+              "Architectural & structural CAD drawings",
+              "Engineering spec sheets",
+              "Building supplier price books"
+          ],
+          "expectedOutputs": [
+              "Bill of materials (BOM) quantity takeoffs",
+              "Lumber and concrete batch schedules",
+              "Supplier bid comparison sheets"
+          ],
+          "canPrepare": [
+              "Bill of materials (BOM) quantity takeoffs",
+              "Lumber and concrete batch schedules",
+              "Supplier bid comparison sheets"
+          ],
+          "humanCheckpoints": [
+              "Approval of major material purchase contracts",
+              "Engineering spec deviations",
+              "Supplier substitution sign-offs"
+          ],
+          "cannotApprove": [
+              "Approval of major material purchase contracts",
+              "Engineering spec deviations",
+              "Supplier substitution sign-offs"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "const-building-permit-inspection-tracking",
+          "label": "Municipal Building Permit & Inspection Milestone Tracking",
+          "category": "Regulatory & Permitting",
+          "description": "Track municipal building permit application milestones, schedule rough-in inspections, and resolve plan check comments.",
+          "recommendedAgentIds": [
+              "compliance-regulatory-affairs-specialist",
+              "construction-safety-officer"
+          ],
+          "rationale": "Avoids stop-work red tags by proactively scheduling required city inspections at exact framing and rough-in phases.",
+          "whyReason": "Avoids stop-work red tags by proactively scheduling required city inspections at exact framing and rough-in phases.",
+          "requiredDataSources": [
+              "Municipal building department portal filings",
+              "Approved stamped permit drawings",
+              "City inspector sign-off cards"
+          ],
+          "canRead": [
+              "Municipal building department portal filings",
+              "Approved stamped permit drawings",
+              "City inspector sign-off cards"
+          ],
+          "expectedOutputs": [
+              "Permit review countdown matrices",
+              "Inspection readiness checklists",
+              "Correction comment resolution logs"
+          ],
+          "canPrepare": [
+              "Permit review countdown matrices",
+              "Inspection readiness checklists",
+              "Correction comment resolution logs"
+          ],
+          "humanCheckpoints": [
+              "Submission of revised structural engineering calculations",
+              "Sign-off on certificate of occupancy applications",
+              "Variance appeal filings"
+          ],
+          "cannotApprove": [
+              "Submission of revised structural engineering calculations",
+              "Sign-off on certificate of occupancy applications",
+              "Variance appeal filings"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "const-change-order-job-costing",
+          "label": "Construction Change Order Job-Cost Reconciliation",
+          "category": "Cost Control",
+          "description": "Log potential change order (PCO) items, audit trade time-and-materials tickets, and reconcile committed cost variances.",
+          "recommendedAgentIds": [
+              "finance-finance-bookkeeper-controller",
+              "construction-materials-takeoff-specialist"
+          ],
+          "rationale": "Protects contractor margins by preventing unbilled scope additions and enforcing change order authorization gates.",
+          "whyReason": "Protects contractor margins by preventing unbilled scope additions and enforcing change order authorization gates.",
+          "requiredDataSources": [
+              "Owner change directives",
+              "Subcontractor time-and-material (T&M) tickets",
+              "Committed job-cost budget"
+          ],
+          "canRead": [
+              "Owner change directives",
+              "Subcontractor time-and-material (T&M) tickets",
+              "Committed job-cost budget"
+          ],
+          "expectedOutputs": [
+              "Potential change order (PCO) audit summaries",
+              "Committed cost variance exception reports",
+              "Owner billing change order drafts"
+          ],
+          "canPrepare": [
+              "Potential change order (PCO) audit summaries",
+              "Committed cost variance exception reports",
+              "Owner billing change order drafts"
+          ],
+          "humanCheckpoints": [
+              "Authorization of client contract change orders",
+              "Subcontractor PCO approvals",
+              "Budget reallocation approvals"
+          ],
+          "cannotApprove": [
+              "Authorization of client contract change orders",
+              "Subcontractor PCO approvals",
+              "Budget reallocation approvals"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "const-equipment-tool-asset-management",
+          "label": "Heavy Equipment & Tool Fleet Maintenance Logging",
+          "category": "Equipment & Facilities",
+          "description": "Track telehandler, excavator, and power tool runtime hours, manage preventative maintenance schedules, and audit jobsite rentals.",
+          "recommendedAgentIds": [
+              "facilities-preventative-maintenance-planner",
+              "construction-subcontractor-coordinator"
+          ],
+          "rationale": "Reduces equipment downtime and prevents unnecessary rental holdover charges on heavy machinery.",
+          "whyReason": "Reduces equipment downtime and prevents unnecessary rental holdover charges on heavy machinery.",
+          "requiredDataSources": [
+              "Telematics engine hour logs",
+              "Equipment rental agreements",
+              "Preventative maintenance inspection records"
+          ],
+          "canRead": [
+              "Telematics engine hour logs",
+              "Equipment rental agreements",
+              "Preventative maintenance inspection records"
+          ],
+          "expectedOutputs": [
+              "Fleet maintenance dispatch orders",
+              "Equipment return countdown schedules",
+              "Tool loss and damage audit summaries"
+          ],
+          "canPrepare": [
+              "Fleet maintenance dispatch orders",
+              "Equipment return countdown schedules",
+              "Tool loss and damage audit summaries"
+          ],
+          "humanCheckpoints": [
+              "Approval of major equipment overhaul expenditures",
+              "Rental contract extensions",
+              "Equipment off-rent sign-offs"
+          ],
+          "cannotApprove": [
+              "Approval of major equipment overhaul expenditures",
+              "Rental contract extensions",
+              "Equipment off-rent sign-offs"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "const-quality-punch-list-closeout",
+          "label": "Architect Punch List Closeout & As-Built Verification",
+          "category": "Quality Assurance",
+          "description": "Compile architect, engineer, and owner punch list items, dispatch trade remediation leads, and assemble as-built closeout manuals.",
+          "recommendedAgentIds": [
+              "construction-subcontractor-coordinator",
+              "operations-operations-analyst"
+          ],
+          "rationale": "Accelerates final project handover, warranties issuance, and final retention payments.",
+          "whyReason": "Accelerates final project handover, warranties issuance, and final retention payments.",
+          "requiredDataSources": [
+              "Architectural punch list inspections",
+              "Trade warranty certificates",
+              "As-built redline drawings"
+          ],
+          "canRead": [
+              "Architectural punch list inspections",
+              "Trade warranty certificates",
+              "As-built redline drawings"
+          ],
+          "expectedOutputs": [
+              "Punch list item tracking dashboards",
+              "Trade completion photographic verification dossiers",
+              "Operations & maintenance (O&M) closeout packages"
+          ],
+          "canPrepare": [
+              "Punch list item tracking dashboards",
+              "Trade completion photographic verification dossiers",
+              "Operations & maintenance (O&M) closeout packages"
+          ],
+          "humanCheckpoints": [
+              "Final punch list sign-off by architect of record",
+              "Issuance of warranty letters",
+              "Final retention billing release"
+          ],
+          "cannotApprove": [
+              "Final punch list sign-off by architect of record",
+              "Issuance of warranty letters",
+              "Final retention billing release"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "const-osha-recordkeeping-compliance",
+          "label": "OSHA Form 300 / 300A Log Auditing & Incident Reporting",
+          "category": "Regulatory & Safety",
+          "description": "Maintain OSHA Form 300 logs, calculate Total Recordable Incident Rates (TRIR), and track annual Form 300A posting compliance.",
+          "recommendedAgentIds": [
+              "construction-safety-officer",
+              "legal-compliance-counsel"
+          ],
+          "rationale": "Guarantees statutory workplace safety recordkeeping compliance and prevents severe OSHA citation penalties.",
+          "whyReason": "Guarantees statutory workplace safety recordkeeping compliance and prevents severe OSHA citation penalties.",
+          "requiredDataSources": [
+              "First report of injury forms",
+              "Worker compensation clinic notes",
+              "Total man-hour payroll records"
+          ],
+          "canRead": [
+              "First report of injury forms",
+              "Worker compensation clinic notes",
+              "Total man-hour payroll records"
+          ],
+          "expectedOutputs": [
+              "OSHA 300 log incident entries",
+              "Annual OSHA 300A summary scorecards",
+              "TRIR and DART trend analytics"
+          ],
+          "canPrepare": [
+              "OSHA 300 log incident entries",
+              "Annual OSHA 300A summary scorecards",
+              "TRIR and DART trend analytics"
+          ],
+          "humanCheckpoints": [
+              "Executive certification of annual OSHA 300A summaries",
+              "Reporting severe amputations or hospitalizations to OSHA",
+              "Workers' compensation settlement sign-offs"
+          ],
+          "cannotApprove": [
+              "Executive certification of annual OSHA 300A summaries",
+              "Reporting severe amputations or hospitalizations to OSHA",
+              "Workers' compensation settlement sign-offs"
+          ],
+          "requiresApproval": true
+      }
+  ],
+  "hospitality": [
+      {
+          "id": "hosp-vip-guest-concierge",
+          "label": "VIP Guest Preferences & Bespoke Stay Itineraries",
+          "category": "Guest Experience",
+          "description": "Triage incoming VIP guest arrival profiles, prepare personalized room amenities, and schedule tailored regional excursions.",
+          "recommendedAgentIds": [
+              "hospitality-guest-experience-concierge",
+              "customer-support-tier1-agent"
+          ],
+          "rationale": "Delivers unforgettable high-touch guest experiences that maximize loyalty and direct repeat booking revenue.",
+          "whyReason": "Delivers unforgettable high-touch guest experiences that maximize loyalty and direct repeat booking revenue.",
+          "requiredDataSources": [
+              "PMS guest profile history",
+              "Pre-arrival guest preference surveys",
+              "Local concierge partner availability"
+          ],
+          "canRead": [
+              "PMS guest profile history",
+              "Pre-arrival guest preference surveys",
+              "Local concierge partner availability"
+          ],
+          "expectedOutputs": [
+              "Customized guest stay itineraries",
+              "VIP arrival amenity order sheets",
+              "Front desk guest greeting dossiers"
+          ],
+          "canPrepare": [
+              "Customized guest stay itineraries",
+              "VIP arrival amenity order sheets",
+              "Front desk guest greeting dossiers"
+          ],
+          "humanCheckpoints": [
+              "Complimentary room upgrade authorizations",
+              "Issuance of billing allowances or dining credits",
+              "VIP exception protocol overrides"
+          ],
+          "cannotApprove": [
+              "Complimentary room upgrade authorizations",
+              "Issuance of billing allowances or dining credits",
+              "VIP exception protocol overrides"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "hosp-housekeeping-turnover-dispatch",
+          "label": "Room Turnover Prioritization & Housekeeping Dispatch",
+          "category": "Hotel Operations",
+          "description": "Sort PMS departure rooms by checkout time, assign floor sections to room attendants, and track clean/dirty status in real time.",
+          "recommendedAgentIds": [
+              "hospitality-housekeeping-turnover-coordinator",
+              "operations-intake-scheduling-coordinator"
+          ],
+          "rationale": "Reduces guest wait times during peak afternoon arrivals and accelerates room turnover efficiency.",
+          "whyReason": "Reduces guest wait times during peak afternoon arrivals and accelerates room turnover efficiency.",
+          "requiredDataSources": [
+              "PMS checkout and expected arrival rosters",
+              "Room attendant daily assignments",
+              "VIP expedited room flags"
+          ],
+          "canRead": [
+              "PMS checkout and expected arrival rosters",
+              "Room attendant daily assignments",
+              "VIP expedited room flags"
+          ],
+          "expectedOutputs": [
+              "Prioritized housekeeping assignment boards",
+              "Room turnover velocity exception alerts",
+              "Room release readiness notifications"
+          ],
+          "canPrepare": [
+              "Prioritized housekeeping assignment boards",
+              "Room turnover velocity exception alerts",
+              "Room release readiness notifications"
+          ],
+          "humanCheckpoints": [
+              "Overtime authorizations for housekeeping staff",
+              "Release of out-of-order (OOO) rooms",
+              "Executive housekeeper quality audits"
+          ],
+          "cannotApprove": [
+              "Overtime authorizations for housekeeping staff",
+              "Release of out-of-order (OOO) rooms",
+              "Executive housekeeper quality audits"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "hosp-night-audit-folio-reconciliation",
+          "label": "Night Audit Balancing & POS Folio Reconciliation",
+          "category": "Finance & Audit",
+          "description": "Roll business date in property management system, post room and tax charges, balance restaurant POS terminals, and audit trial balances.",
+          "recommendedAgentIds": [
+              "hospitality-night-audit-revenue-clerk",
+              "accounting-vendor-invoice-clerk"
+          ],
+          "rationale": "Ensures every dollar of daily revenue is balanced across outlets and guest ledgers prior to morning management reporting.",
+          "whyReason": "Ensures every dollar of daily revenue is balanced across outlets and guest ledgers prior to morning management reporting.",
+          "requiredDataSources": [
+              "PMS guest ledger transactions",
+              "POS food, beverage and spa terminal batch summaries",
+              "Direct billing city ledger accounts"
+          ],
+          "canRead": [
+              "PMS guest ledger transactions",
+              "POS food, beverage and spa terminal batch summaries",
+              "Direct billing city ledger accounts"
+          ],
+          "expectedOutputs": [
+              "Daily night audit trial balance dossiers",
+              "POS variance exception reports",
+              "Executive daily revenue flash reports"
+          ],
+          "canPrepare": [
+              "Daily night audit trial balance dossiers",
+              "POS variance exception reports",
+              "Executive daily revenue flash reports"
+          ],
+          "humanCheckpoints": [
+              "Posting disputed charge write-offs",
+              "City ledger bad debt adjustments",
+              "Credit card batch variance overrides"
+          ],
+          "cannotApprove": [
+              "Posting disputed charge write-offs",
+              "City ledger bad debt adjustments",
+              "Credit card batch variance overrides"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "hosp-guest-service-recovery",
+          "label": "Guest Sentiment Triage & Service Recovery Ticketing",
+          "category": "Customer Support",
+          "description": "Capture guest concerns regarding noise, cleanliness, or amenities, dispatch immediate resolution, and track recovery gestures.",
+          "recommendedAgentIds": [
+              "hospitality-guest-experience-concierge",
+              "customer-support-senior-escalation-lead"
+          ],
+          "rationale": "Resolves guest dissatisfaction before checkout, turning negative experiences into positive loyalty reviews.",
+          "whyReason": "Resolves guest dissatisfaction before checkout, turning negative experiences into positive loyalty reviews.",
+          "requiredDataSources": [
+              "Front desk incident logs",
+              "Digital guest messaging threads",
+              "Post-stay survey feedback"
+          ],
+          "canRead": [
+              "Front desk incident logs",
+              "Digital guest messaging threads",
+              "Post-stay survey feedback"
+          ],
+          "expectedOutputs": [
+              "Service recovery action dispatch tickets",
+              "Guest incident compensation briefs",
+              "Root cause departmental defect summaries"
+          ],
+          "canPrepare": [
+              "Service recovery action dispatch tickets",
+              "Guest incident compensation briefs",
+              "Root cause departmental defect summaries"
+          ],
+          "humanCheckpoints": [
+              "Approval of hotel points compensation",
+              "Folio rate discount authorizations",
+              "Management apology letter dispatches"
+          ],
+          "cannotApprove": [
+              "Approval of hotel points compensation",
+              "Folio rate discount authorizations",
+              "Management apology letter dispatches"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "hosp-room-rate-pms-parity-audit",
+          "label": "PMS Room Rate & OTA Channel Parity Auditing",
+          "category": "Revenue Management",
+          "description": "Compare direct booking engine room rates against Expedia and Booking.com OTA channels to catch parity violations and rate code errors.",
+          "recommendedAgentIds": [
+              "hospitality-night-audit-revenue-clerk",
+              "finance-finance-bookkeeper-controller"
+          ],
+          "rationale": "Protects hotel profit margins by preventing OTA rate leakage and ensuring direct-booking rate integrity.",
+          "whyReason": "Protects hotel profit margins by preventing OTA rate leakage and ensuring direct-booking rate integrity.",
+          "requiredDataSources": [
+              "Channel manager rate mapping logs",
+              "Direct website reservation booking engine rates",
+              "OTA public feed rate snapshots"
+          ],
+          "canRead": [
+              "Channel manager rate mapping logs",
+              "Direct website reservation booking engine rates",
+              "OTA public feed rate snapshots"
+          ],
+          "expectedOutputs": [
+              "Rate parity discrepancy alerts",
+              "Channel inventory allocation audit matrices",
+              "Yield optimization rate update proposals"
+          ],
+          "canPrepare": [
+              "Rate parity discrepancy alerts",
+              "Channel inventory allocation audit matrices",
+              "Yield optimization rate update proposals"
+          ],
+          "humanCheckpoints": [
+              "Approval of seasonal rate tier adjustments",
+              "Blackout date additions",
+              "OTA contract renegotiations"
+          ],
+          "cannotApprove": [
+              "Approval of seasonal rate tier adjustments",
+              "Blackout date additions",
+              "OTA contract renegotiations"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "hosp-linen-supplies-replenishment",
+          "label": "Linen, Toiletries & Minibar Inventory Replenishment",
+          "category": "Inventory & Supplies",
+          "description": "Track linen wash/par ratios, audit guestroom toiletry consumption, and prepare laundry and minibar reorder purchase orders.",
+          "recommendedAgentIds": [
+              "inventory-cycle-count-auditor",
+              "hospitality-housekeeping-turnover-coordinator"
+          ],
+          "rationale": "Eliminates room turnover delays caused by linen shortages and maintains consistent luxury brand standards.",
+          "whyReason": "Eliminates room turnover delays caused by linen shortages and maintains consistent luxury brand standards.",
+          "requiredDataSources": [
+              "Housekeeping storeroom inventory counts",
+              "Commercial laundry wash weight logs",
+              "Guest amenity consumption benchmarks"
+          ],
+          "canRead": [
+              "Housekeeping storeroom inventory counts",
+              "Commercial laundry wash weight logs",
+              "Guest amenity consumption benchmarks"
+          ],
+          "expectedOutputs": [
+              "Linen par-level variance scorecards",
+              "Housekeeping supply purchase requisition drafts",
+              "Minibar restock audit checklists"
+          ],
+          "canPrepare": [
+              "Linen par-level variance scorecards",
+              "Housekeeping supply purchase requisition drafts",
+              "Minibar restock audit checklists"
+          ],
+          "humanCheckpoints": [
+              "Approval of bulk hospitality linen purchases",
+              "Vendor contract awards",
+              "Amenity supplier change authorizations"
+          ],
+          "cannotApprove": [
+              "Approval of bulk hospitality linen purchases",
+              "Vendor contract awards",
+              "Amenity supplier change authorizations"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "hosp-preventative-room-maintenance",
+          "label": "Guestroom HVAC & Fixture Preventative Maintenance Dispatch",
+          "category": "Maintenance & Facilities",
+          "description": "Schedule quarterly guestroom maintenance sweeps (HVAC filters, plumbing seals, door locks, and television casting systems).",
+          "recommendedAgentIds": [
+              "facilities-preventative-maintenance-planner",
+              "hospitality-housekeeping-turnover-coordinator"
+          ],
+          "rationale": "Prevents disruptive in-stay room moves and extends the operating lifespan of expensive hotel capital assets.",
+          "whyReason": "Prevents disruptive in-stay room moves and extends the operating lifespan of expensive hotel capital assets.",
+          "requiredDataSources": [
+              "Guestroom maintenance history records",
+              "HVAC run-time and filter replacement logs",
+              "PMS out-of-order room tickets"
+          ],
+          "canRead": [
+              "Guestroom maintenance history records",
+              "HVAC run-time and filter replacement logs",
+              "PMS out-of-order room tickets"
+          ],
+          "expectedOutputs": [
+              "Quarterly guestroom PM work orders",
+              "Fixtures inspection scorecards",
+              "Room maintenance status release notifications"
+          ],
+          "canPrepare": [
+              "Quarterly guestroom PM work orders",
+              "Fixtures inspection scorecards",
+              "Room maintenance status release notifications"
+          ],
+          "humanCheckpoints": [
+              "Approval of major HVAC compressor replacements",
+              "Contractor dispatch authorizations",
+              "Extended room offline approvals"
+          ],
+          "cannotApprove": [
+              "Approval of major HVAC compressor replacements",
+              "Contractor dispatch authorizations",
+              "Extended room offline approvals"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "hosp-event-banquet-banquet-coordination",
+          "label": "Banquet & Meeting Event Space Setup Verification",
+          "category": "Events & Operations",
+          "description": "Audit Banquet Event Orders (BEO), verify audiovisual and seating configurations, and coordinate banquet service timelines.",
+          "recommendedAgentIds": [
+              "operations-shift-scheduling-coordinator",
+              "hospitality-guest-experience-concierge"
+          ],
+          "rationale": "Guarantees flawless event execution for high-margin corporate conferences and wedding receptions.",
+          "whyReason": "Guarantees flawless event execution for high-margin corporate conferences and wedding receptions.",
+          "requiredDataSources": [
+              "Signed Banquet Event Orders (BEO)",
+              "Event floor plan seating charts",
+              "Kitchen catering production schedules"
+          ],
+          "canRead": [
+              "Signed Banquet Event Orders (BEO)",
+              "Event floor plan seating charts",
+              "Kitchen catering production schedules"
+          ],
+          "expectedOutputs": [
+              "Banquet setup readiness checklists",
+              "AV technical inspection certificates",
+              "Event timeline coordination briefs"
+          ],
+          "canPrepare": [
+              "Banquet setup readiness checklists",
+              "AV technical inspection certificates",
+              "Event timeline coordination briefs"
+          ],
+          "humanCheckpoints": [
+              "Approval of client BEO scope modifications",
+              "Food and beverage guarantee count adjustments",
+              "Banquet billing closeouts"
+          ],
+          "cannotApprove": [
+              "Approval of client BEO scope modifications",
+              "Food and beverage guarantee count adjustments",
+              "Banquet billing closeouts"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "hosp-health-sanitation-inspection",
+          "label": "Hospitality Health & Pool Sanitation Log Verification",
+          "category": "Health & Safety",
+          "description": "Log commercial pool chlorine/pH levels, verify public restroom cleaning checklists, and inspect restaurant kitchen sanitation logs.",
+          "recommendedAgentIds": [
+              "compliance-food-safety-haccp-clerk",
+              "hospitality-night-audit-revenue-clerk"
+          ],
+          "rationale": "Protects guests from health hazards and ensures audit-ready compliance for municipal health department inspections.",
+          "whyReason": "Protects guests from health hazards and ensures audit-ready compliance for municipal health department inspections.",
+          "requiredDataSources": [
+              "Daily pool chemistry test logs",
+              "Restroom hourly cleaning QR timestamps",
+              "Kitchen sanitizer ppm logs"
+          ],
+          "canRead": [
+              "Daily pool chemistry test logs",
+              "Restroom hourly cleaning QR timestamps",
+              "Kitchen sanitizer ppm logs"
+          ],
+          "expectedOutputs": [
+              "Sanitation inspection compliance briefs",
+              "Pool chemical variance alerts",
+              "Health inspection readiness folders"
+          ],
+          "canPrepare": [
+              "Sanitation inspection compliance briefs",
+              "Pool chemical variance alerts",
+              "Health inspection readiness folders"
+          ],
+          "humanCheckpoints": [
+              "Emergency pool closure authorizations",
+              "Chemical corrective treatment approvals",
+              "Health department inspection reports"
+          ],
+          "cannotApprove": [
+              "Emergency pool closure authorizations",
+              "Chemical corrective treatment approvals",
+              "Health department inspection reports"
+          ],
+          "requiresApproval": true
+      }
+  ],
+  "insurance": [
+      {
+          "id": "ins-fnol-intake-triage",
+          "label": "First Notice of Loss (FNOL) Intake & Incident Triage",
+          "category": "Claims Intake",
+          "description": "Intake auto, property, and general liability First Notice of Loss incident narratives, triage damage severity, and assign claims.",
+          "recommendedAgentIds": [
+              "insurance-fnol-claims-intake-specialist",
+              "customer-support-tier1-agent"
+          ],
+          "rationale": "Dramatically reduces initial claims cycle time and dispatches emergency assistance during customer crises.",
+          "whyReason": "Dramatically reduces initial claims cycle time and dispatches emergency assistance during customer crises.",
+          "requiredDataSources": [
+              "Claimant incident intake submissions",
+              "Police and incident emergency reports",
+              "Claims triage routing rules"
+          ],
+          "canRead": [
+              "Claimant incident intake submissions",
+              "Police and incident emergency reports",
+              "Claims triage routing rules"
+          ],
+          "expectedOutputs": [
+              "Structured FNOL claim briefs",
+              "Severity categorization matrices",
+              "Desk adjuster file assignment notifications"
+          ],
+          "canPrepare": [
+              "Structured FNOL claim briefs",
+              "Severity categorization matrices",
+              "Desk adjuster file assignment notifications"
+          ],
+          "humanCheckpoints": [
+              "Denial of claim intake",
+              "Adjudication of catastrophic bodily injury claims",
+              "Emergency vendor authorizations above limit"
+          ],
+          "cannotApprove": [
+              "Denial of claim intake",
+              "Adjudication of catastrophic bodily injury claims",
+              "Emergency vendor authorizations above limit"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "ins-policy-coverage-endorsement-audit",
+          "label": "Policy Declarations, Deductible & Exclusion Verification",
+          "category": "Coverage Verification",
+          "description": "Audit active policy declarations, confirm in-force status at date of loss, verify deductible amounts, and check policy endorsements.",
+          "recommendedAgentIds": [
+              "insurance-policy-coverage-verification-auditor",
+              "legal-compliance-counsel"
+          ],
+          "rationale": "Prevents unauthorized claim payouts by ensuring reported losses are fully covered under active policy terms.",
+          "whyReason": "Prevents unauthorized claim payouts by ensuring reported losses are fully covered under active policy terms.",
+          "requiredDataSources": [
+              "Policy declarations pages",
+              "Underwriting policy endorsements and riders",
+              "Premium payment ledgers"
+          ],
+          "canRead": [
+              "Policy declarations pages",
+              "Underwriting policy endorsements and riders",
+              "Premium payment ledgers"
+          ],
+          "expectedOutputs": [
+              "Coverage verification summary sheets",
+              "Deductible application worksheets",
+              "Reservation of rights (ROR) draft briefs"
+          ],
+          "canPrepare": [
+              "Coverage verification summary sheets",
+              "Deductible application worksheets",
+              "Reservation of rights (ROR) draft briefs"
+          ],
+          "humanCheckpoints": [
+              "Issuance of reservation of rights letters",
+              "Formal coverage declination notices",
+              "Underwriting ambiguity interpretations"
+          ],
+          "cannotApprove": [
+              "Issuance of reservation of rights letters",
+              "Formal coverage declination notices",
+              "Underwriting ambiguity interpretations"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "ins-initial-loss-reserve-modeling",
+          "label": "Actuarial Loss Reserve Estimation & Severity Modeling",
+          "category": "Reserves & Finance",
+          "description": "Calculate initial indemnity and defense cost reserves using historic loss triangulation and specific incident damage scope.",
+          "recommendedAgentIds": [
+              "insurance-loss-adjuster-reserve-analyst",
+              "finance-finance-bookkeeper-controller"
+          ],
+          "rationale": "Ensures statutory reserve adequacy and protects the insurer's balance sheet solvency.",
+          "whyReason": "Ensures statutory reserve adequacy and protects the insurer's balance sheet solvency.",
+          "requiredDataSources": [
+              "Preliminary field damage estimates",
+              "Historical line-of-business loss schedules",
+              "Jurisdictional litigation risk scores"
+          ],
+          "canRead": [
+              "Preliminary field damage estimates",
+              "Historical line-of-business loss schedules",
+              "Jurisdictional litigation risk scores"
+          ],
+          "expectedOutputs": [
+              "Initial loss reserve recommendations",
+              "Reserve variance analysis sheets",
+              "Statutory quarterly reserve audit exhibits"
+          ],
+          "canPrepare": [
+              "Initial loss reserve recommendations",
+              "Reserve variance analysis sheets",
+              "Statutory quarterly reserve audit exhibits"
+          ],
+          "humanCheckpoints": [
+              "Reserve adjustments exceeding adjuster authority threshold",
+              "Catastrophic loss reserve adjustments",
+              "Reinsurance treaty notifications"
+          ],
+          "cannotApprove": [
+              "Reserve adjustments exceeding adjuster authority threshold",
+              "Catastrophic loss reserve adjustments",
+              "Reinsurance treaty notifications"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "ins-emergency-mitigation-dispatch",
+          "label": "Emergency Restoration & Mitigation Vendor Dispatch",
+          "category": "Claims Operations",
+          "description": "Dispatch certified water mitigation, smoke extraction, and board-up vendors within preferred carrier network guidelines.",
+          "recommendedAgentIds": [
+              "operations-intake-scheduling-coordinator",
+              "insurance-fnol-claims-intake-specialist"
+          ],
+          "rationale": "Stops ongoing property damage immediately, reducing total claim severity and cost.",
+          "whyReason": "Stops ongoing property damage immediately, reducing total claim severity and cost.",
+          "requiredDataSources": [
+              "Preferred vendor service area network rosters",
+              "FNOL damage description dossiers",
+              "Carrier vendor pricing rate cards"
+          ],
+          "canRead": [
+              "Preferred vendor service area network rosters",
+              "FNOL damage description dossiers",
+              "Carrier vendor pricing rate cards"
+          ],
+          "expectedOutputs": [
+              "Emergency service assignment work orders",
+              "Mitigation timeline countdown trackers",
+              "Vendor initial estimate audit checklists"
+          ],
+          "canPrepare": [
+              "Emergency service assignment work orders",
+              "Mitigation timeline countdown trackers",
+              "Vendor initial estimate audit checklists"
+          ],
+          "humanCheckpoints": [
+              "Authorization of out-of-network restoration contractors",
+              "Mitigation cap overrides",
+              "Total loss declarations"
+          ],
+          "cannotApprove": [
+              "Authorization of out-of-network restoration contractors",
+              "Mitigation cap overrides",
+              "Total loss declarations"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "ins-subrogation-liability-screening",
+          "label": "Third-Party Liability & Subrogation Potential Screening",
+          "category": "Subrogation & Recovery",
+          "description": "Screen loss facts for adverse third-party fault, preserve evidence, and initiate arbitration and subrogation recovery demands.",
+          "recommendedAgentIds": [
+              "insurance-loss-adjuster-reserve-analyst",
+              "insurance-policy-coverage-verification-auditor"
+          ],
+          "rationale": "Recovers millions in claim indemnity costs from responsible third parties and reimburses policyholder deductibles.",
+          "whyReason": "Recovers millions in claim indemnity costs from responsible third parties and reimburses policyholder deductibles.",
+          "requiredDataSources": [
+              "Police accident reports",
+              "Witness statement transcripts",
+              "Adverse party insurance declarations"
+          ],
+          "canRead": [
+              "Police accident reports",
+              "Witness statement transcripts",
+              "Adverse party insurance declarations"
+          ],
+          "expectedOutputs": [
+              "Subrogation liability scoring sheets",
+              "Evidence preservation notices",
+              "Formal inter-company subrogation demand packages"
+          ],
+          "canPrepare": [
+              "Subrogation liability scoring sheets",
+              "Evidence preservation notices",
+              "Formal inter-company subrogation demand packages"
+          ],
+          "humanCheckpoints": [
+              "Acceptance of compromised subrogation settlement offers",
+              "Arbitration filings",
+              "Subrogation litigation authorizations"
+          ],
+          "cannotApprove": [
+              "Acceptance of compromised subrogation settlement offers",
+              "Arbitration filings",
+              "Subrogation litigation authorizations"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "ins-medical-special-damages-audit",
+          "label": "Medical Bill & Specials Documentation Auditing",
+          "category": "Bodily Injury",
+          "description": "Audit medical provider bills, verify CPT treatment codes, correlate treatments with loss causation, and apply fee schedule caps.",
+          "recommendedAgentIds": [
+              "healthcare-claims-auditor",
+              "insurance-loss-adjuster-reserve-analyst"
+          ],
+          "rationale": "Prevents medical bill padding and ensures settlements align with statutory workers' comp or auto pip fee schedules.",
+          "whyReason": "Prevents medical bill padding and ensures settlements align with statutory workers' comp or auto pip fee schedules.",
+          "requiredDataSources": [
+              "Itemized medical provider bills (UB-04 / CMS-1500)",
+              "Diagnostic imaging and treatment clinical records",
+              "State statutory medical fee schedules"
+          ],
+          "canRead": [
+              "Itemized medical provider bills (UB-04 / CMS-1500)",
+              "Diagnostic imaging and treatment clinical records",
+              "State statutory medical fee schedules"
+          ],
+          "expectedOutputs": [
+              "Medical bill audit line-item reductions",
+              "Treatment duration timeline charts",
+              "Special damages settlement calculation exhibits"
+          ],
+          "canPrepare": [
+              "Medical bill audit line-item reductions",
+              "Treatment duration timeline charts",
+              "Special damages settlement calculation exhibits"
+          ],
+          "humanCheckpoints": [
+              "Approval of bodily injury settlement offers",
+              "Independent medical examination (IME) orders",
+              "Pre-existing condition dispute determinations"
+          ],
+          "cannotApprove": [
+              "Approval of bodily injury settlement offers",
+              "Independent medical examination (IME) orders",
+              "Pre-existing condition dispute determinations"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "ins-property-estimate-scoping-comparison",
+          "label": "Property Damage Estimate Scoping & Price Book Comparison",
+          "category": "Property Claims",
+          "description": "Audit Xactimate or Symbility property estimates against carrier line-item price books, checking depreciation and labor rates.",
+          "recommendedAgentIds": [
+              "insurance-loss-adjuster-reserve-analyst",
+              "accounting-vendor-invoice-clerk"
+          ],
+          "rationale": "Eliminates inflated contractor scopes and verifies fair market replacement cost pricing.",
+          "whyReason": "Eliminates inflated contractor scopes and verifies fair market replacement cost pricing.",
+          "requiredDataSources": [
+              "Contractor Xactimate line-item estimate files",
+              "Carrier regional material price benchmarks",
+              "Onsite field photo inspection files"
+          ],
+          "canRead": [
+              "Contractor Xactimate line-item estimate files",
+              "Carrier regional material price benchmarks",
+              "Onsite field photo inspection files"
+          ],
+          "expectedOutputs": [
+              "Estimate line-item variance comparison reports",
+              "Depreciation calculation sheets",
+              "Agreed scope of repairs summaries"
+          ],
+          "canPrepare": [
+              "Estimate line-item variance comparison reports",
+              "Depreciation calculation sheets",
+              "Agreed scope of repairs summaries"
+          ],
+          "humanCheckpoints": [
+              "Approval of supplemental repair estimates",
+              "Overhead and profit (O&P) authorizations",
+              "Appraisal clause invocations"
+          ],
+          "cannotApprove": [
+              "Approval of supplemental repair estimates",
+              "Overhead and profit (O&P) authorizations",
+              "Appraisal clause invocations"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "ins-statutory-bad-faith-compliance",
+          "label": "Statutory Claims Handling Deadline & Bad-Faith Compliance",
+          "category": "Compliance & Legal",
+          "description": "Track statutory state insurance department deadlines (e.g., 15-day acknowledgment, 30-day proof of loss determinations).",
+          "recommendedAgentIds": [
+              "insurance-policy-coverage-verification-auditor",
+              "compliance-regulatory-affairs-specialist"
+          ],
+          "rationale": "Shields the insurer from catastrophic bad-faith litigation and regulatory market conduct fines.",
+          "whyReason": "Shields the insurer from catastrophic bad-faith litigation and regulatory market conduct fines.",
+          "requiredDataSources": [
+              "Jurisdictional statutory claims regulations",
+              "Claim file communication chronological timestamps",
+              "Written claimant correspondence logs"
+          ],
+          "canRead": [
+              "Jurisdictional statutory claims regulations",
+              "Claim file communication chronological timestamps",
+              "Written claimant correspondence logs"
+          ],
+          "expectedOutputs": [
+              "Statutory deadline countdown alerts",
+              "Claims file timeliness audit scorecards",
+              "Department of Insurance compliance exhibits"
+          ],
+          "canPrepare": [
+              "Statutory deadline countdown alerts",
+              "Claims file timeliness audit scorecards",
+              "Department of Insurance compliance exhibits"
+          ],
+          "humanCheckpoints": [
+              "Response to Department of Insurance consumer complaints",
+              "Statutory deadline tolling agreement approvals",
+              "Legal defense counsel retentions"
+          ],
+          "cannotApprove": [
+              "Response to Department of Insurance consumer complaints",
+              "Statutory deadline tolling agreement approvals",
+              "Legal defense counsel retentions"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "ins-claims-fraud-anomaly-detection",
+          "label": "SIU Referral & Red-Flag Claim Fraud Detection",
+          "category": "Fraud Prevention",
+          "description": "Scan incoming claims for staged accident indicators, suspicious billing anomalies, and prior loss claim history across national databases.",
+          "recommendedAgentIds": [
+              "insurance-policy-coverage-verification-auditor",
+              "security-incident-investigator"
+          ],
+          "rationale": "Protects honest policyholders by intercepting organized insurance fraud rings and fabricated damage claims.",
+          "whyReason": "Protects honest policyholders by intercepting organized insurance fraud rings and fabricated damage claims.",
+          "requiredDataSources": [
+              "ISO ClaimSearch loss history databases",
+              "Social media and public record dossiers",
+              "National Insurance Crime Bureau (NICB) alert indicators"
+          ],
+          "canRead": [
+              "ISO ClaimSearch loss history databases",
+              "Social media and public record dossiers",
+              "National Insurance Crime Bureau (NICB) alert indicators"
+          ],
+          "expectedOutputs": [
+              "Special Investigation Unit (SIU) referral memos",
+              "Fraud indicator scoring sheets",
+              "Recorded statement audit transcripts"
+          ],
+          "canPrepare": [
+              "Special Investigation Unit (SIU) referral memos",
+              "Fraud indicator scoring sheets",
+              "Recorded statement audit transcripts"
+          ],
+          "humanCheckpoints": [
+              "Formal referral of claim file to SIU",
+              "Examination Under Oath (EUO) scheduling",
+              "Law enforcement crime report filings"
+          ],
+          "cannotApprove": [
+              "Formal referral of claim file to SIU",
+              "Examination Under Oath (EUO) scheduling",
+              "Law enforcement crime report filings"
+          ],
+          "requiresApproval": true
+      }
+  ],
+  "automotive": [
+      {
+          "id": "auto-ro-diagnostic-triage",
+          "label": "Repair Order (RO) Multi-Point Inspection & Concern Triage",
+          "category": "Service Bay",
+          "description": "Capture customer symptom complaints, generate multi-point inspection (MPI) check sheets, and draft initial repair orders.",
+          "recommendedAgentIds": [
+              "automotive-service-advisor-ro-dispatcher",
+              "customer-support-tier1-agent"
+          ],
+          "rationale": "Increases customer satisfaction and drives higher service advisor hours per RO through thorough multi-point inspections.",
+          "whyReason": "Increases customer satisfaction and drives higher service advisor hours per RO through thorough multi-point inspections.",
+          "requiredDataSources": [
+              "Customer service history files",
+              "Dealer management system (DMS) repair orders",
+              "OEM diagnostic inspection templates"
+          ],
+          "canRead": [
+              "Customer service history files",
+              "Dealer management system (DMS) repair orders",
+              "OEM diagnostic inspection templates"
+          ],
+          "expectedOutputs": [
+              "Detailed customer repair order drafts",
+              "Technician diagnostic check sheets",
+              "Pre-service vehicle condition walkaround logs"
+          ],
+          "canPrepare": [
+              "Detailed customer repair order drafts",
+              "Technician diagnostic check sheets",
+              "Pre-service vehicle condition walkaround logs"
+          ],
+          "humanCheckpoints": [
+              "Customer signature on diagnostic labor authorization",
+              "Safety critical brake/tire repair waivers",
+              "Vehicle release sign-offs"
+          ],
+          "cannotApprove": [
+              "Customer signature on diagnostic labor authorization",
+              "Safety critical brake/tire repair waivers",
+              "Vehicle release sign-offs"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "auto-oem-warranty-claim-validation",
+          "label": "OEM Warranty Labor Op Code & DTC Evidence Auditing",
+          "category": "Warranty & Compliance",
+          "description": "Validate technician repair stories, cross-reference diagnostic trouble codes (DTC), and verify labor operation time against OEM warranty policy.",
+          "recommendedAgentIds": [
+              "automotive-oem-warranty-claims-clerk",
+              "compliance-regulatory-affairs-specialist"
+          ],
+          "rationale": "Prevents costly OEM warranty chargebacks and audits by ensuring 100% compliant claim documentation before submission.",
+          "whyReason": "Prevents costly OEM warranty chargebacks and audits by ensuring 100% compliant claim documentation before submission.",
+          "requiredDataSources": [
+              "OEM warranty policy & procedure manuals",
+              "Technician electronic punch clock records",
+              "Diagnostic scan tool printout attachments"
+          ],
+          "canRead": [
+              "OEM warranty policy & procedure manuals",
+              "Technician electronic punch clock records",
+              "Diagnostic scan tool printout attachments"
+          ],
+          "expectedOutputs": [
+              "Audited warranty claim electronic packages",
+              "Warranty discrepancy rejection alerts",
+              "Technician story correction briefs"
+          ],
+          "canPrepare": [
+              "Audited warranty claim electronic packages",
+              "Warranty discrepancy rejection alerts",
+              "Technician story correction briefs"
+          ],
+          "humanCheckpoints": [
+              "Warranty claim electronic submission authorization",
+              "Goodwill claim spend approvals",
+              "OEM audit dispute filings"
+          ],
+          "cannotApprove": [
+              "Warranty claim electronic submission authorization",
+              "Goodwill claim spend approvals",
+              "OEM audit dispute filings"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "auto-parts-counter-fast-moving-replenishment",
+          "label": "Fast-Moving Parts Counter & Core Return Replenishment",
+          "category": "Parts & Inventory",
+          "description": "Manage parts counter stock levels, process technician parts requisitions, track core return credits, and forecast fast-moving SKUs.",
+          "recommendedAgentIds": [
+              "automotive-parts-inventory-counter-specialist",
+              "inventory-replenishment-specialist"
+          ],
+          "rationale": "Keeps technician bays turning without idle waiting time for oil filters, brake pads, rotors, and common sensors.",
+          "whyReason": "Keeps technician bays turning without idle waiting time for oil filters, brake pads, rotors, and common sensors.",
+          "requiredDataSources": [
+              "DMS parts inventory records",
+              "Electronic parts catalog (EPC) VIN lookups",
+              "Core return credit ledgers"
+          ],
+          "canRead": [
+              "DMS parts inventory records",
+              "Electronic parts catalog (EPC) VIN lookups",
+              "Core return credit ledgers"
+          ],
+          "expectedOutputs": [
+              "Daily parts stock replenishment orders",
+              "Technician parts staging pick-lists",
+              "Core return credit reconciliation sheets"
+          ],
+          "canPrepare": [
+              "Daily parts stock replenishment orders",
+              "Technician parts staging pick-lists",
+              "Core return credit reconciliation sheets"
+          ],
+          "humanCheckpoints": [
+              "Approval of emergency special orders (VOD)",
+              "Inventory scrap and obsolescence write-offs",
+              "Supplier stock return authorizations"
+          ],
+          "cannotApprove": [
+              "Approval of emergency special orders (VOD)",
+              "Inventory scrap and obsolescence write-offs",
+              "Supplier stock return authorizations"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "auto-technician-bay-dispatch",
+          "label": "Technician Skill Certification & Bay Schedule Dispatch",
+          "category": "Dispatch & Workshop",
+          "description": "Match incoming repair orders to certified technician skill levels (transmission, electrical, diesel, quick lube) to optimize bay throughput.",
+          "recommendedAgentIds": [
+              "automotive-service-advisor-ro-dispatcher",
+              "operations-shift-scheduling-coordinator"
+          ],
+          "rationale": "Maximizes workshop billed flat-rate hours and guarantees complex repairs are handled by qualified master technicians.",
+          "whyReason": "Maximizes workshop billed flat-rate hours and guarantees complex repairs are handled by qualified master technicians.",
+          "requiredDataSources": [
+              "Technician ASE & OEM certification matrices",
+              "Active service bay dispatch queue",
+              "Estimated repair time (ERT) standards"
+          ],
+          "canRead": [
+              "Technician ASE & OEM certification matrices",
+              "Active service bay dispatch queue",
+              "Estimated repair time (ERT) standards"
+          ],
+          "expectedOutputs": [
+              "Daily service bay dispatch boards",
+              "Technician efficiency scorecards",
+              "Carryover repair order alerts"
+          ],
+          "canPrepare": [
+              "Daily service bay dispatch boards",
+              "Technician efficiency scorecards",
+              "Carryover repair order alerts"
+          ],
+          "humanCheckpoints": [
+              "Shop foreman dispatch overrides",
+              "Technician guarantee hour adjustments",
+              "Customer loaner vehicle authorizations"
+          ],
+          "cannotApprove": [
+              "Shop foreman dispatch overrides",
+              "Technician guarantee hour adjustments",
+              "Customer loaner vehicle authorizations"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "auto-customer-estimate-approval-tracking",
+          "label": "Customer Additional Service (ASR) Estimate Approvals",
+          "category": "Customer Approvals",
+          "description": "Package technician multi-point findings into digital photo/video inspection estimates and track customer approval signatures.",
+          "recommendedAgentIds": [
+              "automotive-service-advisor-ro-dispatcher",
+              "accounting-vendor-invoice-clerk"
+          ],
+          "rationale": "Builds customer trust through photographic transparency and converts inspection recommendations into approved service sales.",
+          "whyReason": "Builds customer trust through photographic transparency and converts inspection recommendations into approved service sales.",
+          "requiredDataSources": [
+              "Technician inspection photos and video clips",
+              "Labor times and parts pricing sheets",
+              "Customer communication contact preferences"
+          ],
+          "canRead": [
+              "Technician inspection photos and video clips",
+              "Labor times and parts pricing sheets",
+              "Customer communication contact preferences"
+          ],
+          "expectedOutputs": [
+              "Digital multi-point inspection estimates",
+              "Customer approval timestamp logs",
+              "Revised repair order supplement sheets"
+          ],
+          "canPrepare": [
+              "Digital multi-point inspection estimates",
+              "Customer approval timestamp logs",
+              "Revised repair order supplement sheets"
+          ],
+          "humanCheckpoints": [
+              "Final price discounts or labor concession approvals",
+              "Authorization to proceed with unapproved repairs",
+              "Declined safety repair waivers"
+          ],
+          "cannotApprove": [
+              "Final price discounts or labor concession approvals",
+              "Authorization to proceed with unapproved repairs",
+              "Declined safety repair waivers"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "auto-vin-recall-campaign-screening",
+          "label": "VIN Safety Recall & Campaign Service Bulletins Screening",
+          "category": "Safety & Compliance",
+          "description": "Screen vehicle identification numbers (VIN) against NHTSA and manufacturer databases for open safety recalls during check-in.",
+          "recommendedAgentIds": [
+              "automotive-oem-warranty-claims-clerk",
+              "automotive-parts-inventory-counter-specialist"
+          ],
+          "rationale": "Prevents dealerships from releasing vehicles with open safety recalls and captures additional high-margin manufacturer recall revenue.",
+          "whyReason": "Prevents dealerships from releasing vehicles with open safety recalls and captures additional high-margin manufacturer recall revenue.",
+          "requiredDataSources": [
+              "NHTSA vehicle safety recall feeds",
+              "OEM vehicle service history networks",
+              "Dealership scheduled appointment lists"
+          ],
+          "canRead": [
+              "NHTSA vehicle safety recall feeds",
+              "OEM vehicle service history networks",
+              "Dealership scheduled appointment lists"
+          ],
+          "expectedOutputs": [
+              "Open recall action alert notices",
+              "Recall parts pre-order staging pick-lists",
+              "Customer mandatory recall disclosures"
+          ],
+          "canPrepare": [
+              "Open recall action alert notices",
+              "Recall parts pre-order staging pick-lists",
+              "Customer mandatory recall disclosures"
+          ],
+          "humanCheckpoints": [
+              "Stop-drive order vehicle impounds",
+              "Recall completion certifications",
+              "Loaner vehicle dispatches for delayed parts"
+          ],
+          "cannotApprove": [
+              "Stop-drive order vehicle impounds",
+              "Recall completion certifications",
+              "Loaner vehicle dispatches for delayed parts"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "auto-dms-cashier-settlement-reconciliation",
+          "label": "Dealership DMS Repair Order Cashier Settlement Balancing",
+          "category": "Finance & Cashier",
+          "description": "Reconcile daily service cashier credit card batches, cash drawer receipts, and customer deductible payments against closed DMS ROs.",
+          "recommendedAgentIds": [
+              "finance-finance-bookkeeper-controller",
+              "automotive-service-advisor-ro-dispatcher"
+          ],
+          "rationale": "Prevents cash drawer variances, catches unbilled parts charges, and balances daily dealership financial statements.",
+          "whyReason": "Prevents cash drawer variances, catches unbilled parts charges, and balances daily dealership financial statements.",
+          "requiredDataSources": [
+              "Closed repair order invoices",
+              "Payment merchant terminal settlement slips",
+              "Cashier daily transaction ledgers"
+          ],
+          "canRead": [
+              "Closed repair order invoices",
+              "Payment merchant terminal settlement slips",
+              "Cashier daily transaction ledgers"
+          ],
+          "expectedOutputs": [
+              "Cashier daily balancing sheets",
+              "RO payment discrepancy reports",
+              "Bank deposit safe drop dossiers"
+          ],
+          "canPrepare": [
+              "Cashier daily balancing sheets",
+              "RO payment discrepancy reports",
+              "Bank deposit safe drop dossiers"
+          ],
+          "humanCheckpoints": [
+              "Write-offs of customer billing variances",
+              "Accounts receivable billing credit approvals",
+              "Chargeback dispute responses"
+          ],
+          "cannotApprove": [
+              "Write-offs of customer billing variances",
+              "Accounts receivable billing credit approvals",
+              "Chargeback dispute responses"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "auto-loaner-fleet-turnover-audit",
+          "label": "Customer Loaner & Courtesy Vehicle Mileage Logging",
+          "category": "Fleet Management",
+          "description": "Log customer loaner vehicle checkout agreements, verify valid driver license insurance, track toll transponder charges, and inspect return condition.",
+          "recommendedAgentIds": [
+              "facilities-commercial-lease-administrator",
+              "automotive-service-advisor-ro-dispatcher"
+          ],
+          "rationale": "Protects dealership assets from unrecovered toll charges, fuel shortages, and unauthorized loaner vehicle use.",
+          "whyReason": "Protects dealership assets from unrecovered toll charges, fuel shortages, and unauthorized loaner vehicle use.",
+          "requiredDataSources": [
+              "Loaner fleet GPS tracking & telematics",
+              "Customer rental agreement contracts",
+              "Electronic toll transponder billing statements"
+          ],
+          "canRead": [
+              "Loaner fleet GPS tracking & telematics",
+              "Customer rental agreement contracts",
+              "Electronic toll transponder billing statements"
+          ],
+          "expectedOutputs": [
+              "Loaner vehicle checkout inspection logs",
+              "Toll and fuel charge reconciliation manifests",
+              "Overdue loaner vehicle retrieval alerts"
+          ],
+          "canPrepare": [
+              "Loaner vehicle checkout inspection logs",
+              "Toll and fuel charge reconciliation manifests",
+              "Overdue loaner vehicle retrieval alerts"
+          ],
+          "humanCheckpoints": [
+              "Loaner vehicle damage claim filings",
+              "Customer damage billing dispute waivers",
+              "Police stolen vehicle reports"
+          ],
+          "cannotApprove": [
+              "Loaner vehicle damage claim filings",
+              "Customer damage billing dispute waivers",
+              "Police stolen vehicle reports"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "auto-hazardous-waste-environmental-compliance",
+          "label": "Used Oil, Coolant & Battery Environmental Disposal Logging",
+          "category": "Environmental Compliance",
+          "description": "Audit hazardous waste disposal manifests for used motor oil, antifreeze, lead-acid batteries, and brake cleaning solvents.",
+          "recommendedAgentIds": [
+              "chemical-environmental-compliance-auditor",
+              "automotive-oem-warranty-claims-clerk"
+          ],
+          "rationale": "Guarantees full EPA and state hazardous waste compliance, avoiding severe environmental fines and contamination liabilities.",
+          "whyReason": "Guarantees full EPA and state hazardous waste compliance, avoiding severe environmental fines and contamination liabilities.",
+          "requiredDataSources": [
+              "EPA hazardous waste manifest copies",
+              "Used oil storage tank sensor telemetry",
+              "Recycling vendor bill of ladings"
+          ],
+          "canRead": [
+              "EPA hazardous waste manifest copies",
+              "Used oil storage tank sensor telemetry",
+              "Recycling vendor bill of ladings"
+          ],
+          "expectedOutputs": [
+              "Hazardous waste disposal compliance binders",
+              "Used oil tank capacity threshold alerts",
+              "Spill prevention countermeasure (SPCC) inspection logs"
+          ],
+          "canPrepare": [
+              "Hazardous waste disposal compliance binders",
+              "Used oil tank capacity threshold alerts",
+              "Spill prevention countermeasure (SPCC) inspection logs"
+          ],
+          "humanCheckpoints": [
+              "Sign-off on EPA biennial waste reports",
+              "Emergency hazardous spill reports to state regulators",
+              "Disposal vendor contract awards"
+          ],
+          "cannotApprove": [
+              "Sign-off on EPA biennial waste reports",
+              "Emergency hazardous spill reports to state regulators",
+              "Disposal vendor contract awards"
+          ],
+          "requiresApproval": true
+      }
+  ],
+  "renewable-energy": [
+      {
+          "id": "renew-utility-interconnect-filing",
+          "label": "Utility Interconnection Application & Permitting Milestone Tracking",
+          "category": "Interconnect & Permitting",
+          "description": "Prepare utility interconnection filing packages, track municipal electrical building permits, and manage Permission to Operate (PTO) countdowns.",
+          "recommendedAgentIds": [
+              "renewable-solar-project-interconnect-planner",
+              "compliance-regulatory-affairs-specialist"
+          ],
+          "rationale": "Prevents project energization delays and secures utility approval for clean distributed solar generation.",
+          "whyReason": "Prevents project energization delays and secures utility approval for clean distributed solar generation.",
+          "requiredDataSources": [
+              "Electrical single-line diagrams (SLD)",
+              "Inverter specification cut-sheets",
+              "Utility interconnection queue portal"
+          ],
+          "canRead": [
+              "Electrical single-line diagrams (SLD)",
+              "Inverter specification cut-sheets",
+              "Utility interconnection queue portal"
+          ],
+          "expectedOutputs": [
+              "Interconnection application filing packages",
+              "Permit review status matrices",
+              "PTO milestone readiness alerts"
+          ],
+          "canPrepare": [
+              "Interconnection application filing packages",
+              "Permit review status matrices",
+              "PTO milestone readiness alerts"
+          ],
+          "humanCheckpoints": [
+              "Professional Engineer (PE) electrical stamp approvals",
+              "Utility interconnect agreement execution",
+              "Submission of municipal permit variance requests"
+          ],
+          "cannotApprove": [
+              "Professional Engineer (PE) electrical stamp approvals",
+              "Utility interconnect agreement execution",
+              "Submission of municipal permit variance requests"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "renew-pv-telemetry-inverter-monitoring",
+          "label": "Inverter SCADA Telemetry & Clipping Anomaly Detection",
+          "category": "Monitoring & Telemetry",
+          "description": "Monitor real-time inverter SCADA telemetry, detect string-level clipping, track solar insolation ratios, and dispatch field technicians for faults.",
+          "recommendedAgentIds": [
+              "renewable-pv-telemetry-inverter-analyst",
+              "engineering-cad-structural-model-auditor"
+          ],
+          "rationale": "Maximizes kilowatt-hour harvest and catches string-level inverter faults within minutes rather than weeks.",
+          "whyReason": "Maximizes kilowatt-hour harvest and catches string-level inverter faults within minutes rather than weeks.",
+          "requiredDataSources": [
+              "Inverter modbus/SCADA telemetry streams",
+              "Onsite pyranometer weather station data",
+              "PVSyst expected generation baseline curves"
+          ],
+          "canRead": [
+              "Inverter modbus/SCADA telemetry streams",
+              "Onsite pyranometer weather station data",
+              "PVSyst expected generation baseline curves"
+          ],
+          "expectedOutputs": [
+              "Inverter fault ticket dispatch briefs",
+              "Performance ratio (PR) daily scorecards",
+              "String underperformance anomaly alerts"
+          ],
+          "canPrepare": [
+              "Inverter fault ticket dispatch briefs",
+              "Performance ratio (PR) daily scorecards",
+              "String underperformance anomaly alerts"
+          ],
+          "humanCheckpoints": [
+              "Dispatch of high-voltage field technicians",
+              "Remote inverter firmware updates",
+              "Grid disconnect protocol activations"
+          ],
+          "cannotApprove": [
+              "Dispatch of high-voltage field technicians",
+              "Remote inverter firmware updates",
+              "Grid disconnect protocol activations"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "renew-rooftop-fall-protection-safety",
+          "label": "Rooftop Fall Protection & Commissioning Safety Checklists",
+          "category": "Field Safety",
+          "description": "Audit rooftop anchor tie-off compliance, verify DC arc-flash personal protective equipment, and log lockout/tagout isolation before energization.",
+          "recommendedAgentIds": [
+              "renewable-field-installation-safety-coordinator",
+              "construction-safety-officer"
+          ],
+          "rationale": "Eliminates rooftop fall accidents and protects field electricians from lethal high-voltage DC electrocution hazards.",
+          "whyReason": "Eliminates rooftop fall accidents and protects field electricians from lethal high-voltage DC electrocution hazards.",
+          "requiredDataSources": [
+              "Jobsite safety analysis (JSA) documents",
+              "OSHA fall protection anchor test logs",
+              "DC combiner lockout/tagout checklists"
+          ],
+          "canRead": [
+              "Jobsite safety analysis (JSA) documents",
+              "OSHA fall protection anchor test logs",
+              "DC combiner lockout/tagout checklists"
+          ],
+          "expectedOutputs": [
+              "Daily rooftop commissioning safety briefs",
+              "Zero energy state verification certificates",
+              "Site safety hazard violation notices"
+          ],
+          "canPrepare": [
+              "Daily rooftop commissioning safety briefs",
+              "Zero energy state verification certificates",
+              "Site safety hazard violation notices"
+          ],
+          "humanCheckpoints": [
+              "Stop-work authorizations for high-wind conditions",
+              "Initial high-voltage breaker energization approvals",
+              "Safety harness inspection condemnations"
+          ],
+          "cannotApprove": [
+              "Stop-work authorizations for high-wind conditions",
+              "Initial high-voltage breaker energization approvals",
+              "Safety harness inspection condemnations"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "renew-solar-production-guarantee-audit",
+          "label": "Solar PPA & Performance Guarantee Generation Reconciliation",
+          "category": "Finance & Performance",
+          "description": "Reconcile actual annual kilowatt-hour meter production against Power Purchase Agreement (PPA) weather-adjusted generation commitments.",
+          "recommendedAgentIds": [
+              "renewable-pv-telemetry-inverter-analyst",
+              "finance-finance-bookkeeper-controller"
+          ],
+          "rationale": "Prevents shortfall penalty payouts by providing audit-proof weather-adjusted generation true-up calculations.",
+          "whyReason": "Prevents shortfall penalty payouts by providing audit-proof weather-adjusted generation true-up calculations.",
+          "requiredDataSources": [
+              "Revenue-grade utility meter interval data",
+              "Historical solar irradiance anomaly indices",
+              "PPA contract production schedules"
+          ],
+          "canRead": [
+              "Revenue-grade utility meter interval data",
+              "Historical solar irradiance anomaly indices",
+              "PPA contract production schedules"
+          ],
+          "expectedOutputs": [
+              "Annual PPA true-up reconciliation dossiers",
+              "Weather-adjusted shortfall impact models",
+              "Client generation credit calculations"
+          ],
+          "canPrepare": [
+              "Annual PPA true-up reconciliation dossiers",
+              "Weather-adjusted shortfall impact models",
+              "Client generation credit calculations"
+          ],
+          "humanCheckpoints": [
+              "Approval of financial true-up penalty payments",
+              "PPA contract amendments",
+              "Client dispute resolution settlements"
+          ],
+          "cannotApprove": [
+              "Approval of financial true-up penalty payments",
+              "PPA contract amendments",
+              "Client dispute resolution settlements"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "renew-panel-degradation-thermal-scans",
+          "label": "Drone Thermal Imaging & PV Module Hotspot Auditing",
+          "category": "Quality & Inspection",
+          "description": "Analyze aerial drone radiometric thermal scans to pinpoint cell micro-cracks, bypassed diodes, and hotspot module degradation.",
+          "recommendedAgentIds": [
+              "renewable-pv-telemetry-inverter-analyst",
+              "renewable-field-installation-safety-coordinator"
+          ],
+          "rationale": "Identifies defective solar modules under warranty before they cause systemic fire hazards or energy production loss.",
+          "whyReason": "Identifies defective solar modules under warranty before they cause systemic fire hazards or energy production loss.",
+          "requiredDataSources": [
+              "Drone orthomosaic thermal imagery",
+              "PV module serial number string mapping",
+              "Manufacturer module temperature baselines"
+          ],
+          "canRead": [
+              "Drone orthomosaic thermal imagery",
+              "PV module serial number string mapping",
+              "Manufacturer module temperature baselines"
+          ],
+          "expectedOutputs": [
+              "Thermal anomaly classification maps",
+              "Module warranty claim replacement dossiers",
+              "Field remediation repair work orders"
+          ],
+          "canPrepare": [
+              "Thermal anomaly classification maps",
+              "Module warranty claim replacement dossiers",
+              "Field remediation repair work orders"
+          ],
+          "humanCheckpoints": [
+              "Submission of manufacturer batch warranty claims",
+              "Decommissioning of compromised module strings",
+              "Repair contract sign-offs"
+          ],
+          "cannotApprove": [
+              "Submission of manufacturer batch warranty claims",
+              "Decommissioning of compromised module strings",
+              "Repair contract sign-offs"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "renew-subcontractor-trade-scheduling",
+          "label": "Racking, Electrical & Roofing Subcontractor Dispatch",
+          "category": "Project Coordination",
+          "description": "Coordinate mechanical racking, roof mounting, and licensed master electrician trade handoffs across commercial solar installations.",
+          "recommendedAgentIds": [
+              "operations-intake-scheduling-coordinator",
+              "renewable-solar-project-interconnect-planner"
+          ],
+          "rationale": "Prevents expensive roofing crew standstills and aligns electrical rough-ins with municipal inspection schedules.",
+          "whyReason": "Prevents expensive roofing crew standstills and aligns electrical rough-ins with municipal inspection schedules.",
+          "requiredDataSources": [
+              "Project construction master timeline",
+              "Trade subcontractor availability rosters",
+              "Equipment and module crane delivery dates"
+          ],
+          "canRead": [
+              "Project construction master timeline",
+              "Trade subcontractor availability rosters",
+              "Equipment and module crane delivery dates"
+          ],
+          "expectedOutputs": [
+              "Trade handoff milestone matrices",
+              "Crane lift staging schedules",
+              "Subcontractor mobilization notifications"
+          ],
+          "canPrepare": [
+              "Trade handoff milestone matrices",
+              "Crane lift staging schedules",
+              "Subcontractor mobilization notifications"
+          ],
+          "humanCheckpoints": [
+              "Subcontractor progress billing releases",
+              "Schedule delay liquidated damages notices",
+              "Trade subcontractor replacement decisions"
+          ],
+          "cannotApprove": [
+              "Subcontractor progress billing releases",
+              "Schedule delay liquidated damages notices",
+              "Trade subcontractor replacement decisions"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "renew-net-metering-tariff-verification",
+          "label": "Net Metering (NEM) Utility Rate Tariff Verification",
+          "category": "Tariff & Billing",
+          "description": "Audit client utility bills post-interconnect to verify correct Net Energy Metering (NEM) rate schedule rider application.",
+          "recommendedAgentIds": [
+              "renewable-solar-project-interconnect-planner",
+              "accounting-vendor-invoice-clerk"
+          ],
+          "rationale": "Guarantees clients receive full credit for exported energy under applicable time-of-use solar tariffs.",
+          "whyReason": "Guarantees clients receive full credit for exported energy under applicable time-of-use solar tariffs.",
+          "requiredDataSources": [
+              "Post-energization client utility bills",
+              "Public utility commission (PUC) tariff schedules",
+              "Solar export interval meter readings"
+          ],
+          "canRead": [
+              "Post-energization client utility bills",
+              "Public utility commission (PUC) tariff schedules",
+              "Solar export interval meter readings"
+          ],
+          "expectedOutputs": [
+              "Utility tariff compliance audit reports",
+              "NEM billing dispute escalation memos",
+              "Client solar savings scorecards"
+          ],
+          "canPrepare": [
+              "Utility tariff compliance audit reports",
+              "NEM billing dispute escalation memos",
+              "Client solar savings scorecards"
+          ],
+          "humanCheckpoints": [
+              "Formal filing of tariff disputes with utility",
+              "Client billing adjustment approvals",
+              "Legal regulatory intervention referrals"
+          ],
+          "cannotApprove": [
+              "Formal filing of tariff disputes with utility",
+              "Client billing adjustment approvals",
+              "Legal regulatory intervention referrals"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "renew-bess-battery-storage-telemetry",
+          "label": "Battery Energy Storage System (BESS) State-of-Charge Auditing",
+          "category": "Battery & Storage",
+          "description": "Track battery storage round-trip efficiency, state-of-charge degradation, cell thermal balancing, and peak-demand shaving dispatch.",
+          "recommendedAgentIds": [
+              "renewable-pv-telemetry-inverter-analyst",
+              "facilities-preventative-maintenance-planner"
+          ],
+          "rationale": "Maximizes commercial battery investment returns through automated peak-demand charge reduction and backup readiness.",
+          "whyReason": "Maximizes commercial battery investment returns through automated peak-demand charge reduction and backup readiness.",
+          "requiredDataSources": [
+              "Battery management system (BMS) telemetry",
+              "Facility 15-minute electrical demand intervals",
+              "Utility peak demand charge windows"
+          ],
+          "canRead": [
+              "Battery management system (BMS) telemetry",
+              "Facility 15-minute electrical demand intervals",
+              "Utility peak demand charge windows"
+          ],
+          "expectedOutputs": [
+              "Peak demand shaving dispatch schedules",
+              "Battery degradation and capacity loss exhibits",
+              "Thermal runaway safety alerts"
+          ],
+          "canPrepare": [
+              "Peak demand shaving dispatch schedules",
+              "Battery degradation and capacity loss exhibits",
+              "Thermal runaway safety alerts"
+          ],
+          "humanCheckpoints": [
+              "Emergency battery isolation shutdowns",
+              "BESS warranty replacement claims",
+              "Modifications to peak demand dispatch algorithms"
+          ],
+          "cannotApprove": [
+              "Emergency battery isolation shutdowns",
+              "BESS warranty replacement claims",
+              "Modifications to peak demand dispatch algorithms"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "renew-clean-energy-credit-rec-tracking",
+          "label": "Renewable Energy Certificate (REC) Minting & Audit Trails",
+          "category": "Compliance & Credits",
+          "description": "Compile certified meter generation logs to mint Renewable Energy Certificates (RECs) and SRECs in regional tracking registries.",
+          "recommendedAgentIds": [
+              "compliance-regulatory-affairs-specialist",
+              "renewable-solar-project-interconnect-planner"
+          ],
+          "rationale": "Unlocks critical environmental commodity revenue streams by maintaining tamper-evident generation certificates.",
+          "whyReason": "Unlocks critical environmental commodity revenue streams by maintaining tamper-evident generation certificates.",
+          "requiredDataSources": [
+              "Revenue-grade meter settlement files",
+              "Regional tracking system (PJM-GATS / WREGIS / NEPOOL) rules",
+              "Facility environmental attribute ownership contracts"
+          ],
+          "canRead": [
+              "Revenue-grade meter settlement files",
+              "Regional tracking system (PJM-GATS / WREGIS / NEPOOL) rules",
+              "Facility environmental attribute ownership contracts"
+          ],
+          "expectedOutputs": [
+              "REC minting verification packages",
+              "Registry generation upload exhibits",
+              "Annual clean energy compliance reports"
+          ],
+          "canPrepare": [
+              "REC minting verification packages",
+              "Registry generation upload exhibits",
+              "Annual clean energy compliance reports"
+          ],
+          "humanCheckpoints": [
+              "Approval of REC trade transfers",
+              "Execution of environmental attribute purchase agreements",
+              "Regulatory compliance attestations"
+          ],
+          "cannotApprove": [
+              "Approval of REC trade transfers",
+              "Execution of environmental attribute purchase agreements",
+              "Regulatory compliance attestations"
+          ],
+          "requiresApproval": true
+      }
+  ],
+  "veterinary": [
+      {
+          "id": "vet-patient-intake-complaint-triage",
+          "label": "Patient Intake & Urgent Vitals Symptom Triage",
+          "category": "Clinical Intake",
+          "description": "Capture presenting complaint narratives for companion animals, log vital signs, and triage emergent respiratory or trauma cases.",
+          "recommendedAgentIds": [
+              "veterinary-patient-intake-triage-assistant",
+              "customer-support-tier1-agent"
+          ],
+          "rationale": "Ensures life-threatening patient emergencies receive immediate veterinarian attention upon arrival.",
+          "whyReason": "Ensures life-threatening patient emergencies receive immediate veterinarian attention upon arrival.",
+          "requiredDataSources": [
+              "Owner intake presenting complaint questionnaires",
+              "Electronic medical records (EMR) patient histories",
+              "Emergency veterinary triage protocols"
+          ],
+          "canRead": [
+              "Owner intake presenting complaint questionnaires",
+              "Electronic medical records (EMR) patient histories",
+              "Emergency veterinary triage protocols"
+          ],
+          "expectedOutputs": [
+              "Clinical intake vital sign summaries",
+              "Triage severity color-coded alerts",
+              "Attending DVM exam room charts"
+          ],
+          "canPrepare": [
+              "Clinical intake vital sign summaries",
+              "Triage severity color-coded alerts",
+              "Attending DVM exam room charts"
+          ],
+          "humanCheckpoints": [
+              "Emergency resuscitation order authorizations",
+              "Triage priority overrides",
+              "Immediate patient sedation approvals"
+          ],
+          "cannotApprove": [
+              "Emergency resuscitation order authorizations",
+              "Triage priority overrides",
+              "Immediate patient sedation approvals"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "vet-rx-refill-controlled-drug-audit",
+          "label": "Prescription Refill & DEA Controlled Substance Ledger Verification",
+          "category": "Pharmacy & Compliance",
+          "description": "Audit prescription refill requests against patient annual exam records, calculate weight-adjusted dosages, and verify DEA Schedule II-IV logs.",
+          "recommendedAgentIds": [
+              "veterinary-pharmacy-refill-records-clerk",
+              "compliance-regulatory-affairs-specialist"
+          ],
+          "rationale": "Prevents medication dispensing errors and ensures 100% compliance with strict DEA veterinary pharmacy regulations.",
+          "whyReason": "Prevents medication dispensing errors and ensures 100% compliance with strict DEA veterinary pharmacy regulations.",
+          "requiredDataSources": [
+              "Patient clinical weight and drug history",
+              "DEA controlled substance perpetual inventory logs",
+              "Veterinary formulary dosage guidelines"
+          ],
+          "canRead": [
+              "Patient clinical weight and drug history",
+              "DEA controlled substance perpetual inventory logs",
+              "Veterinary formulary dosage guidelines"
+          ],
+          "expectedOutputs": [
+              "Prescription refill review sheets",
+              "DEA controlled drug balance audit logs",
+              "Pharmacy label instructions draft"
+          ],
+          "canPrepare": [
+              "Prescription refill review sheets",
+              "DEA controlled drug balance audit logs",
+              "Pharmacy label instructions draft"
+          ],
+          "humanCheckpoints": [
+              "Licensed Veterinarian (DVM) prescription authorization signature",
+              "Controlled drug discrepancy reports to DEA",
+              "Off-label drug use approvals"
+          ],
+          "cannotApprove": [
+              "Licensed Veterinarian (DVM) prescription authorization signature",
+              "Controlled drug discrepancy reports to DEA",
+              "Off-label drug use approvals"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "vet-surgery-prep-fasting-checklists",
+          "label": "Pre-Surgical Fasting Verification & Instrument Pack Checklists",
+          "category": "Surgical Operations",
+          "description": "Verify patient pre-anesthetic fasting, confirm pre-op blood chemistry panel clearances, and audit autoclave sterilization strips on instrument packs.",
+          "recommendedAgentIds": [
+              "veterinary-surgery-recovery-coordinator",
+              "veterinary-patient-intake-triage-assistant"
+          ],
+          "rationale": "Prevents surgical aspiration pneumonia and guarantees sterile operative fields for pet patients.",
+          "whyReason": "Prevents surgical aspiration pneumonia and guarantees sterile operative fields for pet patients.",
+          "requiredDataSources": [
+              "Owner pre-op fasting questionnaires",
+              "Pre-anesthetic blood panel lab results",
+              "Surgical instrument sterilization logs"
+          ],
+          "canRead": [
+              "Owner pre-op fasting questionnaires",
+              "Pre-anesthetic blood panel lab results",
+              "Surgical instrument sterilization logs"
+          ],
+          "expectedOutputs": [
+              "Pre-surgical clearance checklists",
+              "Anesthesia drug calculation worksheets",
+              "Sterile pack inspection certificates"
+          ],
+          "canPrepare": [
+              "Pre-surgical clearance checklists",
+              "Anesthesia drug calculation worksheets",
+              "Sterile pack inspection certificates"
+          ],
+          "humanCheckpoints": [
+              "DVM surgical clearance approval",
+              "Anesthesia cancellation due to elevated liver/kidney values",
+              "Surgical consent form execution"
+          ],
+          "cannotApprove": [
+              "DVM surgical clearance approval",
+              "Anesthesia cancellation due to elevated liver/kidney values",
+              "Surgical consent form execution"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "vet-rabies-vaccine-state-certificate-tracking",
+          "label": "State Rabies Vaccination Certificate & Microchip Registration",
+          "category": "Regulatory & Vaccines",
+          "description": "Generate official municipal rabies vaccination certificates, track booster due dates, and cross-reference microchip registration ledgers.",
+          "recommendedAgentIds": [
+              "veterinary-pharmacy-refill-records-clerk",
+              "customer-support-tier1-agent"
+          ],
+          "rationale": "Guarantees public health compliance with mandatory state rabies laws and ensures lost pets can be reunited with owners.",
+          "whyReason": "Guarantees public health compliance with mandatory state rabies laws and ensures lost pets can be reunited with owners.",
+          "requiredDataSources": [
+              "Administered vaccine lot numbers and expiration dates",
+              "State public health rabies certificate templates",
+              "Universal pet microchip registry records"
+          ],
+          "canRead": [
+              "Administered vaccine lot numbers and expiration dates",
+              "State public health rabies certificate templates",
+              "Universal pet microchip registry records"
+          ],
+          "expectedOutputs": [
+              "Official state rabies certificates",
+              "Microchip registration confirmations",
+              "Vaccine booster due reminder notices"
+          ],
+          "canPrepare": [
+              "Official state rabies certificates",
+              "Microchip registration confirmations",
+              "Vaccine booster due reminder notices"
+          ],
+          "humanCheckpoints": [
+              "DVM signature on official rabies certificates",
+              "Medical exemption waivers for geriatric pets",
+              "Animal control bite quarantine filings"
+          ],
+          "cannotApprove": [
+              "DVM signature on official rabies certificates",
+              "Medical exemption waivers for geriatric pets",
+              "Animal control bite quarantine filings"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "vet-postop-owner-discharge-briefs",
+          "label": "Post-Operative Discharge Instructions & Medication Briefs",
+          "category": "Client Communication",
+          "description": "Generate plain-language homecare discharge instructions for suture care, pain medication schedules, and e-collar restrictions.",
+          "recommendedAgentIds": [
+              "veterinary-surgery-recovery-coordinator",
+              "veterinary-patient-intake-triage-assistant"
+          ],
+          "rationale": "Prevents post-surgical complications at home and provides clear guidance for anxious pet owners.",
+          "whyReason": "Prevents post-surgical complications at home and provides clear guidance for anxious pet owners.",
+          "requiredDataSources": [
+              "Surgical operative notes",
+              "Post-op analgesic medication instructions",
+              "Patient recovery monitoring charts"
+          ],
+          "canRead": [
+              "Surgical operative notes",
+              "Post-op analgesic medication instructions",
+              "Patient recovery monitoring charts"
+          ],
+          "expectedOutputs": [
+              "Personalized owner discharge instructions",
+              "Post-op pain management administration schedules",
+              "Follow-up suture removal reminder alerts"
+          ],
+          "canPrepare": [
+              "Personalized owner discharge instructions",
+              "Post-op pain management administration schedules",
+              "Follow-up suture removal reminder alerts"
+          ],
+          "humanCheckpoints": [
+              "DVM discharge sign-off",
+              "Patient release to owner authorization",
+              "Emergency revision surgery decisions"
+          ],
+          "cannotApprove": [
+              "DVM discharge sign-off",
+              "Patient release to owner authorization",
+              "Emergency revision surgery decisions"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "vet-diagnostic-lab-reference-tracking",
+          "label": "External Reference Lab Pathology & Blood Chemistry Tracking",
+          "category": "Diagnostics & Lab",
+          "description": "Track outbound reference lab biopsy, pathology, and fungal culture specimens, logging chain-of-custody and notifying DVM upon result return.",
+          "recommendedAgentIds": [
+              "veterinary-pharmacy-refill-records-clerk",
+              "veterinary-surgery-recovery-coordinator"
+          ],
+          "rationale": "Eliminates lost diagnostic specimens and ensures critical histopathology results are reviewed without delay.",
+          "whyReason": "Eliminates lost diagnostic specimens and ensures critical histopathology results are reviewed without delay.",
+          "requiredDataSources": [
+              "Reference lab submission manifests",
+              "Specimen tracking barcodes",
+              "Electronic reference lab result interfaces"
+          ],
+          "canRead": [
+              "Reference lab submission manifests",
+              "Specimen tracking barcodes",
+              "Electronic reference lab result interfaces"
+          ],
+          "expectedOutputs": [
+              "Diagnostic lab status trackers",
+              "Abnormal result notification memos",
+              "Patient chart lab attachment confirmations"
+          ],
+          "canPrepare": [
+              "Diagnostic lab status trackers",
+              "Abnormal result notification memos",
+              "Patient chart lab attachment confirmations"
+          ],
+          "humanCheckpoints": [
+              "DVM diagnostic interpretation sign-off",
+              "Owner notification of critical oncology findings",
+              "Ordering specialized secondary pathology stains"
+          ],
+          "cannotApprove": [
+              "DVM diagnostic interpretation sign-off",
+              "Owner notification of critical oncology findings",
+              "Ordering specialized secondary pathology stains"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "vet-inpatient-hospitalization-vitals-logging",
+          "label": "Inpatient ICU Fluid Rate & Vitals Monitoring Logging",
+          "category": "Inpatient Care",
+          "description": "Log IV fluid infusion rates, urinary output, body temperature, and pain score metrics for hospitalized inpatient pets.",
+          "recommendedAgentIds": [
+              "veterinary-patient-intake-triage-assistant",
+              "veterinary-surgery-recovery-coordinator"
+          ],
+          "rationale": "Guarantees high-standard continuous care for critically ill patients recovering from surgery or toxicities.",
+          "whyReason": "Guarantees high-standard continuous care for critically ill patients recovering from surgery or toxicities.",
+          "requiredDataSources": [
+              "Inpatient ICU treatment flow sheets",
+              "IV infusion pump telemetry logs",
+              "Veterinary technician observation notes"
+          ],
+          "canRead": [
+              "Inpatient ICU treatment flow sheets",
+              "IV infusion pump telemetry logs",
+              "Veterinary technician observation notes"
+          ],
+          "expectedOutputs": [
+              "Hospitalization trend sheets",
+              "Fluid volume balance calculations",
+              "Critical patient status deterioration alerts"
+          ],
+          "canPrepare": [
+              "Hospitalization trend sheets",
+              "Fluid volume balance calculations",
+              "Critical patient status deterioration alerts"
+          ],
+          "humanCheckpoints": [
+              "Modifications to IV fluid infusion rates",
+              "Administration of emergency resuscitation drugs",
+              "Transfer to 24-hour critical care trauma centers"
+          ],
+          "cannotApprove": [
+              "Modifications to IV fluid infusion rates",
+              "Administration of emergency resuscitation drugs",
+              "Transfer to 24-hour critical care trauma centers"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "vet-preventative-wellness-plan-billing",
+          "label": "Pet Wellness Plan Schedule & Vaccine Due Reminders",
+          "category": "Billing & Wellness",
+          "description": "Audit monthly preventative pet wellness plan billing, verify service inclusions, and dispatch preventive care reminder notices.",
+          "recommendedAgentIds": [
+              "accounting-vendor-invoice-clerk",
+              "veterinary-pharmacy-refill-records-clerk"
+          ],
+          "rationale": "Generates predictable monthly recurring revenue for veterinary practices while keeping pets on preventative health schedules.",
+          "whyReason": "Generates predictable monthly recurring revenue for veterinary practices while keeping pets on preventative health schedules.",
+          "requiredDataSources": [
+              "Practice management wellness plan agreements",
+              "Patient preventative health history records",
+              "Recurring billing merchant transaction logs"
+          ],
+          "canRead": [
+              "Practice management wellness plan agreements",
+              "Patient preventative health history records",
+              "Recurring billing merchant transaction logs"
+          ],
+          "expectedOutputs": [
+              "Monthly wellness plan billing manifests",
+              "Preventative service utilization summaries",
+              "Upcoming dental/vaccine reminder notices"
+          ],
+          "canPrepare": [
+              "Monthly wellness plan billing manifests",
+              "Preventative service utilization summaries",
+              "Upcoming dental/vaccine reminder notices"
+          ],
+          "humanCheckpoints": [
+              "Cancellation of wellness plan memberships",
+              "Fee write-offs for deceased or relocated patients",
+              "Merchant payment dispute responses"
+          ],
+          "cannotApprove": [
+              "Cancellation of wellness plan memberships",
+              "Fee write-offs for deceased or relocated patients",
+              "Merchant payment dispute responses"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "vet-biohazard-sharps-compliance",
+          "label": "Clinic Sharps & Biohazardous Medical Waste Disposal Auditing",
+          "category": "Safety & Biohazard",
+          "description": "Audit clinic needle disposal containers, biological tissue waste manifests, and licensed medical courier pickup records.",
+          "recommendedAgentIds": [
+              "compliance-food-safety-haccp-clerk",
+              "veterinary-pharmacy-refill-records-clerk"
+          ],
+          "rationale": "Prevents accidental needle-stick injuries among staff and guarantees compliance with state biomedical waste statutes.",
+          "whyReason": "Prevents accidental needle-stick injuries among staff and guarantees compliance with state biomedical waste statutes.",
+          "requiredDataSources": [
+              "Biomedical waste manifest receipts",
+              "Sharps container fill-level inspection logs",
+              "OSHA bloodborne pathogen standards"
+          ],
+          "canRead": [
+              "Biomedical waste manifest receipts",
+              "Sharps container fill-level inspection logs",
+              "OSHA bloodborne pathogen standards"
+          ],
+          "expectedOutputs": [
+              "Biomedical waste compliance logbooks",
+              "Courier pickup verification certificates",
+              "Clinic sharps safety inspection reports"
+          ],
+          "canPrepare": [
+              "Biomedical waste compliance logbooks",
+              "Courier pickup verification certificates",
+              "Clinic sharps safety inspection reports"
+          ],
+          "humanCheckpoints": [
+              "Sign-off on state medical waste annual reports",
+              "Hazardous spill remediation approvals",
+              "Biohazard courier service contract awards"
+          ],
+          "cannotApprove": [
+              "Sign-off on state medical waste annual reports",
+              "Hazardous spill remediation approvals",
+              "Biohazard courier service contract awards"
+          ],
+          "requiresApproval": true
+      }
+  ],
+  "retail": [
+      {
+          "id": "retail-pos-cash-drawer-balancing",
+          "label": "End-of-Day POS Register Cash Drawer Over/Short Reconciliation",
+          "category": "Cash & Settlements",
+          "description": "Audit closing register drawer cash and coin counts against POS tender summaries, flagging cashier over/short discrepancies.",
+          "recommendedAgentIds": [
+              "retail-pos-cash-drawer-reconciliation-auditor",
+              "finance-finance-bookkeeper-controller"
+          ],
+          "rationale": "Maintains tight cash controls, catches cashier counting errors immediately, and secures daily bank deposits.",
+          "whyReason": "Maintains tight cash controls, catches cashier counting errors immediately, and secures daily bank deposits.",
+          "requiredDataSources": [
+              "POS register terminal closing tape summaries",
+              "Blind cashier cash and coin counts",
+              "Store safe cash drop ledgers"
+          ],
+          "canRead": [
+              "POS register terminal closing tape summaries",
+              "Blind cashier cash and coin counts",
+              "Store safe cash drop ledgers"
+          ],
+          "expectedOutputs": [
+              "Cash drawer over/short reconciliation sheets",
+              "Daily store cashier settlement summaries",
+              "Bank deposit bag manifests"
+          ],
+          "canPrepare": [
+              "Cash drawer over/short reconciliation sheets",
+              "Daily store cashier settlement summaries",
+              "Bank deposit bag manifests"
+          ],
+          "humanCheckpoints": [
+              "Approval of cash variance write-offs above threshold",
+              "Disciplinary action for recurring cash shortages",
+              "Bank deposit courier handoffs"
+          ],
+          "cannotApprove": [
+              "Approval of cash variance write-offs above threshold",
+              "Disciplinary action for recurring cash shortages",
+              "Bank deposit courier handoffs"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "retail-planogram-shelf-display-audit",
+          "label": "Visual Merchandising Planogram & Endcap Compliance Auditing",
+          "category": "Merchandising",
+          "description": "Audit retail shelf display compliance against corporate planograms, checking product facings, shelf spacing, and promotional endcaps.",
+          "recommendedAgentIds": [
+              "retail-merchandising-planogram-clerk",
+              "operations-operations-analyst"
+          ],
+          "rationale": "Maximizes retail sales per square foot by ensuring high-margin promotional products are properly displayed and merchandised.",
+          "whyReason": "Maximizes retail sales per square foot by ensuring high-margin promotional products are properly displayed and merchandised.",
+          "requiredDataSources": [
+              "Corporate visual merchandising planograms",
+              "In-store shelf audit photography",
+              "Promotional feature display schedules"
+          ],
+          "canRead": [
+              "Corporate visual merchandising planograms",
+              "In-store shelf audit photography",
+              "Promotional feature display schedules"
+          ],
+          "expectedOutputs": [
+              "Planogram compliance scorecards",
+              "Shelf reset photographic audit briefs",
+              "Out-of-compliance correction work orders"
+          ],
+          "canPrepare": [
+              "Planogram compliance scorecards",
+              "Shelf reset photographic audit briefs",
+              "Out-of-compliance correction work orders"
+          ],
+          "humanCheckpoints": [
+              "Sign-off on regional planogram deviations",
+              "Approval of vendor endcap lease agreements",
+              "Store seasonal floor reset sign-offs"
+          ],
+          "cannotApprove": [
+              "Sign-off on regional planogram deviations",
+              "Approval of vendor endcap lease agreements",
+              "Store seasonal floor reset sign-offs"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "retail-pos-exception-refund-fraud-screening",
+          "label": "POS Exception Reports & High-Risk Refund Fraud Screening",
+          "category": "Loss Prevention",
+          "description": "Audit POS transaction exception logs for suspicious patterns (post-voids, excessive non-receipt returns, manual overrides).",
+          "recommendedAgentIds": [
+              "retail-loss-prevention-shrink-specialist",
+              "security-incident-investigator"
+          ],
+          "rationale": "Pinpoints internal sweethearting and organized retail refund fraud before inventory losses escalate.",
+          "whyReason": "Pinpoints internal sweethearting and organized retail refund fraud before inventory losses escalate.",
+          "requiredDataSources": [
+              "POS transaction level exception journals",
+              "Cashier override and discount event logs",
+              "Customer return identification ledgers"
+          ],
+          "canRead": [
+              "POS transaction level exception journals",
+              "Cashier override and discount event logs",
+              "Customer return identification ledgers"
+          ],
+          "expectedOutputs": [
+              "POS exception alert summaries",
+              "Cashier refund anomaly dossiers",
+              "Loss prevention investigation briefs"
+          ],
+          "canPrepare": [
+              "POS exception alert summaries",
+              "Cashier refund anomaly dossiers",
+              "Loss prevention investigation briefs"
+          ],
+          "humanCheckpoints": [
+              "Authorization to interview employees regarding theft",
+              "Submission of criminal fraud reports to police",
+              "Employee termination sign-offs"
+          ],
+          "cannotApprove": [
+              "Authorization to interview employees regarding theft",
+              "Submission of criminal fraud reports to police",
+              "Employee termination sign-offs"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "retail-promotional-price-markdown-audit",
+          "label": "Shelf-Talker Price Tag & Promotional Markdown Verification",
+          "category": "Pricing & Audits",
+          "description": "Scan shelf-talker price tags to verify promotional markdowns match POS register master prices, preventing checkout scanner disputes.",
+          "recommendedAgentIds": [
+              "retail-merchandising-planogram-clerk",
+              "accounting-vendor-invoice-clerk"
+          ],
+          "rationale": "Prevents consumer protection scanner pricing penalties and speeds up register checkout flow.",
+          "whyReason": "Prevents consumer protection scanner pricing penalties and speeds up register checkout flow.",
+          "requiredDataSources": [
+              "POS pricing master database",
+              "Weekly promotional ad circulars",
+              "Handheld barcode shelf scanner audit logs"
+          ],
+          "canRead": [
+              "POS pricing master database",
+              "Weekly promotional ad circulars",
+              "Handheld barcode shelf scanner audit logs"
+          ],
+          "expectedOutputs": [
+              "Price tag discrepancy exception sheets",
+              "Markdown replacement tag print queues",
+              "Scanner audit compliance certificates"
+          ],
+          "canPrepare": [
+              "Price tag discrepancy exception sheets",
+              "Markdown replacement tag print queues",
+              "Scanner audit compliance certificates"
+          ],
+          "humanCheckpoints": [
+              "Approval of permanent retail price changes",
+              "Vendor markdown allowance claims",
+              "Weights and measures regulatory responses"
+          ],
+          "cannotApprove": [
+              "Approval of permanent retail price changes",
+              "Vendor markdown allowance claims",
+              "Weights and measures regulatory responses"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "retail-cycle-count-high-shrink-skus",
+          "label": "Cycle Count Variance Auditing on High-Shrinkage SKUs",
+          "category": "Inventory Control",
+          "description": "Conduct focused daily cycle counts on high-value, high-theft merchandise (electronics, designer apparel, cosmetics) to catch shrinkage.",
+          "recommendedAgentIds": [
+              "inventory-cycle-count-auditor",
+              "retail-loss-prevention-shrink-specialist"
+          ],
+          "rationale": "Maintains inventory ledger accuracy and identifies root-cause theft or inventory receiving leakage immediately.",
+          "whyReason": "Maintains inventory ledger accuracy and identifies root-cause theft or inventory receiving leakage immediately.",
+          "requiredDataSources": [
+              "Perpetual inventory item balance ledgers",
+              "Daily physical cycle count tallies",
+              "Known theft and damaged write-off logs"
+          ],
+          "canRead": [
+              "Perpetual inventory item balance ledgers",
+              "Daily physical cycle count tallies",
+              "Known theft and damaged write-off logs"
+          ],
+          "expectedOutputs": [
+              "Cycle count variance exhibits",
+              "High-shrink category trend reports",
+              "Inventory ledger adjustment requests"
+          ],
+          "canPrepare": [
+              "Cycle count variance exhibits",
+              "High-shrink category trend reports",
+              "Inventory ledger adjustment requests"
+          ],
+          "humanCheckpoints": [
+              "Approval of book-to-physical inventory write-offs",
+              "Security tag protocol upgrades",
+              "Store manager audit sign-offs"
+          ],
+          "cannotApprove": [
+              "Approval of book-to-physical inventory write-offs",
+              "Security tag protocol upgrades",
+              "Store manager audit sign-offs"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "retail-store-associate-shift-scheduling",
+          "label": "Store Front & Floor Associate Shift Coverage Scheduling",
+          "category": "Staffing & Scheduling",
+          "description": "Schedule store cashiers, sales associates, and stockers against projected hourly foot traffic and sales volume peaks.",
+          "recommendedAgentIds": [
+              "operations-shift-scheduling-coordinator",
+              "retail-merchandising-planogram-clerk"
+          ],
+          "rationale": "Prevents long register queues during peak shopping hours while optimizing store retail labor percentage targets.",
+          "whyReason": "Prevents long register queues during peak shopping hours while optimizing store retail labor percentage targets.",
+          "requiredDataSources": [
+              "Hourly foot traffic sensor data",
+              "Historical sales volume by daypart",
+              "Associate availability and skill matrices"
+          ],
+          "canRead": [
+              "Hourly foot traffic sensor data",
+              "Historical sales volume by daypart",
+              "Associate availability and skill matrices"
+          ],
+          "expectedOutputs": [
+              "Weekly store shift coverage rosters",
+              "Labor hours budget variance projections",
+              "Peak hour register staffing matrices"
+          ],
+          "canPrepare": [
+              "Weekly store shift coverage rosters",
+              "Labor hours budget variance projections",
+              "Peak hour register staffing matrices"
+          ],
+          "humanCheckpoints": [
+              "Approval of store overtime hours",
+              "Publishing final shift schedules to staff",
+              "Unexcused absence disciplinary reviews"
+          ],
+          "cannotApprove": [
+              "Approval of store overtime hours",
+              "Publishing final shift schedules to staff",
+              "Unexcused absence disciplinary reviews"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "retail-safe-drop-bank-deposit-manifest",
+          "label": "Store Safe Drop Manifest & Armored Courier Pickup Verification",
+          "category": "Cash Management",
+          "description": "Verify safe cash balances, compile bank deposit bag slips, and log armored car courier chain-of-custody transfer signatures.",
+          "recommendedAgentIds": [
+              "retail-pos-cash-drawer-reconciliation-auditor",
+              "accounting-vendor-invoice-clerk"
+          ],
+          "rationale": "Protects store cash assets from internal theft and ensures bulletproof bank deposit documentation.",
+          "whyReason": "Protects store cash assets from internal theft and ensures bulletproof bank deposit documentation.",
+          "requiredDataSources": [
+              "Store drop safe electronic audit logs",
+              "Bank deposit slip copies",
+              "Armored courier receipt manifests"
+          ],
+          "canRead": [
+              "Store drop safe electronic audit logs",
+              "Bank deposit slip copies",
+              "Armored courier receipt manifests"
+          ],
+          "expectedOutputs": [
+              "Armored courier transfer manifests",
+              "Safe balance audit certificates",
+              "Bank deposit reconciliation exhibits"
+          ],
+          "canPrepare": [
+              "Armored courier transfer manifests",
+              "Safe balance audit certificates",
+              "Bank deposit reconciliation exhibits"
+          ],
+          "humanCheckpoints": [
+              "Dual-custody safe opening authorizations",
+              "Bank deposit variance investigations",
+              "Armored transport service contract approvals"
+          ],
+          "cannotApprove": [
+              "Dual-custody safe opening authorizations",
+              "Bank deposit variance investigations",
+              "Armored transport service contract approvals"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "retail-vendor-direct-store-delivery-audit",
+          "label": "Direct Store Delivery (DSD) Packing Slip & Receiving Check-In",
+          "category": "Receiving & Logistics",
+          "description": "Inspect direct store vendor deliveries (beverages, bakery, snack foods) against purchase orders, verifying piece counts and expiration dates.",
+          "recommendedAgentIds": [
+              "shipping-receiving-dock-lead",
+              "retail-merchandising-planogram-clerk"
+          ],
+          "rationale": "Stops vendor short-shipments and damaged goods at the back door before they impact store inventory margins.",
+          "whyReason": "Stops vendor short-shipments and damaged goods at the back door before they impact store inventory margins.",
+          "requiredDataSources": [
+              "Store purchase orders",
+              "Vendor delivery invoices and packing slips",
+              "Electronic receiving handheld scanner entries"
+          ],
+          "canRead": [
+              "Store purchase orders",
+              "Vendor delivery invoices and packing slips",
+              "Electronic receiving handheld scanner entries"
+          ],
+          "expectedOutputs": [
+              "DSD delivery receiving vouchers",
+              "Shortage and damaged credit requests",
+              "Vendor delivery timeliness scorecards"
+          ],
+          "canPrepare": [
+              "DSD delivery receiving vouchers",
+              "Shortage and damaged credit requests",
+              "Vendor delivery timeliness scorecards"
+          ],
+          "humanCheckpoints": [
+              "Store manager delivery sign-off on short shipments",
+              "Vendor invoice price discrepancy approvals",
+              "Refusal of unauthorized shipments"
+          ],
+          "cannotApprove": [
+              "Store manager delivery sign-off on short shipments",
+              "Vendor invoice price discrepancy approvals",
+              "Refusal of unauthorized shipments"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "retail-omnichannel-bopis-fulfillment",
+          "label": "Buy-Online-Pickup-In-Store (BOPIS) Order Staging QA",
+          "category": "Omnichannel",
+          "description": "Track online customer store pickup orders, audit item pick accuracy, and monitor pickup hold staging time SLAs.",
+          "recommendedAgentIds": [
+              "warehousing-space-optimization-specialist",
+              "retail-pos-cash-drawer-reconciliation-auditor"
+          ],
+          "rationale": "Delivers seamless omnichannel fulfillment and prevents customer pickup friction at customer service counters.",
+          "whyReason": "Delivers seamless omnichannel fulfillment and prevents customer pickup friction at customer service counters.",
+          "requiredDataSources": [
+              "E-commerce omnichannel order feeds",
+              "Store staging bin location maps",
+              "Customer curbside pickup arrival timestamps"
+          ],
+          "canRead": [
+              "E-commerce omnichannel order feeds",
+              "Store staging bin location maps",
+              "Customer curbside pickup arrival timestamps"
+          ],
+          "expectedOutputs": [
+              "BOPIS staging pick-lists",
+              "Fulfillment SLA countdown dashboards",
+              "Unclaimed customer order return briefs"
+          ],
+          "canPrepare": [
+              "BOPIS staging pick-lists",
+              "Fulfillment SLA countdown dashboards",
+              "Unclaimed customer order return briefs"
+          ],
+          "humanCheckpoints": [
+              "Order cancellation and customer refund authorizations",
+              "Out-of-stock item substitution sign-offs",
+              "Curbside delivery dispute resolutions"
+          ],
+          "cannotApprove": [
+              "Order cancellation and customer refund authorizations",
+              "Out-of-stock item substitution sign-offs",
+              "Curbside delivery dispute resolutions"
+          ],
+          "requiresApproval": true
+      }
+  ],
+  "non-profit": [
+      {
+          "id": "nonprofit-grant-deliverable-milestone-tracking",
+          "label": "Grant Milestone Deadlines & Grantor Reporting Schedules",
+          "category": "Grant Management",
+          "description": "Track foundation and government grant reporting deadlines, compile program milestones, and assemble formal progress reports.",
+          "recommendedAgentIds": [
+              "nonprofit-grant-compliance-reporting-officer",
+              "compliance-regulatory-affairs-specialist"
+          ],
+          "rationale": "Prevents missed grant compliance deadlines and secures ongoing funding disbursements from major foundation grantors.",
+          "whyReason": "Prevents missed grant compliance deadlines and secures ongoing funding disbursements from major foundation grantors.",
+          "requiredDataSources": [
+              "Executed grant award agreement terms",
+              "Program milestone deliverable schedules",
+              "Foundation reporting portal specifications"
+          ],
+          "canRead": [
+              "Executed grant award agreement terms",
+              "Program milestone deliverable schedules",
+              "Foundation reporting portal specifications"
+          ],
+          "expectedOutputs": [
+              "Grant deliverable countdown matrices",
+              "Interim foundation progress report dossiers",
+              "Grant compliance audit exhibits"
+          ],
+          "canPrepare": [
+              "Grant deliverable countdown matrices",
+              "Interim foundation progress report dossiers",
+              "Grant compliance audit exhibits"
+          ],
+          "humanCheckpoints": [
+              "Board / Executive Director sign-off on grant submissions",
+              "Grant budget reallocation requests to funder",
+              "Contractual scope amendment approvals"
+          ],
+          "cannotApprove": [
+              "Board / Executive Director sign-off on grant submissions",
+              "Grant budget reallocation requests to funder",
+              "Contractual scope amendment approvals"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "nonprofit-donor-tax-receipt-generation",
+          "label": "501(c)(3) Charitable Tax Substantiation Receipts & Giving Acknowledgments",
+          "category": "Donor Stewardship",
+          "description": "Generate IRS-compliant charitable gift receipts with required no-goods-or-services disclosures and draft personalized donor stewardship letters.",
+          "recommendedAgentIds": [
+              "nonprofit-donor-stewardship-tax-receipt-clerk",
+              "accounting-vendor-invoice-clerk"
+          ],
+          "rationale": "Ensures donors receive immediate tax deduction substantiations and strengthens lifelong donor loyalty.",
+          "whyReason": "Ensures donors receive immediate tax deduction substantiations and strengthens lifelong donor loyalty.",
+          "requiredDataSources": [
+              "Donation bank deposit receipts",
+              "Online giving platform merchant settlement records",
+              "IRS 501(c)(3) charitable gift substantiation rules"
+          ],
+          "canRead": [
+              "Donation bank deposit receipts",
+              "Online giving platform merchant settlement records",
+              "IRS 501(c)(3) charitable gift substantiation rules"
+          ],
+          "expectedOutputs": [
+              "IRS-compliant donor tax substantiation letters",
+              "Personalized donor acknowledgment correspondence",
+              "Giving tier recognition lists"
+          ],
+          "canPrepare": [
+              "IRS-compliant donor tax substantiation letters",
+              "Personalized donor acknowledgment correspondence",
+              "Giving tier recognition lists"
+          ],
+          "humanCheckpoints": [
+              "Executive Director signature on major donor letters",
+              "Quid pro quo benefit valuation sign-offs",
+              "Disputed donor contribution adjustments"
+          ],
+          "cannotApprove": [
+              "Executive Director signature on major donor letters",
+              "Quid pro quo benefit valuation sign-offs",
+              "Disputed donor contribution adjustments"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "nonprofit-restricted-fund-spend-audit",
+          "label": "Restricted Grant Fund Expenditure & Allocation Verification",
+          "category": "Fund Accounting",
+          "description": "Audit general ledger program expenses against specific restricted donor designations, ensuring funds are spent strictly per grant agreements.",
+          "recommendedAgentIds": [
+              "nonprofit-grant-compliance-reporting-officer",
+              "finance-finance-bookkeeper-controller"
+          ],
+          "rationale": "Prevents unauthorized commingling of restricted funds and ensures pristine clean annual financial audits.",
+          "whyReason": "Prevents unauthorized commingling of restricted funds and ensures pristine clean annual financial audits.",
+          "requiredDataSources": [
+              "Restricted grant fund donor agreements",
+              "General ledger line-item expense vouchers",
+              "Functional expense allocation methodology"
+          ],
+          "canRead": [
+              "Restricted grant fund donor agreements",
+              "General ledger line-item expense vouchers",
+              "Functional expense allocation methodology"
+          ],
+          "expectedOutputs": [
+              "Restricted fund spend reconciliation scorecards",
+              "Grant budget vs. actual variance reports",
+              "Functional expense allocation exhibits"
+          ],
+          "canPrepare": [
+              "Restricted fund spend reconciliation scorecards",
+              "Grant budget vs. actual variance reports",
+              "Functional expense allocation exhibits"
+          ],
+          "humanCheckpoints": [
+              "Approval of indirect cost rate allocations",
+              "Release of restricted net assets",
+              "Year-end financial statement audit sign-offs"
+          ],
+          "cannotApprove": [
+              "Approval of indirect cost rate allocations",
+              "Release of restricted net assets",
+              "Year-end financial statement audit sign-offs"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "nonprofit-volunteer-orientation-background-checks",
+          "label": "Volunteer Orientation Attendance & Background Check Clearances",
+          "category": "Volunteer Operations",
+          "description": "Track volunteer applications, verify completed background checks for youth-facing programs, and log orientation handbook sign-offs.",
+          "recommendedAgentIds": [
+              "nonprofit-volunteer-program-coordinator",
+              "human-resources-recruiter"
+          ],
+          "rationale": "Protects vulnerable program beneficiaries and ensures safe, legally compliant volunteer operations.",
+          "whyReason": "Protects vulnerable program beneficiaries and ensures safe, legally compliant volunteer operations.",
+          "requiredDataSources": [
+              "Volunteer application dossiers",
+              "Third-party background check clearance records",
+              "Volunteer safety policy waivers"
+          ],
+          "canRead": [
+              "Volunteer application dossiers",
+              "Third-party background check clearance records",
+              "Volunteer safety policy waivers"
+          ],
+          "expectedOutputs": [
+              "Volunteer onboarding status matrices",
+              "Background check clearance rosters",
+              "Orientation attendance logs"
+          ],
+          "canPrepare": [
+              "Volunteer onboarding status matrices",
+              "Background check clearance rosters",
+              "Orientation attendance logs"
+          ],
+          "humanCheckpoints": [
+              "Disqualification of volunteers based on background findings",
+              "Waivers of volunteer age requirements",
+              "Volunteer dismissal approvals"
+          ],
+          "cannotApprove": [
+              "Disqualification of volunteers based on background findings",
+              "Waivers of volunteer age requirements",
+              "Volunteer dismissal approvals"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "nonprofit-donor-retention-tier-segmentation",
+          "label": "Donor Giving History Segmentation & Stewardship Touchpoint Planning",
+          "category": "Fundraising",
+          "description": "Analyze donor recency, frequency, and monetary (RFM) giving metrics to identify lapsed donors and plan personalized stewardship touches.",
+          "recommendedAgentIds": [
+              "nonprofit-donor-stewardship-tax-receipt-clerk",
+              "customer-support-tier1-agent"
+          ],
+          "rationale": "Increases donor retention rates and boosts average gift sizes through timely, tailored touchpoints.",
+          "whyReason": "Increases donor retention rates and boosts average gift sizes through timely, tailored touchpoints.",
+          "requiredDataSources": [
+              "Donor CRM transaction history",
+              "Campaign appeal response metrics",
+              "Major donor anniversary and milestone dates"
+          ],
+          "canRead": [
+              "Donor CRM transaction history",
+              "Campaign appeal response metrics",
+              "Major donor anniversary and milestone dates"
+          ],
+          "expectedOutputs": [
+              "Donor RFM segmentation matrices",
+              "Lapsed donor re-engagement campaign lists",
+              "Major donor personal touchpoint calendars"
+          ],
+          "canPrepare": [
+              "Donor RFM segmentation matrices",
+              "Lapsed donor re-engagement campaign lists",
+              "Major donor personal touchpoint calendars"
+          ],
+          "humanCheckpoints": [
+              "Approval of major gift ask amounts",
+              "Board-level donor stewardship assignments",
+              "Donor anonymity policy overrides"
+          ],
+          "cannotApprove": [
+              "Approval of major gift ask amounts",
+              "Board-level donor stewardship assignments",
+              "Donor anonymity policy overrides"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "nonprofit-board-financial-package-prep",
+          "label": "Monthly Board Governance Financial Packet & Cash Runway Prep",
+          "category": "Governance",
+          "description": "Compile monthly statement of activities, cash runway projections, and programmatic performance dashboard for board of directors review.",
+          "recommendedAgentIds": [
+              "finance-finance-bookkeeper-controller",
+              "nonprofit-grant-compliance-reporting-officer"
+          ],
+          "rationale": "Empowers board members with transparent fiduciary insights and ensures prudent nonprofit financial governance.",
+          "whyReason": "Empowers board members with transparent fiduciary insights and ensures prudent nonprofit financial governance.",
+          "requiredDataSources": [
+              "Monthly balance sheet & income statement",
+              "Cash flow forecast models",
+              "Key programmatic KPI trackers"
+          ],
+          "canRead": [
+              "Monthly balance sheet & income statement",
+              "Cash flow forecast models",
+              "Key programmatic KPI trackers"
+          ],
+          "expectedOutputs": [
+              "Executive board financial packet presentations",
+              "Nonprofit cash runway analysis exhibits",
+              "Fiduciary risk disclosure summaries"
+          ],
+          "canPrepare": [
+              "Executive board financial packet presentations",
+              "Nonprofit cash runway analysis exhibits",
+              "Fiduciary risk disclosure summaries"
+          ],
+          "humanCheckpoints": [
+              "Board treasurer review and sign-off",
+              "Approval of annual organizational budgets",
+              "Line-of-credit drawdown authorizations"
+          ],
+          "cannotApprove": [
+              "Board treasurer review and sign-off",
+              "Approval of annual organizational budgets",
+              "Line-of-credit drawdown authorizations"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "nonprofit-annual-form-990-audit-trail",
+          "label": "Form 990 Tax Return Expense Allocation & Governance Audit Trail",
+          "category": "Tax & Compliance",
+          "description": "Assemble program, management, and fundraising functional expense audit trails required for annual IRS Form 990 filing disclosures.",
+          "recommendedAgentIds": [
+              "legal-compliance-counsel",
+              "nonprofit-grant-compliance-reporting-officer"
+          ],
+          "rationale": "Ensures full public transparency, high Charity Navigator ratings, and statutory IRS tax-exempt status preservation.",
+          "whyReason": "Ensures full public transparency, high Charity Navigator ratings, and statutory IRS tax-exempt status preservation.",
+          "requiredDataSources": [
+              "Audited financial statement working papers",
+              "Employee time allocation survey results",
+              "Board conflict-of-interest disclosure filings"
+          ],
+          "canRead": [
+              "Audited financial statement working papers",
+              "Employee time allocation survey results",
+              "Board conflict-of-interest disclosure filings"
+          ],
+          "expectedOutputs": [
+              "Form 990 Part IX functional expense reconciliation",
+              "Schedule O governance disclosure drafts",
+              "Public disclosure compliance dossiers"
+          ],
+          "canPrepare": [
+              "Form 990 Part IX functional expense reconciliation",
+              "Schedule O governance disclosure drafts",
+              "Public disclosure compliance dossiers"
+          ],
+          "humanCheckpoints": [
+              "Board of directors approval of Form 990 prior to IRS filing",
+              "CPA audit opinion sign-offs",
+              "Conflict of interest resolution approvals"
+          ],
+          "cannotApprove": [
+              "Board of directors approval of Form 990 prior to IRS filing",
+              "CPA audit opinion sign-offs",
+              "Conflict of interest resolution approvals"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "nonprofit-fundraising-event-vendor-coordination",
+          "label": "Fundraising Gala & Campaign Event Logistics Coordination",
+          "category": "Events & Development",
+          "description": "Coordinate annual gala venue logistics, sponsor recognition tiers, silent auction item procurement, and volunteer shift assignments.",
+          "recommendedAgentIds": [
+              "nonprofit-volunteer-program-coordinator",
+              "operations-intake-scheduling-coordinator"
+          ],
+          "rationale": "Delivers memorable donor fundraising events that exceed revenue goals while keeping operational overhead lean.",
+          "whyReason": "Delivers memorable donor fundraising events that exceed revenue goals while keeping operational overhead lean.",
+          "requiredDataSources": [
+              "Gala event budget & vendor contracts",
+              "Corporate sponsorship commitment agreements",
+              "Auction item donation intake forms"
+          ],
+          "canRead": [
+              "Gala event budget & vendor contracts",
+              "Corporate sponsorship commitment agreements",
+              "Auction item donation intake forms"
+          ],
+          "expectedOutputs": [
+              "Event run-of-show timeline matrices",
+              "Corporate sponsor recognition checklists",
+              "Auction catalog item descriptions"
+          ],
+          "canPrepare": [
+              "Event run-of-show timeline matrices",
+              "Corporate sponsor recognition checklists",
+              "Auction catalog item descriptions"
+          ],
+          "humanCheckpoints": [
+              "Execution of venue and catering contracts",
+              "Authorization of major event budget overages",
+              "VIP seating chart approvals"
+          ],
+          "cannotApprove": [
+              "Execution of venue and catering contracts",
+              "Authorization of major event budget overages",
+              "VIP seating chart approvals"
+          ],
+          "requiresApproval": true
+      },
+      {
+          "id": "nonprofit-community-impact-metrics-synthesis",
+          "label": "Program Outcome Surveys & Beneficiary Impact Metrics Synthesis",
+          "category": "Impact & Evaluation",
+          "description": "Aggregate beneficiary survey feedback, synthesize quantitative impact metrics (meals served, students tutored, housing secured), and draft impact reports.",
+          "recommendedAgentIds": [
+              "operations-operations-analyst",
+              "nonprofit-volunteer-program-coordinator"
+          ],
+          "rationale": "Translates ground-level charitable activities into compelling, data-backed evidence for grantmakers and individual donors.",
+          "whyReason": "Translates ground-level charitable activities into compelling, data-backed evidence for grantmakers and individual donors.",
+          "requiredDataSources": [
+              "Beneficiary intake and exit survey responses",
+              "Program service delivery logbooks",
+              "Historical outcome benchmark targets"
+          ],
+          "canRead": [
+              "Beneficiary intake and exit survey responses",
+              "Program service delivery logbooks",
+              "Historical outcome benchmark targets"
+          ],
+          "expectedOutputs": [
+              "Annual community impact report exhibits",
+              "Quantitative outcome metric dashboards",
+              "Client success story narrative briefs"
+          ],
+          "canPrepare": [
+              "Annual community impact report exhibits",
+              "Quantitative outcome metric dashboards",
+              "Client success story narrative briefs"
+          ],
+          "humanCheckpoints": [
+              "Approval of public impact reports",
+              "Beneficiary privacy and media waiver verification",
+              "Release of outcome data to research partners"
+          ],
+          "cannotApprove": [
+              "Approval of public impact reports",
+              "Beneficiary privacy and media waiver verification",
+              "Release of outcome data to research partners"
+          ],
+          "requiresApproval": true
+      }
   ]
 };
 
@@ -12415,6 +15527,14 @@ function normalizeIndustryKey(industryOrPath?: string): string {
 
   // Path alias mapping
   const aliasMap: Record<string, string> = {
+    'construction-general-contracting': 'construction',
+    'hospitality-lodging': 'hospitality',
+    'insurance-claims-processing': 'insurance',
+    'automotive-dealerships-repair': 'automotive',
+    'renewable-energy-solar': 'renewable-energy',
+    'veterinary-animal-health': 'veterinary',
+    'retail-point-of-sale': 'retail',
+    'non-profit-foundations': 'non-profit',
     'legal-services': 'legal',
     'medical-practices': 'healthcare',
     'medical-practices-healthcare': 'healthcare',

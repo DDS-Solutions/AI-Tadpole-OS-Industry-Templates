@@ -1,0 +1,44 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Storefront Merchandising & POS Cash Audit",
+  "version": "1.0.0",
+  "author": "AI-Tadpole-OS Core Team",
+  "description": "Retail: Register cash drawer variance audits, loss prevention shrink tracking, visual merchandising resets, and promotional price tag verification.",
+  "industry": "Retail & Point of Sale",
+  "tags": [
+    "retail",
+    "pos",
+    "merchandising",
+    "inventory",
+    "loss-prevention"
+  ],
+  "defaults": {
+    "model": "gemma4:31b",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "retail-pos-cash-drawer-reconciliation-auditor",
+      "path": "agents/retail-pos-cash-drawer-reconciliation-auditor.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "retail-merchandising-planogram-clerk",
+      "path": "agents/retail-merchandising-planogram-clerk.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "retail-loss-prevention-shrink-specialist",
+      "path": "agents/retail-loss-prevention-shrink-specialist.json",
+      "supervisor": null,
+      "priority": "normal"
+    }
+  ],
+  "agents": [
+    "retail-pos-cash-drawer-reconciliation-auditor",
+    "retail-merchandising-planogram-clerk",
+    "retail-loss-prevention-shrink-specialist"
+  ]
+}

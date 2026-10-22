@@ -1,0 +1,44 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "name": "Veterinary Clinic Triage & Prescription Desk",
+  "version": "1.0.0",
+  "author": "AI-Tadpole-OS Core Team",
+  "description": "Veterinary Practice: Patient check-in triage, rabies vaccination records verification, prescription refill prep, and surgical prep checklists.",
+  "industry": "Veterinary & Animal Health",
+  "tags": [
+    "veterinary",
+    "animal-health",
+    "prescriptions",
+    "pet-care",
+    "triage"
+  ],
+  "defaults": {
+    "model": "gemma4:31b",
+    "temperature": 0.2
+  },
+  "roster": [
+    {
+      "id": "veterinary-patient-intake-triage-assistant",
+      "path": "agents/veterinary-patient-intake-triage-assistant.json",
+      "supervisor": null,
+      "priority": "critical"
+    },
+    {
+      "id": "veterinary-pharmacy-refill-records-clerk",
+      "path": "agents/veterinary-pharmacy-refill-records-clerk.json",
+      "supervisor": null,
+      "priority": "normal"
+    },
+    {
+      "id": "veterinary-surgery-recovery-coordinator",
+      "path": "agents/veterinary-surgery-recovery-coordinator.json",
+      "supervisor": null,
+      "priority": "normal"
+    }
+  ],
+  "agents": [
+    "veterinary-patient-intake-triage-assistant",
+    "veterinary-pharmacy-refill-records-clerk",
+    "veterinary-surgery-recovery-coordinator"
+  ]
+}

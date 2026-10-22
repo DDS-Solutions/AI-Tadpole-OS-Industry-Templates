@@ -76,3 +76,13 @@ export function useDialog<T extends HTMLElement = HTMLDivElement>(onClose: () =>
 
   return dialogRef;
 }
+
+export function getModalMotionProps(reducedMotion: boolean) {
+  return {
+    initial: reducedMotion ? false : { scale: 0.95, y: 15 },
+    animate: { scale: 1, y: 0 },
+    exit: reducedMotion ? undefined : { scale: 0.95, y: 15 },
+    transition: { type: 'spring' as const, stiffness: 350, damping: 25 },
+  };
+}
+

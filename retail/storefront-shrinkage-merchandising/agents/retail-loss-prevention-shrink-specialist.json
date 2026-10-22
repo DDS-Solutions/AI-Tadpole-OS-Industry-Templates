@@ -1,0 +1,22 @@
+{
+  "id": "retail-loss-prevention-shrink-specialist",
+  "name": "Loss Prevention Shrink Specialist",
+  "role": "Loss Prevention & Shrinkage Analyst",
+  "department": "Compliance",
+  "description": "Analyzes POS exception reports for refund fraud, correlates stock cycle count variances with high-shrink SKUs, and logs security incidents.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You are the Loss Prevention Shrink Specialist. Analyze POS exception reports for refund fraud, correlate cycle counts with high-shrink SKUs, and log incidents. Follow the associated workflow SOP."
+  },
+  "skills": [
+    "grep_search",
+    "read_file"
+  ],
+  "workflows": [
+    "shrink_incident_audit"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

@@ -1151,5 +1151,125 @@
       "read_file"
     ],
     "content_sha256": "sha256:eb94c09330f47bd6fe26968f898cab18e2c95a203ac18b9fb78a8da2829b7650"
+  },
+  {
+    "id": "construction-site-safety-subcontractor",
+    "name": "Commercial Jobsite & Subcontractor Operations",
+    "description": "Construction: Daily jobsite safety compliance, subcontractor milestone tracking, OSHA hazard logs, and AIA pay-application auditing.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "construction/site-safety-subcontractor",
+    "required_models": [
+      "gemma4:31b"
+    ],
+    "required_skills": [
+      "grep_search",
+      "read_file"
+    ],
+    "content_sha256": "sha256:26b7ddb31aa30d6e046678e147c5e3e61a70cdeb60b75cf5ffc9fe5981cca531"
+  },
+  {
+    "id": "hospitality-guest-ops-pms",
+    "name": "Hotel Front Desk & Housekeeping Operations",
+    "description": "Hospitality: Guest concierge requests, room turnover dispatch, PMS reservation reconciliation, and night-audit balancing.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "hospitality/guest-ops-pms",
+    "required_models": [
+      "gemma4:31b"
+    ],
+    "required_skills": [
+      "grep_search",
+      "read_file"
+    ],
+    "content_sha256": "sha256:250cbf1c0c823779a7f7b00d47589f644aa201eb1758ba5f70a85ad5044e475d"
+  },
+  {
+    "id": "insurance-claims-triage-policy",
+    "name": "Claims Intake & First Notice of Loss (FNOL)",
+    "description": "Insurance: FNOL incident intake, policy coverage limits verification, loss adjuster triage, and claims reserve estimation.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "insurance/claims-triage-policy",
+    "required_models": [
+      "gemma4:31b"
+    ],
+    "required_skills": [
+      "grep_search",
+      "read_file"
+    ],
+    "content_sha256": "sha256:ef7c5d64f46079c51f06671cecbb91fa291f32f5bf547468fa71769813e48b9b"
+  },
+  {
+    "id": "automotive-service-bay-parts",
+    "name": "Auto Dealership Service Bay & Parts Desk",
+    "description": "Automotive: Repair order (RO) dispatch, OEM warranty claim submissions, parts inventory reorders, and customer service updates.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "automotive/service-bay-parts",
+    "required_models": [
+      "gemma4:31b"
+    ],
+    "required_skills": [
+      "grep_search",
+      "read_file"
+    ],
+    "content_sha256": "sha256:3d433d340c7826dc129a2c9c5bc1e7396e28f6b25813749102d06c794b103dbe"
+  },
+  {
+    "id": "renewable-solar-installation-interconnect",
+    "name": "Solar Field Operations & Grid Interconnect",
+    "description": "Renewable Energy: PV installation milestone tracking, utility interconnect permitting, net metering telemetry, and preventative inverter maintenance.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "renewable-energy/solar-installation-interconnect",
+    "required_models": [
+      "gemma4:31b"
+    ],
+    "required_skills": [
+      "grep_search",
+      "read_file"
+    ],
+    "content_sha256": "sha256:1132bd7813d33f5bfeebf149d8e42633bf55cccb5d547a2a0e1873dd95de855e"
+  },
+  {
+    "id": "veterinary-clinic-patient-triage",
+    "name": "Veterinary Clinic Triage & Prescription Desk",
+    "description": "Veterinary Practice: Patient check-in triage, rabies vaccination records verification, prescription refill prep, and surgical prep checklists.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "veterinary/clinic-patient-triage",
+    "required_models": [
+      "gemma4:31b"
+    ],
+    "required_skills": [
+      "grep_search",
+      "read_file"
+    ],
+    "content_sha256": "sha256:77cf8e8f52c10a5abd75c9741ae2270ffb4f7977ea357458262128de1a32a11c"
+  },
+  {
+    "id": "retail-storefront-shrinkage-merchandising",
+    "name": "Storefront Merchandising & POS Cash Audit",
+    "description": "Retail: Register cash drawer variance audits, loss prevention shrink tracking, visual merchandising resets, and promotional price tag verification.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "retail/storefront-shrinkage-merchandising",
+    "required_models": [
+      "gemma4:31b"
+    ],
+    "required_skills": [
+      "grep_search",
+      "read_file"
+    ],
+    "content_sha256": "sha256:bfae92cf44264bba104de99a5cdf10f2fbfe87e59a798e6c99565d914a3c95dc"
+  },
+  {
+    "id": "non-profit-grant-donor-stewardship",
+    "name": "Grant Compliance & Donor Stewardship Swarm",
+    "description": "Non-Profit: Grant deadline tracking, restricted fund spend auditing, donor acknowledgment letter generation, and 501(c)(3) tax receipting.",
+    "repository_url": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates.git",
+    "path": "non-profit/grant-donor-stewardship",
+    "required_models": [
+      "gemma4:31b"
+    ],
+    "required_skills": [
+      "grep_search",
+      "read_file"
+    ],
+    "content_sha256": "sha256:3c2749499e6659d92de5489201115349e242b942325151216e8e84f25b9cbe84"
   }
 ]

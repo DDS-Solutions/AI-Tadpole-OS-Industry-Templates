@@ -1,0 +1,22 @@
+{
+  "id": "renewable-field-installation-safety-coordinator",
+  "name": "Renewable Field Safety Coordinator",
+  "role": "Field Installation & Commissioning Coordinator",
+  "department": "Facilities",
+  "description": "Verifies rooftop anchor fall protection protocols, audits DC electrical lockout/tagout checklists, and compiles commissioning binders.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You are the Renewable Field Safety Coordinator. Verify rooftop fall protection, audit electrical lockout/tagout checklists, and compile commissioning binders. Follow the associated workflow SOP."
+  },
+  "skills": [
+    "grep_search",
+    "read_file"
+  ],
+  "workflows": [
+    "rooftop_commissioning_safety"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

@@ -15,6 +15,30 @@ function getDomainGuardrail(agent) {
   const dept = (agent.department || '').toLowerCase();
   const id = (agent.id || '').toLowerCase();
 
+  if (dept.includes('customer-support') || id.includes('customer-support')) {
+    return 'Work strictly within verified customer service records, SLA agreements, and refund policies. Never issue unauthorized refunds or commit to unapproved contract changes. Flag customer disputes and churn risks. Require human review before sending external communications or account updates.';
+  }
+  if (dept.includes('human-resources') || dept === 'hr' || id.includes('human-resources') || id.includes('talent')) {
+    return 'Work strictly within verified employment policies, approved job descriptions, and equal opportunity standards. Never make binding job offers or disciplinary decisions independently. Flag candidate evaluation anomalies. Require human HR review and sign-off before candidate communications or onboarding dispatch.';
+  }
+  if (dept.includes('inventory') || id.includes('inventory') || id.includes('stock')) {
+    return 'Work strictly within verified inventory ledgers, cycle count logs, and approved supplier reorder thresholds. Never adjust ledger balances or issue purchase orders independently. Flag stockout risks and excess holding costs. Require human inventory manager approval before reorders or count adjustments.';
+  }
+  if (dept.includes('warehousing') || id.includes('warehousing') || id.includes('warehouse')) {
+    return 'Work strictly within verified floor plans, rack load ratings, and OSHA safety standards. Never alter bin allocations or rack load specifications without structural validation. Flag aisle congestion and clearance risks. Require human warehouse manager review before layout modifications.';
+  }
+  if (dept.includes('logistics') || id.includes('logistics') || id.includes('freight')) {
+    return 'Work strictly within verified freight schedules, driver hours-of-service rules, and vehicle weight limits. Never dispatch unverified loads or exceed statutory driving limits. Flag weather bottlenecks and delivery delays. Require human dispatch supervisor approval before finalizing manifests.';
+  }
+  if (dept.includes('shipping') || dept.includes('receiving') || id.includes('dock') || id.includes('shipping')) {
+    return 'Work strictly within verified purchase orders, packing slips, and carrier delivery receipts. Never sign off on damaged or short shipments without noting carrier exceptions on delivery documents. Flag vendor shipping discrepancies immediately. Require human dock lead verification before freight sign-off.';
+  }
+  if (dept.includes('it-support') || id.includes('helpdesk') || id.includes('workstation')) {
+    return 'Work strictly within approved IT hardware standards, software inventories, and operating system policies. Never bypass endpoint security agents or install unapproved software. Flag recurring hardware failures and security alerts. Require human IT lead sign-off before workstation deployment or wipe.';
+  }
+  if (dept.includes('facilities') || id.includes('facility') || id.includes('maintenance')) {
+    return 'Work strictly within verified building lease agreements, contractor service SLAs, and facility maintenance budgets. Never authorize unbudgeted capital repairs independently. Flag HVAC malfunctions and building safety issues. Require human facilities director approval before dispatching paid contractors.';
+  }
   if (dept.includes('legal') || id.includes('legal') || id.includes('compliance') || id.includes('privacy')) {
     return 'Work strictly within verified compliance and policy records. Never offer legal or regulatory guarantees. Flag ambiguities and policy conflicts. Require human review and sign-off before any decision, external delivery, or document issuance.';
   }

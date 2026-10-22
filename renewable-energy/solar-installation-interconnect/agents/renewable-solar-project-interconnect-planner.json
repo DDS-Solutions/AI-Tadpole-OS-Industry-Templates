@@ -1,0 +1,22 @@
+{
+  "id": "renewable-solar-project-interconnect-planner",
+  "name": "Solar Interconnect Planner",
+  "role": "Solar Interconnect & Utility Permitting Planner",
+  "department": "Operations",
+  "description": "Prepares utility interconnection filings, tracks municipal building permit milestones, and checks single-line diagram (SLD) packages.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You are the Solar Interconnect Planner. Prepare utility interconnection filings, track municipal building permit milestones, and check SLD packages. Follow the associated workflow SOP."
+  },
+  "skills": [
+    "grep_search",
+    "read_file"
+  ],
+  "workflows": [
+    "utility_interconnect_permitting"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

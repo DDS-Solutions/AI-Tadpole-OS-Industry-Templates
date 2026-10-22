@@ -1,7 +1,8 @@
 import { useId, useState } from 'react';
-import { Database, X } from 'lucide-react';
+import { Database } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { useDialog } from './useDialog';
+import { useDialog, getModalMotionProps } from './useDialog';
+import { DialogHeader } from './DialogHeader';
 import { DialogFooter } from './DialogFooter';
 import type { MCPConnector } from '../../types';
 
@@ -44,29 +45,19 @@ export default function McpEditor({ connector, onClose, onSave }: McpEditorProps
       aria-describedby={`${fieldId}-summary`}
       tabIndex={-1}
       onSubmit={event => { event.preventDefault(); handleSave(); }}
-      initial={reducedMotion ? false : { scale: 0.95, y: 15 }}
-      animate={{ scale: 1, y: 0 }}
-      exit={reducedMotion ? undefined : { scale: 0.95, y: 15 }}
-      transition={{ type: "spring", stiffness: 350, damping: 25 }}
+      {...getModalMotionProps(Boolean(reducedMotion))}
       className="sovereign-panel w-full max-w-2xl max-h-[calc(100dvh-2rem)] flex flex-col bg-zinc-900 border-zinc-800 p-0 overflow-hidden"
     >
-      {/* Header */}
-      <div className="flex shrink-0 justify-between items-start gap-3 px-4 sm:px-6 py-4 border-b border-zinc-850" style={{ borderColor: 'color-mix(in srgb, var(--color-zinc-800) 40%, transparent)' }}>
-        <div>
-          <h3 id={`${fieldId}-title`} className="text-lg font-bold text-white flex items-center gap-2">
-            <Database className="w-5 h-5 shrink-0 text-cyber-green" /> Configure MCP Data Connector
-          </h3>
-          <p id={`${fieldId}-summary`} className="text-xs text-zinc-400 mt-1 leading-relaxed">Name, category, and blueprint path are required.</p>
-        </div>
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Close connector editor"
-          className="focus-sovereign shrink-0 min-h-11 min-w-11 flex items-center justify-center text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-800 transition-colors cursor-pointer"
-        >
-          <X className="w-5 h-5" />
-        </button>
-      </div>
+      <DialogHeader
+        id={`${fieldId}-title`}
+        summaryId={`${fieldId}-summary`}
+        title="Configure MCP Data Connector"
+        summary="Name, category, and blueprint path are required."
+        icon={<Database className="w-5 h-5 shrink-0 text-cyber-green" />}
+        onClose={onClose}
+        closeAriaLabel="Close connector editor"
+        borderColor="color-mix(in srgb, var(--color-zinc-800) 40%, transparent)"
+      />
 
       {/* Form Body */}
       <div className="min-h-0 overflow-y-auto custom-scrollbar p-4 sm:p-6 space-y-5">

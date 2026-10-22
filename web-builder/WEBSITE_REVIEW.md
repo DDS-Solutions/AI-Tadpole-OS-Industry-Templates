@@ -33,7 +33,7 @@ Reviewed and updated October 15, 2026. Scope: the React/TypeScript website in `w
 - All 91 tests across 10 suites pass, including draft, permission, connector readiness, guided flow, validation, and archive regressions.
 - TypeScript and the Vite production build pass.
 - Production asset references use the configured deployment base path.
-- The production preview, favicon, and all three catalogs respond with HTTP 200. Packaged data contains 73 public templates, 295 personas, and four configured connectors.
+- The production preview, favicon, and all three catalogs respond with HTTP 200. Packaged data contains 73 public templates, 315 personas, and four configured connectors.
 - The initial test run hit a sandbox temporary-file cache error. Re-running with a workspace-local temporary directory completed successfully.
 
 ## Remaining validation and boundaries

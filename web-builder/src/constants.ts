@@ -358,7 +358,111 @@ export const INDUSTRY_MAP = [
       "footprint",
       "macroeconomics"
     ]
-  }
+  },
+{
+  "name": "Construction & General Contracting",
+  "path": "construction",
+  "keywords": [
+    "construction",
+    "contractor",
+    "builder",
+    "osha",
+    "subcontractor",
+    "jobsite",
+    "permits"
+  ]
+},
+{
+  "name": "Hospitality & Lodging",
+  "path": "hospitality",
+  "keywords": [
+    "hospitality",
+    "hotel",
+    "lodging",
+    "resort",
+    "guest",
+    "concierge",
+    "housekeeping"
+  ]
+},
+{
+  "name": "Insurance & Claims Processing",
+  "path": "insurance",
+  "keywords": [
+    "insurance",
+    "claims",
+    "underwriting",
+    "policy",
+    "adjuster",
+    "coverage",
+    "fnol"
+  ]
+},
+{
+  "name": "Automotive Dealerships & Repair",
+  "path": "automotive",
+  "keywords": [
+    "automotive",
+    "dealer",
+    "repair",
+    "service bay",
+    "mechanic",
+    "parts",
+    "warranty"
+  ]
+},
+{
+  "name": "Renewable Energy & Solar",
+  "path": "renewable-energy",
+  "keywords": [
+    "solar",
+    "energy",
+    "renewables",
+    "grid",
+    "interconnect",
+    "inverter",
+    "clean energy"
+  ]
+},
+{
+  "name": "Veterinary & Animal Health",
+  "path": "veterinary",
+  "keywords": [
+    "veterinary",
+    "vet",
+    "animal",
+    "pet",
+    "clinic",
+    "prescription",
+    "vaccine"
+  ]
+},
+{
+  "name": "Retail & Point of Sale",
+  "path": "retail",
+  "keywords": [
+    "retail",
+    "store",
+    "pos",
+    "merchandising",
+    "cashier",
+    "inventory",
+    "shrinkage"
+  ]
+},
+{
+  "name": "Non-Profit & Foundations",
+  "path": "non-profit",
+  "keywords": [
+    "nonprofit",
+    "non-profit",
+    "foundation",
+    "grant",
+    "donor",
+    "fundraising",
+    "501c3"
+  ]
+}
 ];
 
 export const REGISTRY: TemplateItem[] = [
@@ -430,6 +534,14 @@ export const REGISTRY: TemplateItem[] = [
   { id: "creative-equipment-procurement", name: "Studio Equipment Purchasing & Asset Inventory", description: "Edge Operations: Camera/lens procurement, studio shipping logs, asset receiving, and hardware QA.", industry: "Media & Creative", path: "creative/equipment-procurement", tags: ["creative", "procurement", "inventory", "hardware-qa", "cameras"], company_size: 25 },
   { id: "field-service-operations-25", name: "Small Field Service Operations (25 Seats)", description: "Dispatch, estimate and work-order preparation, customer follow-up, and daily exception review for small appointment-based field-service teams.", industry: "Field Services", path: "field-services/operations-25", tags: ["field-service", "dispatch", "estimates", "work-orders", "customer-care", "small-business"], company_size: 25 },
   { id: "wholesale-b2b-operations-25", name: "Small Wholesale B2B Operations (25 Seats)", description: "Quote preparation, account follow-up, replenishment planning, and fulfillment exception control for small wholesalers and distributors.", industry: "Wholesale & Distribution", path: "wholesale-distribution/b2b-operations-25", tags: ["wholesale", "b2b", "sales-operations", "purchasing", "inventory", "fulfillment", "small-business"], company_size: 25 },
+  {"id": "construction-site-safety-subcontractor", "name": "Commercial Jobsite & Subcontractor Operations", "description": "Daily jobsite safety compliance, subcontractor milestone tracking, OSHA hazard logs, and AIA pay-application auditing.", "industry": "Construction & General Contracting", "path": "construction/site-safety-subcontractor", "tags": ["construction", "safety", "subcontractors", "osha", "milestones"], "company_size": 25},
+  {"id": "hospitality-guest-ops-pms", "name": "Hotel Front Desk & Housekeeping Operations", "description": "Guest concierge requests, room turnover dispatch, PMS reservation reconciliation, and night-audit balancing.", "industry": "Hospitality & Lodging", "path": "hospitality/guest-ops-pms", "tags": ["hospitality", "hotel", "housekeeping", "reservations", "concierge"], "company_size": 25},
+  {"id": "insurance-claims-triage-policy", "name": "Claims Intake & First Notice of Loss (FNOL)", "description": "FNOL incident intake, policy coverage limits verification, loss adjuster triage, and claims reserve estimation.", "industry": "Insurance & Claims Processing", "path": "insurance/claims-triage-policy", "tags": ["insurance", "claims", "fnol", "underwriting", "policy"], "company_size": 25},
+  {"id": "automotive-service-bay-parts", "name": "Auto Dealership Service Bay & Parts Desk", "description": "Repair order (RO) dispatch, OEM warranty claim submissions, parts inventory reorders, and customer service updates.", "industry": "Automotive Dealerships & Repair", "path": "automotive/service-bay-parts", "tags": ["automotive", "dealership", "repair", "service-bay", "parts"], "company_size": 25},
+  {"id": "renewable-solar-installation-interconnect", "name": "Solar Field Operations & Grid Interconnect", "description": "PV installation milestone tracking, utility interconnect permitting, net metering telemetry, and preventative inverter maintenance.", "industry": "Renewable Energy & Solar", "path": "renewable-energy/solar-installation-interconnect", "tags": ["solar", "renewables", "grid-interconnect", "clean-energy", "telemetry"], "company_size": 25},
+  {"id": "veterinary-clinic-patient-triage", "name": "Veterinary Clinic Triage & Prescription Desk", "description": "Patient check-in triage, rabies vaccination records verification, prescription refill prep, and surgical prep checklists.", "industry": "Veterinary & Animal Health", "path": "veterinary/clinic-patient-triage", "tags": ["veterinary", "animal-health", "prescriptions", "pet-care", "triage"], "company_size": 25},
+  {"id": "retail-storefront-shrinkage-merchandising", "name": "Storefront Merchandising & POS Cash Audit", "description": "Register cash drawer variance audits, loss prevention shrink tracking, visual merchandising resets, and promotional price tag verification.", "industry": "Retail & Point of Sale", "path": "retail/storefront-shrinkage-merchandising", "tags": ["retail", "pos", "merchandising", "inventory", "loss-prevention"], "company_size": 25},
+  {"id": "non-profit-grant-donor-stewardship", "name": "Grant Compliance & Donor Stewardship Swarm", "description": "Grant deadline tracking, restricted fund spend auditing, donor acknowledgment letter generation, and 501(c)(3) tax receipting.", "industry": "Non-Profit & Foundations", "path": "non-profit/grant-donor-stewardship", "tags": ["non-profit", "grants", "donors", "fundraising", "compliance"], "company_size": 25}
 ];
 
 export const INDUSTRY_CODES_MAP: Record<string, { code: string; label: string }[]> = {
@@ -774,5 +886,85 @@ export const INDUSTRY_CODES_MAP: Record<string, { code: string; label: string }[
       "code": "SIC 5084",
       "label": "5084 - Industrial Machinery and Equipment"
     }
+  ],
+  "Construction & General Contracting": [
+      {
+          "code": "NAICS 236220",
+          "label": "236220 - Commercial and Institutional Building Construction"
+      },
+      {
+          "code": "SIC 1542",
+          "label": "1542 - General Contractors-Nonresidential Buildings"
+      }
+  ],
+  "Hospitality & Lodging": [
+      {
+          "code": "NAICS 721110",
+          "label": "721110 - Hotels (except Casino Hotels) and Motels"
+      },
+      {
+          "code": "SIC 7011",
+          "label": "7011 - Hotels and Motels"
+      }
+  ],
+  "Insurance & Claims Processing": [
+      {
+          "code": "NAICS 524210",
+          "label": "524210 - Insurance Agencies and Brokerages"
+      },
+      {
+          "code": "SIC 6411",
+          "label": "6411 - Insurance Agents, Brokers, and Service"
+      }
+  ],
+  "Automotive Dealerships & Repair": [
+      {
+          "code": "NAICS 811111",
+          "label": "811111 - General Automotive Repair"
+      },
+      {
+          "code": "SIC 7538",
+          "label": "7538 - General Automotive Repair Shops"
+      }
+  ],
+  "Renewable Energy & Solar": [
+      {
+          "code": "NAICS 238210",
+          "label": "238210 - Solar Power System Installation"
+      },
+      {
+          "code": "SIC 1731",
+          "label": "1731 - Solar Energy Contractors"
+      }
+  ],
+  "Veterinary & Animal Health": [
+      {
+          "code": "NAICS 541940",
+          "label": "541940 - Veterinary Services"
+      },
+      {
+          "code": "SIC 0742",
+          "label": "0742 - Veterinary Services for Animal Specialties"
+      }
+  ],
+  "Retail & Point of Sale": [
+      {
+          "code": "NAICS 452210",
+          "label": "452210 - Department Stores"
+      },
+      {
+          "code": "SIC 5311",
+          "label": "5311 - Department Stores"
+      }
+  ],
+  "Non-Profit & Foundations": [
+      {
+          "code": "NAICS 813211",
+          "label": "813211 - Grantmaking Foundations"
+      },
+      {
+          "code": "SIC 6732",
+          "label": "6732 - Educational, Religious, and Charitable Trusts"
+      }
   ]
 };

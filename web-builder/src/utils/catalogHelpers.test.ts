@@ -159,7 +159,7 @@ describe('catalogHelpers', () => {
     }
   });
 
-  it('provides exactly 9 tailored business tasks for every one of the 30 industry sectors', () => {
+  it('provides exactly 9 tailored business tasks for every one of the 38 industry sectors', () => {
     const sectorKeys = [
       'legal',
       'healthcare',
@@ -191,9 +191,17 @@ describe('catalogHelpers', () => {
       'maritime-operations',
       'aerospace-orbital',
       'economic-intelligence',
+      'construction',
+      'hospitality',
+      'insurance',
+      'automotive',
+      'renewable-energy',
+      'veterinary',
+      'retail',
+      'non-profit',
     ];
 
-    expect(sectorKeys.length).toBe(30);
+    expect(sectorKeys.length).toBe(38);
 
     for (const sector of sectorKeys) {
       const tasks = getGoalsForIndustry(sector);

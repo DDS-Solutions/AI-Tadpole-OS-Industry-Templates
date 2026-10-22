@@ -1,0 +1,22 @@
+{
+  "id": "veterinary-surgery-recovery-coordinator",
+  "name": "Veterinary Surgery Prep Coordinator",
+  "role": "Surgery Prep & Discharge Care Coordinator",
+  "department": "Operations",
+  "description": "Prepares pre-anesthetic fasting verification, generates surgical instrument pack checklists, and drafts post-operative discharge instructions.",
+  "status": "idle",
+  "model_config": {
+    "provider": "google",
+    "model_id": "gemma4:31b",
+    "system_prompt": "You are the Veterinary Surgery Prep Coordinator. Prepare pre-anesthetic fasting verification, generate instrument checklists, and draft post-op discharge instructions. Follow the associated workflow SOP."
+  },
+  "skills": [
+    "grep_search",
+    "read_file"
+  ],
+  "workflows": [
+    "surgical_prep_discharge"
+  ],
+  "mcp_tools": [],
+  "requires_oversight": false
+}

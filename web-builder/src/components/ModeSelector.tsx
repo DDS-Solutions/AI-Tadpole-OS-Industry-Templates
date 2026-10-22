@@ -12,6 +12,41 @@ interface ModeSelectorProps {
   onDiscardDraft: () => void;
 }
 
+const SETUP_MODES = [
+  {
+    mode: 'guided' as const,
+    cardClass: 'setup-card-primary',
+    Icon: Sparkles,
+    audience: 'FOR BUSINESS TEAMS',
+    badge: <span className="recommended-badge">RECOMMENDED</span>,
+    title: 'Guided Setup',
+    description: 'Start with what you want to achieve. We’ll help you find the right specialists and set clear boundaries.',
+    features: [
+      'Goals into recommended teams',
+      'Tools, permissions, and human review',
+      'Four clear steps to your blueprint',
+    ],
+    footerTag: 'NO CODE REQUIRED',
+    ctaText: 'Start guided setup',
+  },
+  {
+    mode: 'advanced' as const,
+    cardClass: '',
+    Icon: Terminal,
+    audience: 'FOR BUILDERS & ADMINISTRATORS',
+    badge: <span className="text-zinc-500 font-mono text-xs">02</span>,
+    title: 'Advanced Setup',
+    description: 'Fine-tune every part of your system, from agent instructions to workflows and runtime permissions.',
+    features: [
+      'Custom agents and model configuration',
+      'Workflows and connector definitions',
+      'Live validation before export',
+    ],
+    footerTag: 'FULL CONFIGURATION',
+    ctaText: 'Open advanced setup',
+  },
+];
+
 export default function ModeSelector({ templateCount = 0, onSelectMode, onBrowseTemplates, savedDraft, onResumeDraft, onDiscardDraft }: ModeSelectorProps) {
   return (
     <div className="landing-page">
@@ -56,20 +91,32 @@ export default function ModeSelector({ templateCount = 0, onSelectMode, onBrowse
             <p>Two paths. One connected workspace.<br className="hidden sm:block" /> Switch modes as your ideas evolve.</p>
           </div>
           <div className="setup-grid">
-            <button type="button" onClick={() => onSelectMode('guided')} className="setup-card setup-card-primary group">
-              <div className="setup-card-top"><span className="setup-card-label"><Sparkles className="w-4 h-4" /> FOR BUSINESS TEAMS</span><span className="recommended-badge">RECOMMENDED</span></div>
-              <h3>Guided Setup <ArrowUpRight className="w-5 h-5" /></h3>
-              <p>Start with what you want to achieve. We’ll help you find the right specialists and set clear boundaries.</p>
-              <ul className="setup-features"><li><Check /> Goals into recommended teams</li><li><Check /> Tools, permissions, and human review</li><li><Check /> Four clear steps to your blueprint</li></ul>
-              <span className="setup-card-footer"><span>NO CODE REQUIRED</span><span className="setup-cta">Start guided setup <ArrowRight className="w-4 h-4" /></span></span>
-            </button>
-            <button type="button" onClick={() => onSelectMode('advanced')} className="setup-card group">
-              <div className="setup-card-top"><span className="setup-card-label"><Terminal className="w-4 h-4" /> FOR BUILDERS & ADMINISTRATORS</span><span className="text-zinc-500 font-mono text-xs">02</span></div>
-              <h3>Advanced Setup <ArrowUpRight className="w-5 h-5" /></h3>
-              <p>Fine-tune every part of your system, from agent instructions to workflows and runtime permissions.</p>
-              <ul className="setup-features"><li><Check /> Custom agents and model configuration</li><li><Check /> Workflows and connector definitions</li><li><Check /> Live validation before export</li></ul>
-              <span className="setup-card-footer"><span>FULL CONFIGURATION</span><span className="setup-cta">Open advanced setup <ArrowRight className="w-4 h-4" /></span></span>
-            </button>
+            {SETUP_MODES.map(item => (
+              <button
+                key={item.mode}
+                type="button"
+                onClick={() => onSelectMode(item.mode)}
+                className={`setup-card ${item.cardClass} group`}
+              >
+                <div className="setup-card-top">
+                  <span className="setup-card-label">
+                    <item.Icon className="w-4 h-4" /> {item.audience}
+                  </span>
+                  {item.badge}
+                </div>
+                <h3>{item.title} <ArrowUpRight className="w-5 h-5" /></h3>
+                <p>{item.description}</p>
+                <ul className="setup-features">
+                  {item.features.map(feature => (
+                    <li key={feature}><Check /> {feature}</li>
+                  ))}
+                </ul>
+                <span className="setup-card-footer">
+                  <span>{item.footerTag}</span>
+                  <span className="setup-cta">{item.ctaText} <ArrowRight className="w-4 h-4" /></span>
+                </span>
+              </button>
+            ))}
           </div>
         </section>
         <section className="template-invitation" aria-label="Industry template library">

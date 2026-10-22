@@ -14,9 +14,9 @@
   "critical_contract_files": {
     "COMPATIBILITY_MATRIX.md": "c70f7df23ee3315e6c2393fe604bf76e80c41e136d9f4ab2f75c9646c761f8b4",
     "TEMPLATE_SPEC.md": "9f7b195696654fc622eb1740a58e2cbf0d85bbe1eba420fd98fafd1df9b09571",
-    "index.json": "0dcd2a3a59edb3637f646cd8157873dc1a2f45f735068e5392197b876886af46",
+    "index.json": "b9fe9e424688826c260737b09acdb0494079e1575599dc23e5cda85492886548",
     "mcp_registry.json": "1cd1e0420e7eddd7ebc4f0f5432ff8d5a662cc6e7f06eebe128b063921a432df",
-    "registry.json": "8b52a41954c7cb47456a110dd28c17921dff2272681da37e3dd6c65affe2210e",
+    "registry.json": "a180a00b5c33fb1dee0ea7e14db89e6ca14828ada264ce6f3579c30f8dad54b9",
     "scripts/capabilities.py": "f89ddae0a540c57693b56953f8158212f3b3bdfc11eb87a06105f724ef9e1bd4",
     "scripts/migrate_consumer_contract.py": "0c6768fc69eda118644edd5182e1c1ea6ec81383455532c4628a79534d652c23",
     "scripts/validate_template.py": "09200c5ed298e2d22984a2b7d01015c6590f72048cde2b499f088a1a926478ec",

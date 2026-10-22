@@ -116,16 +116,24 @@ export default function App() {
   const departments = [
     { id: 'all', label: 'All Departments', color: '#71717a', desc: 'Browse the complete index of sovereign agent personas.' },
     { id: 'academic', label: 'Academic', color: '#8B5CF6', desc: 'Theoretical research, scientific computation, and deep knowledge analysis.' },
+    { id: 'accounting', label: 'Accounting', color: '#10B981', desc: 'Accounts payable/receivable, ledger reconciliation, cash disbursements, and tax reporting.' },
     { id: 'compliance', label: 'Compliance', color: '#DC2626', desc: 'Regulatory auditing, policy adherence, HACCP, and statutory controls.' },
     { id: 'coordination', label: 'Coordination', color: '#3B82F6', desc: 'Cross-agency triage, emergency synchronization, and workflow dispatch.' },
+    { id: 'customer-support', label: 'Customer Support', color: '#0284C7', desc: 'Customer onboarding, dispute resolution, tier-1/2 ticketing, and customer satisfaction tracking.' },
     { id: 'design', label: 'Design', color: '#EC4899', desc: 'UI/UX, visual assets, creative generation, and frontend themes.' },
     { id: 'economic-intelligence', label: 'Economic Intelligence', color: '#059669', desc: 'Macroeconomic trends, capital risk analysis, and market disruption modeling.' },
     { id: 'engineering', label: 'Engineering', color: '#2563EB', desc: 'Backend systems, database optimization, CI/CD, and software engineering.' },
+    { id: 'facilities', label: 'Facilities & Workplace', color: '#78716C', desc: 'Workplace maintenance, physical facility security, office supply procurement, and lease vendor coordination.' },
     { id: 'finance', label: 'Finance', color: '#22C55E', desc: 'Budget analysis, transactional auditing, resource projection, and ledger validation.' },
     { id: 'game-development', label: 'Game Development', color: '#A855F7', desc: 'Physics engine, gameplay loops, asset pipeline, and logic scripting.' },
     { id: 'gis', label: 'GIS & Mapping', color: '#14B8A6', desc: 'Geospatial queries, mapping coordinates, coordinate transformation, and terrain analysis.' },
+    { id: 'human-resources', label: 'Human Resources (HR)', color: '#EC4899', desc: 'Recruiting & hiring pipelines, employee onboarding, benefits administration, and workplace policy compliance.' },
     { id: 'infrastructure', label: 'Infrastructure', color: '#475569', desc: 'System reliability, asset licensing, backups, and server orchestration.' },
     { id: 'intelligence', label: 'Intelligence & OSINT', color: '#06B6D4', desc: 'Open-source intelligence, satellite reconnaissance, and tactical signal correlation.' },
+    { id: 'inventory', label: 'Inventory', color: '#F97316', desc: 'Stock tracking, cycle count verification, reorder planning, SKU auditing, and shrinkage mitigation.' },
+    { id: 'it-support', label: 'IT Support & Helpdesk', color: '#3B82F6', desc: 'Internal workstation provisioning, SaaS user access, hardware lifecycle, and IT helpdesk triage.' },
+    { id: 'legal', label: 'Legal & Contracts', color: '#8B5CF6', desc: 'Commercial contracts, NDA reviews, corporate entity compliance, and lease agreement analysis.' },
+    { id: 'logistics', label: 'Logistics', color: '#6366F1', desc: 'Freight route optimization, 3PL carrier coordination, fleet scheduling, and delivery SLA tracking.' },
     { id: 'marketing', label: 'Marketing', color: '#F97316', desc: 'Market positioning, campaign logic, copy creation, and funnel mapping.' },
     { id: 'mission-control', label: 'Mission Control', color: '#E11D48', desc: 'Orbital trajectory tracking, launch countdowns, and spaceflight surveillance.' },
     { id: 'operations', label: 'Operations', color: '#D946EF', desc: 'Workflow scheduling, traveler intake, routing, and facility coordination.' },
@@ -138,11 +146,13 @@ export default function App() {
     { id: 'risk-management', label: 'Risk Management', color: '#B91C1C', desc: 'Commercial exposure quantification, threat modeling, and business continuity.' },
     { id: 'sales', label: 'Sales', color: '#10B981', desc: 'Lead scoring, conversion outreach simulation, and pitch refinement.' },
     { id: 'security', label: 'Security & AppSec', color: '#EF4444', desc: 'Threat analysis, vulnerability review, and permission planning.' },
+    { id: 'shipping-receiving', label: 'Shipping & Receiving', color: '#14B8A6', desc: 'Inbound dock inspection, Bill of Lading verification, outbound carrier staging, and shipping manifests.' },
     { id: 'space-operations', label: 'Space Operations', color: '#7C3AED', desc: 'Constellation telemetry, satellite ephemeris, and orbital pass prediction.' },
     { id: 'spatial-computing', label: 'Spatial Computing', color: '#0891B2', desc: 'AR/VR tracking systems, 3D math, and sensory coordinate translation.' },
     { id: 'specialized', label: 'Specialized', color: '#6366F1', desc: 'Domain-expert roles tailored for atypical workflows.' },
     { id: 'support', label: 'Support & Care', color: '#65A30D', desc: 'Troubleshooting guides, ticket analysis, and user guide generation.' },
-    { id: 'testing', label: 'Testing & QA', color: '#F59E0B', desc: 'Unit tests compilation, boundary validation, and QA logic audits.' }
+    { id: 'testing', label: 'Testing & QA', color: '#F59E0B', desc: 'Unit tests compilation, boundary validation, and QA logic audits.' },
+    { id: 'warehousing', label: 'Warehousing', color: '#EAB308', desc: 'Storage slotting optimization, pick-and-pack routing, facility layout, and material handling safety.' }
   ];
 
   // Initial load
