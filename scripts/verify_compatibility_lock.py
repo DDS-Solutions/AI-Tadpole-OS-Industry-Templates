@@ -5,6 +5,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -55,12 +57,12 @@ def generate_lock_data(
     resolved_revision = (
         pinned_revision
         or existing_consumer.get("pinned_revision")
-        or "bbcf0d4b001e6e2d0a9ffeebc71fb49f219cd61c"
+        or "16bef2d75951860d15dba32d9750acb69b097bba"
     )
     resolved_date = (
         review_date
         or existing_consumer.get("review_date")
-        or "2026-10-05"
+        or "2026-10-29"
     )
 
     return {
@@ -89,7 +91,103 @@ def write_lockfile(
     print(f"Generated {LOCKFILE_PATH.relative_to(ROOT)} successfully.")
 
 
-def verify_lockfile() -> bool:
+def resolve_git_head_revision(repo_root: Path) -> str | None:
+    """Resolve git HEAD SHA from a checkout without spawning subprocesses."""
+    git_entry = repo_root / ".git"
+    git_dir = git_entry
+    if git_entry.is_file():
+        raw = git_entry.read_text(encoding="utf-8", errors="ignore").strip()
+        if raw.startswith("gitdir:"):
+            target = raw.split(":", 1)[1].strip()
+            git_dir = (repo_root / target).resolve()
+    if not git_dir.is_dir():
+        return None
+    head_file = git_dir / "HEAD"
+    if not head_file.is_file():
+        return None
+    head_val = head_file.read_text(encoding="utf-8", errors="ignore").strip()
+    if head_val.startswith("ref:"):
+        ref_rel = head_val.split(":", 1)[1].strip()
+        ref_file = git_dir / ref_rel
+        if ref_file.is_file():
+            return ref_file.read_text(encoding="utf-8", errors="ignore").strip()
+        packed_refs = git_dir / "packed-refs"
+        if packed_refs.is_file():
+            for line in packed_refs.read_text(encoding="utf-8", errors="ignore").splitlines():
+                line = line.strip()
+                if not line or line.startswith("#") or line.startswith("^"):
+                    continue
+                parts = line.split()
+                if len(parts) == 2 and parts[1] == ref_rel:
+                    return parts[0]
+        return None
+    return head_val if re.fullmatch(r"[0-9a-fA-F]{40}", head_val) else None
+
+
+def verify_consumer_repo(
+    consumer_repo: Path,
+    expected_revision: str | None = None,
+) -> list[str]:
+    """Cross-check live constants in an arbitrary local clone of AI-TadPole-OS."""
+    mismatches: list[str] = []
+    if not consumer_repo.is_dir():
+        return [f"Consumer repository path does not exist: {consumer_repo}"]
+
+    head_sha = resolve_git_head_revision(consumer_repo)
+    if expected_revision and head_sha and head_sha != expected_revision:
+        mismatches.append(
+            f"Consumer git HEAD mismatch (checkout: {head_sha[:12]}..., pinned: {expected_revision[:12]}...)"
+        )
+
+    validate_rs = consumer_repo / "server-rs" / "src" / "routes" / "templates" / "validate.rs"
+    if not validate_rs.is_file():
+        validate_rs = consumer_repo / "server-rs" / "src" / "routes" / "templates.rs"
+    if validate_rs.is_file():
+        text = validate_rs.read_text(encoding="utf-8", errors="ignore")
+        match = re.search(r"ALLOWED_SKILL_EXTENSIONS:\s*&\[&str\]\s*=\s*&\[([^\]]+)\]", text)
+        if match:
+            consumer_exts = {
+                f".{item.strip().strip('\"')}"
+                for item in match.group(1).split(",")
+                if item.strip().strip('"')
+            }
+            required_skill_exts = {".json", ".py", ".js", ".ts"}
+            missing_exts = sorted(required_skill_exts - consumer_exts)
+            if missing_exts:
+                mismatches.append(
+                    f"Consumer ALLOWED_SKILL_EXTENSIONS missing registry skill extensions: {missing_exts}"
+                )
+    else:
+        mismatches.append("Consumer templates validate module not found under server-rs/src/routes/")
+
+    mcp_config_rs = consumer_repo / "server-rs" / "src" / "agent" / "mcp" / "config.rs"
+    if mcp_config_rs.is_file():
+        text = mcp_config_rs.read_text(encoding="utf-8", errors="ignore")
+        match = re.search(r"ENGINE_PRIVATE_ENV_VARS:\s*&\[&str\]\s*=\s*&\[([^\]]+)\]", text)
+        if match:
+            consumer_vars = {
+                item.strip().strip('"').upper()
+                for item in match.group(1).split(",")
+                if item.strip().strip('"')
+            }
+            if str(ROOT) not in sys.path:
+                sys.path.insert(0, str(ROOT))
+            from scripts.validate_template import ENGINE_PRIVATE_ENV_VARS
+            if consumer_vars != set(ENGINE_PRIVATE_ENV_VARS):
+                mismatches.append(
+                    f"ENGINE_PRIVATE_ENV_VARS drift between consumer ({sorted(consumer_vars)}) "
+                    f"and validator ({sorted(ENGINE_PRIVATE_ENV_VARS)})"
+                )
+    else:
+        mismatches.append("Consumer MCP config module not found at server-rs/src/agent/mcp/config.rs")
+
+    return mismatches
+
+
+def verify_lockfile(
+    consumer_repo: Path | None = None,
+    pinned_revision: str | None = None,
+) -> bool:
     if not LOCKFILE_PATH.is_file():
         print(f"ERROR: Lockfile missing at {LOCKFILE_PATH.relative_to(ROOT)}", file=sys.stderr)
         return False
@@ -102,6 +200,16 @@ def verify_lockfile() -> bool:
 
     recorded_hashes = lock_data.get("critical_contract_files", {})
     mismatches: list[str] = []
+
+    consumer_meta = lock_data.get("consumer", {})
+    if consumer_meta.get("repository") != "https://github.com/DDS-Solutions/AI-TadPole-OS":
+        mismatches.append(
+            f"Unexpected consumer.repository in lockfile: {consumer_meta.get('repository')!r}"
+        )
+    if pinned_revision and consumer_meta.get("pinned_revision") != pinned_revision:
+        mismatches.append(
+            f"Pinned revision mismatch in lockfile (expected {pinned_revision}, got {consumer_meta.get('pinned_revision')})"
+        )
 
     stale_entries = set(recorded_hashes.keys()) - set(CRITICAL_CONTRACT_FILES)
     for stale in sorted(stale_entries):
@@ -121,6 +229,10 @@ def verify_lockfile() -> bool:
                 f"Drift detected in {relative_path} (current: {current_hash[:12]}..., expected: {expected_hash[:12]}...)"
             )
 
+    if consumer_repo is not None:
+        expected_rev = pinned_revision or consumer_meta.get("pinned_revision")
+        mismatches.extend(verify_consumer_repo(consumer_repo, expected_revision=expected_rev))
+
     if mismatches:
         print(f"ERROR: Contract drift detected ({len(mismatches)} mismatch(es)):", file=sys.stderr)
         for mismatch in mismatches:
@@ -137,8 +249,13 @@ def main() -> int:
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--generate", action="store_true", help="Regenerate the compatibility lockfile")
     mode.add_argument("--check", action="store_true", help="Verify lockfile against current files (default mode)")
-    parser.add_argument("--pinned-revision", help="Override pinned consumer git commit revision")
+    parser.add_argument("--pinned-revision", help="Override or assert pinned consumer git commit revision")
     parser.add_argument("--review-date", help="Override consumer review date (YYYY-MM-DD)")
+    parser.add_argument(
+        "--consumer-repo",
+        default=os.environ.get("TADPOLE_OS_REPO_PATH"),
+        help="Optional local path to a cloned https://github.com/DDS-Solutions/AI-TadPole-OS checkout for live constant verification",
+    )
     args = parser.parse_args()
 
     if args.generate:
@@ -148,8 +265,9 @@ def main() -> int:
         )
         return 0
 
+    consumer_path = Path(args.consumer_repo) if args.consumer_repo else None
     # --check and the bare invocation are both verify-only and never write.
-    return 0 if verify_lockfile() else 1
+    return 0 if verify_lockfile(consumer_repo=consumer_path, pinned_revision=args.pinned_revision) else 1
 
 
 if __name__ == "__main__":

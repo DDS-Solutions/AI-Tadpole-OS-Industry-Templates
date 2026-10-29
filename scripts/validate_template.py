@@ -35,6 +35,38 @@ CONNECTOR_FILE_SUFFIXES = frozenset({".json", ".py", ".js", ".ts", ".txt"})
 ALLOWED_MCP_COMMANDS = frozenset({"node", "npx", "python", "python3"})
 ALLOWED_MCP_PROTOCOLS = frozenset({"2026-07-28", "2024-11-05"})
 VALID_ENV_OR_HEADER_VAR = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+SAFE_AGENT_IDENTIFIER = re.compile(r"^[a-zA-Z0-9_-]{1,64}$")
+ENGINE_PRIVATE_ENV_VARS = frozenset({
+    "NEURAL_TOKEN",
+    "NEURAL_ENGINE_ACCESS_TOKEN",
+    "NEURAL_ADMIN_TOKEN",
+    "ADMIN_TOKEN",
+    "VITE_NEURAL_TOKEN",
+    "CAPABILITY_KEY_CURR",
+    "CAPABILITY_KEY_PREV",
+    "AUDIT_PRIVATE_KEY",
+    "OVERSIGHT_PRIVATE_KEY",
+    "WORKFLOW_ENCRYPTION_KEY",
+})
+VALID_HEADER_TOKEN_PATTERN = re.compile(r"^[!#$%&'*+\-.^_`|~0-9A-Za-z]+$")
+RESERVED_MCP_HTTP_HEADERS = frozenset({
+    "host",
+    "content-type",
+    "accept",
+    "mcp-protocol-version",
+    "mcp-method",
+    "mcp-name",
+    "origin",
+    "mcp-session-id",
+    "last-event-id",
+})
+PROMPT_INJECTION_PATTERNS = (
+    ("prompt boundary spoofing sentinel", re.compile(r"<<<|>>>")),
+    ("system override phrase", re.compile(r"ignore\s+(?:all\s+)?previous\s+instructions", re.IGNORECASE)),
+    ("system override phrase", re.compile(r"disregard\s+system\s+prompt", re.IGNORECASE)),
+    ("system override phrase", re.compile(r"you\s+are\s+now\s+in\s+developer\s+mode", re.IGNORECASE)),
+    ("system override phrase", re.compile(r"bypass\s+safety\s+filters", re.IGNORECASE)),
+)
 LEGACY_SKILLS = frozenset({"run_command", "write_to_file"})
 # Single source of truth: scripts/capabilities.py
 DANGEROUS_SKILLS = DANGEROUS_CAPABILITY_IDS
@@ -289,6 +321,10 @@ def validate_agent_payload(agent: Any) -> list[str]:
         if not isinstance(agent.get(key), str) or not agent[key].strip():
             errors.append(f"{key} must be a non-empty string")
 
+    agent_id = agent.get("id")
+    if isinstance(agent_id, str) and agent_id.strip() and not SAFE_AGENT_IDENTIFIER.fullmatch(agent_id):
+        errors.append("id must be 1 to 64 ASCII alphanumeric, hyphen, or underscore characters")
+
     if agent.get("status") != "idle":
         errors.append('status must be "idle" for an installable registry agent')
 
@@ -301,8 +337,12 @@ def validate_agent_payload(agent: Any) -> list[str]:
             if not isinstance(value, str) or not value.strip():
                 errors.append(f"model_config.{key} must be a non-empty string")
         prompt = model_config.get("system_prompt")
-        if isinstance(prompt, str) and len(prompt) > 800:
-            errors.append(f"model_config.system_prompt exceeds 800 characters ({len(prompt)})")
+        if isinstance(prompt, str):
+            if len(prompt) > 800:
+                errors.append(f"model_config.system_prompt exceeds 800 characters ({len(prompt)})")
+            for label, pattern in PROMPT_INJECTION_PATTERNS:
+                if pattern.search(prompt):
+                    errors.append(f"model_config.system_prompt contains prohibited {label}")
         provider = str(model_config.get("provider", "")).lower()
         model_id = str(model_config.get("model_id", "")).lower()
         if provider == "google" and "llama" in model_id:
@@ -351,10 +391,14 @@ def validate_agent_payload(agent: Any) -> list[str]:
 def validate_workflow_content(content: str) -> list[str]:
     if not content.strip():
         return ["workflow is empty"]
+    errors: list[str] = []
     unfenced = FENCED_CODE_BLOCK.sub("", content)
     if not EXECUTABLE_HEADING.search(unfenced):
-        return ["workflow needs at least one ## or ### execution heading"]
-    return []
+        errors.append("workflow needs at least one ## or ### execution heading")
+    for label, pattern in PROMPT_INJECTION_PATTERNS:
+        if pattern.search(content):
+            errors.append(f"workflow contains prohibited {label}")
+    return errors
 
 
 def validate_mcp_payload(config: Any) -> list[str]:
@@ -371,6 +415,8 @@ def validate_mcp_payload(config: Any) -> list[str]:
             continue
         if "__" in server_name:
             errors.append(f"{prefix} cannot contain double underscores '__'")
+        if server_name.strip().lower() == "gev":
+            errors.append(f"{prefix} is reserved by the Tadpole-OS runtime for the fixed Port 3000 profile")
         if not isinstance(server, dict):
             errors.append(f"{prefix} must be an object")
             continue
@@ -430,10 +476,14 @@ def validate_mcp_payload(config: Any) -> list[str]:
                 for key, value in env.items():
                     if not VALID_ENV_OR_HEADER_VAR.fullmatch(key):
                         errors.append(f"{prefix}.env.{key} has an invalid environment variable name")
+                    elif key.strip().upper() in ENGINE_PRIVATE_ENV_VARS:
+                        errors.append(f"{prefix}.env.{key} cannot override reserved engine variable '{key}'")
                     if value.startswith("${") and value.endswith("}"):
                         var_name = value[2:-1]
                         if not VALID_ENV_OR_HEADER_VAR.fullmatch(var_name):
                             errors.append(f"{prefix}.env.{key} has an invalid environment placeholder '{value}'")
+                        elif var_name.strip().upper() in ENGINE_PRIVATE_ENV_VARS:
+                            errors.append(f"{prefix}.env.{key} cannot reference reserved engine secret '{value}'")
                     elif SENSITIVE_ENV_NAME.search(key) and not SAFE_PLACEHOLDER.fullmatch(value.strip()):
                         errors.append(
                             f"{prefix}.env.{key} must be an explicit local-configuration placeholder"
@@ -449,10 +499,18 @@ def validate_mcp_payload(config: Any) -> list[str]:
                 for key, value in headers.items():
                     if not key.strip():
                         errors.append(f"{prefix}.headers has an empty header name")
+                    elif not VALID_HEADER_TOKEN_PATTERN.fullmatch(key):
+                        errors.append(f"{prefix}.headers.{key} is not a valid HTTP header token")
+                    elif key.lower() in RESERVED_MCP_HTTP_HEADERS or key.lower().startswith("mcp-param-"):
+                        errors.append(f"{prefix}.headers.{key} cannot override transport-owned HTTP header '{key}'")
+                    if "\r" in value or "\n" in value:
+                        errors.append(f"{prefix}.headers.{key} cannot contain CR/LF characters")
                     if value.startswith("${") and value.endswith("}"):
                         var_name = value[2:-1]
                         if not VALID_ENV_OR_HEADER_VAR.fullmatch(var_name):
                             errors.append(f"{prefix}.headers.{key} has an invalid header placeholder '{value}'")
+                        elif var_name.strip().upper() in ENGINE_PRIVATE_ENV_VARS:
+                            errors.append(f"{prefix}.headers.{key} cannot reference reserved engine secret '{value}'")
                     elif SENSITIVE_ENV_NAME.search(key) and not SAFE_PLACEHOLDER.fullmatch(value.strip()):
                         errors.append(
                             f"{prefix}.headers.{key} must be an explicit local-configuration placeholder"
@@ -985,6 +1043,12 @@ def validate_mcp_registry(root: Path, report: ValidationReport) -> None:
         if status not in ("verified", "reviewed", "sample"):
             report.error(context, "status must be verified, reviewed, or sample")
 
+        required_env = connector.get("required_env")
+        if isinstance(required_env, dict):
+            for env_key in required_env:
+                if isinstance(env_key, str) and env_key.strip().upper() in ENGINE_PRIVATE_ENV_VARS:
+                    report.error(context, f"required_env.{env_key} cannot declare reserved engine variable '{env_key}'")
+
         tools = connector.get("tools")
         if not isinstance(tools, list) or not tools:
             report.error(context, "tools must be a non-empty array of tool descriptors")
@@ -1085,7 +1149,7 @@ def validate_persona_catalog(root: Path, report: ValidationReport) -> None:
         "departmentLabel",
     )
     seen_ids: set[str] = set()
-    safe_id_regex = re.compile(r"^[a-zA-Z0-9_\-]+$")
+    safe_id_regex = SAFE_AGENT_IDENTIFIER
 
     for idx, persona in enumerate(catalog):
         ctx = f"ai-tadpole-catalog.json[{idx}]"
@@ -1098,8 +1162,8 @@ def validate_persona_catalog(root: Path, report: ValidationReport) -> None:
             pid = f"item_{idx}"
         else:
             ctx = f"ai-tadpole-catalog.json agent '{pid}'"
-            if not safe_id_regex.match(pid):
-                report.error(ctx, f"id contains invalid characters: {pid!r}")
+            if not safe_id_regex.fullmatch(pid):
+                report.error(ctx, f"id contains invalid characters or exceeds 64 chars: {pid!r}")
             if pid in seen_ids:
                 report.error(ctx, f"duplicate persona id: {pid!r}")
             seen_ids.add(pid)
@@ -1110,8 +1174,12 @@ def validate_persona_catalog(root: Path, report: ValidationReport) -> None:
                 report.error(ctx, f"missing or empty required field: {req}")
 
         runtime_prompt = persona.get("runtimePrompt")
-        if isinstance(runtime_prompt, str) and len(runtime_prompt) > 800:
-            report.error(ctx, f"runtimePrompt exceeds 800 characters ({len(runtime_prompt)})")
+        if isinstance(runtime_prompt, str):
+            if len(runtime_prompt) > 800:
+                report.error(ctx, f"runtimePrompt exceeds 800 characters ({len(runtime_prompt)})")
+            for label, pattern in PROMPT_INJECTION_PATTERNS:
+                if pattern.search(runtime_prompt):
+                    report.error(ctx, f"runtimePrompt contains prohibited {label}")
 
         skills = persona.get("skills")
         if skills is not None:

@@ -168,6 +168,9 @@ export const buildSwarmZip = async (
 
   for (const agent of agents) {
     const id = safeFileId(agent.id);
+    if (id.length > 64) {
+      throw new Error(`Agent ID "${id}" exceeds maximum length of 64 characters.`);
+    }
     if (agentIds.has(id)) {
       throw new Error(`Agent IDs collide: "${id}".`);
     }
@@ -195,6 +198,7 @@ export const buildSwarmZip = async (
   }));
 
   const swarmJson: Record<string, unknown> = {
+    id: safeFileId(companyInfo.name),
     name: `${companyInfo.name} Swarm`,
     version: '1.0.0',
     description: companyInfo.mission.trim(),

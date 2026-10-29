@@ -2,13 +2,47 @@ import type { Agent, CompanyInfo, MCPConnector, ValidationIssue, WorkflowItem } 
 import { VALID_RUNTIME_CAPABILITIES, DANGEROUS_SKILL_SET } from '../constants/capabilities';
 
 const LEGACY_SKILLS = new Set(['run_command', 'write_to_file']);
+export const ENGINE_PRIVATE_ENV_VARS = new Set([
+  'NEURAL_TOKEN',
+  'NEURAL_ENGINE_ACCESS_TOKEN',
+  'NEURAL_ADMIN_TOKEN',
+  'ADMIN_TOKEN',
+  'VITE_NEURAL_TOKEN',
+  'CAPABILITY_KEY_CURR',
+  'CAPABILITY_KEY_PREV',
+  'AUDIT_PRIVATE_KEY',
+  'OVERSIGHT_PRIVATE_KEY',
+  'WORKFLOW_ENCRYPTION_KEY',
+]);
+export const RESERVED_MCP_HTTP_HEADERS = new Set([
+  'host',
+  'content-type',
+  'accept',
+  'mcp-protocol-version',
+  'mcp-method',
+  'mcp-name',
+  'origin',
+  'mcp-session-id',
+  'last-event-id',
+]);
+const PROMPT_INJECTION_PATTERNS = [
+  /<<<|>>>/,
+  /ignore\s+(?:all\s+)?previous\s+instructions/i,
+  /disregard\s+system\s+prompt/i,
+  /you\s+are\s+now\s+in\s+developer\s+mode/i,
+  /bypass\s+safety\s+filters/i,
+];
 
 export function inferProvider(modelId: string): string {
   const model = modelId.toLowerCase();
+  if (model.endsWith('-cloud') && model.includes('gemma')) return 'ollama-cloud';
+  if (model.startsWith('gemma4:e')) return 'ollama';
   if (model.includes('gemini') || model.includes('gemma')) return 'google';
   if (model.includes('claude')) return 'anthropic';
   if (model.includes('gpt') || model.startsWith('o1') || model.startsWith('o3')) return 'openai';
   if (model.includes('llama')) return 'groq';
+  if (model.includes('deepseek')) return 'deepseek';
+  if (model.includes('mistral') || model.includes('mixtral')) return 'mistral';
   throw new Error(`Choose an explicit provider for unrecognized model "${modelId}".`);
 }
 
@@ -105,6 +139,17 @@ export function validateSwarm(
       continue;
     }
 
+    if (cleanId.length > 64) {
+      issues.push({
+        id: `agent-id-too-long-${cleanId}`,
+        severity: 'error',
+        section: 'agents',
+        itemId: agent.id,
+        message: `Agent "${agent.name || cleanId}" identifier exceeds 64 characters (${cleanId.length}).`,
+        suggestedAction: 'Shorten the agent ID to 64 characters or fewer.',
+      });
+    }
+
     if (agentIds.has(cleanId)) {
       issues.push({
         id: `agent-duplicate-id-${cleanId}`,
@@ -174,6 +219,15 @@ export function validateSwarm(
         itemId: agent.id,
         message: `Agent "${agent.name || cleanId}" system prompt is ${prompt.length} characters (maximum allowed by AI-Tadpole-OS is 800).`,
         suggestedAction: 'Shorten the prompt to focus strictly on role, mission, and guardrails.',
+      });
+    } else if (PROMPT_INJECTION_PATTERNS.some(pattern => pattern.test(prompt))) {
+      issues.push({
+        id: `agent-prompt-injection-${cleanId}`,
+        severity: 'error',
+        section: 'agents',
+        itemId: agent.id,
+        message: `Agent "${agent.name || cleanId}" system prompt contains prohibited prompt boundary sentinels or override phrases.`,
+        suggestedAction: 'Remove boundary sentinels (<<< / >>>) or system override phrases.',
       });
     }
 
@@ -301,6 +355,15 @@ export function validateSwarm(
         message: `Workflow "${wf.name || cleanWfId}" has empty content.`,
         suggestedAction: 'Add executable steps or guidance for this playbook.',
       });
+    } else if (PROMPT_INJECTION_PATTERNS.some(pattern => pattern.test(wf.description))) {
+      issues.push({
+        id: `workflow-prompt-injection-${cleanWfId}`,
+        severity: 'error',
+        section: 'workflows',
+        itemId: wf.id,
+        message: `Workflow "${wf.name || cleanWfId}" contains prohibited prompt boundary sentinels or override phrases.`,
+        suggestedAction: 'Remove boundary sentinels (<<< / >>>) or system override phrases.',
+      });
     }
   }
 
@@ -325,7 +388,56 @@ export function validateSwarm(
     // Determine server names from config or tools
     const serverNames: string[] = [];
     if (conn.config?.mcpServers) {
-      serverNames.push(...Object.keys(conn.config.mcpServers));
+      for (const [sName, srv] of Object.entries(conn.config.mcpServers)) {
+        serverNames.push(sName);
+        if (sName.trim().toLowerCase() === 'gev') {
+          issues.push({
+            id: `connector-reserved-gev-${connectorId}`,
+            severity: 'error',
+            section: 'connectors',
+            itemId: connectorId,
+            message: `Connector "${conn.name}" uses reserved server key "gev" (internal Port 3000 profile).`,
+            suggestedAction: 'Rename the MCP server key.',
+          });
+        }
+        for (const [envKey, envVal] of Object.entries(srv.env || {})) {
+          const placeholderMatch = envVal.match(/^\$\{([A-Z0-9_]+)\}$/);
+          if (ENGINE_PRIVATE_ENV_VARS.has(envKey.toUpperCase()) || (placeholderMatch && ENGINE_PRIVATE_ENV_VARS.has(placeholderMatch[1].toUpperCase()))) {
+            issues.push({
+              id: `connector-reserved-env-${connectorId}-${envKey}`,
+              severity: 'error',
+              section: 'connectors',
+              itemId: connectorId,
+              message: `Connector "${conn.name}" references reserved engine secret in env "${envKey}".`,
+              suggestedAction: 'Use a connector-specific environment variable placeholder.',
+            });
+          }
+        }
+        for (const [hdrKey, hdrVal] of Object.entries(srv.headers || {})) {
+          const lowerHdr = hdrKey.trim().toLowerCase();
+          if (RESERVED_MCP_HTTP_HEADERS.has(lowerHdr) || lowerHdr.startsWith('mcp-param-')) {
+            issues.push({
+              id: `connector-reserved-header-${connectorId}-${hdrKey}`,
+              severity: 'error',
+              section: 'connectors',
+              itemId: connectorId,
+              message: `Connector "${conn.name}" overrides transport-owned HTTP header "${hdrKey}".`,
+              suggestedAction: 'Use Authorization or a custom application header.',
+            });
+          }
+          const placeholderMatch = hdrVal.match(/\$\{([A-Za-z0-9_]+)\}/);
+          if (placeholderMatch && ENGINE_PRIVATE_ENV_VARS.has(placeholderMatch[1].toUpperCase())) {
+            issues.push({
+              id: `connector-reserved-header-secret-${connectorId}-${hdrKey}`,
+              severity: 'error',
+              section: 'connectors',
+              itemId: connectorId,
+              message: `Connector "${conn.name}" header "${hdrKey}" references reserved engine secret "\${${placeholderMatch[1]}}".`,
+              suggestedAction: 'Use a connector-specific secret placeholder.',
+            });
+          }
+        }
+      }
     }
     if (conn.tools) {
       for (const t of conn.tools) {

@@ -25,6 +25,9 @@ export default defineConfig({
           if (id.includes('node_modules/jszip')) {
             return 'jszip';
           }
+          if (id.includes('industryGoals')) {
+            return 'industry-goals';
+          }
         },
       },
     },

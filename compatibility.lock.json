@@ -3,8 +3,8 @@
   "consumer": {
     "repository": "https://github.com/DDS-Solutions/AI-TadPole-OS",
     "branch": "main",
-    "pinned_revision": "bbcf0d4b001e6e2d0a9ffeebc71fb49f219cd61c",
-    "review_date": "2026-10-05"
+    "pinned_revision": "16bef2d75951860d15dba32d9750acb69b097bba",
+    "review_date": "2026-10-29"
   },
   "upstream": {
     "repository": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates",
@@ -12,14 +12,14 @@
     "pinned_contract_version": "1.0.0"
   },
   "critical_contract_files": {
-    "COMPATIBILITY_MATRIX.md": "c70f7df23ee3315e6c2393fe604bf76e80c41e136d9f4ab2f75c9646c761f8b4",
-    "TEMPLATE_SPEC.md": "9f7b195696654fc622eb1740a58e2cbf0d85bbe1eba420fd98fafd1df9b09571",
+    "COMPATIBILITY_MATRIX.md": "727e735e82086d70391d588e00aa965f548744bf9443bca9568ca4f536167a91",
+    "TEMPLATE_SPEC.md": "f36b2c49f88258c70a9c6f3a5762682b66ac14017e9ae39e1757dedc7568742c",
     "index.json": "b9fe9e424688826c260737b09acdb0494079e1575599dc23e5cda85492886548",
     "mcp_registry.json": "1cd1e0420e7eddd7ebc4f0f5432ff8d5a662cc6e7f06eebe128b063921a432df",
     "registry.json": "a180a00b5c33fb1dee0ea7e14db89e6ca14828ada264ce6f3579c30f8dad54b9",
     "scripts/capabilities.py": "f89ddae0a540c57693b56953f8158212f3b3bdfc11eb87a06105f724ef9e1bd4",
     "scripts/migrate_consumer_contract.py": "0c6768fc69eda118644edd5182e1c1ea6ec81383455532c4628a79534d652c23",
-    "scripts/validate_template.py": "09200c5ed298e2d22984a2b7d01015c6590f72048cde2b499f088a1a926478ec",
-    "scripts/verify_compatibility_lock.py": "8620388b25d263ad1556ee3020c546bf27b13f5a3de3f523d09d0171b89e21eb"
+    "scripts/validate_template.py": "432f1cacba3229d7302ca8c0539466a5180378a3a8ccd02aa4e4c889b9e86fb4",
+    "scripts/verify_compatibility_lock.py": "40d97fd001394c4229e28dc490608cc6baed7b11edcc6dee13f393f45f512db1"
   }
 }

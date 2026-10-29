@@ -38,6 +38,7 @@ describe('Swarm Architect archive contract', () => {
     const agentJson = JSON.parse(await zip.file('agents/review-agent.json')!.async('string'));
     const mcp = JSON.parse(await zip.file('mcps.json')!.async('string'));
 
+    expect(swarm.id).toBe('acme-advisory');
     expect(swarm.roster).toEqual([
       { id: 'review-agent', path: 'agents/review-agent.json', role: 'Reviewer' },
     ]);
@@ -67,6 +68,13 @@ describe('Swarm Architect archive contract', () => {
       [],
       [],
     )).rejects.toThrow('Agent IDs collide');
+    await expect(buildSwarmZip(
+      company,
+      [{ ...agent, id: 'a'.repeat(65) }],
+      [workflow],
+      [],
+      [],
+    )).rejects.toThrow('exceeds maximum length of 64 characters');
   });
 
   it('blocks archive generation when required identity or roster data is missing', async () => {
@@ -471,5 +479,41 @@ describe('Swarm Architect archive contract', () => {
 
     const imported = await fetchSwarmDetailsFromRepo('utilities/test', undefined, mockCatalog);
     expect(imported.selectedConnectors).toEqual(['mcp-hardware-edge']);
+  });
+
+  it('packages remote streamable HTTPS MCP connector without requiring bundled server.py source', async () => {
+    const remoteMcp: MCPConnector = {
+      id: 'cloud-crm',
+      name: 'Cloud CRM',
+      category: 'SaaS',
+      description: 'Streamable cloud MCP',
+      version: '1.0.0',
+      path: 'mcp-blueprints/cloud-crm',
+      tools: [{ id: 'cloud-crm:query_customers', name: 'Query Customers', description: 'Query records', risk: 'read' }],
+      config: {
+        mcpServers: {
+          'cloud-crm': {
+            url: 'https://api.crm.example/mcp',
+            headers: {
+              Authorization: 'Bearer ${CRM_API_KEY}',
+            },
+            protocol_version: '2026-07-28',
+          },
+        },
+      },
+    };
+
+    const agentWithRemoteMcp: Agent = {
+      ...agent,
+      mcpTools: ['cloud-crm:query_customers'],
+    };
+
+    const zip = await buildSwarmZip(company, [agentWithRemoteMcp], [workflow], ['cloud-crm'], [remoteMcp]);
+    const mcpJson = JSON.parse(await zip.file('mcps.json')!.async('string'));
+    expect(mcpJson.mcpServers['cloud-crm'].url).toBe('https://api.crm.example/mcp');
+    expect(mcpJson.mcpServers['cloud-crm'].headers.Authorization).toBe('Bearer ${CRM_API_KEY}');
+    expect(mcpJson.mcpServers['cloud-crm'].protocol_version).toBe('2026-07-28');
+    // Ensure no unnecessary skills/ server.py was bundled
+    expect(zip.file('skills/cloud-crm-server.py')).toBeNull();
   });
 });

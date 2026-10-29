@@ -19,7 +19,8 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
   const reducedMotion = useReducedMotion();
   const [name, setName] = useState(agent.name);
   const [role, setRole] = useState(agent.role);
-  const [model, setModel] = useState(agent.model);
+  const [model, setModel] = useState(agent.model || 'gemma4:31b');
+  const [provider, setProvider] = useState(agent.provider || '');
   const [prompt, setPrompt] = useState(agent.prompt);
   const [description, setDescription] = useState(agent.description || '');
   const [department, setDepartment] = useState(agent.department || 'Operations');
@@ -55,7 +56,7 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
 
   const validColor = /^#[0-9a-f]{6}$/i.test(color);
   const activeCapabilityCount = CANONICAL_CAPABILITIES.filter(cap => selectedSkills.includes(cap.id)).length;
-  const canSave = Boolean(name.trim() && role.trim() && department.trim() && description.trim() && prompt.trim() && prompt.length <= 800 && validColor);
+  const canSave = Boolean(name.trim() && role.trim() && model.trim() && department.trim() && description.trim() && prompt.trim() && prompt.length <= 800 && validColor);
 
   const handleSave = () => {
     if (!canSave) return;
@@ -63,7 +64,8 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
       ...agent,
       name: name.trim(),
       role: role.trim(),
-      model,
+      model: model.trim(),
+      provider: provider.trim() || undefined,
       prompt,
       description: description.trim(),
       department: department.trim(),
@@ -180,23 +182,53 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
           </div>
           <div>
             <label htmlFor={`${fieldId}-model`} className="block text-[10px] font-mono text-zinc-400 uppercase mb-1.5">LLM Model</label>
-            <select
-              className="focus-sovereign w-full min-w-0 bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2.5 text-base sm:text-xs text-zinc-200 focus:border-cyber-green outline-none cursor-pointer"
+            <input
+              type="text"
+              list={`${fieldId}-model-presets`}
+              className="focus-sovereign w-full min-w-0 bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2.5 text-base sm:text-xs text-zinc-200 focus:border-cyber-green outline-none"
+              placeholder="e.g. gemma4:31b or custom Ollama tag"
               id={`${fieldId}-model`}
+              required
               value={model}
               onChange={e => setModel(e.target.value)}
-            >
-              {!["gemma4:31b", "gemini-1.5-flash", "gemini-1.5-pro", "gemini-2.0-flash", "gemini-2.5-pro", "gemini-pro-latest"].includes(model) && (
-                <option value={model}>{model} (Current model)</option>
-              )}
-              <option value="gemma4:31b">gemma4:31b (Default, Open Sovereign)</option>
-              <option value="gemini-1.5-flash">gemini-1.5-flash (Fast, Edge Ops)</option>
-              <option value="gemini-1.5-pro">gemini-1.5-pro (Reasoning, Knowledge Work)</option>
-              <option value="gemini-2.0-flash">gemini-2.0-flash (High speed agentics)</option>
-              <option value="gemini-2.5-pro">gemini-2.5-pro (State of the art reasoning)</option>
-              <option value="gemini-pro-latest">gemini-pro-latest</option>
-            </select>
+            />
+            <datalist id={`${fieldId}-model-presets`}>
+              <option value="gemma4:31b">Default Open Sovereign</option>
+              <option value="gemma4:31b-cloud">Ollama-Cloud Sovereign</option>
+              <option value="gemma4:e4b">Local Edge Ollama</option>
+              <option value="gemini-2.5-pro">Google Gemini 2.5 Pro</option>
+              <option value="gemini-2.0-flash">Google Gemini 2.0 Flash</option>
+              <option value="gemini-1.5-pro">Google Gemini 1.5 Pro</option>
+              <option value="gemini-1.5-flash">Google Gemini 1.5 Flash</option>
+              <option value="gpt-4o">OpenAI GPT-4o</option>
+              <option value="claude-3-7-sonnet">Anthropic Claude 3.7 Sonnet</option>
+              <option value="deepseek-r1">DeepSeek R1</option>
+              <option value="mistral-large-latest">Mistral Large</option>
+              <option value="llama-3.3-70b-versatile">Groq Llama 3.3 70B</option>
+            </datalist>
           </div>
+        </div>
+
+        {/* Provider Override */}
+        <div>
+          <label htmlFor={`${fieldId}-provider`} className="block text-[10px] font-mono text-zinc-400 uppercase mb-1.5">Model Provider</label>
+          <select
+            className="focus-sovereign w-full min-w-0 bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2.5 text-base sm:text-xs text-zinc-200 focus:border-cyber-green outline-none cursor-pointer"
+            id={`${fieldId}-provider`}
+            value={provider}
+            onChange={e => setProvider(e.target.value)}
+          >
+            <option value="">Auto-detect from model ID (Recommended)</option>
+            <option value="google">google (Gemini / Gemma Default)</option>
+            <option value="ollama">ollama (Local Sovereign Runtime)</option>
+            <option value="ollama-cloud">ollama-cloud (Sovereign Cloud)</option>
+            <option value="openai">openai (OpenAI / Compatible)</option>
+            <option value="anthropic">anthropic (Claude)</option>
+            <option value="groq">groq (Groq LPU)</option>
+            <option value="deepseek">deepseek (DeepSeek)</option>
+            <option value="mistral">mistral (Mistral AI)</option>
+            <option value="openrouter">openrouter (OpenRouter)</option>
+          </select>
         </div>
 
         {/* Short Description */}

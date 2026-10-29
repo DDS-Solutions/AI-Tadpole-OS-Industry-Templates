@@ -2,7 +2,7 @@
 
 This policy distinguishes controls enforced by this registry, declarations emitted by Swarm Architect, and limitations in the private Tadpole-OS installer/runtime.
 
-The authoritative consumer review is the private `DDS-Solutions/TadPole-OS` checkout at `D:\TadpoleOS-Dev`, commit `f3b53231bd1928b737e65cdbd210907d534246b6`, reviewed read-only on 2026-09-08. The public [AI-Tadpole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS) repository is downstream. Re-audit private upstream before changing a contract or promoting a security claim.
+The authoritative consumer review verified [DDS-Solutions/AI-TadPole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS) (`DDS-Solutions/TadPole-OS`) at commit `16bef2d75951860d15dba32d9750acb69b097bba`, reviewed read-only on 2026-10-29. Re-audit upstream before changing a contract or promoting a security claim.
 
 ## Enforced by this registry
 
@@ -41,7 +41,7 @@ The Phase 5 prompt capability panel is a keyword heuristic. It does not parse be
 
 - No matches does not mean “zero privileges” or “safe.”
 - A match requests operator review but does not guarantee an approval prompt.
-- Exported `mcp_tools` is a validated declaration; the pinned runtime (commit `f3b53231...`) filters external tools against `mcp_tools`, but unpatched runtimes may not.
+- Exported `mcp_tools` is a validated declaration; the pinned runtime (commit `16bef2d7...`) filters external tools against `mcp_tools`, but unpatched runtimes may not.
 
 ## Private upstream enforcement and limitations
 

@@ -2,7 +2,7 @@
 
 This registry supports the public [AI-Tadpole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS) distribution, but its authoritative implementation contract is the private `DDS-Solutions/TadPole-OS` source.
 
-The current read-only audit used `D:\TadpoleOS-Dev` at commit `f3b53231bd1928b737e65cdbd210907d534246b6` on 2026-09-08. See [`COMPATIBILITY_MATRIX.md`](../COMPATIBILITY_MATRIX.md) for field-to-source evidence.
+The current read-only audit verified [DDS-Solutions/AI-TadPole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS) at commit `16bef2d75951860d15dba32d9750acb69b097bba` on 2026-10-29. See [`COMPATIBILITY_MATRIX.md`](../COMPATIBILITY_MATRIX.md) for field-to-source evidence.
 
 ## Required audit before implementation
 
