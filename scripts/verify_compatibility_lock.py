@@ -147,7 +147,7 @@ def verify_consumer_repo(
         match = re.search(r"ALLOWED_SKILL_EXTENSIONS:\s*&\[&str\]\s*=\s*&\[([^\]]+)\]", text)
         if match:
             consumer_exts = {
-                f".{item.strip().strip('\"')}"
+                "." + item.strip().strip('"')
                 for item in match.group(1).split(",")
                 if item.strip().strip('"')
             }

@@ -20,6 +20,6 @@
     "scripts/capabilities.py": "f89ddae0a540c57693b56953f8158212f3b3bdfc11eb87a06105f724ef9e1bd4",
     "scripts/migrate_consumer_contract.py": "0c6768fc69eda118644edd5182e1c1ea6ec81383455532c4628a79534d652c23",
     "scripts/validate_template.py": "432f1cacba3229d7302ca8c0539466a5180378a3a8ccd02aa4e4c889b9e86fb4",
-    "scripts/verify_compatibility_lock.py": "40d97fd001394c4229e28dc490608cc6baed7b11edcc6dee13f393f45f512db1"
+    "scripts/verify_compatibility_lock.py": "222ef37e97f02fed1c4653b0af1bdaa4c948776044163076bfc4f9427977a203"
   }
 }
