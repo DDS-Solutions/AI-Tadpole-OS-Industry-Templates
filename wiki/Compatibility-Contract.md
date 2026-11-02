@@ -2,7 +2,7 @@
 
 This registry supports the public [AI-Tadpole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS) distribution, but its authoritative implementation contract is the private `DDS-Solutions/TadPole-OS` source.
 
-The current read-only audit verified [DDS-Solutions/AI-TadPole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS) at commit `16bef2d75951860d15dba32d9750acb69b097bba` on 2026-10-29. See [`COMPATIBILITY_MATRIX.md`](../COMPATIBILITY_MATRIX.md) for field-to-source evidence.
+The current read-only audit verified [DDS-Solutions/AI-TadPole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS) at commit `a471119fd5cb0f3f89624046dec82cd833116e95` on 2026-11-02. See [`COMPATIBILITY_MATRIX.md`](../COMPATIBILITY_MATRIX.md) for field-to-source evidence.
 
 ## Required audit before implementation
 
@@ -19,7 +19,9 @@ Before changing a schema, validator, archive, migration, workflow, MCP layout, k
 
 - `index.json` matches the Rust catalog's top-level array (81 public templates with `required_models: ["gemma4:31b"]`) and clone URL.
 - All 248 installed template agent profiles (instantiated from 134 distinct persona specializations across 81 public swarms + 1 internal test harness) provide the required identity/model fields (`gemma4:31b`), start `idle`, and explicitly declare `mcp_tools` and `requires_oversight`.
-- The Swarm Architect visual builder indexes a 339-persona global catalog with bounded prompts, domain guardrails, and core SMB operational competencies.
+- The Swarm Architect visual builder indexes a 342-persona global catalog with bounded prompts, domain guardrails, and core SMB operational competencies.
+- Dual-Plane Sovereign Hierarchy is strictly enforced: Plane 1 (`Engine-Maintenance`) personas manage self-governance without committing Plane 2 tenant records, and Plane 2 (`Plane 2: SMB-Digital-Twin`) personas operate under the `FR-11` Permission Firewall (shell and destructive tools are blocked, and human operator oversight `requires_oversight: true` is strictly mandatory).
+- Consumer Mission Flight Recorder (`/v1/missions/:id/dossier`) and Mock SMB Digital Twin (`/v1/business/*`) operational flows are supported with dedicated dual-plane aware auditor, twin-operations, and A2A gateway personas.
 - Legacy `run_command`/`write_to_file` labels were replaced by native AI-Tadpole-OS IDs.
 - Shell declarations include the runtime's required `shell` marker, and mutation/shell declarations require oversight.
 - Workflows contain parser-visible `##`/`###` steps.

@@ -4,11 +4,11 @@ This matrix records the private upstream contract audited before registry or Swa
 
 - Authoritative source: `DDS-Solutions/TadPole-OS` / [DDS-Solutions/AI-TadPole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS)
 - Consumer checkout discovery: portable via `--consumer-repo <path>` or `TADPOLE_OS_REPO_PATH` (no fixed local path assumed)
-- Reviewed base revision: `16bef2d75951860d15dba32d9750acb69b097bba`
+- Reviewed base revision: `a471119fd5cb0f3f89624046dec82cd833116e95`
 - Runtime hardening: fully integrated and verified in the authoritative repository checkout (Release v1.1.464+, including MCP 2026-07-28 streamable HTTP, decomposed `routes/templates/*` and `agent/types/*` submodules, `CapabilityMap` inverted index, `installed_manifest.json` lifecycle & uninstall/archive vault, namespace collision prefixing, and `ENGINE_PRIVATE_ENV_VARS` / transport header guards)
 - Reviewed branch: `main`
-- Audit date: 2026-10-29
-- Public downstream: [DDS-Solutions/AI-TadPole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS) (Release v1.1.464+, revision `16bef2d75951860d15dba32d9750acb69b097bba`, verified 2026-10-29; prior public baseline `bbcf0d4b001e6e2d0a9ffeebc71fb49f219cd61c`)
+- Audit date: 2026-11-02
+- Public downstream: [DDS-Solutions/AI-TadPole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS) (Release v1.1.464, revision `a471119fd5cb0f3f89624046dec82cd833116e95`, verified 2026-11-02; prior public baseline `16bef2d75951860d15dba32d9750acb69b097bba`)
 
 ## Operational contract
 
@@ -32,6 +32,9 @@ This matrix records the private upstream contract audited before registry or Swa
 | Registry lockfile | `compatibility.lock.json` pins the registry contract version and cryptographic SHA-256 hashes of critical contract files. The private runtime base revision is recorded in this matrix and lockfile. | Keep `compatibility.lock.json` synchronized via `python scripts/verify_compatibility_lock.py --generate`. |
 | Smoke testing | `testing/smoke-test` serves as the canonical reference template validating catalog parsing, idle availability, workflow extraction, and MCP execution isolation across modern (2026-07-28) and legacy (2024-11-05) transports. | Maintain `testing/smoke-test` and `tests/test_smoke_template.py` as mandatory CI gates. |
 | Lifecycle & Uninstall | Supports remote install (`POST /v1/engine/templates/install`), local bundle import (`POST /v1/engine/templates/import`), installed listing (`GET /v1/engine/templates/installed`), and transactional uninstall (`POST /v1/engine/templates/uninstall` with optional archival to `data/swarm_config/archive/`). | Maintain full structural parity between git-cloned templates and Swarm Architect `.zip` exports so both install paths produce identical `installed_manifest.json` records. |
+| Dual-Plane Sovereign Hierarchy (`FR-11`) | Upstream generic runner (`server-rs/src/agent/runner/mod.rs` & `inv_013_plane2_fail_closed.test.ts`) enforces fail-closed boundary isolation separating Plane 1 (`Engine-Maintenance`) and Plane 2 (`PLANE2_DEPARTMENT_MARKER = "Plane 2: SMB-Digital-Twin"`). Plane 2 personas are strictly forbidden from holding `execute_shell`, `shell`, `terminal`, or `delete_file` capabilities, must declare `requires_oversight: true`, and must never leak practice company records or customer PII into engine memory or version control. | `validate_template.py` and `web-builder` validation reject forbidden capabilities on Plane 2 personas and mandate `requires_oversight: true`. Web builder editor and catalog conversion helpers automatically enforce `requiresOversight: true` for Plane 2 agents. |
+| Mission Flight Recorder & Dossier Forensics | Upstream `/v1/missions/:id/dossier` exposes 6 forensic audit tabs (Rollup, Merkle Audit Trace, CAS File Diff Inspector, Memory Palace, TrustGraph & Economics, Agent 99 Debrief). | Catalog indexes dedicated `forensics-flight-recorder-auditor` with Plane 1 and Plane 2 awareness for post-mission forensic verification and tenant data boundary enforcement. |
+| Mock SMB Digital Twin Business Service | Upstream `/v1/business/*` implements practice companies `Mock-1-Product` and `Mock-2-Service`, a 6-step enquiry SOP, human owner approval gate (`/runs/:id/decision`), and single-write ticket/receipt recording. | Catalog indexes `smb-digital-twin-operations-agent` (Plane 2 aware: department `"Plane 2: SMB-Digital-Twin"`, 6-step SOP, owner ticketing; Plane 1 aware: zero code/shell capabilities per FR-11, mandatory oversight). |
 
 ## Toolchain and Build Environment Parity
 
@@ -56,6 +59,7 @@ The repository suite maintains an intentional version split between the primary 
 - MCP configuration/client: `server-rs/src/agent/mcp/{mod.rs, config.rs, host.rs, authz.rs, native.rs, client/mod.rs, client/stdio.rs, client/http/mod.rs, client/http/headers.rs, client/http/client.rs, client/http/sse.rs}`
 - Knowledge request: `server-rs/src/agent/knowledge_store/types.rs`
 - Security scan: `server-rs/src/security/skillspector.rs`
+- Sovereign Hierarchy & Digital Twin: `server-rs/src/agent/runner/mod.rs`, `server-rs/src/agent/business/`, `server-rs/src/routes/business.rs`, `server-rs/src/routes/agent/missions.rs`, `docs/specs/mock-smb-digital-twin.md`, `docs/specs/mission_flight_recorder.md`, `tests/invariants/inv_013_plane2_fail_closed.test.ts`
 - Frontend Template & MCP Store: `src/pages/{Template_Store.tsx, MCP_Store.tsx}`, `src/components/template_store/{types.ts, constants.ts, template_store_api.ts, template_importer.ts, use_template_install.ts, use_template_preview.ts, use_template_registry.ts, mcp_placeholders.ts, Template_Preview_Modal.tsx, Model_Resolver_Select.tsx, Installed_Swarms_List.tsx, Uninstall_Swarm_Modal.tsx, Mcp_Secrets_Wizard_Modal.tsx}`, `src/components/mcp_store/{types.ts, mcp_store_api.ts, MCP_Card.tsx}`, `src/stores/{department_store.ts, workspace_store.ts}`, `src/services/system/engine_api.ts`
 
 ## Finding classification
@@ -72,6 +76,7 @@ The repository suite maintains an intentional version split between the primary 
 | Upstream upgraded MCP to 2026-07-28 streamable HTTP transport with decomposed modules. | Upstream enhancement | Updated template validator, web-builder types/helpers, smoke server, and test suite to support both stdio and HTTP transports, dual probe discovery, and header placeholder resolution. |
 | Toolchain version split was undocumented across repositories. | Ecosystem clarity | Documented intentional version split between host runtime and template web-builder in `COMPATIBILITY_MATRIX.md`. |
 | Upstream decomposed `routes/templates/*`, `agent/types/*`, and `agent/mcp/client/http/*`, and added `ENGINE_PRIVATE_ENV_VARS`, transport header guards, `skillspector` prompt-injection heuristics, local `.zip` import, and swarm uninstall/archive. | Upstream architecture & security hardening | Updated upstream source anchors, added `ENGINE_PRIVATE_ENV_VARS`, transport-owned HTTP header, reserved `gev` profile, 64-char agent ID, and prompt-injection checks to `validate_template.py` and `web-builder`, and emitted deterministic `id` in `buildSwarmZip`. |
+| Upstream introduced Dual-Plane Sovereign Hierarchy (`Engine-Maintenance` vs `Plane 2: SMB-Digital-Twin`), `FR-11` Permission Firewall, Mission Flight Recorder dossiers (`/v1/missions/:id/dossier`), and Mock SMB Digital Twin business service (`/v1/business/*`). | Upstream architecture & operational evolution | Defined canonical `PLANE2_DEPARTMENT_MARKER`, enforced `FR-11` firewall in template and web-builder validators (blocking shell and destructive capabilities on Plane 2 personas, mandating `requires_oversight: true`), expanded prompt injection sentinels, added 3 new Plane 1 & Plane 2 aware personas to catalog (`forensics-flight-recorder-auditor`, `smb-digital-twin-operations-agent`, `gateway-a2a-protocol-custodian` bringing total to 342 personas), and updated lockfile verification to upstream commit `a471119f...`. |
 
 ## Re-audit trigger
 

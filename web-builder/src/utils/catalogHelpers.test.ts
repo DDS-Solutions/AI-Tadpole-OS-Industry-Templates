@@ -264,5 +264,16 @@ describe('catalogHelpers', () => {
     expect(team.length).toBeGreaterThanOrEqual(1);
     expect(team[0].agent.id).toBeDefined();
   });
+
+  it('enforces requiresOversight: true when converting a Plane 2 persona to a runtime agent', () => {
+    const plane2CatalogAgent: CatalogAgent = {
+      ...sampleCatalogAgent,
+      id: 'smb-digital-twin-operations-agent',
+      department: 'Plane 2: SMB-Digital-Twin',
+      departmentLabel: 'Plane 2: SMB Digital Twin',
+    };
+    const runtimeAgent = catalogAgentToRuntimeAgent(plane2CatalogAgent);
+    expect(runtimeAgent.requiresOversight).toBe(true);
+  });
 });
 

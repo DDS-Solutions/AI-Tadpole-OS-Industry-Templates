@@ -25,12 +25,17 @@ export const RESERVED_MCP_HTTP_HEADERS = new Set([
   'mcp-session-id',
   'last-event-id',
 ]);
+export const PLANE2_DEPARTMENT_MARKER = 'Plane 2: SMB-Digital-Twin';
+export const PLANE2_FORBIDDEN_SKILLS = new Set(['execute_shell', 'shell', 'terminal', 'delete_file']);
+
 const PROMPT_INJECTION_PATTERNS = [
   /<<<|>>>/,
   /ignore\s+(?:all\s+)?previous\s+instructions/i,
-  /disregard\s+system\s+prompt/i,
+  /disregard\s+(?:all\s+)?(?:previous\s+instructions|system\s+prompt)/i,
   /you\s+are\s+now\s+in\s+developer\s+mode/i,
-  /bypass\s+safety\s+filters/i,
+  /bypass\s+(?:safety\s+filters|oversight)/i,
+  /disable\s+oversight/i,
+  /system\s+prompt\s+override/i,
 ];
 
 export function inferProvider(modelId: string): string {
@@ -304,6 +309,31 @@ export function validateSwarm(
         message: `Agent "${agent.name}" has mutating capabilities (${skills.filter(s => DANGEROUS_SKILL_SET.has(s)).join(', ')}). Human oversight will be enforced at runtime.`,
         suggestedAction: 'Review human approval policies.',
       });
+    }
+
+    // FR-11 Dual-Plane Permission Firewall check
+    if (agent.department && agent.department.trim().toLowerCase() === PLANE2_DEPARTMENT_MARKER.toLowerCase()) {
+      const forbidden = skills.filter(s => PLANE2_FORBIDDEN_SKILLS.has(s));
+      if (forbidden.length > 0) {
+        issues.push({
+          id: `agent-plane2-forbidden-skills-${cleanId}`,
+          severity: 'error',
+          section: 'agents',
+          itemId: agent.id,
+          message: `Agent "${agent.name}" is on Plane 2 (${PLANE2_DEPARTMENT_MARKER}) and cannot declare shell or destructive capabilities (${forbidden.join(', ')}).`,
+          suggestedAction: 'Remove shell and delete_file capabilities to comply with the FR-11 Dual-Plane Permission Firewall.',
+        });
+      }
+      if (!agent.requiresOversight) {
+        issues.push({
+          id: `agent-plane2-missing-oversight-${cleanId}`,
+          severity: 'error',
+          section: 'agents',
+          itemId: agent.id,
+          message: `Agent "${agent.name}" is on Plane 2 (${PLANE2_DEPARTMENT_MARKER}) and requires human oversight.`,
+          suggestedAction: 'Enable requires_oversight for all Plane 2 business agents.',
+        });
+      }
     }
   }
 

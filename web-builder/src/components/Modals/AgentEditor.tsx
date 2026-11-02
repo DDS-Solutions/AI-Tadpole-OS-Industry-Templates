@@ -73,7 +73,7 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
       color,
       skills: selectedSkills,
       mcpTools: mcpTools.split(',').map(value => value.trim()).filter(Boolean),
-      requiresOversight: requiresOversight || dangerousSkillSelected,
+      requiresOversight: requiresOversight || dangerousSkillSelected || (department.trim().toLowerCase() === 'plane 2: smb-digital-twin'),
       vibe: agent.vibe,
     });
   };
@@ -179,6 +179,9 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
               value={department}
               onChange={e => setDepartment(e.target.value)}
             />
+            {department.trim().toLowerCase() === 'plane 2: smb-digital-twin' && (
+              <p className="mt-1 text-[10px] text-amber-400 font-mono">Plane 2: SMB-Digital-Twin (FR-11 Firewall: shell/destructive barred, oversight enforced)</p>
+            )}
           </div>
           <div>
             <label htmlFor={`${fieldId}-model`} className="block text-[10px] font-mono text-zinc-400 uppercase mb-1.5">LLM Model</label>

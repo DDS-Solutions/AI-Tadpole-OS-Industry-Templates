@@ -115,6 +115,7 @@ export default function App() {
 
   const departments = [
     { id: 'all', label: 'All Departments', color: '#71717a', desc: 'Browse the complete index of sovereign agent personas.' },
+    { id: 'Plane 2: SMB-Digital-Twin', label: 'Plane 2: SMB Digital Twin', color: '#10B981', desc: 'Company-agnostic SMB practice personas operating under the FR-11 permission firewall.' },
     { id: 'academic', label: 'Academic', color: '#8B5CF6', desc: 'Theoretical research, scientific computation, and deep knowledge analysis.' },
     { id: 'accounting', label: 'Accounting', color: '#10B981', desc: 'Accounts payable/receivable, ledger reconciliation, cash disbursements, and tax reporting.' },
     { id: 'compliance', label: 'Compliance', color: '#DC2626', desc: 'Regulatory auditing, policy adherence, HACCP, and statutory controls.' },

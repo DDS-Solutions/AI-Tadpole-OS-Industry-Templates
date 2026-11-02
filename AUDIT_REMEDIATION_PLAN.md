@@ -42,8 +42,8 @@ Before editing production behavior:
 **Gate:** Publish a compatibility matrix that links each field and file type to
 the accepting private Tadpole-OS code and pins the reviewed upstream revision.
 
-**Status (2026-10-29):** Complete for private upstream revision
-`16bef2d75951860d15dba32d9750acb69b097bba` (Release v1.1.464+, MCP 2026-07-28 streamable HTTP protocol, decomposed `routes/templates/*` & `agent/types/*` layout, `CapabilityMap` indexing, and transactional install/import/uninstall lifecycle). See
+**Status (2026-11-02):** Re-audited and aligned for downstream consumer revision
+`a471119fd5cb0f3f89624046dec82cd833116e95` (Release v1.1.464, Dual-Plane Sovereign Hierarchy, FR-11 Dual-Plane Permission Firewall, Mission Flight Recorder forensic dossiers, and Mock SMB Digital Twin business service). See
 [`COMPATIBILITY_MATRIX.md`](COMPATIBILITY_MATRIX.md).
 
 ## Phase 1: Add contract characterization tests

@@ -24,11 +24,13 @@ export function catalogAgentToRuntimeAgent(
   }
 
   const defaultRole = catalogAgent.role || catalogAgent.vibe || 'Specialist';
-  const defaultDepartment = catalogAgent.departmentLabel || catalogAgent.department || 'Operations';
+  const defaultDepartment = catalogAgent.department || catalogAgent.departmentLabel || 'Operations';
   const defaultDescription = catalogAgent.description || `${catalogAgent.name} - ${defaultRole}`;
 
   const skills = customOverrides.skills || (catalogAgent.skills && catalogAgent.skills.length > 0 ? [...catalogAgent.skills] : ['read_file', 'grep_search']);
   const hasDangerousSkill = skills.some(s => DANGEROUS_SKILLS.has(s));
+  const deptCandidate = (customOverrides.department || catalogAgent.department || defaultDepartment).trim().toLowerCase();
+  const isPlane2 = deptCandidate === 'plane 2: smb-digital-twin' || deptCandidate === 'plane 2: smb digital twin';
 
   return {
     id: customOverrides.id || baseId,
@@ -44,7 +46,8 @@ export function catalogAgentToRuntimeAgent(
     workflows: customOverrides.workflows || [],
     mcpTools: customOverrides.mcpTools || [],
     requiresOversight: Boolean(
-      hasDangerousSkill
+      isPlane2
+        || hasDangerousSkill
         || (customOverrides.requiresOversight !== undefined
           ? customOverrides.requiresOversight
           : catalogAgent.requiresOversight !== undefined

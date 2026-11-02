@@ -45,5 +45,6 @@ api_keys.json
 
 # Ignore any temporary runtime folders users might drag in
 tmp/
+.tmp/
 logs/
 .bunker_cache/

@@ -57,12 +57,12 @@ def generate_lock_data(
     resolved_revision = (
         pinned_revision
         or existing_consumer.get("pinned_revision")
-        or "16bef2d75951860d15dba32d9750acb69b097bba"
+        or "a471119fd5cb0f3f89624046dec82cd833116e95"
     )
     resolved_date = (
         review_date
         or existing_consumer.get("review_date")
-        or "2026-10-29"
+        or "2026-11-02"
     )
 
     return {
@@ -180,6 +180,22 @@ def verify_consumer_repo(
                 )
     else:
         mismatches.append("Consumer MCP config module not found at server-rs/src/agent/mcp/config.rs")
+
+    runner_mod_rs = consumer_repo / "server-rs" / "src" / "agent" / "runner" / "mod.rs"
+    if runner_mod_rs.is_file():
+        text = runner_mod_rs.read_text(encoding="utf-8", errors="ignore")
+        match = re.search(r'PLANE2_DEPARTMENT_MARKER:\s*&str\s*=\s*"([^"]+)";', text)
+        if match:
+            consumer_marker = match.group(1)
+            if str(ROOT) not in sys.path:
+                sys.path.insert(0, str(ROOT))
+            from scripts.validate_template import PLANE2_DEPARTMENT_MARKER
+            if consumer_marker != PLANE2_DEPARTMENT_MARKER:
+                mismatches.append(
+                    f"PLANE2_DEPARTMENT_MARKER drift: consumer has {consumer_marker!r}, validator has {PLANE2_DEPARTMENT_MARKER!r}"
+                )
+        else:
+            mismatches.append("PLANE2_DEPARTMENT_MARKER not found in consumer server-rs/src/agent/runner/mod.rs")
 
     return mismatches
 

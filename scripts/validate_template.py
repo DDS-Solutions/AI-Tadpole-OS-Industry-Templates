@@ -60,12 +60,16 @@ RESERVED_MCP_HTTP_HEADERS = frozenset({
     "mcp-session-id",
     "last-event-id",
 })
+PLANE2_DEPARTMENT_MARKER = "Plane 2: SMB-Digital-Twin"
+PLANE2_FORBIDDEN_CAPABILITIES = frozenset({"execute_shell", "shell", "terminal", "delete_file"})
 PROMPT_INJECTION_PATTERNS = (
     ("prompt boundary spoofing sentinel", re.compile(r"<<<|>>>")),
     ("system override phrase", re.compile(r"ignore\s+(?:all\s+)?previous\s+instructions", re.IGNORECASE)),
-    ("system override phrase", re.compile(r"disregard\s+system\s+prompt", re.IGNORECASE)),
+    ("system override phrase", re.compile(r"disregard\s+(?:all\s+)?(?:previous\s+instructions|system\s+prompt)", re.IGNORECASE)),
     ("system override phrase", re.compile(r"you\s+are\s+now\s+in\s+developer\s+mode", re.IGNORECASE)),
-    ("system override phrase", re.compile(r"bypass\s+safety\s+filters", re.IGNORECASE)),
+    ("system override phrase", re.compile(r"bypass\s+(?:safety\s+filters|oversight)", re.IGNORECASE)),
+    ("system override phrase", re.compile(r"disable\s+oversight", re.IGNORECASE)),
+    ("system override phrase", re.compile(r"system\s+prompt\s+override", re.IGNORECASE)),
 )
 LEGACY_SKILLS = frozenset({"run_command", "write_to_file"})
 # Single source of truth: scripts/capabilities.py
@@ -385,6 +389,17 @@ def validate_agent_payload(agent: Any) -> list[str]:
     elif isinstance(skills, list) and DANGEROUS_SKILLS.intersection(skills):
         if not agent["requires_oversight"]:
             errors.append("dangerous mutation or shell capabilities require oversight")
+
+    department = agent.get("department")
+    if isinstance(department, str) and department.strip().lower() == PLANE2_DEPARTMENT_MARKER.lower():
+        if isinstance(skills, list):
+            forbidden = sorted(PLANE2_FORBIDDEN_CAPABILITIES.intersection(skills))
+            if forbidden:
+                errors.append(
+                    f"Plane 2 agent violates FR-11 Dual-Plane Permission Firewall: forbidden capabilities {forbidden}"
+                )
+        if not agent.get("requires_oversight", False):
+            errors.append("Plane 2 agents require human oversight (requires_oversight must be true)")
     return errors
 
 
@@ -1197,6 +1212,18 @@ def validate_persona_catalog(root: Path, report: ValidationReport) -> None:
         mcp_tools = persona.get("mcp_tools")
         if mcp_tools is not None and not isinstance(mcp_tools, list):
             report.error(ctx, "mcp_tools must be an array")
+
+        dept = persona.get("department")
+        if isinstance(dept, str) and dept.strip().lower() == PLANE2_DEPARTMENT_MARKER.lower():
+            if isinstance(skills, list):
+                forbidden = sorted(PLANE2_FORBIDDEN_CAPABILITIES.intersection(skills))
+                if forbidden:
+                    report.error(
+                        ctx,
+                        f"Plane 2 persona violates FR-11 Dual-Plane Permission Firewall: forbidden capabilities {forbidden}",
+                    )
+            if not persona.get("requires_oversight", False) and not persona.get("requiresOversight", False):
+                report.error(ctx, "Plane 2 persona requires human oversight (requires_oversight must be true)")
 
 
 def validate_repository(root: Path) -> ValidationReport:

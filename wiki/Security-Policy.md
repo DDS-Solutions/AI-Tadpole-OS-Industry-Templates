@@ -2,7 +2,7 @@
 
 This policy distinguishes controls enforced by this registry, declarations emitted by Swarm Architect, and limitations in the private Tadpole-OS installer/runtime.
 
-The authoritative consumer review verified [DDS-Solutions/AI-TadPole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS) (`DDS-Solutions/TadPole-OS`) at commit `16bef2d75951860d15dba32d9750acb69b097bba`, reviewed read-only on 2026-10-29. Re-audit upstream before changing a contract or promoting a security claim.
+The authoritative consumer review verified [DDS-Solutions/AI-TadPole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS) (`DDS-Solutions/TadPole-OS`) at commit `a471119fd5cb0f3f89624046dec82cd833116e95`, reviewed read-only on 2026-11-02. Re-audit upstream before changing a contract or promoting a security claim.
 
 ## Enforced by this registry
 
@@ -15,6 +15,8 @@ The authoritative consumer review verified [DDS-Solutions/AI-TadPole-OS](https:/
 - MCP commands are limited to `node`, `npx`, `python`, and `python3`. Shell control syntax and inline interpreter/module execution are prohibited.
 - Agent profiles must start `idle`, use native AI-Tadpole-OS capability IDs, declare `mcp_tools` and `requires_oversight`, and enable oversight for write/delete/shell declarations.
 - Shell-capable profiles must include both `execute_shell` and the runtime's `shell` or `terminal` marker.
+- Dual-Plane Permission Firewall (`FR-11`): Agents designated under `"Plane 2: SMB-Digital-Twin"` cannot declare `execute_shell`, `shell`, `terminal`, or `delete_file` capabilities and must mandate `requires_oversight: true`.
+- Expanded prompt injection defense: Agent prompts are checked against upstream `skillspector.rs` heuristics (blocking instruction override phrases, boundary spoofing, and oversight bypass attempts).
 - Template paths/references and agent, workflow, MCP, and knowledge payloads must satisfy the pinned contract.
 - Contract definitions must match cryptographic SHA-256 hashes recorded in `compatibility.lock.json`.
 
@@ -29,6 +31,7 @@ Exports provide:
 - `status: "idle"` and explicit model configuration;
 - exact `skills`, `workflows`, `mcp_tools`, and `requires_oversight` fields;
 - forced oversight for declared write/delete/shell capabilities;
+- dual-plane permission enforcement: Plane 2 personas are prohibited from declaring shell/destructive tools, and forced to require human oversight;
 - a root `mcps.json`;
 - bundled reviewed Python server source under `skills/`, with its launch argument rewritten to the installer's `execution/` destination; and
 - full structured/Markdown knowledge text.
@@ -41,7 +44,7 @@ The Phase 5 prompt capability panel is a keyword heuristic. It does not parse be
 
 - No matches does not mean “zero privileges” or “safe.”
 - A match requests operator review but does not guarantee an approval prompt.
-- Exported `mcp_tools` is a validated declaration; the pinned runtime (commit `16bef2d7...`) filters external tools against `mcp_tools`, but unpatched runtimes may not.
+- Exported `mcp_tools` is a validated declaration; the pinned runtime (commit `a471119f...`) filters external tools against `mcp_tools`, but unpatched runtimes may not.
 
 ## Private upstream enforcement and limitations
 
