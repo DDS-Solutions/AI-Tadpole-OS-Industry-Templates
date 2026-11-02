@@ -24,7 +24,7 @@ function GithubIcon({ className = "w-4 h-4" }: { className?: string }) {
 }
 
 import type { Agent, WorkflowItem, TemplateItem, CatalogAgent, MCPConnector, SwarmDetails, CompanyInfo, ExperienceMode } from './types';
-import { INDUSTRY_MAP, REGISTRY, INDUSTRY_CODES_MAP } from './constants';
+import { INDUSTRY_MAP, INDUSTRY_CODES_MAP } from './constants';
 
 import ModeSelector from './components/ModeSelector';
 import { exportSwarmZip, fetchSwarmDetailsFromRepo } from './utils/fileHelpers';
@@ -94,7 +94,6 @@ export default function App() {
 
   // Catalog & Editor State
   const [catalog, setCatalog] = useState<CatalogAgent[]>([]);
-  const [isCatalogLoading, setIsCatalogLoading] = useState(true);
   const [isCatalogModalOpen, setIsCatalogModalOpen] = useState(false);
 
   const [isEditorModalOpen, setIsEditorModalOpen] = useState(false);
@@ -103,7 +102,7 @@ export default function App() {
   const [agents, setAgents] = useState<Agent[]>([]);
   const [workflows, setWorkflows] = useState<WorkflowItem[]>([]);
   const [dynamicIndustries, setDynamicIndustries] = useState<typeof INDUSTRY_MAP>(INDUSTRY_MAP);
-  const [dynamicRegistry, setDynamicRegistry] = useState<TemplateItem[]>(REGISTRY);
+  const [dynamicRegistry, setDynamicRegistry] = useState<TemplateItem[]>([]);
 
   const [isExporting, setIsExporting] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
@@ -208,6 +207,22 @@ export default function App() {
         if (!controller.signal.aborted) setConnectorLoadError('Business connections could not be loaded. Your blueprint is preserved.');
       });
 
+    return () => {
+      controller.abort();
+    };
+  }, [assetRetry]);
+
+  // Lazy-load 3.7MB catalog only when the user enters wizard/roster or opens the catalog drawer (Finding #24)
+  const needsCatalog = isCatalogModalOpen || (hasSelectedMode && (
+    (experienceMode === 'guided' && guidedStep >= 1) ||
+    (experienceMode === 'advanced' && step === 2)
+  ));
+  const isCatalogLoading = Boolean(needsCatalog && catalog.length === 0 && !catalogLoadError);
+
+  useEffect(() => {
+    if (!needsCatalog || catalog.length > 0 || catalogLoadError) return;
+    const controller = new AbortController();
+
     fetch('./ai-tadpole-catalog.json', { signal: controller.signal })
       .then(res => {
         if (!res.ok) throw new Error('The specialist catalog could not be loaded. Please retry.');
@@ -219,15 +234,12 @@ export default function App() {
       })
       .catch(() => {
         if (!controller.signal.aborted) setCatalogLoadError('The specialist catalog could not be loaded. Your blueprint is preserved.');
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) setIsCatalogLoading(false);
       });
 
     return () => {
       controller.abort();
     };
-  }, [assetRetry]);
+  }, [needsCatalog, catalog.length, catalogLoadError, assetRetry]);
 
   // Compute live continuous validation
   const validationIssues = useMemo(() => {
@@ -296,6 +308,7 @@ export default function App() {
   const handleAddCatalogAgent = (catalogAgent: CatalogAgent) => {
     const runtimeAgent = catalogAgentToRuntimeAgent(catalogAgent, {
       id: catalogAgent.id.replace(/[^a-zA-Z0-9-]/g, '-') + '-' + crypto.randomUUID().slice(0, 6),
+      catalogId: catalogAgent.id,
     });
     setAgents([...agents, runtimeAgent]);
     setIsCatalogModalOpen(false);
@@ -314,7 +327,8 @@ export default function App() {
       description: '',
       category: 'Database',
       path: '',
-      version: '1.0.0'
+      version: '1.0.0',
+      isCustom: true,
     };
     setEditingMcp(newConnector);
     setIsMcpEditorModalOpen(true);
@@ -445,6 +459,13 @@ export default function App() {
     const updated = { ...selectedTemplate, [key]: value };
     setSelectedTemplate(updated);
     setDynamicRegistry(prev => prev.map(t => t.id === selectedTemplate.id ? updated : t));
+
+    // Propagate edits to active companyInfo if this template is currently loaded into the builder (Finding #12)
+    if (key === 'name' && typeof value === 'string') {
+      setCompanyInfo(prev => ({ ...prev, name: value }));
+    } else if (key === 'description' && typeof value === 'string') {
+      setCompanyInfo(prev => ({ ...prev, description: value }));
+    }
   };
 
   const handleLoadSwarmIntoBuilder = () => {
@@ -640,7 +661,7 @@ export default function App() {
       {(catalogLoadError || connectorLoadError) && (
         <div role="alert" className="w-full mb-6 p-4 rounded-xl border border-amber-500/25 bg-amber-500/5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-sm">
           <div className="flex items-start gap-2 text-amber-200"><AlertCircle className="w-4 h-4 shrink-0 mt-0.5" /><div>{catalogLoadError && <p>{catalogLoadError}</p>}{connectorLoadError && <p>{connectorLoadError}</p>}</div></div>
-          <button type="button" onClick={() => { setIsCatalogLoading(true); setCatalogLoadError(null); setConnectorLoadError(null); setAssetRetry(value => value + 1); }} className="button-secondary shrink-0"><RotateCcw className="w-4 h-4" /> Retry loading</button>
+          <button type="button" onClick={() => { setCatalogLoadError(null); setConnectorLoadError(null); setAssetRetry(value => value + 1); }} className="button-secondary shrink-0"><RotateCcw className="w-4 h-4" /> Retry loading</button>
         </div>
       )}
       <main ref={workspaceRef} tabIndex={-1} id="workspace-content" className="workspace-content w-full">
@@ -1057,7 +1078,7 @@ export default function App() {
           </a>
         </div>
         <div className="text-[10px] font-mono text-zinc-600 tracking-widest uppercase">
-          AI-Tadpole-OS Swarm Architect • 68 Contract-Validated Industry Templates • 274 Persona Catalog
+          AI-Tadpole-OS Swarm Architect • {dynamicRegistry.length || 68} Contract-Validated Industry Templates • {catalog.length || 342} Persona Catalog
         </div>
         <button
           onClick={handleStartOver}

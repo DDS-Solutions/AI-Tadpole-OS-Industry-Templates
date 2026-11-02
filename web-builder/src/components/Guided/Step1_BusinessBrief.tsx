@@ -54,7 +54,17 @@ export default function Step1_BusinessBrief({
         return true;
       });
     } else {
-      updated = [...selectedGoals, goalId];
+      // Clean up conflicting alias goals when adding a new selection (Finding #11)
+      const cleaned = selectedGoals.filter(id => {
+        if (goalId === 'fs-dispatch-coordination' && id === 'scheduling') return false;
+        if (goalId === 'scheduling' && id === 'fs-dispatch-coordination') return false;
+        if (goalId === 'fs-estimate-quoting' && id === 'quoting') return false;
+        if (goalId === 'quoting' && id === 'fs-estimate-quoting') return false;
+        if (goalId === 'fs-customer-care' && id === 'customer-follow-up') return false;
+        if (goalId === 'customer-follow-up' && id === 'fs-customer-care') return false;
+        return true;
+      });
+      updated = [...cleaned, goalId];
     }
     setCompanyInfo({
       ...companyInfo,
@@ -66,12 +76,19 @@ export default function Step1_BusinessBrief({
     const selected = e.target.value;
     const match = dynamicIndustries.find(i => i.name === selected);
     const targetPath = match?.path || selected.toLowerCase().replace(/\s+/g, '-');
+    const newAvailableGoals = getGoalsForIndustry(targetPath || selected);
+    const availableGoalIds = new Set(newAvailableGoals.map(g => g.id));
+    
+    // Preserve overlapping valid selections instead of silently wiping (Finding #10)
+    const preservedGoals = selectedGoals.filter(gId => availableGoalIds.has(gId));
     const defaultTop3 = getDefaultGoalsForIndustry(targetPath || selected);
+    const updatedGoals = preservedGoals.length > 0 ? preservedGoals : defaultTop3;
+
     setCompanyInfo({
       ...companyInfo,
       industry: selected,
       industryPath: targetPath,
-      goals: defaultTop3,
+      goals: updatedGoals,
     });
   };
 

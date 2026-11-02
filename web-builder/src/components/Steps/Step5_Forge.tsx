@@ -97,13 +97,24 @@ export default function Step5_Forge({
                   ? `${warnings.length} non-blocking ${warnings.length === 1 ? 'warning' : 'warnings'}`
                   : 'Contract validation passed'}
             </div>
-            <p className="mt-1 text-[11px] leading-relaxed text-zinc-400">
-              {!isReady
-                ? errors[0].message
-                : warnings.length > 0
-                  ? warnings[0].message
-                  : 'The blueprint is structurally ready for archive generation.'}
-            </p>
+            {!isReady ? (
+              <div className="mt-2 space-y-1.5 text-[11px] text-zinc-300">
+                {errors.map(err => (
+                  <div key={err.id} className="p-2 rounded bg-red-950/40 border border-red-900/50 text-left">
+                    <p className="font-semibold text-red-200">{err.message}</p>
+                    {err.suggestedAction && <p className="text-zinc-400 text-[10px] mt-0.5">{err.suggestedAction}</p>}
+                  </div>
+                ))}
+              </div>
+            ) : warnings.length > 0 ? (
+              <p className="mt-1 text-[11px] leading-relaxed text-zinc-400">
+                {warnings[0].message}
+              </p>
+            ) : (
+              <p className="mt-1 text-[11px] leading-relaxed text-zinc-400">
+                The blueprint is structurally ready for archive generation.
+              </p>
+            )}
           </div>
         </div>
       </div>

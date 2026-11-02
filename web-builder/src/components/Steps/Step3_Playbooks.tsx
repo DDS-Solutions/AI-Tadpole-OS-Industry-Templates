@@ -25,6 +25,9 @@ export default function Step3_Playbooks({
   onPrevious,
   onNext
 }: Step3Props) {
+  const updateWorkflow = (id: string, updates: Partial<WorkflowItem>) => {
+    setWorkflows(workflows.map(w => w.id === id ? { ...w, ...updates } : w));
+  };
   return (
     <motion.div
       key="step3"
@@ -58,7 +61,7 @@ export default function Step3_Playbooks({
             <button
               onClick={() => onRemoveWorkflow(workflow.id)}
               aria-label={`Remove ${workflow.name || 'workflow'}`}
-              className="absolute top-6 right-6 text-zinc-650 hover:text-rose-500 transition-colors opacity-0 group-hover:opacity-100 cursor-pointer"
+              className="absolute top-6 right-6 text-zinc-500 hover:text-rose-500 transition-all opacity-0 group-hover:opacity-100 focus-visible:opacity-100 group-focus-within:opacity-100 cursor-pointer"
             >
               <Trash2 className="w-5 h-5" />
             </button>
@@ -66,21 +69,13 @@ export default function Step3_Playbooks({
               <input
                 className="bg-transparent border-b border-zinc-850 mb-2 w-full font-bold focus:border-cyber-green outline-none pb-1 text-zinc-100 text-sm"
                 value={workflow.name}
-                onChange={e => {
-                  const newWorkflows = [...workflows];
-                  newWorkflows.find(w => w.id === workflow.id)!.name = e.target.value;
-                  setWorkflows(newWorkflows);
-                }}
+                onChange={e => updateWorkflow(workflow.id, { name: e.target.value })}
               />
               <textarea
                 className="bg-transparent text-sm w-full outline-none text-zinc-400 min-h-[80px] leading-relaxed"
                 placeholder="Describe the workflow SOP..."
                 value={workflow.description}
-                onChange={e => {
-                  const newWorkflows = [...workflows];
-                  newWorkflows.find(w => w.id === workflow.id)!.description = e.target.value;
-                  setWorkflows(newWorkflows);
-                }}
+                onChange={e => updateWorkflow(workflow.id, { description: e.target.value })}
               />
 
               {/* OKF/IKS Integration Panel */}
@@ -90,15 +85,15 @@ export default function Step3_Playbooks({
                     type="checkbox"
                     checked={!!workflow.isOkfPlaybook}
                     onChange={e => {
-                      const newWorkflows = [...workflows];
-                      const curr = newWorkflows.find(w => w.id === workflow.id)!;
-                      curr.isOkfPlaybook = e.target.checked;
-                      if (e.target.checked) {
-                        curr.topic = curr.topic || companyInfo.industry.toLowerCase() || 'general';
-                        curr.conceptType = curr.conceptType || 'playbook';
-                        curr.tags = curr.tags || companyInfo.industry.toLowerCase() || 'general';
-                      }
-                      setWorkflows(newWorkflows);
+                      const isOkf = e.target.checked;
+                      updateWorkflow(workflow.id, {
+                        isOkfPlaybook: isOkf,
+                        ...(isOkf ? {
+                          topic: workflow.topic || companyInfo.industry.toLowerCase() || 'general',
+                          conceptType: workflow.conceptType || 'playbook',
+                          tags: workflow.tags || companyInfo.industry.toLowerCase() || 'general',
+                        } : {}),
+                      });
                     }}
                     className="rounded border-zinc-800 bg-zinc-950 text-cyber-green focus:ring-0 focus:ring-offset-0 cursor-pointer w-4 h-4"
                   />
@@ -113,11 +108,7 @@ export default function Step3_Playbooks({
                         className="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-xs focus:border-cyber-green outline-none text-zinc-300"
                         placeholder="https://confluence.company.com/pages/..."
                         value={workflow.resourceUri || ''}
-                        onChange={e => {
-                          const newWorkflows = [...workflows];
-                          newWorkflows.find(w => w.id === workflow.id)!.resourceUri = e.target.value;
-                          setWorkflows(newWorkflows);
-                        }}
+                        onChange={e => updateWorkflow(workflow.id, { resourceUri: e.target.value })}
                       />
                     </div>
                     <div>
@@ -126,11 +117,7 @@ export default function Step3_Playbooks({
                         className="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-xs focus:border-cyber-green outline-none text-zinc-300"
                         placeholder="e.g. marketing, compliance"
                         value={workflow.topic || ''}
-                        onChange={e => {
-                          const newWorkflows = [...workflows];
-                          newWorkflows.find(w => w.id === workflow.id)!.topic = e.target.value;
-                          setWorkflows(newWorkflows);
-                        }}
+                        onChange={e => updateWorkflow(workflow.id, { topic: e.target.value })}
                       />
                     </div>
                     <div>
@@ -139,11 +126,7 @@ export default function Step3_Playbooks({
                         className="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-xs focus:border-cyber-green outline-none text-zinc-300"
                         placeholder="e.g. playbook, guideline"
                         value={workflow.conceptType || ''}
-                        onChange={e => {
-                          const newWorkflows = [...workflows];
-                          newWorkflows.find(w => w.id === workflow.id)!.conceptType = e.target.value;
-                          setWorkflows(newWorkflows);
-                        }}
+                        onChange={e => updateWorkflow(workflow.id, { conceptType: e.target.value })}
                       />
                     </div>
                     <div>
@@ -152,11 +135,7 @@ export default function Step3_Playbooks({
                         className="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-xs focus:border-cyber-green outline-none text-zinc-300"
                         placeholder="e.g. seo, advertising"
                         value={workflow.tags || ''}
-                        onChange={e => {
-                          const newWorkflows = [...workflows];
-                          newWorkflows.find(w => w.id === workflow.id)!.tags = e.target.value;
-                          setWorkflows(newWorkflows);
-                        }}
+                        onChange={e => updateWorkflow(workflow.id, { tags: e.target.value })}
                       />
                     </div>
                   </div>
@@ -166,7 +145,7 @@ export default function Step3_Playbooks({
           </div>
         ))}
         {workflows.length === 0 && (
-          <div className="py-12 text-center text-zinc-650 font-mono text-xs border border-dashed border-zinc-850 rounded-xl">
+          <div className="py-12 text-center text-zinc-500 font-mono text-xs border border-dashed border-zinc-850 rounded-xl">
             No workflows defined. Click the button to add a standard operating procedure for this swarm.
           </div>
         )}

@@ -39,15 +39,21 @@ const PROMPT_INJECTION_PATTERNS = [
 ];
 
 export function inferProvider(modelId: string): string {
-  const model = modelId.toLowerCase();
-  if (model.endsWith('-cloud') && model.includes('gemma')) return 'ollama-cloud';
-  if (model.startsWith('gemma4:e')) return 'ollama';
-  if (model.includes('gemini') || model.includes('gemma')) return 'google';
-  if (model.includes('claude')) return 'anthropic';
-  if (model.includes('gpt') || model.startsWith('o1') || model.startsWith('o3')) return 'openai';
-  if (model.includes('llama')) return 'groq';
-  if (model.includes('deepseek')) return 'deepseek';
-  if (model.includes('mistral') || model.includes('mixtral')) return 'mistral';
+  const model = modelId.toLowerCase().trim();
+  if (model.endsWith('-cloud')) return 'ollama-cloud';
+  if (model === 'gemma4:31b') return 'google';
+
+  // Ollama local model tags: e.g. gemma4:e4b, llama3.2:3b, deepseek-r1:8b, mistral-nemo:12b, qwen2.5:7b
+  if (model.includes(':')) {
+    return 'ollama';
+  }
+
+  if (model.startsWith('gemini') || model.startsWith('gemma')) return 'google';
+  if (model.startsWith('claude')) return 'anthropic';
+  if (model.startsWith('gpt') || model.startsWith('o1') || model.startsWith('o3') || model.startsWith('chatgpt')) return 'openai';
+  if (model.startsWith('llama')) return 'groq';
+  if (model.startsWith('deepseek')) return 'deepseek';
+  if (model.startsWith('mistral') || model.startsWith('mixtral') || model.startsWith('codestral')) return 'mistral';
   throw new Error(`Choose an explicit provider for unrecognized model "${modelId}".`);
 }
 
@@ -506,6 +512,17 @@ export function validateSwarm(
       });
     }
 
+    if (conn.status === 'quarantined') {
+      issues.push({
+        id: `connector-quarantined-${connectorId}`,
+        severity: 'error',
+        section: 'connectors',
+        itemId: connectorId,
+        message: `Connector "${conn.name}" is quarantined and cannot be used in a deployed swarm.`,
+        suggestedAction: 'Deselect this quarantined connector and choose an alternative.',
+      });
+    }
+
     if (conn.required_env && Object.keys(conn.required_env).length > 0) {
       const varNames = Object.keys(conn.required_env).join(', ');
       issues.push({
@@ -518,10 +535,10 @@ export function validateSwarm(
     }
   }
 
-  // Cross-check agent grants
-  const serverGrantsCount = new Map<string, number>();
-  for (const sName of activeServers.keys()) {
-    serverGrantsCount.set(sName, 0);
+  // Cross-check agent grants keyed per connector to prevent false blocking errors (Finding #16)
+  const connectorGrantsCount = new Map<string, number>();
+  for (const connectorId of selectedConnectors) {
+    connectorGrantsCount.set(connectorId, 0);
   }
 
   for (const agent of agents) {
@@ -545,7 +562,9 @@ export function validateSwarm(
         ? grant.replace('mcp__', '').split('__')[0]
         : grant;
 
-      if (!activeServers.has(serverName)) {
+      const conn = activeServers.get(serverName) || (connectorToolsMap.get(grant)?.connector);
+
+      if (!conn) {
         issues.push({
           id: `agent-mcp-dangling-${cleanId}-${grant}`,
           severity: 'error',
@@ -555,7 +574,7 @@ export function validateSwarm(
           suggestedAction: `Select the ${serverName} connector or remove this tool grant from ${agent.name}.`,
         });
       } else {
-        serverGrantsCount.set(serverName, (serverGrantsCount.get(serverName) || 0) + 1);
+        connectorGrantsCount.set(conn.id, (connectorGrantsCount.get(conn.id) || 0) + 1);
 
         const toolDesc = connectorToolsMap.get(grant);
         if (toolDesc) {
@@ -575,8 +594,9 @@ export function validateSwarm(
   }
 
   // For each selected connector, check that at least one agent is granted access
-  for (const [sName, conn] of activeServers.entries()) {
-    if ((serverGrantsCount.get(sName) || 0) === 0) {
+  for (const connectorId of selectedConnectors) {
+    const conn = mcpCatalog.find(c => c.id === connectorId);
+    if (conn && (connectorGrantsCount.get(connectorId) || 0) === 0) {
       issues.push({
         id: `connector-no-grants-${conn.id}`,
         severity: 'error',

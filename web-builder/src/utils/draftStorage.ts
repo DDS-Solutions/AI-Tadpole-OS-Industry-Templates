@@ -41,9 +41,24 @@ export function restoreDraftConnectors(
 ): MCPConnector[] {
   const merged = new Map(catalog.map(connector => [connector.id, connector]));
   for (const definition of definitions) {
-    // Reapply metadata over the current release's config and tool manifests.
-    // A draft cannot replace executable configuration or verified provenance.
-    merged.set(definition.id, { ...merged.get(definition.id), ...connectorMetadata(definition) });
+    const existing = merged.get(definition.id);
+    if (existing) {
+      // Reapply metadata over the current release's config and tool manifests.
+      // A draft cannot replace executable configuration, verified provenance, or canonical asset paths (Finding #8).
+      merged.set(definition.id, {
+        ...existing,
+        ...connectorMetadata(definition),
+        path: existing.path,
+        config: existing.config,
+        tools: existing.tools,
+        required_env: existing.required_env,
+        status: existing.status,
+      });
+    } else {
+      merged.set(definition.id, {
+        ...connectorMetadata(definition),
+      });
+    }
   }
   return [...merged.values()];
 }

@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, Sparkles, X, Search, BookOpen, ArrowUpRight } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
 import type { CatalogAgent } from '../../types';
@@ -39,14 +39,30 @@ export default function CatalogDrawer({
   const [isMobilePreviewOpen, setIsMobilePreviewOpen] = useState(false);
 
   const search = catalogSearch.trim().toLowerCase();
-  const filtered = catalog.filter(agent => {
-    const matchesDept = selectedCatalogDept === 'all' || agent.department === selectedCatalogDept;
-    const matchesSearch = !search || [agent.name, agent.description, agent.vibe, agent.departmentLabel, agent.prompt]
-      .some(value => value.toLowerCase().includes(search));
-    return matchesDept && matchesSearch;
-  });
+
+  const departmentCounts = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const agent of catalog) {
+      if (agent.department) {
+        counts.set(agent.department, (counts.get(agent.department) || 0) + 1);
+      }
+    }
+    return counts;
+  }, [catalog]);
+
+  const filtered = useMemo(() => {
+    return catalog.filter(agent => {
+      const matchesDept = selectedCatalogDept === 'all' || agent.department === selectedCatalogDept;
+      const matchesSearch = !search || [agent.name, agent.description, agent.vibe, agent.departmentLabel, agent.prompt]
+        .some(value => value.toLowerCase().includes(search));
+      return matchesDept && matchesSearch;
+    });
+  }, [catalog, selectedCatalogDept, search]);
+
   // The preview and add action must always belong to the current result set.
-  const selectedAgent = filtered.find(agent => agent.id === selectedCatalogAgentId) ?? filtered[0];
+  const selectedAgent = useMemo(() => {
+    return filtered.find(agent => agent.id === selectedCatalogAgentId) ?? filtered[0];
+  }, [filtered, selectedCatalogAgentId]);
 
   useEffect(() => {
     if (isOpen && isMobilePreviewOpen && window.matchMedia('(max-width: 1023px)').matches) {
@@ -135,7 +151,7 @@ export default function CatalogDrawer({
           <nav aria-label="Filter agents by department" className="shrink-0 w-full lg:w-48 lg:border-r border-b lg:border-b-0 border-zinc-800 overflow-x-auto lg:overflow-y-auto custom-scrollbar bg-zinc-900/20 p-3 flex lg:block gap-2 lg:space-y-1">
             <div className="hidden lg:block mono-label text-[9px] mb-3 px-2 text-zinc-400">Departments</div>
             {departments.map(dept => {
-              const count = dept.id === 'all' ? catalog.length : catalog.filter(agent => agent.department === dept.id).length;
+              const count = dept.id === 'all' ? catalog.length : (departmentCounts.get(dept.id) || 0);
               const isSelected = selectedCatalogDept === dept.id;
 
               return (

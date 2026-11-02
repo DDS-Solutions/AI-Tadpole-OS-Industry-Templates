@@ -17,7 +17,7 @@ interface Step2TeamRecommendationsProps {
 
 export default function Step2_TeamRecommendations({
   agents,
-  catalogCount = 223,
+  catalogCount = 342,
   recommendedSpecialists,
   mcpCatalog = [],
   onRegenerateTeam,
@@ -75,7 +75,7 @@ export default function Step2_TeamRecommendations({
           <div className="space-y-1">
             <h3 className="text-base font-semibold text-white">No specialists currently selected</h3>
             <p className="text-xs text-zinc-400 max-w-md mx-auto">
-              Add a specialist from the {catalogCount}-agent catalog or return to the business brief to regenerate recommendations.
+              Add a specialist from the {catalogCount || 342}-agent catalog or return to the business brief to regenerate recommendations.
             </p>
           </div>
           <button
@@ -88,7 +88,7 @@ export default function Step2_TeamRecommendations({
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {agents.map((agent) => {
-            const spec = recommendedSpecialists.find(s => s.agent.id === agent.id);
+            const spec = recommendedSpecialists.find(s => s.agent.id === agent.id || (agent.catalogId && (s.agent.id === agent.catalogId || s.agent.catalogId === agent.catalogId)));
             const canRead = spec?.canRead || ['Approved company records & assigned documents'];
             const canPrepare = spec?.canPrepare || ['Draft work documents and status updates'];
             const cannotApprove = spec?.cannotApprove || ['Final external publication without review'];
@@ -202,7 +202,7 @@ export default function Step2_TeamRecommendations({
                       : 'bg-cyber-green/10 border-cyber-green/30 text-cyber-green'
                   }`}>
                     <Shield className="w-3 h-3" />
-                    <span>{requiresApproval ? 'Human Approval Required' : hasUnknownPermissions ? 'Review Tool Permissions' : 'Read-only Capabilities'}</span>
+                    <span>{hasUnknownPermissions && requiresApproval ? 'Approval Required • Unknown Permissions' : hasUnknownPermissions ? 'Review Tool Permissions' : requiresApproval ? 'Human Approval Required' : 'Read-only Capabilities'}</span>
                   </div>
                   <span className="text-xs text-zinc-500 font-mono">State: Idle</span>
                 </div>

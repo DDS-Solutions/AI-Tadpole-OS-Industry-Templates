@@ -18,6 +18,7 @@ export interface Agent {
   emoji?: string;
   vibe?: string;
   isCustom?: boolean;
+  catalogId?: string;
   recommendationReason?: string;
 }
 
@@ -108,6 +109,7 @@ export interface MCPConnector {
   dependency_provenance?: MCPDependencyProvenance[];
   tools?: MCPToolDescriptor[];
   config?: MCPConfig;
+  isCustom?: boolean;
 }
 
 export interface MCPServerConfig {

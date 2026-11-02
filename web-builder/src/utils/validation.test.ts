@@ -46,6 +46,9 @@ describe('validateSwarm', () => {
     expect(inferProvider('gemma4:31b')).toBe('google');
     expect(inferProvider('gemma4:31b-cloud')).toBe('ollama-cloud');
     expect(inferProvider('gemma4:e4b')).toBe('ollama');
+    expect(inferProvider('llama3.2:3b')).toBe('ollama');
+    expect(inferProvider('mistral-nemo:12b')).toBe('ollama');
+    expect(inferProvider('deepseek-r1:8b')).toBe('ollama');
     expect(inferProvider('deepseek-r1')).toBe('deepseek');
     expect(inferProvider('mistral-large')).toBe('mistral');
     expect(inferProvider('claude-3-5-sonnet')).toBe('anthropic');
@@ -274,5 +277,46 @@ describe('validateSwarm', () => {
     };
     const issues = validateSwarm(validCompany, [injectionAgent], [validWorkflow], [], []);
     expect(issues.some(e => e.id === `agent-prompt-injection-${injectionAgent.id}`)).toBe(true);
+  });
+
+  it('emits an error for quarantined connector selections', () => {
+    const quarantinedConnector: MCPConnector = {
+      id: 'quarantined-tool',
+      name: 'Quarantined Service',
+      category: 'Legacy',
+      description: 'Dangerous legacy tool',
+      version: '1.0.0',
+      path: 'connectors/quarantined',
+      status: 'quarantined',
+      tools: [{ id: 'quarantined:exec', name: 'Exec', description: 'desc', risk: 'execute' as const }],
+      config: { mcpServers: { quarantined: { command: 'python', args: ['server.py'] } } },
+    };
+    const agentWithGrant: Agent = {
+      ...validAgent,
+      mcpTools: ['quarantined:exec'],
+      requiresOversight: true,
+    };
+    const issues = validateSwarm(validCompany, [agentWithGrant], [validWorkflow], ['quarantined-tool'], [quarantinedConnector]);
+    expect(issues.some(e => e.id === 'connector-quarantined-quarantined-tool')).toBe(true);
+  });
+
+  it('avoids false blocking errors when connector tools are granted under an alias or matching tool id', () => {
+    const multiAliasConnector: MCPConnector = {
+      id: 'mcp-financial',
+      name: 'Financial Accounting',
+      category: 'Accounting',
+      description: 'Books',
+      version: '1.0.0',
+      path: 'connectors/financial',
+      status: 'verified',
+      tools: [{ id: 'acc:view_invoice', name: 'View Invoice', description: 'desc', risk: 'read' as const }],
+      config: { mcpServers: { accounting_core: { command: 'python', args: ['server.py'] } } },
+    };
+    const agentWithAliasGrant: Agent = {
+      ...validAgent,
+      mcpTools: ['acc:view_invoice'],
+    };
+    const issues = validateSwarm(validCompany, [agentWithAliasGrant], [validWorkflow], ['mcp-financial'], [multiAliasConnector]);
+    expect(issues.some(e => e.id === 'connector-no-grants-mcp-financial')).toBe(false);
   });
 });

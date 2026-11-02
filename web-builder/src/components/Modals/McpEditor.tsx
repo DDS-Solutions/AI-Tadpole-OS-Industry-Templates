@@ -60,21 +60,26 @@ export default function McpEditor({ connector, onClose, onSave }: McpEditorProps
     if (!canSave) return;
 
     let updatedConfig = connector.config;
-    let updatedTools = connector.tools;
-    let updatedRequiredEnv = connector.required_env;
-    let updatedStatus = connector.status;
+    let updatedTools = connector.tools ? [...connector.tools] : undefined;
+    let updatedRequiredEnv = connector.required_env ? { ...connector.required_env } : undefined;
+    const updatedStatus = connector.status || 'reviewed';
 
     if (hasUrl) {
-      const headers: Record<string, string> = {};
+      const headers: Record<string, string> = { ...(existingServer?.headers || {}) };
       if (authHeader.trim()) {
         headers['Authorization'] = authHeader.trim();
       } else if (cleanSecretVar) {
         headers['Authorization'] = `Bearer \${${cleanSecretVar}}`;
       }
 
+      const existingServers = connector.config?.mcpServers ? { ...connector.config.mcpServers } : {};
+      delete existingServers[firstServerKey];
+
       updatedConfig = {
         mcpServers: {
+          ...existingServers,
           [cleanServerKey]: {
+            ...existingServer,
             url: remoteUrl.trim(),
             headers: Object.keys(headers).length > 0 ? headers : undefined,
             protocol_version: '2026-07-28',
@@ -82,24 +87,33 @@ export default function McpEditor({ connector, onClose, onSave }: McpEditorProps
         },
       };
 
-      const toolSlug = toolName.toLowerCase().replace(/[^a-z0-9_]/g, '_').replace(/^_+|_+$/g, '') || 'query';
-      const declaredTool: MCPToolDescriptor = {
-        id: `${cleanServerKey}:${toolSlug}`,
-        name: toolName.trim() || `${name.trim()} Tool`,
-        description: `Execute ${toolName.trim()} on ${name.trim()}.`,
-        risk: toolRisk,
-      };
+      if (!updatedTools || updatedTools.length === 0) {
+        const toolSlug = toolName.toLowerCase().replace(/[^a-z0-9_]/g, '_').replace(/^_+|_+$/g, '') || 'query';
+        const declaredTool: MCPToolDescriptor = {
+          id: `${cleanServerKey}:${toolSlug}`,
+          name: toolName.trim() || `${name.trim()} Tool`,
+          description: `Execute ${toolName.trim()} on ${name.trim()}.`,
+          risk: toolRisk,
+        };
+        updatedTools = [declaredTool];
+      } else if (cleanServerKey !== firstServerKey) {
+        updatedTools = updatedTools.map(t => ({
+          ...t,
+          id: t.id.startsWith(`${firstServerKey}:`)
+            ? t.id.replace(`${firstServerKey}:`, `${cleanServerKey}:`)
+            : t.id,
+        }));
+      }
 
-      updatedTools = [declaredTool];
       if (cleanSecretVar) {
         updatedRequiredEnv = {
-          [cleanSecretVar]: {
+          ...updatedRequiredEnv,
+          [cleanSecretVar]: updatedRequiredEnv?.[cleanSecretVar] || {
             description: `${name.trim()} API Credential`,
             placeholder: 'YOUR_API_KEY_HERE',
           },
         };
       }
-      updatedStatus = 'reviewed';
     }
 
     onSave({
@@ -108,7 +122,7 @@ export default function McpEditor({ connector, onClose, onSave }: McpEditorProps
       category: category.trim(),
       version: version.trim(),
       description: description.trim(),
-      path: path.trim(),
+      path: connector.isCustom ? path.trim() : connector.path,
       config: updatedConfig,
       tools: updatedTools,
       required_env: updatedRequiredEnv,
@@ -187,13 +201,19 @@ export default function McpEditor({ connector, onClose, onSave }: McpEditorProps
           <label htmlFor={`${fieldId}-path`} className="block text-[10px] font-mono text-zinc-400 uppercase mb-1.5">Blueprint Path / Repository URI</label>
           <input
             type="text"
-            className="focus-sovereign w-full min-w-0 bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2.5 text-base sm:text-xs text-zinc-200 focus:border-cyber-green outline-none"
+            className={`focus-sovereign w-full min-w-0 bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2.5 text-base sm:text-xs text-zinc-200 focus:border-cyber-green outline-none ${!connector.isCustom ? 'opacity-60 cursor-not-allowed' : ''}`}
             placeholder="e.g., mcp-blueprints/salesforce-sync"
             id={`${fieldId}-path`}
             required
+            readOnly={!connector.isCustom}
             value={path}
-            onChange={e => setPath(e.target.value)}
+            onChange={e => {
+              if (connector.isCustom) setPath(e.target.value);
+            }}
           />
+          {!connector.isCustom && (
+            <p className="text-[11px] font-mono text-zinc-500 mt-1">Registry blueprint path is immutable to preserve catalog integrity.</p>
+          )}
         </div>
 
         {/* Description */}

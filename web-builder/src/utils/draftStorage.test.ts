@@ -139,8 +139,9 @@ describe('draftStorage', () => {
     const resumedAfterFetch = restoreDraftConnectors([catalogConnector], [savedMetadata]);
 
     expect(fetchedAfterResume).toEqual(resumedAfterFetch);
+    // Canonical path must be preserved from catalog release to prevent 404 at export (Finding #8)
     expect(resumedAfterFetch[0]).toMatchObject({
-      name: 'My CRM', path: 'mcp-blueprints/custom-crm',
+      name: 'My CRM', path: 'mcp-blueprints/crm',
       config: catalogConnector.config,
       tools: catalogConnector.tools,
       integrity_hash: 'current-release-hash',

@@ -242,6 +242,12 @@ class DocumentationConsistencyTests(unittest.TestCase):
                                              (ROOT / "README.md").read_text(encoding="utf-8"))}
         self.assertEqual({expected}, stated)
 
+    def test_web_builder_footer_and_docs_free_from_stale_counts(self):
+        app_text = (ROOT / "web-builder" / "src" / "App.tsx").read_text(encoding="utf-8")
+        self.assertNotIn("274 Persona Catalog", app_text, "App.tsx contains stale hardcoded persona count")
+        self.assertIn("{catalog.length || 342} Persona Catalog", app_text, "App.tsx should display dynamic or fallback persona count")
+
+
 
 class ConsumerIngestionCompatibilityTests(unittest.TestCase):
     """Rigorous verification of all templates against the Tadpole-OS consumer application wire schemas."""

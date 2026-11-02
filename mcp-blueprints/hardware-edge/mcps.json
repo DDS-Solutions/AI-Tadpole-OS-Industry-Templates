@@ -4,10 +4,10 @@
       "command": "python",
       "args": ["server.py"],
       "env": {
-        "SCALE_COM_PORT": "COM3",
-        "SCALE_BAUDRATE": "9600",
-        "MODBUS_SENSOR_IP": "192.168.1.100",
-        "MODBUS_PORT": "502"
+        "SCALE_COM_PORT": "${SCALE_COM_PORT}",
+        "SCALE_BAUDRATE": "${SCALE_BAUDRATE}",
+        "MODBUS_SENSOR_IP": "${MODBUS_SENSOR_IP}",
+        "MODBUS_PORT": "${MODBUS_PORT}"
       }
     }
   }

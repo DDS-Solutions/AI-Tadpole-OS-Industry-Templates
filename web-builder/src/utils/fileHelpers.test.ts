@@ -39,6 +39,8 @@ describe('Swarm Architect archive contract', () => {
     const mcp = JSON.parse(await zip.file('mcps.json')!.async('string'));
 
     expect(swarm.id).toBe('acme-advisory');
+    expect(swarm.content_sha256).toMatch(/^sha256:[a-f0-9]{64}$/);
+    expect(swarm.$schema).toBe('https://tadpoleos.dev/schemas/swarm-v1.json');
     expect(swarm.roster).toEqual([
       { id: 'review-agent', path: 'agents/review-agent.json', role: 'Reviewer' },
     ]);

@@ -92,11 +92,10 @@ export default function ModeSelector({ templateCount = 0, onSelectMode, onBrowse
           </div>
           <div className="setup-grid">
             {SETUP_MODES.map(item => (
-              <button
+              <article
                 key={item.mode}
-                type="button"
+                className={`setup-card ${item.cardClass} group cursor-pointer`}
                 onClick={() => onSelectMode(item.mode)}
-                className={`setup-card ${item.cardClass} group`}
               >
                 <div className="setup-card-top">
                   <span className="setup-card-label">
@@ -111,11 +110,21 @@ export default function ModeSelector({ templateCount = 0, onSelectMode, onBrowse
                     <li key={feature}><Check /> {feature}</li>
                   ))}
                 </ul>
-                <span className="setup-card-footer">
+                <div className="setup-card-footer">
                   <span>{item.footerTag}</span>
-                  <span className="setup-cta">{item.ctaText} <ArrowRight className="w-4 h-4" /></span>
-                </span>
-              </button>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onSelectMode(item.mode);
+                    }}
+                    aria-label={`${item.ctaText}: ${item.title}`}
+                    className="setup-cta focus-sovereign rounded-lg cursor-pointer flex items-center gap-1"
+                  >
+                    {item.ctaText} <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </article>
             ))}
           </div>
         </section>

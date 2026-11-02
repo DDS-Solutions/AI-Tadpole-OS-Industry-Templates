@@ -1,18 +1,13 @@
 import JSZip from 'jszip';
-import type { Agent, WorkflowItem, MCPConnector, MCPConfig, MCPServerConfig, SwarmDetails } from '../types';
+import type { Agent, CompanyInfo, WorkflowItem, MCPConnector, MCPConfig, MCPServerConfig, SwarmDetails } from '../types';
+
+export type SwarmCompanyInfo = Pick<CompanyInfo, 'name' | 'mission' | 'size' | 'industry'> & Partial<CompanyInfo>;
 import { safeFileId } from './catalogHelpers';
 import { inferProvider } from './validation';
 import { VALID_RUNTIME_CAPABILITIES, DANGEROUS_SKILL_SET as DANGEROUS_SKILLS } from '../constants/capabilities';
 
-const REGISTRY_RAW_BASE = 'https://raw.githubusercontent.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates/main';
+const REGISTRY_RAW_BASE = import.meta.env.VITE_RAW_BASE || 'https://raw.githubusercontent.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates/main';
 const CONNECTOR_ASSET_BASE = '.';
-
-interface CompanyInfo {
-  name: string;
-  mission: string;
-  size: string;
-  industry: string;
-}
 
 interface SwarmAgentReference {
   id: string;
@@ -143,7 +138,7 @@ const loadConnectorAssets = async (
 };
 
 export const buildSwarmZip = async (
-  companyInfo: CompanyInfo,
+  companyInfo: SwarmCompanyInfo,
   agents: Agent[],
   workflows: WorkflowItem[],
   selectedConnectors: string[],
@@ -198,11 +193,14 @@ export const buildSwarmZip = async (
   }));
 
   const swarmJson: Record<string, unknown> = {
+    $schema: 'https://tadpoleos.dev/schemas/swarm-v1.json',
     id: safeFileId(companyInfo.name),
     name: `${companyInfo.name} Swarm`,
     version: '1.0.0',
+    author: companyInfo.name.trim(),
     description: companyInfo.mission.trim(),
     industry: companyInfo.industry.toLowerCase(),
+    tags: companyInfo.goals || [],
     company_size: companySize,
     defaults: { model: 'gemma4:31b' },
     roster,
@@ -213,8 +211,6 @@ export const buildSwarmZip = async (
   if (selectedConnectors.length > 0) {
     swarmJson.connector_ids = selectedConnectors.map(safeFileId);
   }
-
-  zip.file('swarm.json', JSON.stringify(swarmJson, null, 2));
 
   // Build tool risk catalog lookup
   const toolRiskMap = new Map<string, string>();
@@ -367,11 +363,41 @@ export const buildSwarmZip = async (
       knowledgeFolder?.file(`${cleanName}.md`, frontmatter);
     }
   }
+
+  const contentSha256 = await computeArchiveDigest(zip);
+  swarmJson.content_sha256 = contentSha256;
+  zip.file('swarm.json', JSON.stringify(swarmJson, null, 2));
+
   return zip;
 };
 
+export async function computeArchiveDigest(zip: JSZip): Promise<string> {
+  const fileEntries: Array<{ name: string; content: string }> = [];
+  const files = Object.keys(zip.files).filter(name => !zip.files[name].dir && name !== 'swarm.json');
+  files.sort();
+
+  for (const name of files) {
+    const text = await zip.file(name)!.async('string');
+    const normalized = text.replace(/\r\n/g, '\n');
+    const bytes = new TextEncoder().encode(normalized);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', bytes);
+    const hashHex = Array.from(new Uint8Array(hashBuffer))
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
+    fileEntries.push({ name, content: hashHex });
+  }
+
+  const manifest = fileEntries.map(e => `${e.name}\0${e.content}`).join('\n');
+  const manifestBytes = new TextEncoder().encode(manifest);
+  const manifestHashBuffer = await crypto.subtle.digest('SHA-256', manifestBytes);
+  const manifestHex = Array.from(new Uint8Array(manifestHashBuffer))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+  return `sha256:${manifestHex}`;
+}
+
 export const exportSwarmZip = async (
-  companyInfo: CompanyInfo,
+  companyInfo: SwarmCompanyInfo,
   agents: Agent[],
   workflows: WorkflowItem[],
   selectedConnectors: string[],

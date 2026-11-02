@@ -130,14 +130,28 @@ export default function Step4_Connectors({
                     >
                       <Sliders className="w-3 h-3" /> Edit
                     </button>
-                    <button
-                      type="button"
-                      onClick={(e) => onDeleteMcp(connector.id, e)}
-                      aria-label={`Delete ${connector.name}`}
-                      className="focus-sovereign rounded min-h-9 px-1 text-zinc-400 hover:text-danger flex items-center gap-1 transition-colors cursor-pointer"
-                    >
-                      <Trash2 className="w-3 h-3" /> Delete
-                    </button>
+                    {connector.isCustom ? (
+                      <button
+                        type="button"
+                        onClick={(e) => onDeleteMcp(connector.id, e)}
+                        aria-label={`Delete ${connector.name}`}
+                        className="focus-sovereign rounded min-h-9 px-1 text-zinc-400 hover:text-danger flex items-center gap-1 transition-colors cursor-pointer"
+                      >
+                        <Trash2 className="w-3 h-3" /> Delete
+                      </button>
+                    ) : isSelected ? (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedConnectors(selectedConnectors.filter(id => id !== connector.id));
+                        }}
+                        aria-label={`Remove ${connector.name} from swarm`}
+                        className="focus-sovereign rounded min-h-9 px-1 text-zinc-400 hover:text-warning flex items-center gap-1 transition-colors cursor-pointer"
+                      >
+                        <Trash2 className="w-3 h-3" /> Remove
+                      </button>
+                    ) : null}
                   </div>
                 </div>
               </div>

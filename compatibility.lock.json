@@ -15,11 +15,11 @@
     "COMPATIBILITY_MATRIX.md": "d2392a18ea9b284df811a221dd690c4101db31b7776383bd58c364b3a3b2c866",
     "TEMPLATE_SPEC.md": "f36b2c49f88258c70a9c6f3a5762682b66ac14017e9ae39e1757dedc7568742c",
     "index.json": "b9fe9e424688826c260737b09acdb0494079e1575599dc23e5cda85492886548",
-    "mcp_registry.json": "1cd1e0420e7eddd7ebc4f0f5432ff8d5a662cc6e7f06eebe128b063921a432df",
+    "mcp_registry.json": "ba606a9c2c24198c9cefb992dec347708ac18f265115ca1c25dd92331026e48f",
     "registry.json": "a180a00b5c33fb1dee0ea7e14db89e6ca14828ada264ce6f3579c30f8dad54b9",
     "scripts/capabilities.py": "f89ddae0a540c57693b56953f8158212f3b3bdfc11eb87a06105f724ef9e1bd4",
-    "scripts/migrate_consumer_contract.py": "0c6768fc69eda118644edd5182e1c1ea6ec81383455532c4628a79534d652c23",
-    "scripts/validate_template.py": "f8edbde804e41e33523cf453f66fe0959eff19e24ed1553db8b7a11f93a0d0db",
+    "scripts/migrate_consumer_contract.py": "4c03f2942c86dbef57144867d700b0e3f8e61a05e157a6e171db21de5f4f988a",
+    "scripts/validate_template.py": "7793b0d4e13531dfce7dafa13387184d5b3e49066856b1cc4a003ef8144f67d3",
     "scripts/verify_compatibility_lock.py": "c9ceb81bb3ed3782fb98b644f0b224f1bc0c33f2805ada0fa691c983fe23d615"
   }
 }

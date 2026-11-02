@@ -43,19 +43,35 @@ export default function Step3_BusinessConnections({
         setAgents(updatedAgents);
       }
     } else {
-      // Select connector and assign read-only tools to agents
+      // Select connector and assign read-only tools adhering to least-privilege principles (Finding #13)
       const nextSelected = [...selectedConnectors, connectorId];
       setSelectedConnectors(nextSelected);
 
       if (setAgents && targetConnector) {
         const readTools = (targetConnector.tools || []).filter(t => t.risk === 'read');
-        const readToolIds = readTools.map(t => t.id);
 
-        if (readToolIds.length > 0) {
-          const updatedAgents = agents.map(agent => {
+        if (readTools.length > 0) {
+          const isAgentEligible = (agent: Agent, tool: (typeof readTools)[0], isLead: boolean): boolean => {
+            if (tool.recommendedGoalIds && tool.recommendedGoalIds.length > 0) {
+              const agentText = `${agent.role} ${agent.name} ${(agent.workflows || []).join(' ')} ${(agent.skills || []).join(' ')}`.toLowerCase();
+              if (tool.recommendedGoalIds.some(gid => agentText.includes(gid.toLowerCase()))) return true;
+            }
+            const catTerms = targetConnector.category.toLowerCase().split(/[\s/_-]+/);
+            const connTerms = targetConnector.name.toLowerCase().split(/[\s/_-]+/);
+            const agentProfile = `${agent.role} ${agent.name}`.toLowerCase();
+            const domainMatch = catTerms.some(t => t.length > 3 && agentProfile.includes(t)) ||
+              connTerms.some(t => t.length > 3 && agentProfile.includes(t));
+            if (domainMatch) return true;
+            return isLead;
+          };
+
+          const updatedAgents = agents.map((agent, idx) => {
+            const isLead = idx === 0;
+            const matchingTools = readTools.filter(tool => isAgentEligible(agent, tool, isLead));
+            if (matchingTools.length === 0) return agent;
             const currentTools = new Set(agent.mcpTools || []);
-            for (const toolId of readToolIds) {
-              currentTools.add(toolId);
+            for (const tool of matchingTools) {
+              currentTools.add(tool.id);
             }
             return {
               ...agent,

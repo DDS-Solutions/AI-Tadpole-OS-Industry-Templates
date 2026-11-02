@@ -35,28 +35,39 @@
           "name": "get_crm_contact",
           "description": "Get a CRM contact by ID",
           "risk": "read",
-          "recommendedGoalIds": ["customer-follow-up", "quoting"]
+          "recommendedGoalIds": [
+            "customer-follow-up",
+            "quoting"
+          ]
         },
         {
           "id": "generic-crm:update_invoice",
           "name": "update_invoice",
           "description": "Update invoice status",
           "risk": "write",
-          "recommendedGoalIds": ["quoting", "bookkeeping"]
+          "recommendedGoalIds": [
+            "quoting",
+            "bookkeeping"
+          ]
         },
         {
           "id": "generic-crm:list_recent_changes",
           "name": "list_recent_changes",
           "description": "List recent changes in CRM",
           "risk": "read",
-          "recommendedGoalIds": ["customer-follow-up", "scheduling"]
+          "recommendedGoalIds": [
+            "customer-follow-up",
+            "scheduling"
+          ]
         }
       ],
       "config": {
         "mcpServers": {
           "generic-crm": {
             "command": "python",
-            "args": ["server.py"],
+            "args": [
+              "server.py"
+            ],
             "env": {
               "CRM_API_KEY": "CONFIGURE_LOCALLY"
             }
@@ -98,28 +109,38 @@
           "name": "get_invoice",
           "description": "Get invoice details by ID",
           "risk": "read",
-          "recommendedGoalIds": ["bookkeeping", "quoting"]
+          "recommendedGoalIds": [
+            "bookkeeping",
+            "quoting"
+          ]
         },
         {
           "id": "smb-accounting:create_invoice",
           "name": "create_invoice",
           "description": "Create a new invoice for a customer",
           "risk": "write",
-          "recommendedGoalIds": ["bookkeeping", "quoting"]
+          "recommendedGoalIds": [
+            "bookkeeping",
+            "quoting"
+          ]
         },
         {
           "id": "smb-accounting:get_account_balance",
           "name": "get_account_balance",
           "description": "Get the current balance for an account",
           "risk": "read",
-          "recommendedGoalIds": ["bookkeeping"]
+          "recommendedGoalIds": [
+            "bookkeeping"
+          ]
         }
       ],
       "config": {
         "mcpServers": {
           "smb-accounting": {
             "command": "python",
-            "args": ["server.py"],
+            "args": [
+              "server.py"
+            ],
             "env": {
               "ACCOUNTING_API_KEY": "CONFIGURE_LOCALLY"
             }
@@ -187,33 +208,44 @@
           "name": "read_scale_weight",
           "description": "Connect to a serial weighing scale and read the current weight",
           "risk": "read",
-          "recommendedGoalIds": ["inventory", "order-fulfillment"]
+          "recommendedGoalIds": [
+            "inventory",
+            "order-fulfillment"
+          ]
         },
         {
           "id": "hardware-edge-sensors:read_temperature_sensor",
           "name": "read_temperature_sensor",
           "description": "Read current temperature from a Modbus TCP industrial thermal sensor",
           "risk": "read",
-          "recommendedGoalIds": ["compliance-review", "inventory"]
+          "recommendedGoalIds": [
+            "compliance-review",
+            "inventory"
+          ]
         },
         {
           "id": "hardware-edge-sensors:read_pressure_sensor",
           "name": "read_pressure_sensor",
           "description": "Read current pressure from a Modbus TCP industrial pressure sensor",
           "risk": "read",
-          "recommendedGoalIds": ["compliance-review", "inventory"]
+          "recommendedGoalIds": [
+            "compliance-review",
+            "inventory"
+          ]
         }
       ],
       "config": {
         "mcpServers": {
           "hardware-edge-sensors": {
             "command": "python",
-            "args": ["server.py"],
+            "args": [
+              "server.py"
+            ],
             "env": {
-              "SCALE_COM_PORT": "COM3",
-              "SCALE_BAUDRATE": "9600",
-              "MODBUS_SENSOR_IP": "192.168.1.100",
-              "MODBUS_PORT": "502"
+              "SCALE_COM_PORT": "${SCALE_COM_PORT}",
+              "SCALE_BAUDRATE": "${SCALE_BAUDRATE}",
+              "MODBUS_SENSOR_IP": "${MODBUS_SENSOR_IP}",
+              "MODBUS_PORT": "${MODBUS_PORT}"
             }
           }
         }
@@ -248,28 +280,36 @@
           "name": "search_logs",
           "description": "Search local log files for a specific query string",
           "risk": "read",
-          "recommendedGoalIds": ["compliance-review"]
+          "recommendedGoalIds": [
+            "compliance-review"
+          ]
         },
         {
           "id": "log-scanner:tail_log",
           "name": "tail_log",
           "description": "Tail the last N lines of a specified log file",
           "risk": "read",
-          "recommendedGoalIds": ["compliance-review"]
+          "recommendedGoalIds": [
+            "compliance-review"
+          ]
         },
         {
           "id": "log-scanner:list_log_files",
           "name": "list_log_files",
           "description": "List available log files in a directory",
           "risk": "read",
-          "recommendedGoalIds": ["compliance-review"]
+          "recommendedGoalIds": [
+            "compliance-review"
+          ]
         }
       ],
       "config": {
         "mcpServers": {
           "log-scanner": {
             "command": "python",
-            "args": ["server.py"],
+            "args": [
+              "server.py"
+            ],
             "env": {}
           }
         }

@@ -27,6 +27,25 @@ except ImportError:
 
 DEFAULT_PROVIDER = "google"
 DEFAULT_MODEL_ID = "gemma4:31b"
+
+
+def infer_default_provider(model_id: str) -> str:
+    mid = model_id.lower().strip()
+    if mid.endswith("-cloud"):
+        return "ollama-cloud"
+    if mid == "gemma4:31b":
+        return "google"
+    if ":" in mid:
+        return "ollama"
+    if mid.startswith("claude"):
+        return "anthropic"
+    if mid.startswith("gpt") or mid.startswith("o1") or mid.startswith("o3"):
+        return "openai"
+    if mid.startswith("deepseek"):
+        return "deepseek"
+    if mid.startswith("mistral") or mid.startswith("mixtral") or mid.startswith("codestral"):
+        return "mistral"
+    return DEFAULT_PROVIDER
 LEGACY_SKILL_REPLACEMENTS = {
     "write_to_file": ("write_file",),
     "run_command": ("execute_shell", "shell"),
@@ -59,7 +78,7 @@ def migrated_agent(agent: dict[str, Any], default_model: str) -> dict[str, Any]:
         or default_model
         or DEFAULT_MODEL_ID
     )
-    config.setdefault("provider", DEFAULT_PROVIDER)
+    config.setdefault("provider", infer_default_provider(model_id))
     config.setdefault("model_id", model_id)
     prompt = (
         config.get("system_prompt")
@@ -68,8 +87,6 @@ def migrated_agent(agent: dict[str, Any], default_model: str) -> dict[str, Any]:
         or result.get("description")
         or "Execute sovereign tasks per directive."
     )
-    if isinstance(prompt, str) and len(prompt) > 800:
-        prompt = prompt[:800]
     config.setdefault("system_prompt", prompt)
     result["model_config"] = config
     return result

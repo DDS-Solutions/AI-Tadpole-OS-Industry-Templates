@@ -1,5 +1,5 @@
 import { Users, Search, Plus, Sliders, Trash2 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import type { Agent } from '../../types';
 
 interface Step2Props {
@@ -21,12 +21,13 @@ export default function Step2_Roster({
   onPrevious,
   onNext
 }: Step2Props) {
+  const reducedMotion = useReducedMotion();
   return (
     <motion.div
       key="step2"
-      initial={{ opacity: 0, x: 20 }}
+      initial={reducedMotion ? false : { opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
+      exit={reducedMotion ? undefined : { opacity: 0, x: -20 }}
       data-tooltip="Phase 2 Roster Board: Manage the team of AI agents, customize system instructions, and add specialists from the library."
       className="w-full sovereign-panel p-8"
     >
@@ -85,18 +86,22 @@ export default function Step2_Roster({
                     )}
                   </div>
                 </div>
-                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 focus-within:opacity-100 transition-opacity">
                   <button
+                    type="button"
                     onClick={() => onEditAgent(agent)}
-                    className="p-1.5 text-zinc-400 hover:text-white rounded hover:bg-zinc-900 transition-colors cursor-pointer"
+                    className="focus-sovereign p-1.5 text-zinc-400 hover:text-white rounded hover:bg-zinc-900 transition-colors cursor-pointer"
                     title="Configure Agent Details"
+                    aria-label={`Configure ${agent.name}`}
                   >
                     <Sliders className="w-3.5 h-3.5" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => onRemoveAgent(agent.id)}
-                    className="p-1.5 text-zinc-400 hover:text-rose-450 rounded hover:bg-zinc-900 transition-colors cursor-pointer"
+                    className="focus-sovereign p-1.5 text-zinc-400 hover:text-danger rounded hover:bg-zinc-900 transition-colors cursor-pointer"
                     title="Remove Agent"
+                    aria-label={`Remove ${agent.name}`}
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>

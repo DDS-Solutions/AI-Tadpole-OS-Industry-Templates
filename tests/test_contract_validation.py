@@ -19,6 +19,7 @@ try:
         TEMPLATE_FILE_SUFFIXES,
         TEMPLATE_SKILL_FILE_SUFFIXES,
         ValidationReport,
+        compute_template_digest,
         detect_embedded_secrets,
         validate_agent_payload,
         validate_connector_dependencies,
@@ -46,6 +47,7 @@ except ImportError:
         TEMPLATE_FILE_SUFFIXES,
         TEMPLATE_SKILL_FILE_SUFFIXES,
         ValidationReport,
+        compute_template_digest,
         detect_embedded_secrets,
         validate_agent_payload,
         validate_connector_dependencies,
@@ -104,6 +106,13 @@ class ConsumerContractTests(unittest.TestCase):
         self.assertTrue(once["custom_extension"]["preserved"])
         self.assertEqual([], validate_agent_payload(once))
 
+    def test_agent_migration_preserves_prompt_without_destructive_truncation(self):
+        source = self.valid_agent()
+        long_prompt = "Keep this safety instruction intact. " * 30
+        source["model_config"]["system_prompt"] = long_prompt
+        migrated = migrated_agent(source, "gemma4:31b")
+        self.assertEqual(migrated["model_config"]["system_prompt"], long_prompt)
+
     def test_agent_migrates_native_status_skills_and_oversight(self):
         source = self.valid_agent()
         source["status"] = "ready"
@@ -142,11 +151,23 @@ class ConsumerContractTests(unittest.TestCase):
         self.assertTrue(any("wildcards server:* are prohibited" in error for error in errors))
 
     def test_agent_rejects_incompatible_model_provider_pairings(self):
-        agent = self.valid_agent()
-        agent["model_config"]["provider"] = "google"
-        agent["model_config"]["model_id"] = "llama-3.3-70b-versatile"
-        errors = validate_agent_payload(agent)
-        self.assertTrue(any("cannot be paired with" in error for error in errors))
+        mismatches = [
+            ("google", "llama-3.3-70b-versatile"),
+            ("google", "deepseek-r1"),
+            ("google", "mistral-large"),
+            ("google", "gemma4:e4b"),
+            ("anthropic", "gpt-4o"),
+            ("openai", "claude-3-5-sonnet"),
+            ("deepseek", "mistral-small"),
+            ("ollama-cloud", "gemma4:31b"),
+        ]
+        for provider, model_id in mismatches:
+            with self.subTest(provider=provider, model_id=model_id):
+                agent = self.valid_agent()
+                agent["model_config"]["provider"] = provider
+                agent["model_config"]["model_id"] = model_id
+                errors = validate_agent_payload(agent)
+                self.assertTrue(any("cannot be paired with" in e or "requires a '-cloud' model identifier" in e for e in errors), f"Failed to reject {provider} with {model_id}: {errors}")
 
     def test_agent_rejects_system_prompt_exceeding_800_chars(self):
         agent = self.valid_agent()
@@ -547,6 +568,31 @@ class ConsumerContractTests(unittest.TestCase):
             server.write_text("print('changed')\n", encoding="utf-8")
             errors = validate_connector_integrity(connector_root, connector)
             self.assertTrue(any("does not match" in error for error in errors))
+
+    def test_connector_integrity_verifies_companion_sources(self):
+        import hashlib
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            connector_root = Path(tmpdir)
+            server = connector_root / "server.py"
+            server.write_text("print('server')\n", encoding="utf-8")
+            helper = connector_root / "helper.py"
+            helper.write_text("print('helper')\n", encoding="utf-8")
+
+            digest = hashlib.sha256(server.read_bytes()).hexdigest()
+            connector = {"integrity_hash": f"sha256:{digest}"}
+
+            errors = validate_connector_integrity(connector_root, connector)
+            self.assertTrue(any("requiring full directory content_sha256 verification" in e for e in errors))
+
+            full_digest = compute_template_digest(connector_root)
+            connector["content_sha256"] = full_digest
+            self.assertEqual([], validate_connector_integrity(connector_root, connector))
+
+            helper.write_text("print('tampered')\n", encoding="utf-8")
+            tampered_errors = validate_connector_integrity(connector_root, connector)
+            self.assertTrue(any("connector companion content digest mismatch" in e for e in tampered_errors))
 
     def test_compatibility_lockfile_integrity_and_drift_detection(self):
         self.assertTrue(verify_lockfile())
