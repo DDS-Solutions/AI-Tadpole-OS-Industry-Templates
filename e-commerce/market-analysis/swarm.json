@@ -1,43 +1,103 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "id": "ecommerce-market-analysis",
   "name": "E-Commerce Catalog & Quoting Desk",
-  "version": "1.0.0",
+  "version": "1.1.0",
+  "author": "RetailOps Inc.",
   "description": "E-Commerce: Product catalog QA, customer returns triage, and B2B quote drafting.",
-  "industry": "e-commerce",
+  "mission": "Maintain accurate SKU pricing, inventory, and listing metadata across DTC storefronts, resolve WISMO/returns eligibility strictly per policy, and draft margin-checked B2B wholesale quotes under manager oversight.",
+  "industry": "E-commerce",
+  "maturity": "verified",
+  "company_size": 25,
   "tags": [
-    "e-commerce",
-    "competitor-pricing",
-    "trends",
-    "market-analysis"
+    "ecommerce",
+    "shopify",
+    "customer-support",
+    "catalog",
+    "wholesale"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "provider": "ollama-cloud",
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "model_config": {
+      "provider": "ollama-cloud",
+      "model_id": "gemma4:31b-cloud",
+      "temperature": 0.2,
+      "max_turns": 24
+    },
+    "model_config2": {
+      "provider": "ollama-cloud",
+      "model_id": "gemma4:31b-cloud",
+      "temperature": 0.2,
+      "max_turns": 16
+    },
+    "model_config3": {
+      "provider": "ollama",
+      "model_id": "gemma4:e4b",
+      "temperature": 0.1,
+      "max_turns": 24
+    }
   },
   "roster": [
     {
       "id": "product-catalog-listing-qa",
       "path": "agents/product-catalog-listing-qa.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     },
     {
       "id": "support-returns-wismo-clerk",
       "path": "agents/support-returns-wismo-clerk.json",
-      "supervisor": null,
+      "supervisor": "product-catalog-listing-qa",
       "priority": "normal"
     },
     {
       "id": "sales-quote-proposal-drafter",
       "path": "agents/sales-quote-proposal-drafter.json",
-      "supervisor": null,
+      "supervisor": "product-catalog-listing-qa",
       "priority": "normal"
     }
   ],
-  "required_mcps": "mcps.json",
   "agents": [
     "product-catalog-listing-qa",
     "support-returns-wismo-clerk",
     "sales-quote-proposal-drafter"
-  ]
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/catalog_integrity.md",
+    "workflows/customer_returns.md",
+    "workflows/b2b_wholesale_quotes.md"
+  ],
+  "oversight_policies": [
+    {
+      "applies_to": [
+        "catalog_price_publish",
+        "refund_credit_issue",
+        "b2b_discount_quote"
+      ],
+      "approver_role": "E-Commerce Merchandising & Operations Manager",
+      "threshold": "Any live price/inventory push, out-of-policy refund, or >10% wholesale discount quote",
+      "gate_agent": "product-catalog-listing-qa"
+    }
+  ],
+  "disclosure": {
+    "capabilities": [
+      "read_file",
+      "grep_search",
+      "write_file"
+    ],
+    "mcp_grants": [],
+    "oversight_gates": [
+      "Merchandising Manager approval required before applying live catalog price/SKU edits",
+      "Customer Care Lead & Sales Manager sign-off required for refunds or wholesale margin exceptions"
+    ],
+    "egress_origins": []
+  },
+  "prompt_includes": [
+    "sovereign-guardrails.md",
+    "oversight-gate.md"
+  ],
+  "evals_path": "evals/scenarios.json"
 }

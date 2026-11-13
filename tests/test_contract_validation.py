@@ -28,6 +28,7 @@ try:
         validate_mcp_payload,
         validate_package_file,
         validate_package_tree,
+        validate_roster_graph,
         validate_template,
         validate_workflow_content,
         validate_repository,
@@ -56,6 +57,7 @@ except ImportError:
         validate_mcp_payload,
         validate_package_file,
         validate_package_tree,
+        validate_roster_graph,
         validate_template,
         validate_workflow_content,
         validate_repository,
@@ -430,7 +432,7 @@ class ConsumerContractTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             tmproot = Path(tmpdir)
             swarm = {
-                "id": "http-swarm",
+                "id": "http-test",
                 "name": "HTTP Swarm",
                 "description": "Test HTTP description",
                 "company_size": 25,
@@ -962,6 +964,82 @@ class ConsumerContractTests(unittest.TestCase):
         from scripts.validate_template import validate_persona_catalog
         validate_persona_catalog(ROOT, report)
         self.assertEqual(report.errors, [])
+
+    def test_roster_supervisor_dag_validation(self):
+        self.assertTrue(any("cannot supervise itself" in e for e in validate_roster_graph([
+            {"id": "lead", "path": "agents/lead.json", "supervisor": "lead"},
+        ])))
+        self.assertTrue(any("missing supervisor" in e for e in validate_roster_graph([
+            {"id": "lead", "path": "agents/lead.json", "supervisor": None},
+            {"id": "worker", "path": "agents/worker.json", "supervisor": "ghost"},
+        ])))
+        self.assertTrue(any("cycle detected" in e for e in validate_roster_graph([
+            {"id": "a", "path": "agents/a.json", "supervisor": "b"},
+            {"id": "b", "path": "agents/b.json", "supervisor": "a"},
+        ])))
+        self.assertTrue(any("flat_peer_swarm" in e for e in validate_roster_graph([
+            {"id": "a", "path": "agents/a.json", "supervisor": None},
+            {"id": "b", "path": "agents/b.json", "supervisor": None},
+        ])))
+        self.assertEqual([], validate_roster_graph([
+            {"id": "a", "path": "agents/a.json", "supervisor": None},
+            {"id": "b", "path": "agents/b.json", "supervisor": None},
+        ], flat_peer_swarm=True))
+        self.assertEqual([], validate_roster_graph([
+            {"id": "lead", "path": "agents/lead.json", "supervisor": None, "priority": "critical"},
+            {"id": "worker", "path": "agents/worker.json", "supervisor": "lead", "priority": "normal"},
+        ]))
+
+    def test_multi_slot_model_config_and_policy_validation(self):
+        agent = self.valid_agent()
+        agent["model_config"] = {"provider": "ollama-cloud", "model_id": "gemma4:31b-cloud", "system_prompt": "Plan ops."}
+        agent["model_config2"] = {"provider": "ollama-cloud", "model_id": "gemma4:31b-cloud", "slot": "planning_slot"}
+        agent["model_config3"] = {"provider": "ollama", "model_id": "gemma4:e4b", "slot": "execution_slot"}
+        self.assertEqual([], validate_agent_payload(agent))
+
+        bad_cloud = self.valid_agent()
+        bad_cloud["model_config2"] = {"provider": "ollama-cloud", "model_id": "gemma4:e4b"}
+        self.assertTrue(any("requires a '-cloud' model identifier" in e for e in validate_agent_payload(bad_cloud)))
+
+        bad_local = self.valid_agent()
+        bad_local["model_config3"] = {"provider": "ollama", "model_id": "gemma4:31b-cloud"}
+        self.assertTrue(any("cannot be paired with cloud identifier" in e for e in validate_agent_payload(bad_local)))
+
+        bad_policy = self.valid_agent()
+        bad_policy["oversight_policies"] = [{"applies_to": [], "approver_role": ""}]
+        self.assertTrue(any("oversight_policies[0]" in e for e in validate_agent_payload(bad_policy)))
+
+    def test_template_canonical_industry_and_verified_evals_schema(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmproot = Path(tmpdir)
+            tpl_dir = tmproot / "demo" / "swarm"
+            (tpl_dir / "agents").mkdir(parents=True)
+            (tpl_dir / "workflows").mkdir()
+            (tpl_dir / "evals").mkdir()
+            swarm = {
+                "id": "demo-swarm",
+                "name": "Demo Swarm",
+                "description": "Demo description",
+                "industry": "non-canonical-slug",
+                "company_size": 25,
+                "maturity": "verified",
+                "roster": [{"id": "agent-one", "path": "agents/agent-one.json", "supervisor": None}],
+            }
+            (tpl_dir / "swarm.json").write_text(json.dumps(swarm), encoding="utf-8")
+            (tpl_dir / "agents" / "agent-one.json").write_text(json.dumps(self.valid_agent()), encoding="utf-8")
+            (tpl_dir / "workflows" / "review.md").write_text("# Review\n\n## Step 1\nInspect.", encoding="utf-8")
+            (tpl_dir / "evals" / "scenarios.json").write_text("{invalid-json", encoding="utf-8")
+
+            report = ValidationReport()
+            validate_template(
+                tmproot,
+                {"id": "demo-swarm", "path": "demo/swarm"},
+                report,
+                schema_root=ROOT,
+            )
+            self.assertTrue(any("canonical registry industries" in e for e in report.errors), report.errors)
+            self.assertTrue(any("cannot parse JSON" in e for e in report.errors), report.errors)
 
 
 if __name__ == "__main__":

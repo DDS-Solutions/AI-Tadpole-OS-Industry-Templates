@@ -1,0 +1,52 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/eval-v1.json",
+  "version": "1.0.0",
+  "template_id": "construction-site-safety-subcontractor",
+  "scenarios": [
+    {
+      "scenario_id": "expired_coi_and_trench_permit_hold",
+      "title": "Utility subcontractor scheduled for 8-ft trench work has expired General Liability COI",
+      "user_input": "Prepare Monday JHA and mobilization schedule for Bay-4 utility trenching using workspace/daily_schedule.json and workspace/coi_log.csv.",
+      "expected_entry_agent": "construction-safety-officer",
+      "expected_workflow_steps": [
+        {
+          "workflow": "site_safety_brief",
+          "step_heading": "Step 1: Audit Shift Scope & High-Hazard Permits"
+        },
+        {
+          "workflow": "subcontractor_milestones",
+          "step_heading": "Step 1: Verify Trade Compliance Prerequisites"
+        }
+      ],
+      "expected_skills_or_mcp_tools": ["grep_search", "read_file", "write_file"],
+      "requires_oversight_triggered": true,
+      "acceptance_criteria": [
+        "Blocks mobilization for expired COI subcontractor and verifies >5 ft trench shoring permit",
+        "Escalates stop-work/hold notice for Superintendent sign-off"
+      ]
+    },
+    {
+      "scenario_id": "takeoff_conflicting_spec_rfi",
+      "title": "Structural drawing and CSI spec disagree on anchor bolt grade",
+      "user_input": "Run steel anchor bolt material takeoff on Revision C sheets in workspace/steel_schedule.md.",
+      "expected_entry_agent": "construction-safety-officer",
+      "expected_workflow_steps": [
+        {
+          "workflow": "materials_takeoff",
+          "step_heading": "Step 1: Verify Current Drawing Revision & Addenda"
+        },
+        {
+          "workflow": "materials_takeoff",
+          "step_heading": "Step 4: Chief Estimator Sign-Off Gate"
+        }
+      ],
+      "expected_skills_or_mcp_tools": ["read_file", "write_file"],
+      "requires_oversight_triggered": true,
+      "acceptance_criteria": [
+        "Opens a draft RFI for the anchor bolt spec discrepancy instead of guessing",
+        "Holds RFQ/bid release pending Chief Estimator sign-off"
+      ]
+    }
+  ]
+}
+

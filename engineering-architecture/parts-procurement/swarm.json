@@ -3,7 +3,7 @@
   "name": "Engineering Subcontractor & Bid Procurement",
   "version": "1.0.0",
   "description": "Engineering & Architecture: Subcontractor bid leveling, procurement, and materials purchasing.",
-  "industry": "engineering-architecture",
+  "industry": "Engineering & Architecture",
   "tags": [
     "engineering",
     "procurement",
@@ -12,26 +12,27 @@
     "materials"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "purchasing-vendor-purchasing-clerk",
       "path": "agents/purchasing-vendor-purchasing-clerk.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     },
     {
       "id": "project-management-rfi-submittal-clerk",
       "path": "agents/project-management-rfi-submittal-clerk.json",
-      "supervisor": null,
+      "supervisor": "purchasing-vendor-purchasing-clerk",
       "priority": "normal"
     },
     {
       "id": "finance-job-costing-estimator",
       "path": "agents/finance-job-costing-estimator.json",
-      "supervisor": null,
+      "supervisor": "purchasing-vendor-purchasing-clerk",
       "priority": "normal"
     }
   ],
@@ -40,5 +41,7 @@
     "purchasing-vendor-purchasing-clerk",
     "project-management-rfi-submittal-clerk",
     "finance-job-costing-estimator"
-  ]
+  ],
+  "id": "engineering-parts-procurement",
+  "maturity": "starter"
 }

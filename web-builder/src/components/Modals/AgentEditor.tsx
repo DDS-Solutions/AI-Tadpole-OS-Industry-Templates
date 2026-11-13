@@ -6,26 +6,33 @@ import { DialogHeader } from './DialogHeader';
 import { DialogFooter } from './DialogFooter';
 import type { Agent } from '../../types';
 import { CANONICAL_CAPABILITIES, type CapabilityItem } from '../../constants/capabilities';
+import { DEFAULT_MODEL_SLOTS } from '../../constants/_generatedContract';
+import { normalizeAgentColor } from '../../utils/catalogHelpers';
 
 interface AgentEditorProps {
   agent: Agent;
+  rosterAgents?: Agent[];
   onClose: () => void;
   onSave: (updatedAgent: Agent) => void;
 }
 
-export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps) {
+export default function AgentEditor({ agent, rosterAgents = [], onClose, onSave }: AgentEditorProps) {
   const dialogRef = useDialog<HTMLFormElement>(onClose);
   const fieldId = useId();
   const reducedMotion = useReducedMotion();
   const [name, setName] = useState(agent.name);
   const [role, setRole] = useState(agent.role);
-  const [model, setModel] = useState(agent.model || 'gemma4:31b');
+  const [model, setModel] = useState(agent.model || DEFAULT_MODEL_SLOTS.primary.model_id);
   const [provider, setProvider] = useState(agent.provider || '');
+  const [supervisor, setSupervisor] = useState<string>(agent.supervisor || '');
+  const [priority, setPriority] = useState<'critical' | 'high' | 'normal' | 'low'>(
+    agent.priority || (agent.supervisor === null ? 'critical' : 'normal'),
+  );
   const [prompt, setPrompt] = useState(agent.prompt);
   const [description, setDescription] = useState(agent.description || '');
   const [department, setDepartment] = useState(agent.department || 'Operations');
   const [emoji, setEmoji] = useState(agent.emoji || '🤖');
-  const [color, setColor] = useState(agent.color || '#3B82F6');
+  const [color, setColor] = useState(() => normalizeAgentColor(agent.color));
   const [selectedSkills, setSelectedSkills] = useState<string[]>(
     agent.skills && agent.skills.length > 0 ? agent.skills : ['read_file'],
   );
@@ -74,6 +81,8 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
       skills: selectedSkills,
       mcpTools: mcpTools.split(',').map(value => value.trim()).filter(Boolean),
       requiresOversight: requiresOversight || dangerousSkillSelected || (department.trim().toLowerCase() === 'plane 2: smb-digital-twin'),
+      supervisor: supervisor.trim() ? supervisor.trim() : null,
+      priority,
       vibe: agent.vibe,
     });
   };
@@ -234,6 +243,44 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
           </select>
         </div>
 
+        {/* Supervisor & Priority Hierarchy */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label htmlFor={`${fieldId}-supervisor`} className="block text-[10px] font-mono text-zinc-400 uppercase mb-1.5">Supervisor (DAG Coordinator)</label>
+            <select
+              className="focus-sovereign w-full min-w-0 bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2.5 text-base sm:text-xs text-zinc-200 focus:border-cyber-green outline-none cursor-pointer"
+              id={`${fieldId}-supervisor`}
+              data-tooltip="Assign a coordinating lead agent in the swarm execution DAG, or leave unset as a root coordinator"
+              value={supervisor}
+              onChange={e => setSupervisor(e.target.value)}
+            >
+              <option value="">None (Root Coordinator)</option>
+              {rosterAgents
+                .filter(candidate => candidate.id !== agent.id)
+                .map(candidate => (
+                  <option key={candidate.id} value={candidate.id}>
+                    {candidate.name} ({candidate.id})
+                  </option>
+                ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor={`${fieldId}-priority`} className="block text-[10px] font-mono text-zinc-400 uppercase mb-1.5">Roster Priority</label>
+            <select
+              className="focus-sovereign w-full min-w-0 bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2.5 text-base sm:text-xs text-zinc-200 focus:border-cyber-green outline-none cursor-pointer"
+              id={`${fieldId}-priority`}
+              data-tooltip="Controls scheduling weight and primary coordinator designation in Tadpole-OS"
+              value={priority}
+              onChange={e => setPriority(e.target.value as 'critical' | 'high' | 'normal' | 'low')}
+            >
+              <option value="critical">critical (Primary Alpha / Coordinator)</option>
+              <option value="high">high</option>
+              <option value="normal">normal</option>
+              <option value="low">low</option>
+            </select>
+          </div>
+        </div>
+
         {/* Short Description */}
         <div>
           <label htmlFor={`${fieldId}-description`} className="block text-[10px] font-mono text-zinc-400 uppercase mb-1.5">Short Description / Purpose</label>
@@ -309,6 +356,7 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
           <label htmlFor={`${fieldId}-mcpTools`} className="block text-[10px] font-mono text-zinc-400 uppercase mb-1.5">Declared MCP Tool IDs</label>
           <input
             type="text"
+            data-tooltip="Comma-separated connector:tool grants audited in pre-export disclosure"
             className="focus-sovereign w-full min-w-0 bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2.5 text-base sm:text-xs text-zinc-200 font-mono focus:border-cyber-green outline-none"
             placeholder="crm:get_contact, accounting:get_invoice"
             id={`${fieldId}-mcpTools`}
@@ -321,7 +369,8 @@ export default function AgentEditor({ agent, onClose, onSave }: AgentEditorProps
         <label className="flex items-start gap-3 p-4 rounded-lg border border-zinc-800 bg-zinc-950/50 cursor-pointer">
           <input
             type="checkbox"
-            className="focus-sovereign mt-0.5 accent-cyber-green"
+            data-tooltip="Requires explicit human approval before executing mutating actions in Tadpole-OS"
+            className="focus-sovereign tooltip-right mt-0.5 accent-cyber-green"
             checked={requiresOversight || dangerousSkillSelected}
             disabled={dangerousSkillSelected}
             onChange={e => setRequiresOversight(e.target.checked)}

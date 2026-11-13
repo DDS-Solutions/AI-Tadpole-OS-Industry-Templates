@@ -1,6 +1,8 @@
 import { Download, Shield, CheckCircle2, AlertTriangle, AlertCircle, ArrowLeft, Terminal, BookmarkCheck, RotateCcw } from 'lucide-react';
 import type { Agent, CompanyInfo, MCPConnector, ValidationIssue, WorkflowItem } from '../../types';
 import { DANGEROUS_SKILL_SET, VALID_RUNTIME_CAPABILITIES } from '../../constants/capabilities';
+import { buildSwarmDisclosureSummary } from '../../utils/disclosureSummary';
+import { normalizeMcpGrant } from '../../utils/mcpGrants';
 
 interface Step4GuidedReviewProps {
   companyInfo: CompanyInfo;
@@ -42,10 +44,11 @@ export default function Step4_GuidedReview({
     .flatMap(connector => (connector.tools || []).map(tool => [tool.id, tool.risk] as const)));
   const oversightAgents = agents.filter(agent => Boolean(agent.requiresOversight)
     || (agent.skills || ['read_file']).some(skill => DANGEROUS_SKILL_SET.has(skill))
-    || (agent.mcpTools || []).some(grant => ['write', 'execute'].includes(activeTools.get(grant) || '')));
+    || (agent.mcpTools || []).some(grant => ['write', 'execute'].includes(activeTools.get(normalizeMcpGrant(grant)) || '')));
   const hasUnknownPermissions = agents.some(agent =>
     (agent.skills || ['read_file']).some(skill => !VALID_RUNTIME_CAPABILITIES.has(skill))
-    || (agent.mcpTools || []).some(grant => !activeTools.has(grant)));
+    || (agent.mcpTools || []).some(grant => !activeTools.has(normalizeMcpGrant(grant))));
+  const disclosure = buildSwarmDisclosureSummary(agents, selectedConnectors, mcpCatalog);
 
   return (
     <div className="w-full sovereign-panel p-8 space-y-8 animate-fadeIn">
@@ -99,13 +102,13 @@ export default function Step4_GuidedReview({
 
         <div className="flex flex-wrap items-center gap-2 font-mono text-xs">
           <span className="px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300">
-            {agents.length} Specialists
+            {agents.length} {agents.length === 1 ? 'Specialist' : 'Specialists'}
           </span>
           <span className="px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300">
-            {workflows.length} Playbooks
+            {workflows.length} {workflows.length === 1 ? 'Playbook' : 'Playbooks'}
           </span>
           <span className="px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300">
-            {selectedConnectors.length} Tools
+            {selectedConnectors.length} {selectedConnectors.length === 1 ? 'Tool' : 'Tools'}
           </span>
         </div>
       </div>
@@ -189,12 +192,12 @@ export default function Step4_GuidedReview({
           </div>
           <div className="space-y-1.5 max-h-36 overflow-y-auto pr-1">
             {agents.map(a => (
-              <div key={a.id} className="flex items-center justify-between text-xs text-zinc-300">
-                <span className="flex items-center gap-1.5 truncate">
-                  <span>{a.emoji || '🤖'}</span>
+              <div key={a.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-0.5 sm:gap-2 text-xs text-zinc-300">
+                <span className="flex items-center gap-1.5 min-w-0">
+                  <span className="shrink-0">{a.emoji || '🤖'}</span>
                   <span className="font-medium text-white truncate">{a.name}</span>
                 </span>
-                <span className="text-[11px] font-mono text-zinc-500 shrink-0">{a.role}</span>
+                <span className="text-[11px] font-mono text-zinc-500 sm:shrink-0 sm:text-right">{a.role}</span>
               </div>
             ))}
           </div>
@@ -271,6 +274,38 @@ export default function Step4_GuidedReview({
         </div>
       </div>
 
+      {/* Pre-Export Capabilities & Egress Disclosure */}
+      <div className="p-5 rounded-xl bg-zinc-950 border border-zinc-800/80 space-y-3" data-testid="swarm-disclosure-card">
+        <div className="flex items-center justify-between text-xs font-mono text-zinc-400 border-b border-zinc-800/60 pb-2">
+          <span className="uppercase">What This Swarm Can Do (Pre-Export Disclosure)</span>
+          <span className="text-[11px] text-zinc-500">Static Capability Manifest</span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+          <div>
+            <div className="text-[10px] font-mono uppercase text-zinc-500 mb-1">Declared Runtime Tools</div>
+            <div className="text-zinc-300 font-mono">{disclosure.capabilities.join(', ') || 'None'}</div>
+          </div>
+          <div>
+            <div className="text-[10px] font-mono uppercase text-zinc-500 mb-1">MCP Grants &amp; Env Variables</div>
+            <div className="text-zinc-300 font-mono">
+              {disclosure.mcpGrants.length > 0 ? disclosure.mcpGrants.join(', ') : 'No MCP tool grants'}
+              {disclosure.requiredEnvVars.length > 0 ? ` (Env: ${disclosure.requiredEnvVars.join(', ')})` : ''}
+            </div>
+          </div>
+          {disclosure.egressUrls.length > 0 && (
+            <div className="md:col-span-2">
+              <div className="text-[10px] font-mono uppercase text-zinc-500 mb-1">External HTTP MCP Endpoints</div>
+              <div className="text-amber-300 font-mono break-all">{disclosure.egressUrls.join(', ')}</div>
+            </div>
+          )}
+        </div>
+        {disclosure.hasBundledPythonSkills && (
+          <div className="p-3 rounded-lg bg-amber-950/30 border border-amber-800/50 text-amber-200 text-[11px] leading-relaxed">
+            <strong>Bundled Python Connector Note (AI-TadPole-OS v1.1.464):</strong> Template Store install copies bundled <code>skills/*-server.py</code> into <code>execution/</code> automatically. If importing this <code>.zip</code> manually into AI-TadPole-OS, copy files from <code>skills/</code> into your workspace <code>execution/</code> folder.
+          </div>
+        )}
+      </div>
+
       {/* Primary Action Area */}
       <div className="p-6 rounded-2xl bg-zinc-900/60 border border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
@@ -281,9 +316,15 @@ export default function Step4_GuidedReview({
         </div>
 
         <button
+          type="button"
           onClick={onExport}
           disabled={!isReady || isExporting}
-          className={`w-full sm:w-auto px-5 py-3.5 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg ${
+          data-tooltip={
+            isReady
+              ? 'Generate downloadable .zip package validated for AI-Tadpole-OS import'
+              : 'Resolve blocking validation errors above before downloading'
+          }
+          className={`focus-sovereign w-full sm:w-auto px-5 py-3.5 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg ${
             isReady && !isExporting
               ? 'bg-cyber-green hover:bg-cyber-green-light text-zinc-950 shadow-cyber-green/20'
               : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
@@ -298,14 +339,17 @@ export default function Step4_GuidedReview({
       <div className="pt-4 border-t border-zinc-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
         <div className="flex flex-wrap items-center gap-2">
           <button
+            type="button"
             onClick={onBack}
-            className="px-4 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors flex items-center gap-1.5 cursor-pointer border border-zinc-800"
+            className="focus-sovereign px-4 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors flex items-center gap-1.5 cursor-pointer border border-zinc-800"
           >
             <ArrowLeft className="w-3.5 h-3.5" /> Return to Tools
           </button>
           <button
+            type="button"
             onClick={onSaveDraft}
-            className="px-4 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-300 transition-colors flex items-center gap-1.5 cursor-pointer border border-zinc-800"
+            data-tooltip="Save your current guided setup locally in browser storage"
+            className="focus-sovereign px-4 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-300 transition-colors flex items-center gap-1.5 cursor-pointer border border-zinc-800"
           >
             <BookmarkCheck className="w-3.5 h-3.5 text-cyber-green" />
             Save Draft
@@ -314,14 +358,18 @@ export default function Step4_GuidedReview({
 
         <div className="flex flex-wrap items-center gap-2">
           <button
+            type="button"
             onClick={onSwitchToAdvanced}
-            className="px-4 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer border border-zinc-800"
+            data-tooltip="Inspect and edit raw prompts, workflows, and server schemas in the 5-phase editor"
+            className="focus-sovereign px-4 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer border border-zinc-800"
           >
             <Terminal className="w-3.5 h-3.5" /> Review in Advanced Setup
           </button>
           <button
+            type="button"
             onClick={onStartOver}
-            className="px-3 py-2 rounded-lg text-zinc-500 hover:text-red-400 transition-colors flex items-center gap-1 cursor-pointer"
+            data-tooltip="Reset guided wizard and clear unsaved selections"
+            className="focus-sovereign tooltip-left px-3 py-2 rounded-lg text-zinc-500 hover:text-red-400 transition-colors flex items-center gap-1 cursor-pointer"
           >
             <RotateCcw className="w-3 h-3" /> Start Over
           </button>

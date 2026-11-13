@@ -3,7 +3,7 @@
   "name": "Property Management & Maintenance Swarm",
   "version": "1.0.0",
   "description": "Property Management: Tenant work-order dispatch, lease abstracting, and rent collection.",
-  "industry": "real-estate",
+  "industry": "Real Estate",
   "tags": [
     "real-estate",
     "procurement",
@@ -12,26 +12,27 @@
     "maintenance"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "operations-tenant-work-order-dispatcher",
       "path": "agents/operations-tenant-work-order-dispatcher.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     },
     {
       "id": "specialized-lease-abstract-clerk",
       "path": "agents/specialized-lease-abstract-clerk.json",
-      "supervisor": null,
+      "supervisor": "operations-tenant-work-order-dispatcher",
       "priority": "normal"
     },
     {
       "id": "finance-ar-collections-specialist",
       "path": "agents/finance-ar-collections-specialist.json",
-      "supervisor": null,
+      "supervisor": "operations-tenant-work-order-dispatcher",
       "priority": "normal"
     }
   ],
@@ -40,5 +41,7 @@
     "operations-tenant-work-order-dispatcher",
     "specialized-lease-abstract-clerk",
     "finance-ar-collections-specialist"
-  ]
+  ],
+  "id": "realestate-maintenance-procurement",
+  "maturity": "starter"
 }

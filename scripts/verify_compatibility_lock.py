@@ -18,8 +18,21 @@ CRITICAL_CONTRACT_FILES = [
     "scripts/validate_template.py",
     "scripts/migrate_consumer_contract.py",
     "scripts/capabilities.py",
+    "scripts/codegen_contract.py",
+    "scripts/_generated_contract.py",
+    "scripts/compile_prompt_fragments.py",
+    "scripts/run_template_evals.py",
+    "scripts/generate_llms_docs.py",
     # The verifier pins itself so edits to this list cannot silently drop coverage.
     "scripts/verify_compatibility_lock.py",
+    "schemas/capabilities-contract.json",
+    "schemas/swarm-v1.json",
+    "schemas/agent-v1.json",
+    "schemas/mcps-v1.json",
+    "schemas/mcp-registry-v1.json",
+    "schemas/knowledge-v1.json",
+    "schemas/eval-v1.json",
+    "schemas/template-registry-v1.json",
     "registry.json",
     "mcp_registry.json",
     "index.json",
@@ -57,12 +70,12 @@ def generate_lock_data(
     resolved_revision = (
         pinned_revision
         or existing_consumer.get("pinned_revision")
-        or "a471119fd5cb0f3f89624046dec82cd833116e95"
+        or "2dfc14f1bc52b9da7acbdb27a00985aff0b6dfff"
     )
     resolved_date = (
         review_date
         or existing_consumer.get("review_date")
-        or "2026-11-02"
+        or "2026-11-13"
     )
 
     return {

@@ -1,0 +1,39 @@
+# AI-Tadpole-OS Industry Templates
+
+> Official community template registry and Swarm Architect builder for AI-Tadpole-OS (Contract v1.1.464, Consumer Pin `2dfc14f1bc52`).
+
+## Registry Snapshot
+- Public Templates: 81 across 38 canonical industries (12 verified flagships + 69 starters, plus 1 internal smoke fixture).
+- Primary / Planning Model Slot: `ollama-cloud` / `gemma4:31b-cloud`.
+- Edge / Execution Model Slot (`model_config3`): `ollama` / `gemma4:e4b`.
+- Declarative Eval Suites (`evals/scenarios.json`): 13 templates.
+- MCP Connector Blueprints: 4 (`mcp_registry.json`).
+
+## Core Contract & Governance Docs
+- [Compatibility Matrix](COMPATIBILITY_MATRIX.md): Pinned consumer behavior and cross-repo alignment.
+- [Template Spec](TEMPLATE_SPEC.md): Manifest, agent profile, workflow SOP, capability, and OKF specs.
+- [Capabilities Contract](schemas/capabilities-contract.json): Single source of truth codegen source for Python & TypeScript.
+- [Swarm Schema v1](schemas/swarm-v1.json): Strict JSON Schema for `swarm.json` manifests.
+- [Agent Schema v1](schemas/agent-v1.json): JSON Schema for `agents/*.json` profiles.
+- [Eval Schema v1](schemas/eval-v1.json): JSON Schema for declarative `evals/scenarios.json` suites.
+
+## Verified Templates
+- [Commercial Jobsite & Subcontractor Operations](construction/site-safety-subcontractor/swarm.json) (`Construction & General Contracting`): Construction: Daily jobsite safety compliance, subcontractor milestone tracking, OSHA hazard logs, and AIA pay-application auditing.
+- [Sr. Architect Reviewer](development/code-reviewer/swarm.json) (`Software Development`): Automated code review and architectural auditing from a senior perspective.
+- [Marketing Funnel Pilot](digital-marketing/full-funnel-automation/swarm.json) (`Digital Marketing`): Automated content generation, ad spend optimization, and journey analytics.
+- [E-Commerce Catalog & Quoting Desk](e-commerce/market-analysis/swarm.json) (`E-commerce`): E-Commerce: Product catalog QA, customer returns triage, and B2B quote drafting.
+- [Small Field Service Operations (25 Seats)](field-services/operations-25/swarm.json) (`Field Services`): Dispatch, estimate and work-order preparation, customer follow-up, and daily exception review for small appointment-based field-service teams.
+- [Bookkeeping & Cash Operations Swarm](financial-services/bookkeeping-audit/swarm.json) (`Financial Services`): Financial Operations: General ledger reconciliation, AP/AR cash flow, and client document collection.
+- [Patient Intake & Scheduling Desk](healthcare/patient-intake/swarm.json) (`Medical Practices`): Clinical Practice: Patient intake, appointment scheduling, HIPAA consent verification, and visit follow-ups.
+- [Recruiting & Talent Acquisition Swarm](hr/recruiting-triage/swarm.json) (`Human Resources`): People Operations: Candidate sourcing, job descriptions, interview coordination, and scorecard aggregation.
+- [Legal Matter Intake & Contract Review](legal/contract-review/swarm.json) (`Legal Services`): Legal Operations: Client conflict check, first-pass contract review, and docket deadline management.
+- [Smart Factory (100 Seats)](manufacturing/smart-factory-100/swarm.json) (`Manufacturing`): Enterprise-level ERP integration and digital twin synchronization across sites.
+- [Clinical Trial Manager](pharma/clinical-trials/swarm.json) (`Pharmaceuticals`): Automate clinical trial protocol mapping, trial candidate documentation, and adverse event logging.
+- [Small Wholesale B2B Operations (25 Seats)](wholesale-distribution/b2b-operations-25/swarm.json) (`Wholesale & Distribution`): Quote preparation, account follow-up, replenishment planning, and fulfillment exception control for small wholesalers and distributors.
+
+## Validation & Build Commands
+- `python scripts/codegen_contract.py --check`
+- `python scripts/validate_template.py`
+- `python scripts/compile_prompt_fragments.py --check`
+- `python scripts/run_template_evals.py --check`
+- `python scripts/verify_compatibility_lock.py --check`

@@ -3,7 +3,7 @@
   "name": "Vendor Compliance & Procurement Governance",
   "version": "1.0.0",
   "description": "Compliance Operations: Supplier compliance audits, vendor risk packaging, and accounting AP.",
-  "industry": "governance-compliance",
+  "industry": "Governance & Compliance",
   "tags": [
     "compliance",
     "vendor-assessment",
@@ -12,27 +12,28 @@
     "auditing"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "purchasing-vendor-purchasing-clerk",
       "path": "agents/purchasing-vendor-purchasing-clerk.json",
-      "supervisor": null,
+      "supervisor": "finance-finance-bookkeeper-controller",
       "priority": "normal"
     },
     {
       "id": "compliance-vendor-risk-questionnaire-packager",
       "path": "agents/compliance-vendor-risk-questionnaire-packager.json",
-      "supervisor": null,
+      "supervisor": "finance-finance-bookkeeper-controller",
       "priority": "normal"
     },
     {
       "id": "finance-finance-bookkeeper-controller",
       "path": "agents/finance-finance-bookkeeper-controller.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     }
   ],
   "required_mcps": "mcps.json",
@@ -40,5 +41,7 @@
     "purchasing-vendor-purchasing-clerk",
     "compliance-vendor-risk-questionnaire-packager",
     "finance-finance-bookkeeper-controller"
-  ]
+  ],
+  "id": "compliance-vendor-purchasing-qa",
+  "maturity": "starter"
 }

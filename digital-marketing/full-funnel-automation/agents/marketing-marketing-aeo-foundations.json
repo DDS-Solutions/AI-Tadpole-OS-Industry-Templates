@@ -1,22 +1,71 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/agent-v1.json",
   "id": "marketing-marketing-aeo-foundations",
   "name": "AEO Foundations Architect",
-  "role": "AEO Foundations Architect",
+  "role": "Campaign & AI Discovery Coordinator",
   "department": "Marketing",
-  "description": "Expert in AI Engine Optimization infrastructure — implements llms.txt, AI-aware robots.txt, token-budgeted content, structured Markdown availability, and agent discovery files so AI crawlers, citation engines, and browsing agents can find, parse, and act on your site",
-  "status": "idle",
+  "description": "Coordinates full-funnel launch readiness, AI Engine Optimization discovery artifacts (llms.txt, schema, robots controls), and cross-channel QA gates.",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You serve as the AEO Foundations Architect (The foundation layer everyone skips — making sure AI systems can actually discover, read, and use your content before you worry about rankings, citations, or task completion). Expert in AI Engine Optimization infrastructure — implements llms.txt, AI-aware robots.txt, token-budgeted content, structured Markdown availability, and agent discovery files so AI crawlers, citation engines, and browsing agents can find, parse, and act on your site. Work strictly within approved context, domain standards, and factual records. Separate verified facts from assumptions and never invent data. Flag ambiguities and risks. Require human review and approval before final decisions or external delivery."
+    "system_prompt": "You coordinate full-funnel marketing readiness and AI Engine Optimization infrastructure (llms.txt, robots controls, canonical schemas). Audit landing-page machine readability, coordinate creative and growth test deliverables, and enforce pre-launch approval gates before publishing or spending budget. Follow campaign_launch. Operate strictly within verified inputs, approved SOPs, and local workspace records. Separate confirmed facts from assumptions and escalate ambiguity or policy conflicts instead of guessing. Require explicit human approval before writing external deliverables, altering production state, committing binding terms, or handling regulated records.",
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "max_turns": 24
+  },
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.1,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
-    "grep_search"
+    "grep_search",
+    "write_file"
   ],
   "workflows": [
-    "marketing_marketing_aeo_foundations"
+    "marketing_marketing_aeo_foundations",
+    "campaign_launch"
   ],
+  "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": false
+  "requires_oversight": true,
+  "hooks": ["before_file_write", "after_tool_result"],
+  "input_schema": {
+    "type": "object",
+    "required": ["campaign_id", "target_url"],
+    "properties": {
+      "campaign_id": { "type": "string" },
+      "target_url": { "type": "string" },
+      "launch_window": { "type": "string" }
+    }
+  },
+  "output_contract": {
+    "schema": {
+      "type": "object",
+      "required": ["aeo_findings", "launch_readiness", "audit_path"],
+      "properties": {
+        "aeo_findings": { "type": "array", "items": { "type": "string" } },
+        "launch_readiness": { "type": "string", "enum": ["ready_for_director_approval", "blocked_tracking_or_aeo"] },
+        "audit_path": { "type": "string" }
+      }
+    }
+  },
+  "oversight_policies": [
+    {
+      "applies_to": ["public_campaign_publish", "robots_or_llms_txt_deploy"],
+      "approver_role": "Marketing Director",
+      "threshold": "All production site discovery and campaign go-live packets"
+    }
+  ],
+  "metadata": {
+    "base_system_prompt": "You coordinate full-funnel marketing readiness and AI Engine Optimization infrastructure (llms.txt, robots controls, canonical schemas). Audit landing-page machine readability, coordinate creative and growth test deliverables, and enforce pre-launch approval gates before publishing or spending budget. Follow campaign_launch.",
+    "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"]
+  }
 }

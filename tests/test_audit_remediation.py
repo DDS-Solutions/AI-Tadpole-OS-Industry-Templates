@@ -72,9 +72,11 @@ class CapabilityAllowListTests(unittest.TestCase):
         self.assertFalse(any("unknown capability" in e for e in errors))
 
     def test_python_catalog_matches_web_builder_catalog(self):
-        source = (ROOT / "web-builder" / "src" / "constants" / "capabilities.ts").read_text(encoding="utf-8")
-        ts_ids = set(re.findall(r"^\s*id:\s*'([a-z_]+)'", source, re.MULTILINE))
-        ts_ids |= {"shell", "terminal"}  # runtime markers declared separately in the TS file
+        gen_source = (ROOT / "web-builder" / "src" / "constants" / "_generatedContract.ts").read_text(encoding="utf-8")
+        ts_ids = set(re.findall(r'"id":\s*"([a-z_]+)"', gen_source))
+        m = re.search(r"VALID_RUNTIME_CAPABILITY_LIST\s*=\s*\[([^\]]+)\]", gen_source)
+        self.assertIsNotNone(m)
+        ts_ids |= set(re.findall(r'"([a-z_]+)"', m.group(1)))
         self.assertEqual(ts_ids, set(VALID_CAPABILITY_IDS))
 
     def test_catalog_ids_are_unique(self):
@@ -368,32 +370,38 @@ class CrossLanguageCapabilityParityTests(unittest.TestCase):
 
     def test_canonical_capabilities_parity(self):
         ts_path = ROOT / "web-builder" / "src" / "constants" / "capabilities.ts"
+        gen_path = ROOT / "web-builder" / "src" / "constants" / "_generatedContract.ts"
         self.assertTrue(ts_path.is_file(), "capabilities.ts missing")
-        content = ts_path.read_text(encoding="utf-8")
+        self.assertTrue(gen_path.is_file(), "_generatedContract.ts missing")
+        ts_wrapper = ts_path.read_text(encoding="utf-8")
+        self.assertIn("_generatedContract", ts_wrapper)
+        content = gen_path.read_text(encoding="utf-8")
 
-        # Extract IDs declared in CANONICAL_CAPABILITIES (the selectable tools)
-        ts_canonical_ids = re.findall(r"id:\s*['\"]([^'\"]+)['\"]", content)[:6]
+        # Extract non-marker IDs declared in GENERATED_CAPABILITY_DEFS
+        all_defs = re.findall(
+            r'\{"id":\s*"([^"]+)".*?"risk":\s*"([^"]+)".*?"requiresOversight":\s*(true|false).*?"isMarker":\s*(true|false)',
+            content,
+        )
+        ts_canonical_ids = [cid for cid, _, _, is_marker in all_defs if is_marker == "false"]
         py_canonical_ids = [c.id for c in CAPABILITIES if c.id not in ("shell", "terminal")]
         self.assertEqual(ts_canonical_ids, py_canonical_ids, "TypeScript CANONICAL_CAPABILITIES do not match Python tools")
 
         # Verify full runtime capabilities set matches Python VALID_CAPABILITY_IDS
-        ts_runtime_ids = set(re.findall(r"['\"]([a-z_]+)['\"]", content)) & set(VALID_CAPABILITY_IDS)
+        m = re.search(r"VALID_RUNTIME_CAPABILITY_LIST\s*=\s*\[([^\]]+)\]", content)
+        self.assertIsNotNone(m)
+        ts_runtime_ids = set(re.findall(r'"([a-z_]+)"', m.group(1)))
         self.assertEqual(ts_runtime_ids, set(VALID_CAPABILITY_IDS), "TypeScript VALID_RUNTIME_CAPABILITIES do not match VALID_CAPABILITY_IDS")
 
         # Verify risk level and oversight flags match for each capability
+        def_by_id = {cid: (risk, ov == "true") for cid, risk, ov, _ in all_defs}
         for c in CAPABILITIES:
             if c.id in ("shell", "terminal"):
                 continue
-            block = re.search(
-                rf"id:\s*['\"]{c.id}['\"].*?risk:\s*['\"]([^'\"]+)['\"].*?requiresOversight:\s*(true|false)",
-                content,
-                re.DOTALL,
-            )
-            self.assertIsNotNone(block, f"Could not find descriptor block for capability '{c.id}'")
-            ts_risk = block.group(1)
-            ts_oversight = block.group(2) == "true"
+            self.assertIn(c.id, def_by_id, f"Could not find descriptor block for capability '{c.id}'")
+            ts_risk, ts_oversight = def_by_id[c.id]
             self.assertEqual(ts_risk, c.risk, f"Risk mismatch for capability '{c.id}'")
             self.assertEqual(ts_oversight, c.requires_oversight, f"requiresOversight mismatch for capability '{c.id}'")
+        return
 
 
 class PersonaCatalogValidationTests(unittest.TestCase):

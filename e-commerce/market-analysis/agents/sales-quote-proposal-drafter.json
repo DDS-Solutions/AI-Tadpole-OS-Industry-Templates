@@ -1,14 +1,28 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/agent-v1.json",
   "id": "sales-quote-proposal-drafter",
   "name": "Quote & Proposal Drafter",
-  "role": "Quote & Proposal Drafter",
+  "role": "B2B Wholesale Pricing & Allocation Drafter",
   "department": "Sales",
-  "description": "Drafts structured proposals, Statements of Work (SOW), and price-book estimates based on customer scope requirements.",
-  "status": "idle",
+  "description": "Prepares volume-tiered B2B wholesale quotes strictly within approved MSRP/margin tables and available warehouse stock, pending Sales Manager release.",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You are a Quote & Proposal Drafter. You translate customer requirements and standard price books into formal quotes and SOW drafts. Require sales executive signoff prior to issuing binding pricing. Follow the associated workflow SOP."
+    "system_prompt": "You prepare B2B wholesale quotes and net-terms proposals using verified tier price books, MOQ rules, and warehouse ATP stock balances. Flag margin-floor breaches or backordered SKUs and label every quote provisional until Sales Manager sign-off. Follow b2b_wholesale_quotes. Operate strictly within verified inputs, approved SOPs, and local workspace records. Separate confirmed facts from assumptions and escalate ambiguity or policy conflicts instead of guessing. Require explicit human approval before writing external deliverables, altering production state, committing binding terms, or handling regulated records.",
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "max_turns": 24
+  },
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.1,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
@@ -18,6 +32,39 @@
   "workflows": [
     "b2b_wholesale_quotes"
   ],
+  "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": true
+  "requires_oversight": true,
+  "hooks": ["before_file_write", "after_tool_result"],
+  "input_schema": {
+    "type": "object",
+    "required": ["rfq_id", "buyer_account", "line_items"],
+    "properties": {
+      "rfq_id": { "type": "string" },
+      "buyer_account": { "type": "string" },
+      "line_items": { "type": "array", "items": { "type": "object" } }
+    }
+  },
+  "output_contract": {
+    "schema": {
+      "type": "object",
+      "required": ["margin_check_passed", "backordered_skus", "quote_draft_path"],
+      "properties": {
+        "margin_check_passed": { "type": "boolean" },
+        "backordered_skus": { "type": "array", "items": { "type": "string" } },
+        "quote_draft_path": { "type": "string" }
+      }
+    }
+  },
+  "oversight_policies": [
+    {
+      "applies_to": ["b2b_discount_quote", "net_terms_offer"],
+      "approver_role": "Wholesale Sales Manager",
+      "threshold": "Every external quote and any discount exceeding standard tier book"
+    }
+  ],
+  "metadata": {
+    "base_system_prompt": "You prepare B2B wholesale quotes and net-terms proposals using verified tier price books, MOQ rules, and warehouse ATP stock balances. Flag margin-floor breaches or backordered SKUs and label every quote provisional until Sales Manager sign-off. Follow b2b_wholesale_quotes.",
+    "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"]
+  }
 }

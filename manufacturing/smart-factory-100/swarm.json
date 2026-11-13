@@ -1,45 +1,93 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "id": "smart-factory-100",
-  "name": "Smart Factory Enterprise (100 Seats)",
-  "industry": "Manufacturing",
-  "company_size": 100,
-  "description": "Enterprise-level orchestration for smart factories. Synchronize digital twins, R&D design files, and full-scale ERP systems across multiple sites.",
+  "id": "manufacturing-smart-factory-100",
+  "name": "Smart Factory (100 Seats)",
+  "version": "1.1.0",
   "author": "AI-Tadpole-OS",
+  "description": "Enterprise-level ERP integration and digital twin synchronization across sites.",
+  "mission": "Synchronize shop-floor OT/SCADA telemetry, digital twin simulations, ERP Bills of Materials, and global supplier lead-time buffers under strict engineering and plant safety oversight gates.",
+  "industry": "Manufacturing",
+  "maturity": "verified",
+  "company_size": 100,
+  "path": "manufacturing/smart-factory-100",
   "tags": [
     "smart-factory",
     "digital-twin",
     "erp",
-    "enterprise"
+    "enterprise",
+    "ot-scada"
   ],
-  "path": "manufacturing/smart-factory-100",
-  "agents": [
-    "gis-gis-bim-specialist",
-    "engineering-engineering-devops-automator",
-    "specialized-supply-chain-strategist"
-  ],
-  "global_workflows": [
-    "workflows/smart_factory_sync.md"
-  ],
-  "version": "1.0.0",
+  "defaults": {
+    "provider": "ollama-cloud",
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "model_config": {
+      "provider": "ollama-cloud",
+      "model_id": "gemma4:31b-cloud",
+      "temperature": 0.2,
+      "max_turns": 24
+    },
+    "model_config2": {
+      "provider": "ollama-cloud",
+      "model_id": "gemma4:31b-cloud",
+      "temperature": 0.2,
+      "max_turns": 16
+    },
+    "model_config3": {
+      "provider": "ollama",
+      "model_id": "gemma4:e4b",
+      "temperature": 0.1,
+      "max_turns": 24
+    }
+  },
   "roster": [
     {
-      "id": "gis-gis-bim-specialist",
-      "path": "agents/gis-gis-bim-specialist.json",
+      "id": "manufacturing-ot-plant-supervisor",
+      "path": "agents/manufacturing-ot-plant-supervisor.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
       "id": "engineering-engineering-devops-automator",
       "path": "agents/engineering-engineering-devops-automator.json",
-      "supervisor": null,
+      "supervisor": "manufacturing-ot-plant-supervisor",
       "priority": "normal"
     },
     {
       "id": "specialized-supply-chain-strategist",
       "path": "agents/specialized-supply-chain-strategist.json",
-      "supervisor": null,
+      "supervisor": "manufacturing-ot-plant-supervisor",
       "priority": "normal"
     }
-  ]
+  ],
+  "agents": [
+    "manufacturing-ot-plant-supervisor",
+    "engineering-engineering-devops-automator",
+    "specialized-supply-chain-strategist"
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/smart_factory_sync.md",
+    "workflows/devops_automator.md",
+    "workflows/supply_chain_strategist.md"
+  ],
+  "oversight_policies": [
+    {
+      "applies_to": ["erp_bom_commit", "plc_parameter_change", "purchase_order_release", "line_stoppage_override"],
+      "approver_role": "Plant Operations Manager & Controls Engineer",
+      "threshold": "Mandatory physical/safety sign-off before any PLC write, ERP BOM mutation, or expediting PO commitment",
+      "gate_agent": "manufacturing-ot-plant-supervisor"
+    }
+  ],
+  "disclosure": {
+    "capabilities": ["read_file", "grep_search", "write_file"],
+    "mcp_grants": [],
+    "oversight_gates": [
+      "Controls Engineer & EHS LOTO approval required before any OT/PLC parameter or line changeover change",
+      "Plant Operations & Purchasing sign-off required before committing ERP BOM revisions or supplier POs"
+    ],
+    "egress_origins": []
+  },
+  "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"],
+  "evals_path": "evals/scenarios.json"
 }

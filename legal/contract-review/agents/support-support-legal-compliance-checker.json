@@ -1,22 +1,70 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/agent-v1.json",
   "id": "support-support-legal-compliance-checker",
-  "name": "Support Support Legal Compliance Checker",
-  "role": "Support Support Legal Compliance Checker Specialist",
+  "name": "Support Legal Compliance Checker",
+  "role": "Docket & Regulatory Deadline Compliance Analyst",
   "department": "Operations",
-  "description": "Specialized AI agent handling Support Support Legal Compliance Checker Specialist workflows.",
-  "status": "idle",
+  "description": "Computes statutory, contractual notice, and court-docket deadlines with jurisdiction buffers and drafts verified compliance calendars for paralegal/attorney sign-off.",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You operate as the Support Support Legal Compliance Checker. Execute tasks according to verified SOPs."
+    "system_prompt": "You maintain legal docket and contractual notice calendars. Extract notice periods, renewal windows, filing deadlines, and jurisdiction holiday rules strictly from source records, calculate conservative reminder buffers, and write verification logs for supervising counsel. Follow docket_compliance. Operate strictly within verified inputs, approved SOPs, and local workspace records. Separate confirmed facts from assumptions and escalate ambiguity or policy conflicts instead of guessing. Require explicit human approval before writing external deliverables, altering production state, committing binding terms, or handling regulated records.",
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "max_turns": 24
+  },
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.1,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
-    "grep_search"
+    "grep_search",
+    "write_file"
   ],
   "workflows": [
     "docket_compliance"
   ],
+  "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": false
+  "requires_oversight": true,
+  "hooks": ["before_file_write", "after_tool_result"],
+  "input_schema": {
+    "type": "object",
+    "required": ["matter_id", "source_documents"],
+    "properties": {
+      "matter_id": { "type": "string" },
+      "source_documents": { "type": "array", "items": { "type": "string" } },
+      "jurisdiction": { "type": "string" }
+    }
+  },
+  "output_contract": {
+    "schema": {
+      "type": "object",
+      "required": ["deadlines", "unresolved_dates", "calendar_draft_path"],
+      "properties": {
+        "deadlines": { "type": "array", "items": { "type": "object" } },
+        "unresolved_dates": { "type": "array", "items": { "type": "string" } },
+        "calendar_draft_path": { "type": "string" }
+      }
+    }
+  },
+  "oversight_policies": [
+    {
+      "applies_to": ["docket_filing_schedule", "statutory_deadline_entry"],
+      "approver_role": "Supervising Attorney or Senior Paralegal",
+      "threshold": "All court deadlines and contract notice opt-out dates"
+    }
+  ],
+  "metadata": {
+    "base_system_prompt": "You maintain legal docket and contractual notice calendars. Extract notice periods, renewal windows, filing deadlines, and jurisdiction holiday rules strictly from source records, calculate conservative reminder buffers, and write verification logs for supervising counsel. Follow docket_compliance.",
+    "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"]
+  }
 }

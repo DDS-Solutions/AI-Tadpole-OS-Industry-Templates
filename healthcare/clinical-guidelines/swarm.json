@@ -3,7 +3,7 @@
   "name": "Clinical Documentation & Prior-Auth Desk",
   "version": "1.0.0",
   "description": "Clinical Practice: Medical chart visit summaries, prior-authorization packet prep, and guideline indexing.",
-  "industry": "medical-practices",
+  "industry": "Medical Practices",
   "tags": [
     "healthcare",
     "protocols",
@@ -11,20 +11,21 @@
     "clinical"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "specialized-clinical-documentation-specialist",
       "path": "agents/specialized-clinical-documentation-specialist.json",
-      "supervisor": null,
+      "supervisor": "specialized-data-privacy-officer",
       "priority": "normal"
     },
     {
       "id": "specialized-prior-auth-insurance-specialist",
       "path": "agents/specialized-prior-auth-insurance-specialist.json",
-      "supervisor": null,
+      "supervisor": "specialized-data-privacy-officer",
       "priority": "normal"
     },
     {
@@ -39,5 +40,7 @@
     "specialized-clinical-documentation-specialist",
     "specialized-prior-auth-insurance-specialist",
     "specialized-data-privacy-officer"
-  ]
+  ],
+  "id": "medical-clinical-guidelines",
+  "maturity": "starter"
 }

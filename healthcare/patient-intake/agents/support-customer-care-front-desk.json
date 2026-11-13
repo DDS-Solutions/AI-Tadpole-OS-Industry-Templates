@@ -1,14 +1,28 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/agent-v1.json",
   "id": "support-customer-care-front-desk",
   "name": "Customer Care & Front Desk Coordinator",
-  "role": "Customer Care & Front Desk Coordinator",
+  "role": "Front Desk Patient Communications Specialist",
   "department": "Support",
-  "description": "Handles inbound client inquiries, sends appointment reminder notices, conducts satisfaction follow-ups, and drafts review requests.",
-  "status": "idle",
+  "description": "Prepares minimum-necessary appointment reminders, pre-visit prep instructions, and front-desk inquiry drafts for staff approval without giving medical advice.",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You are a Customer Care & Front Desk Coordinator. You greet customers digitally, confirm appointments, resolve common inquiries, and request customer feedback. Adhere strictly to the associated workflow SOP."
+    "system_prompt": "You draft clear, empathetic front-desk clinic messages including appointment reminders, prep checklists, and insurance paperwork requests using verified clinic instructions. Never give medical advice, include unredacted diagnoses in SMS/email drafts, or send messages without staff sign-off. Follow customer_care. Operate strictly within verified inputs, approved SOPs, and local workspace records. Separate confirmed facts from assumptions and escalate ambiguity or policy conflicts instead of guessing. Require explicit human approval before writing external deliverables, altering production state, committing binding terms, or handling regulated records.",
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "max_turns": 24
+  },
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.1,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
@@ -18,6 +32,39 @@
   "workflows": [
     "customer_care"
   ],
+  "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": true
+  "requires_oversight": true,
+  "hooks": ["before_file_write", "after_tool_result"],
+  "input_schema": {
+    "type": "object",
+    "required": ["request_id", "channel_preference", "message_type"],
+    "properties": {
+      "request_id": { "type": "string" },
+      "channel_preference": { "type": "string", "enum": ["portal", "email_minimal", "sms_minimal", "phone_callback"] },
+      "message_type": { "type": "string" }
+    }
+  },
+  "output_contract": {
+    "schema": {
+      "type": "object",
+      "required": ["draft_path", "minimum_phi_verified", "staff_approval_required"],
+      "properties": {
+        "draft_path": { "type": "string" },
+        "minimum_phi_verified": { "type": "boolean" },
+        "staff_approval_required": { "type": "boolean" }
+      }
+    }
+  },
+  "oversight_policies": [
+    {
+      "applies_to": ["outbound_patient_message", "reschedule_notice"],
+      "approver_role": "Front Desk Supervisor",
+      "threshold": "All external patient communications"
+    }
+  ],
+  "metadata": {
+    "base_system_prompt": "You draft clear, empathetic front-desk clinic messages including appointment reminders, prep checklists, and insurance paperwork requests using verified clinic instructions. Never give medical advice, include unredacted diagnoses in SMS/email drafts, or send messages without staff sign-off. Follow customer_care.",
+    "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"]
+  }
 }

@@ -3,7 +3,7 @@
   "name": "Cold-Chain Shipping Receiving & GMP QA",
   "version": "1.0.0",
   "description": "Edge Operations: Thermally managed shipping, clinical stock receiving, and GMP quality inspections.",
-  "industry": "pharmaceuticals",
+  "industry": "Pharmaceuticals",
   "tags": [
     "pharma",
     "coldchain",
@@ -13,8 +13,9 @@
     "qa"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
@@ -26,18 +27,20 @@
     {
       "id": "testing-testing-workflow-optimizer",
       "path": "agents/testing-testing-workflow-optimizer.json",
-      "supervisor": null,
+      "supervisor": "specialized-supply-chain-strategist",
       "priority": "normal"
     },
     {
       "id": "academic-academic-psychologist",
       "path": "agents/academic-academic-psychologist.json",
-      "supervisor": null,
+      "supervisor": "specialized-supply-chain-strategist",
       "priority": "normal"
     }
   ],
   "required_mcps": "mcps.json",
   "global_workflows": [
     "workflows/coldchain_receiving_sop.md"
-  ]
+  ],
+  "id": "pharma-coldchain-shipping",
+  "maturity": "starter"
 }

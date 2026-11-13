@@ -131,7 +131,7 @@ export default function Step1_BusinessBrief({
             id="guided-business-name"
             autoComplete="organization"
             required
-            className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3.5 focus:border-cyber-green outline-none transition-colors text-white placeholder-zinc-600 text-sm"
+            className="focus-sovereign w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3.5 focus:border-cyber-green outline-none transition-colors text-white placeholder-zinc-600 text-sm"
             placeholder="e.g. Apex Plumbing & HVAC"
             value={companyInfo.name}
             onChange={e => setCompanyInfo({ ...companyInfo, name: e.target.value })}
@@ -145,7 +145,8 @@ export default function Step1_BusinessBrief({
           <select
             id="guided-business-industry"
             required
-            className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3.5 focus:border-cyber-green outline-none text-white text-sm cursor-pointer"
+            data-tooltip="Tailors recommended specialists and playbooks to your industry workflows"
+            className="focus-sovereign w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3.5 focus:border-cyber-green outline-none text-white text-sm cursor-pointer"
             value={companyInfo.industry}
             onChange={handleIndustryChange}
           >
@@ -163,10 +164,11 @@ export default function Step1_BusinessBrief({
             Company Size (Employees)
           </label>
           <div className="relative">
-            <Users className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Users className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <select
               id="guided-company-size"
-              className="w-full bg-zinc-950 border border-zinc-800 rounded-xl pl-10 pr-4 py-3.5 focus:border-cyber-green outline-none text-white text-sm cursor-pointer"
+              data-tooltip="Adjusts suggested specialist count and delegation scope based on org size"
+              className="focus-sovereign w-full bg-zinc-950 border border-zinc-800 rounded-xl pl-10 pr-4 py-3.5 focus:border-cyber-green outline-none text-white text-sm cursor-pointer"
               value={companyInfo.size || '25'}
               onChange={e => setCompanyInfo({ ...companyInfo, size: e.target.value })}
             >
@@ -183,7 +185,7 @@ export default function Step1_BusinessBrief({
           </label>
           <input
             id="guided-business-description"
-            className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3.5 focus:border-cyber-green outline-none transition-colors text-white placeholder-zinc-600 text-sm"
+            className="focus-sovereign w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3.5 focus:border-cyber-green outline-none transition-colors text-white placeholder-zinc-600 text-sm"
             placeholder="e.g. Commercial and residential emergency dispatch and maintenance contracts"
             value={companyInfo.description}
             onChange={e => setCompanyInfo({ ...companyInfo, description: e.target.value })}
@@ -210,7 +212,7 @@ export default function Step1_BusinessBrief({
                 key={goal.id}
                 onClick={() => toggleGoal(goal.id)}
                 aria-pressed={isSelected}
-                className={`w-full p-4 rounded-xl border transition-all cursor-pointer select-none flex flex-col justify-between text-left ${
+                className={`focus-sovereign w-full p-4 rounded-xl border transition-all cursor-pointer select-none flex flex-col justify-between text-left ${
                   isSelected
                     ? 'bg-cyber-green/10 border-cyber-green text-white shadow-sm'
                     : 'bg-zinc-950/70 border-zinc-800/80 hover:border-zinc-700 text-zinc-300'
@@ -250,9 +252,11 @@ export default function Step1_BusinessBrief({
           {actionHint}
         </span>
         <button
+          type="button"
           onClick={onRecommendTeam}
           disabled={!canProceed}
-          className={`px-6 py-3 rounded-xl font-semibold text-sm transition-all flex items-center gap-2 cursor-pointer shadow-md ${
+          data-tooltip={hasExistingTeam ? 'Keep your current roster and continue to Step 2' : 'Generate recommended specialists aligned to your selected goals'}
+          className={`focus-sovereign px-6 py-3 rounded-xl font-semibold text-sm transition-all flex items-center gap-2 cursor-pointer shadow-md ${
             canProceed
               ? 'bg-cyber-green hover:bg-cyber-green-light text-zinc-950 shadow-cyber-green/20'
               : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'

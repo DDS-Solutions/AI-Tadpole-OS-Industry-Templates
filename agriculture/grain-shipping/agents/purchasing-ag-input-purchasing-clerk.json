@@ -6,9 +6,11 @@
   "description": "Tracks seed, chemical, and fertilizer contracts, verifies bulk delivery delivery tickets, and audits seasonal supplier pricing.",
   "status": "idle",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You are an Agricultural Input Purchasing Clerk. You reconcile bulk fertilizer and chemical delivery tickets with seasonal prepay contracts. Adhere strictly to the associated workflow SOP."
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "system_prompt": "You are an Agricultural Input Purchasing Clerk. You reconcile bulk fertilizer and chemical delivery tickets with seasonal prepay contracts. Adhere strictly to the associated workflow SOP.",
+    "temperature": 0.4,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
@@ -19,5 +21,17 @@
     "ag_purchasing"
   ],
   "mcp_tools": [],
-  "requires_oversight": true
+  "requires_oversight": true,
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.2,
+    "max_turns": 24
+  }
 }

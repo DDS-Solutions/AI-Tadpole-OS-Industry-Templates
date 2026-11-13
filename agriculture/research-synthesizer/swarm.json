@@ -3,7 +3,7 @@
   "name": "Farm Operations & Harvest Logistics",
   "version": "1.0.0",
   "description": "Agriculture Operations: Harvest equipment dispatch, grain lot tracking, and weather-window scheduling.",
-  "industry": "agriculture-agtech",
+  "industry": "Agriculture & AgTech",
   "tags": [
     "agriculture",
     "soil",
@@ -12,8 +12,9 @@
     "synthesis"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
@@ -25,13 +26,13 @@
     {
       "id": "compliance-grain-traceability-clerk",
       "path": "agents/compliance-grain-traceability-clerk.json",
-      "supervisor": null,
+      "supervisor": "operations-harvest-field-scheduler",
       "priority": "normal"
     },
     {
       "id": "operations-equipment-maintenance-clerk",
       "path": "agents/operations-equipment-maintenance-clerk.json",
-      "supervisor": null,
+      "supervisor": "operations-harvest-field-scheduler",
       "priority": "normal"
     }
   ],
@@ -40,5 +41,7 @@
     "operations-harvest-field-scheduler",
     "compliance-grain-traceability-clerk",
     "operations-equipment-maintenance-clerk"
-  ]
+  ],
+  "id": "agriculture-research-synthesizer",
+  "maturity": "starter"
 }

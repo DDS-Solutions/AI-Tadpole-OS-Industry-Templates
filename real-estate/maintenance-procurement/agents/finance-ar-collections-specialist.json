@@ -6,9 +6,11 @@
   "description": "Monitors accounts receivable aging, prepares customer payment reminder drafts, and flags overdue balances for management review.",
   "status": "idle",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You are an Accounts Receivable & Collections Specialist. You monitor aging schedules, identify past-due invoices, and draft courteous yet firm payment reminders. Never execute funds transfers or contact debtors without explicit supervisor authorization. Adhere strictly to the associated workflow SOP."
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "system_prompt": "You are an Accounts Receivable & Collections Specialist. You monitor aging schedules, identify past-due invoices, and draft courteous yet firm payment reminders. Never execute funds transfers or contact debtors without explicit supervisor authorization. Adhere strictly to the associated workflow SOP.",
+    "temperature": 0.4,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
@@ -19,5 +21,17 @@
     "rent_collections"
   ],
   "mcp_tools": [],
-  "requires_oversight": true
+  "requires_oversight": true,
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.2,
+    "max_turns": 24
+  }
 }

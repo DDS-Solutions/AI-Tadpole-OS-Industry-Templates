@@ -42,16 +42,19 @@ export default function McpEditor({ connector, onClose, onSave }: McpEditorProps
 
   const cleanServerKey = serverKey.trim().toLowerCase();
   const isReservedGev = cleanServerKey === 'gev';
+  const hasDoubleUnderscore = cleanServerKey.includes('__');
   const cleanSecretVar = secretVar.trim().toUpperCase();
   const isReservedSecret = ENGINE_PRIVATE_ENV_VARS.has(cleanSecretVar);
   const hasUrl = Boolean(remoteUrl.trim());
   const isUrlValid = !hasUrl || /^https?:\/\/\S+/i.test(remoteUrl.trim());
+  const isServerKeyValid = !hasUrl || (Boolean(cleanServerKey) && !isReservedGev && !hasDoubleUnderscore && /^[a-z0-9._-]+$/.test(cleanServerKey));
 
   const canSave = Boolean(
     name.trim()
     && category.trim()
     && path.trim()
     && isUrlValid
+    && isServerKeyValid
     && !isReservedGev
     && !isReservedSecret
   );
@@ -70,6 +73,8 @@ export default function McpEditor({ connector, onClose, onSave }: McpEditorProps
         headers['Authorization'] = authHeader.trim();
       } else if (cleanSecretVar) {
         headers['Authorization'] = `Bearer \${${cleanSecretVar}}`;
+      } else {
+        delete headers['Authorization'];
       }
 
       const existingServers = connector.config?.mcpServers ? { ...connector.config.mcpServers } : {};
@@ -243,6 +248,7 @@ export default function McpEditor({ connector, onClose, onSave }: McpEditorProps
               <label htmlFor={`${fieldId}-serverKey`} className="block text-[10px] font-mono text-zinc-400 uppercase mb-1.5">Server Key / ID</label>
               <input
                 type="text"
+                data-tooltip="Unique identifier in mcp_servers config (gev is reserved by Tadpole-OS)"
                 className={`focus-sovereign w-full min-w-0 bg-zinc-950 border ${isReservedGev ? 'border-red-500' : 'border-zinc-800'} rounded-lg px-3 py-2 text-xs text-zinc-200 focus:border-cyber-green outline-none font-mono`}
                 placeholder="e.g. salesforce"
                 id={`${fieldId}-serverKey`}
@@ -260,6 +266,7 @@ export default function McpEditor({ connector, onClose, onSave }: McpEditorProps
               <label htmlFor={`${fieldId}-remoteUrl`} className="block text-[10px] font-mono text-zinc-400 uppercase mb-1.5">Remote Streamable MCP URL</label>
               <input
                 type="url"
+                data-tooltip="HTTPS Streamable HTTP MCP endpoint disclosed in the pre-export egress card"
                 className={`focus-sovereign w-full min-w-0 bg-zinc-950 border ${!isUrlValid ? 'border-red-500' : 'border-zinc-800'} rounded-lg px-3 py-2 text-xs text-zinc-200 focus:border-cyber-green outline-none font-mono`}
                 placeholder="https://api.example.com/mcp"
                 id={`${fieldId}-remoteUrl`}
@@ -280,6 +287,7 @@ export default function McpEditor({ connector, onClose, onSave }: McpEditorProps
                 </label>
                 <input
                   type="text"
+                  data-tooltip="Environment secret prompted on import; engine private vars like OPENAI_API_KEY are barred"
                   className={`focus-sovereign w-full min-w-0 bg-zinc-950 border ${isReservedSecret ? 'border-red-500' : 'border-zinc-800'} rounded-lg px-3 py-2 text-xs text-zinc-200 focus:border-cyber-green outline-none font-mono`}
                   placeholder="e.g. SALESFORCE_API_KEY"
                   id={`${fieldId}-secretVar`}

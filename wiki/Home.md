@@ -8,7 +8,7 @@ Welcome to the official documentation wiki for the **AI-Tadpole-OS Swarm Templat
 
 - **Target Domains**: Local-first AI Swarms, On-Premise Multi-Agent Orchestration, Sovereign Data Privacy, Edge Computing AI, Zero-Trust Agent Frameworks, Private Vector Memory (OKF).
 - **Geographic & Compliance Context**: Supports local-first deployments, local model providers, and private storage. Actual GDPR, HIPAA, CCPA, SOC 2, network, and data-residency posture depends on the operator's selected models, connectors, credentials, and infrastructure.
-- **Agent Instruction Header (LLM-Readable)**: AI agents parsing this repository should read `Compatibility-Contract.md` first, then `Swarm-Blueprints.md` for roster configuration and `Knowledge-Ingestion.md` for OKF data structures. Use `scripts/migrate_consumer_contract.py --check` and `scripts/validate_template.py` before recommending deployment.
+- **Agent Instruction Header (LLM-Readable)**: AI agents parsing this repository should read `Compatibility-Contract.md` first, then `Swarm-Blueprints.md` for roster configuration and `Knowledge-Ingestion.md` for OKF data structures. Run `scripts/verify_compatibility_lock.py`, `scripts/migrate_consumer_contract.py --check`, `scripts/validate_template.py`, and `scripts/run_template_evals.py --check` before recommending deployment.
 
 ---
 
@@ -17,10 +17,10 @@ Welcome to the official documentation wiki for the **AI-Tadpole-OS Swarm Templat
 Don't want to start from scratch? Use our **[Swarm Architect](https://dds-solutions.github.io/AI-Tadpole-OS-Industry-Templates/)** to visually design your intelligence roster, mission, and playbooks.
 
 *   **Hybrid AI Profiler**: Suggests skills based on your company mission.
-*   **Agent Catalog**: Browse 280+ specialized AI agent roles across multiple departments to easily build your team.
-*   **Contract-Aware Export**: Generates native `idle` agents with exact capability, MCP, workflow, model, and oversight fields plus root MCP configuration.
-*   **Round-Trip Coverage**: Preserves global and agent-owned workflows and packages full OKF content.
-*   **Safety Checks**: Rejects unsafe repository paths, normalized filename collisions, missing workflow references, and overlong prompts.
+*   **Agent Catalog**: Browse 342 specialized AI agent roles across multiple departments to easily build your team.
+*   **Contract-Aware Export**: Generates native `idle` agents with exact capability, MCP, workflow, multi-slot model (`ollama-cloud` / `ollama`), supervisor DAG, and oversight fields plus root MCP configuration.
+*   **Round-Trip Coverage**: Preserves global and agent-owned workflows and packages full OKF content with canonical `content_sha256` verification.
+*   **Safety Checks**: Rejects unsafe repository paths, normalized filename collisions, missing workflow references, cycle/dangling roster supervisors, and overlong prompts.
 
 ---
 
@@ -30,10 +30,10 @@ Don't want to start from scratch? Use our **[Swarm Architect](https://dds-soluti
 To navigate the wiki, use the structured indices below:
 
 ### 📌 [1. Consumer Compatibility Contract](Compatibility-Contract.md)
-Start here before implementation work. Review the pinned private Tadpole-OS source revision, public downstream relationship, operational behavior, and known upstream limitations.
+Start here before implementation work. Review the pinned AI-Tadpole-OS source revision (`v1.1.464`), downstream relationship, operational behavior, and known consumer boundaries.
 
 ### 🌟 [2. Swarm Blueprints Overview](Swarm-Blueprints.md)
-Discover the structural mechanics of AI-Tadpole-OS swarms. Understand the hierarchical mapping (Executive, Management, Specialist) and how the 30 pre-configured industries partition cognitive and operational swarms.
+Discover the structural mechanics of AI-Tadpole-OS swarms. Understand the supervisor DAG hierarchy, `verified` vs. `starter` maturity tiers, and how the 38 canonical industries partition cognitive and operational swarms.
 
 ### 🧠 [3. Playbooks & OKF Knowledge Ingestion](Knowledge-Ingestion.md)
 Learn how to inject corporate standard operating procedures, manuals, and institutional knowledge directly into your agents using Markdown SOPs (with YAML frontmatter) or structured `knowledge.json` files.

@@ -1,36 +1,61 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "id": "hr-recruiting-triage",
   "name": "Recruiting & Talent Acquisition Swarm",
-  "version": "1.0.0",
-  "author": "HR Systems Group",
+  "version": "1.1.0",
+  "author": "TalentOps Inc.",
   "description": "People Operations: Candidate sourcing, job descriptions, interview coordination, and scorecard aggregation.",
+  "mission": "Coordinate structured, EEOC-compliant job scorecards, objective skills-based resume screening against written rubrics, and panel interview scheduling under Hiring Manager and HR Lead approval gates.",
   "industry": "Human Resources",
+  "maturity": "verified",
+  "company_size": 30,
   "tags": [
     "hr",
     "recruiting",
-    "onboarding"
+    "scheduling",
+    "eeoc",
+    "hiring"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "provider": "ollama-cloud",
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "model_config": {
+      "provider": "ollama-cloud",
+      "model_id": "gemma4:31b-cloud",
+      "temperature": 0.1,
+      "max_turns": 24
+    },
+    "model_config2": {
+      "provider": "ollama-cloud",
+      "model_id": "gemma4:31b-cloud",
+      "temperature": 0.1,
+      "max_turns": 16
+    },
+    "model_config3": {
+      "provider": "ollama",
+      "model_id": "gemma4:e4b",
+      "temperature": 0.1,
+      "max_turns": 24
+    }
   },
   "roster": [
     {
       "id": "specialized-recruitment-specialist",
       "path": "agents/specialized-recruitment-specialist.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     },
     {
       "id": "specialized-job-description-scorecard-writer",
       "path": "agents/specialized-job-description-scorecard-writer.json",
-      "supervisor": null,
+      "supervisor": "specialized-recruitment-specialist",
       "priority": "normal"
     },
     {
       "id": "project-management-interview-coordinator",
       "path": "agents/project-management-interview-coordinator.json",
-      "supervisor": null,
+      "supervisor": "specialized-recruitment-specialist",
       "priority": "normal"
     }
   ],
@@ -38,5 +63,42 @@
     "specialized-recruitment-specialist",
     "specialized-job-description-scorecard-writer",
     "project-management-interview-coordinator"
-  ]
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/recruitment.md",
+    "workflows/job_descriptions.md",
+    "workflows/interview_coordination.md"
+  ],
+  "oversight_policies": [
+    {
+      "applies_to": [
+        "candidate_rejection_notice",
+        "job_posting_publish",
+        "interview_invite_send",
+        "compensation_band_edit"
+      ],
+      "approver_role": "HR Director & Hiring Manager",
+      "threshold": "Every candidate disposition, external candidate message, compensation band disclosure, or published requisition",
+      "gate_agent": "specialized-recruitment-specialist"
+    }
+  ],
+  "disclosure": {
+    "capabilities": [
+      "read_file",
+      "grep_search",
+      "write_file"
+    ],
+    "mcp_grants": [],
+    "oversight_gates": [
+      "Human recruiter/hiring manager review required for all candidate advancement or rejection decisions",
+      "HR Lead approval required before publishing requisitions or sending external candidate schedules"
+    ],
+    "egress_origins": []
+  },
+  "prompt_includes": [
+    "sovereign-guardrails.md",
+    "oversight-gate.md"
+  ],
+  "evals_path": "evals/scenarios.json"
 }

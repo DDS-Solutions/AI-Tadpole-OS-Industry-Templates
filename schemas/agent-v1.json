@@ -1,0 +1,139 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tadpoleos.dev/schemas/agent-v1.json",
+  "title": "AI-Tadpole-OS Agent Profile Schema",
+  "type": "object",
+  "required": ["id", "name", "role", "department", "description", "status", "model_config"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{1,64}$"
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "role": { "type": "string", "minLength": 1 },
+    "department": { "type": "string", "minLength": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "status": {
+      "type": "string",
+      "enum": ["idle"]
+    },
+    "model_config": {
+      "$ref": "#/definitions/primaryModelConfig"
+    },
+    "model_config2": {
+      "$ref": "#/definitions/slotModelConfig"
+    },
+    "model_config3": {
+      "$ref": "#/definitions/slotModelConfig"
+    },
+    "active_model_slot": {
+      "type": "integer",
+      "enum": [1, 2, 3]
+    },
+    "budget_usd": {
+      "type": "number",
+      "minimum": 0
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "read_file",
+          "grep_search",
+          "search_web",
+          "write_file",
+          "delete_file",
+          "execute_shell",
+          "shell",
+          "terminal"
+        ]
+      }
+    },
+    "workflows": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "mcp_tools": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[^:*]+:[^:*]+$"
+      }
+    },
+    "requires_oversight": { "type": "boolean" },
+    "qualified_id": { "type": "string", "minLength": 1 },
+    "input_schema": { "type": "object" },
+    "output_contract": {
+      "type": "object",
+      "properties": {
+        "tool": { "type": "string" },
+        "schema": { "type": "object" },
+        "message_property": { "type": "string" }
+      }
+    },
+    "oversight_policies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["applies_to", "approver_role"],
+        "properties": {
+          "applies_to": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" }
+          },
+          "approver_role": { "type": "string", "minLength": 1 },
+          "threshold": { "type": "string" },
+          "gate_agent": { "type": "string" }
+        }
+      }
+    },
+    "hooks": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      }
+    },
+    "metadata": {
+      "type": "object"
+    }
+  },
+  "definitions": {
+    "primaryModelConfig": {
+      "type": "object",
+      "required": ["provider", "model_id", "system_prompt"],
+      "properties": {
+        "provider": { "type": "string", "minLength": 1 },
+        "model_id": { "type": "string", "minLength": 1 },
+        "system_prompt": { "type": "string", "minLength": 1, "maxLength": 800 },
+        "temperature": { "type": "number", "minimum": 0, "maximum": 2 },
+        "max_tokens": { "type": "integer", "minimum": 1 },
+        "context_window": { "type": "integer", "minimum": 256 },
+        "max_turns": { "type": "integer", "minimum": 1 },
+        "input_cost_per_m": { "type": "number", "minimum": 0 },
+        "output_cost_per_m": { "type": "number", "minimum": 0 },
+        "base_url": { "type": ["string", "null"] }
+      }
+    },
+    "slotModelConfig": {
+      "type": "object",
+      "required": ["provider", "model_id"],
+      "properties": {
+        "provider": { "type": "string", "minLength": 1 },
+        "model_id": { "type": "string", "minLength": 1 },
+        "system_prompt": { "type": "string", "minLength": 1, "maxLength": 800 },
+        "temperature": { "type": "number", "minimum": 0, "maximum": 2 },
+        "max_tokens": { "type": "integer", "minimum": 1 },
+        "context_window": { "type": "integer", "minimum": 256 },
+        "max_turns": { "type": "integer", "minimum": 1 },
+        "input_cost_per_m": { "type": "number", "minimum": 0 },
+        "output_cost_per_m": { "type": "number", "minimum": 0 },
+        "base_url": { "type": ["string", "null"] }
+      }
+    }
+  }
+}
+

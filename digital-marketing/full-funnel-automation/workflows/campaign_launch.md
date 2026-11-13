@@ -1,21 +1,23 @@
-# Full-Funnel Campaign Launch Workflow
-*Optimized for AI-Tadpole-OS*
+# Workflow: Full-Funnel Campaign Launch SOP
 
-## Objective
-To take a marketing idea from concept to live ads with automated tracking in under 60 minutes.
+## Purpose
 
-## Steps
-1. **Define Objective**: The user provides a goal (e.g., \"Sell 100 tickets to my workshop\").
-2. **Creative Assets**: 
-   - `Content Architect` generates three variations of ad copy.
-   - `Content Architect` suggests image prompts for the `generate_image` tool.
-3. **Targeting & Spend**:
-   - `Ad Optimizer` creates a budget plan across Facebook and Google.
-   - Sets up A/B testing parameters for the generated copy.
-4. **Tracking Setup**:
-   - `Funnel Analyst` generates UTM parameters for all links.
-   - Verifies that conversion pixels are active on the destination URL.
-5. **Launch**: Push to platforms via connected Marketing MCPs.
+Coordinate campaign launch preparation from brief intake through AI discovery (`llms.txt`/schema) readiness, UTM verification, creative copy review, and gated paid-media launch sign-off.
 
-## Optimization Loop
-- Every 24 hours, the `Ad Optimizer` will re-allocate budget from low-performing ads to the \"Winning\" creative identified by the `Funnel Analyst`.
+## Step 1: Validate Campaign Brief & AI Discovery Readiness
+
+- Read the campaign brief, target landing page URL, and conversion offer from workspace files via `read_file`.
+- Verify landing page schema, canonical tags, and `llms.txt` indexability without guessing live analytics numbers.
+
+## Step 2: Produce Channel Creative & Disclosure Variants
+
+- Delegate channel-specific copy variations to `marketing-marketing-content-creator`, ensuring every performance statistic or customer claim traces to an approved source file.
+
+## Step 3: Verify UTM Taxonomy & Bounded Spend Plan
+
+- Delegate tracking validation and bounded A/B budget allocation proposals to `marketing-marketing-growth-hacker`.
+- Flag missing conversion pixels, broken UTM parameters, or unapproved daily spend caps before staging.
+
+## Step 4: Marketing Director Approval Gate
+
+- Compile the pre-launch packet (copy variants, UTM table, discovery audit, spend cap proposal) and block external publishing or live ad spend until Marketing Director approval is recorded.

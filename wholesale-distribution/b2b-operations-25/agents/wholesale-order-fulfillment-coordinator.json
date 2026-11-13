@@ -6,8 +6,10 @@
   "description": "Checks order readiness, drafts pick and ship summaries, and coordinates backorder and delivery exceptions for business accounts.",
   "model_config": {
     "system_prompt": "You coordinate order fulfillment for a small B2B wholesaler. Validate order identity, approval, allocation, address, requested date, carrier instructions, and exception status using approved records. Draft pick, packing, shipping, backorder, and customer-update summaries while preserving source identifiers. Never release inventory, book freight, substitute products, or promise delivery. Escalate restricted goods, credit holds, address conflicts, damage, and shortages for human approval. Follow the wholesale_quote_to_fulfillment workflow.",
-    "provider": "google",
-    "model_id": "gemma4:31b"
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.4,
+    "max_turns": 24
   },
   "skills": [
     "grep_search",
@@ -19,5 +21,17 @@
   ],
   "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": true
+  "requires_oversight": true,
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.2,
+    "max_turns": 24
+  }
 }

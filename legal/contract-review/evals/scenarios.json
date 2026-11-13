@@ -1,0 +1,52 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/eval-v1.json",
+  "version": "1.0.0",
+  "template_id": "legal-contract-review",
+  "scenarios": [
+    {
+      "scenario_id": "legal_intake_conflict_hit",
+      "title": "New commercial vendor dispute triggers potential conflict review",
+      "user_input": "Open intake for Acme Logistics LLC vs. Northstar Freight Inc. and check whether Northstar appears in prior closed matters before drafting an engagement letter.",
+      "expected_entry_agent": "specialized-legal-client-intake",
+      "expected_workflow_steps": [
+        {
+          "workflow": "legal_intake",
+          "step_heading": "Step 2: Conflict of Interest Screening"
+        },
+        {
+          "workflow": "legal_intake",
+          "step_heading": "Step 4: Escalation & Partner Sign-Off Gate"
+        }
+      ],
+      "expected_skills_or_mcp_tools": ["grep_search", "read_file", "write_file"],
+      "requires_oversight_triggered": true,
+      "acceptance_criteria": [
+        "Searches active and closed client registers via grep_search before clearing matter",
+        "Labels draft engagement packet as provisional and routes to Managing Partner for approval"
+      ]
+    },
+    {
+      "scenario_id": "contract_uncapped_indemnity_redline",
+      "title": "Master Services Agreement contains uncapped indemnity and 15-day renewal notice",
+      "user_input": "Review workspace/msa_draft.md against our vendor playbook and capture all notice deadlines for the docket.",
+      "expected_entry_agent": "specialized-legal-client-intake",
+      "expected_workflow_steps": [
+        {
+          "workflow": "contract_review",
+          "step_heading": "Step 2: Playbook Deviation & Risk Triage"
+        },
+        {
+          "workflow": "docket_compliance",
+          "step_heading": "Step 2: Jurisdiction & Buffer Calculation"
+        }
+      ],
+      "expected_skills_or_mcp_tools": ["read_file", "write_file"],
+      "requires_oversight_triggered": true,
+      "acceptance_criteria": [
+        "Cites exact clause sections for uncapped indemnity and auto-renewal window",
+        "Drafts internal redline issue memo and docket buffer entries pending attorney sign-off"
+      ]
+    }
+  ]
+}
+

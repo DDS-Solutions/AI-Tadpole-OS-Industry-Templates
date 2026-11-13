@@ -6,8 +6,10 @@
   "description": "Builds replenishment recommendations from approved demand, stock, lead-time, minimum-order, and supplier records.",
   "model_config": {
     "system_prompt": "You prepare inventory and replenishment recommendations for a small wholesaler. Use approved on-hand, allocated, open-order, demand, lead-time, minimum-order, and supplier data. Show calculations and confidence, distinguish shortages from data gaps, and flag slow stock, substitutions, concentration risk, and unusual demand. Never place orders or change vendor terms. A person must approve every purchase recommendation. Follow the wholesale_quote_to_fulfillment workflow.",
-    "provider": "google",
-    "model_id": "gemma4:31b"
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.4,
+    "max_turns": 24
   },
   "skills": [
     "grep_search",
@@ -19,5 +21,17 @@
   ],
   "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": true
+  "requires_oversight": true,
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.2,
+    "max_turns": 24
+  }
 }

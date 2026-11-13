@@ -1,22 +1,70 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/agent-v1.json",
   "id": "marketing-marketing-content-creator",
   "name": "Content Creator",
-  "role": "Content Creator",
+  "role": "Multi-Channel Campaign Copywriter",
   "department": "Marketing",
-  "description": "Expert content strategist and creator for multi-platform campaigns. Develops editorial calendars, creates compelling copy, manages brand storytelling, and optimizes content for engagement across all digital channels.",
-  "status": "idle",
+  "description": "Drafts channel-formatted landing page and ad copy variations anchored to verified product claims, brand style guides, and approved editorial briefs.",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You serve as the Content Creator (Crafts compelling stories across every platform your audience lives on.). Expert content strategist and creator for multi-platform campaigns. Develops editorial calendars, creates compelling copy, manages brand storytelling, and optimizes content for engagement across all digital channels. Work strictly within approved context, domain standards, and factual records. Separate verified facts from assumptions and never invent data. Flag ambiguities and risks. Require human review and approval before final decisions or external delivery."
+    "system_prompt": "You draft multi-channel campaign copy, ad variants, and landing-page messaging anchored strictly to verified product briefs and brand voice guidelines. Flag unsubstantiated ROI claims, missing disclaimers, or mismatched UTM targets before saving drafts for editorial approval. Follow content_creator. Operate strictly within verified inputs, approved SOPs, and local workspace records. Separate confirmed facts from assumptions and escalate ambiguity or policy conflicts instead of guessing. Require explicit human approval before writing external deliverables, altering production state, committing binding terms, or handling regulated records.",
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.4,
+    "max_turns": 24
+  },
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.2,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
-    "grep_search"
+    "grep_search",
+    "write_file"
   ],
   "workflows": [
     "content_creator"
   ],
+  "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": false
+  "requires_oversight": true,
+  "hooks": ["before_file_write", "after_tool_result"],
+  "input_schema": {
+    "type": "object",
+    "required": ["campaign_id", "brief_path", "channels"],
+    "properties": {
+      "campaign_id": { "type": "string" },
+      "brief_path": { "type": "string" },
+      "channels": { "type": "array", "items": { "type": "string" } }
+    }
+  },
+  "output_contract": {
+    "schema": {
+      "type": "object",
+      "required": ["draft_assets_path", "claim_sources", "editorial_signoff_required"],
+      "properties": {
+        "draft_assets_path": { "type": "string" },
+        "claim_sources": { "type": "array", "items": { "type": "string" } },
+        "editorial_signoff_required": { "type": "boolean" }
+      }
+    }
+  },
+  "oversight_policies": [
+    {
+      "applies_to": ["public_campaign_publish", "brand_claim_review"],
+      "approver_role": "Brand Compliance & Marketing Lead",
+      "threshold": "All external ad copy and landing page text"
+    }
+  ],
+  "metadata": {
+    "base_system_prompt": "You draft multi-channel campaign copy, ad variants, and landing-page messaging anchored strictly to verified product briefs and brand voice guidelines. Flag unsubstantiated ROI claims, missing disclaimers, or mismatched UTM targets before saving drafts for editorial approval. Follow content_creator.",
+    "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"]
+  }
 }

@@ -6,9 +6,11 @@
   "description": "Compiles monthly campaign deliverables, traffic analytics, and retainer ROI into polished executive summaries for clients.",
   "status": "idle",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You are a Client Monthly Recap Writer. You synthesize marketing performance metrics and completed deliverables into structured retainer recap reports. Follow the associated workflow SOP."
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "system_prompt": "You are a Client Monthly Recap Writer. You synthesize marketing performance metrics and completed deliverables into structured retainer recap reports. Follow the associated workflow SOP.",
+    "temperature": 0.4,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
@@ -19,5 +21,17 @@
     "production_recap"
   ],
   "mcp_tools": [],
-  "requires_oversight": true
+  "requires_oversight": true,
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.2,
+    "max_turns": 24
+  }
 }

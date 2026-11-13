@@ -1,7 +1,21 @@
+import argparse
 import os
 import json
 import re
 import shutil
+
+try:
+    from scripts._generated_contract import (
+        DEFAULT_EXECUTION_MODEL_CONFIG,
+        DEFAULT_PLANNING_MODEL_CONFIG,
+        DEFAULT_PRIMARY_MODEL_CONFIG,
+    )
+except ImportError:
+    from _generated_contract import (
+        DEFAULT_EXECUTION_MODEL_CONFIG,
+        DEFAULT_PLANNING_MODEL_CONFIG,
+        DEFAULT_PRIMARY_MODEL_CONFIG,
+    )
 
 def clean_markdown(text):
     if not text:
@@ -220,130 +234,126 @@ def transform_agent_prompt(agent_id, agent_name, prompt_text, existing_skills):
     
     return slim_system_prompt, workflow_markdown, wf_id, skills
 
-def main():
+def main(argv=None):
+    parser = argparse.ArgumentParser(description="Transform bloated inline agent prompts into workflow SOPs.")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--apply", action="store_true", help="Write changes to agent, workflow, and registry files.")
+    mode.add_argument("--check", "--dry-run", dest="dry_run", action="store_true", help="Preview changes without modifying files (default).")
+    args = parser.parse_args(argv)
+    apply_changes = bool(args.apply)
+
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     registry_path = os.path.join(base_dir, "registry.json")
     index_path = os.path.join(base_dir, "index.json")
-    
+
     if not os.path.exists(registry_path):
         print(f"Error: registry.json not found at {registry_path}")
-        return
-        
+        return 1
+
     with open(registry_path, "r", encoding="utf-8") as f:
         registry = json.load(f)
-        
+
     templates = registry.get("templates", [])
-    
-    # Map to store accumulated template skills
     template_skills_map = {}
-    
+
     for t in templates:
         t_id = t["id"]
         t_path = os.path.join(base_dir, t["path"].replace("/", os.sep))
         agents_dir = os.path.join(t_path, "agents")
         workflows_dir = os.path.join(t_path, "workflows")
-        
+
         if not os.path.exists(agents_dir):
-            print(f"Skipping template {t_id}: no agents directory.")
             continue
-            
-        print(f"Restructuring agents & generating workflows for template '{t['name']}'...")
-        
-        # Ensure workflows directory exists
-        os.makedirs(workflows_dir, exist_ok=True)
-        
-        # Store all skills across all agents in this template
+
         all_template_skills = set()
-        
-        for file_name in os.listdir(agents_dir):
+
+        for file_name in sorted(os.listdir(agents_dir)):
             if not file_name.endswith(".json"):
                 continue
-                
+
             agent_file = os.path.join(agents_dir, file_name)
             with open(agent_file, "r", encoding="utf-8") as f:
                 agent = json.load(f)
-                
+
             agent_id = agent.get("id")
             agent_name = agent.get("name")
             model_config = agent.get("model_config", {})
             system_prompt = model_config.get("system_prompt", "")
-            
+
             if not system_prompt or len(system_prompt) < 100 or "Follow the associated workflow" in system_prompt:
-                # Already processed or empty prompt
-                print(f"  -> Skipping agent {agent_id} (already slim or no system prompt).")
                 for s in agent.get("skills", []):
                     all_template_skills.add(s)
                 continue
-                
-            print(f"  -> Processing agent: {agent_name} ({agent_id})")
-            
+
+            print(f"  -> {'Transform' if apply_changes else '[dry-run] Would transform'} agent: {agent_name} ({agent_id}) in {t_id}")
             slim_prompt, wf_md, wf_id, skills = transform_agent_prompt(
                 agent_id, agent_name, system_prompt, agent.get("skills", [])
             )
-            
-            # Save workflow md
-            wf_file_path = os.path.join(workflows_dir, f"{wf_id}.md")
-            with open(wf_file_path, "w", encoding="utf-8") as f:
-                f.write(wf_md)
-                
-            # Update agent JSON
-            updated_agent = {
-                "id": agent["id"],
-                "name": agent["name"],
-                "role": agent.get("role", agent["name"]),
-                "department": agent.get("department", "Operations"),
-                "description": agent.get("description", ""),
-                "status": "idle",
-                "model_config": {
-                    "provider": model_config.get("provider", "google"),
-                    "model_id": model_config.get("model_id", "gemini-pro-latest"),
-                    "system_prompt": slim_prompt
-                },
-                "skills": skills,
-                "workflows": [wf_id],
-                "mcp_tools": agent.get("mcp_tools", []),
-                "requires_oversight": bool(
-                    {"write_file", "delete_file", "execute_shell", "shell", "terminal"}
-                    .intersection(skills)
-                )
-            }
-            
-            with open(agent_file, "w", encoding="utf-8") as f:
-                json.dump(updated_agent, f, indent=2, ensure_ascii=False)
-                
+
+            if apply_changes:
+                os.makedirs(workflows_dir, exist_ok=True)
+                wf_file_path = os.path.join(workflows_dir, f"{wf_id}.md")
+                with open(wf_file_path, "w", encoding="utf-8", newline="\n") as f:
+                    f.write(wf_md)
+
+                updated_agent = {
+                    "id": agent["id"],
+                    "name": agent["name"],
+                    "role": agent.get("role", agent["name"]),
+                    "department": agent.get("department", "Operations"),
+                    "description": agent.get("description", ""),
+                    "status": "idle",
+                    "model_config": {
+                        "provider": model_config.get("provider", DEFAULT_PRIMARY_MODEL_CONFIG["provider"]),
+                        "model_id": model_config.get("model_id", DEFAULT_PRIMARY_MODEL_CONFIG["model_id"]),
+                        "system_prompt": slim_prompt,
+                    },
+                    "model_config2": agent.get("model_config2", dict(DEFAULT_PLANNING_MODEL_CONFIG)),
+                    "model_config3": agent.get("model_config3", dict(DEFAULT_EXECUTION_MODEL_CONFIG)),
+                    "skills": skills,
+                    "workflows": [wf_id],
+                    "mcp_tools": agent.get("mcp_tools", []),
+                    "requires_oversight": bool(
+                        {"write_file", "delete_file", "execute_shell", "shell", "terminal"}
+                        .intersection(skills)
+                    ),
+                }
+                with open(agent_file, "w", encoding="utf-8", newline="\n") as f:
+                    json.dump(updated_agent, f, indent=2, ensure_ascii=False)
+                    f.write("\n")
+
             for s in skills:
                 all_template_skills.add(s)
-                
+
         template_skills_map[t_id] = sorted(list(all_template_skills))
-        
-    # Phase 3: Registry Integration & Verification
-    print("\nAligning index.json and registry.json required_skills...")
-    
-    # 1. Update registry.json
+
+    if not apply_changes:
+        print("Dry-run complete (no files modified). Pass --apply to write changes.")
+        return 0
+
     for t in registry.get("templates", []):
         t_id = t["id"]
         if t_id in template_skills_map:
             t["required_skills"] = template_skills_map[t_id]
-            
-    with open(registry_path, "w", encoding="utf-8") as f:
+
+    with open(registry_path, "w", encoding="utf-8", newline="\n") as f:
         json.dump(registry, f, indent=2, ensure_ascii=False)
-    print("  -> Updated registry.json")
-        
-    # 2. Update index.json
+        f.write("\n")
+
     if os.path.exists(index_path):
         with open(index_path, "r", encoding="utf-8") as f:
             index_data = json.load(f)
-            
         for t in index_data:
             t_id = t.get("id")
             if t_id in template_skills_map:
                 t["required_skills"] = template_skills_map[t_id]
-                
-        with open(index_path, "w", encoding="utf-8") as f:
+        with open(index_path, "w", encoding="utf-8", newline="\n") as f:
             json.dump(index_data, f, indent=2, ensure_ascii=False)
-        print("  -> Updated index.json")
-        
+            f.write("\n")
+
     print("\nTransformation complete!")
+    return 0
+
 
 if __name__ == '__main__':
-    main()
+    raise SystemExit(main())

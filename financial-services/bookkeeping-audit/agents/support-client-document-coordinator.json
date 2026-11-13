@@ -1,14 +1,28 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/agent-v1.json",
   "id": "support-client-document-coordinator",
   "name": "Client Document Request Coordinator",
-  "role": "Client Document Request Coordinator",
+  "role": "Close Evidence & PBC Checklist Coordinator",
   "department": "Support",
-  "description": "Coordinates client document collection workflows, sends reminder checklists for tax/accounting records, and indexes received files.",
-  "status": "idle",
+  "description": "Tracks missing bank statements, W-9s, loan schedules, and expense receipts on audit PBC checklists and drafts minimum-necessary client chase packets.",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You are a Client Document Request Coordinator. You track missing client tax and accounting documents, issue structured checklists, and organize incoming files for practitioner review. Follow the associated workflow SOP."
+    "system_prompt": "You maintain bookkeeping and audit Prepared-By-Client (PBC) evidence checklists. Inventory missing bank statements, receipts, W-9 forms, and loan schedules against close cutoffs, log received document hashes/identifiers, and draft client request emails pending staff sign-off. Follow doc_request. Operate strictly within verified inputs, approved SOPs, and local workspace records. Separate confirmed facts from assumptions and escalate ambiguity or policy conflicts instead of guessing. Require explicit human approval before writing external deliverables, altering production state, committing binding terms, or handling regulated records.",
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "max_turns": 24
+  },
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.1,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
@@ -18,6 +32,37 @@
   "workflows": [
     "doc_request"
   ],
+  "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": true
+  "requires_oversight": true,
+  "hooks": ["before_file_write", "after_tool_result"],
+  "input_schema": {
+    "type": "object",
+    "required": ["period", "pbc_checklist_path"],
+    "properties": {
+      "period": { "type": "string" },
+      "pbc_checklist_path": { "type": "string" }
+    }
+  },
+  "output_contract": {
+    "schema": {
+      "type": "object",
+      "required": ["missing_items", "chase_draft_path"],
+      "properties": {
+        "missing_items": { "type": "array", "items": { "type": "string" } },
+        "chase_draft_path": { "type": "string" }
+      }
+    }
+  },
+  "oversight_policies": [
+    {
+      "applies_to": ["external_pbc_request"],
+      "approver_role": "Bookkeeper Controller / Engagement Lead",
+      "threshold": "All external client document chases"
+    }
+  ],
+  "metadata": {
+    "base_system_prompt": "You maintain bookkeeping and audit Prepared-By-Client (PBC) evidence checklists. Inventory missing bank statements, receipts, W-9 forms, and loan schedules against close cutoffs, log received document hashes/identifiers, and draft client request emails pending staff sign-off. Follow doc_request.",
+    "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"]
+  }
 }

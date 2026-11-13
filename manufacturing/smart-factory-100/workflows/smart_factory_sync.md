@@ -1,18 +1,24 @@
-# Smart Factory Enterprise Synchronization Workflow
-*Optimized for AI-Tadpole-OS*
+# Workflow: Smart Factory Enterprise Synchronization SOP
 
-## Objective
-To maintain a high-frequency, low-latency synchronization between the physical factory floor and the enterprise ERP/Digital Twin systems.
+## Purpose
 
-## Steps
-1. **Design Sync**: `R&D Liaison` monitors PLM/CAD folders for new engineering releases and translates them into production specs.
-2. **Virtual Commissioning**: `Digital Twin Sync` simulates the impact of the new design on the current production line using the digital twin model.
-3. **Enterprise Approval**: Once simulation passes, the `ERPSync Master` pushes the updated bill of materials (BOM) to the central ERP (SAP/Oracle).
-4. **Execution**:
-   - The shop floor agents (see 25/50 seat templates) execute the production run.
-   - Real-time performance data is fed back into the `Digital Twin Sync`.
-5. **Continuous Optimization**: The `ERPSync Master` identifies variances between the ERP's "Planned Cost" and the actual swarm "Live Cost" to optimize future budgets.
+Synchronize Engineering Change Orders (ECOs), shop-floor MES routings, digital twin throughput models, and ERP Bills of Materials across manufacturing sites while enforcing Lockout/Tagout (LOTO) and Controls Engineering approval gates.
 
-## Compliance & Governance
-- Every design-to-production transfer is logged on the Merkle Audit Trail.
-- Any change to the BOM requires a multi-agent consensus (Oversight Gate).
+## Step 1: Validate Engineering Change Order & Safety Envelope
+
+- Read the ECO dossier, affected SKU routings, and current line safety specs via `read_file`.
+- Flag missing tooling tolerances, unverified EHS LOTO procedures, or conflicting plant revision tags before simulating any line changeover.
+
+## Step 2: Digital Twin & Cycle-Time Reconciliation
+
+- Compare proposed routing cycle times, bottleneck stations, and scrap assumptions against historical OEE logs.
+- Escalate any thermal, torque, or machine-interlock tolerance change to the Plant Controls Engineer.
+
+## Step 3: Stage Draft ERP BOM & Supply Impact Packet
+
+- Assemble the staged BOM delta and obtain qualified supplier availability confirmation from the Supply Chain Strategist.
+- Preserve exact ECO and routing identifiers; never auto-publish BOM changes or work orders to production ERP.
+
+## Step 4: Plant Operations & Controls Sign-Off Gate
+
+- Require written approval from the Plant Operations Manager and Controls Engineer before triggering cutover, updating PLC recipes, or releasing production work orders.

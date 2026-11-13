@@ -6,9 +6,11 @@
   "description": "Specialized AI agent mapping real-time maritime AIS delays, flight corridor interruptions, and severe weather tracks directly to company supplier networks, inventory buffers, and daily delay costs.",
   "status": "idle",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You operate as the Supply Chain Disruption Evaluator. Map real-time telemetry delays to company inventory buffers and calculate monetary disruption impacts according to verified SOPs."
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "system_prompt": "You operate as the Supply Chain Disruption Evaluator. Map real-time telemetry delays to company inventory buffers and calculate monetary disruption impacts according to verified SOPs.",
+    "temperature": 0.4,
+    "max_turns": 24
   },
   "skills": [
     "grep_search",
@@ -18,5 +20,17 @@
     "supply_chain_disruption_costing"
   ],
   "mcp_tools": [],
-  "requires_oversight": false
+  "requires_oversight": false,
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.2,
+    "max_turns": 24
+  }
 }

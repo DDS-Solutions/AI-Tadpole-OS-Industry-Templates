@@ -3,7 +3,7 @@
   "name": "Fleet Fuel & Equipment Purchasing",
   "version": "1.0.0",
   "description": "Transportation: Bulk diesel fuel contracts, fleet replacement leasing, and carrier AP.",
-  "industry": "transportation-logistics",
+  "industry": "Transportation & Logistics",
   "tags": [
     "transportation",
     "procurement",
@@ -12,14 +12,15 @@
     "maintenance-qa"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "purchasing-vendor-purchasing-clerk",
       "path": "agents/purchasing-vendor-purchasing-clerk.json",
-      "supervisor": null,
+      "supervisor": "operations-fleet-maintenance-scheduler",
       "priority": "normal"
     },
     {
@@ -31,7 +32,7 @@
     {
       "id": "finance-finance-bookkeeper-controller",
       "path": "agents/finance-finance-bookkeeper-controller.json",
-      "supervisor": null,
+      "supervisor": "operations-fleet-maintenance-scheduler",
       "priority": "normal"
     }
   ],
@@ -40,5 +41,7 @@
     "purchasing-vendor-purchasing-clerk",
     "operations-fleet-maintenance-scheduler",
     "finance-finance-bookkeeper-controller"
-  ]
+  ],
+  "id": "transportation-fleet-purchasing",
+  "maturity": "starter"
 }

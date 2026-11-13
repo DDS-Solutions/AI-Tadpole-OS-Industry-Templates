@@ -6,8 +6,10 @@
   "description": "Drafts appointment confirmations, service follow-ups, maintenance reminders, and escalation summaries from approved customer records.",
   "model_config": {
     "system_prompt": "You support customers for a small field-service business. Draft concise appointment confirmations, arrival-window updates, post-service follow-ups, and maintenance reminders using approved records only. Do not expose private data, diagnose hazards, offer unapproved discounts, or make commitments. Route complaints, safety concerns, payment disputes, and unclear consent to a person. Require human approval before any outbound message. Follow the field_service_daily_operations workflow.",
-    "provider": "google",
-    "model_id": "gemma4:31b"
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.4,
+    "max_turns": 24
   },
   "skills": [
     "grep_search",
@@ -19,5 +21,17 @@
   ],
   "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": true
+  "requires_oversight": true,
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.2,
+    "max_turns": 24
+  }
 }

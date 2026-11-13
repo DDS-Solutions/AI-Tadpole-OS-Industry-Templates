@@ -3,8 +3,8 @@
   "consumer": {
     "repository": "https://github.com/DDS-Solutions/AI-TadPole-OS",
     "branch": "main",
-    "pinned_revision": "a471119fd5cb0f3f89624046dec82cd833116e95",
-    "review_date": "2026-11-02"
+    "pinned_revision": "2dfc14f1bc52b9da7acbdb27a00985aff0b6dfff",
+    "review_date": "2026-11-13"
   },
   "upstream": {
     "repository": "https://github.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates",
@@ -12,14 +12,27 @@
     "pinned_contract_version": "1.0.0"
   },
   "critical_contract_files": {
-    "COMPATIBILITY_MATRIX.md": "d2392a18ea9b284df811a221dd690c4101db31b7776383bd58c364b3a3b2c866",
+    "COMPATIBILITY_MATRIX.md": "d71638dd684100df004f3a207fb52196c0c23b8177ae663142e5f28eec30497d",
     "TEMPLATE_SPEC.md": "f36b2c49f88258c70a9c6f3a5762682b66ac14017e9ae39e1757dedc7568742c",
-    "index.json": "b9fe9e424688826c260737b09acdb0494079e1575599dc23e5cda85492886548",
-    "mcp_registry.json": "ba606a9c2c24198c9cefb992dec347708ac18f265115ca1c25dd92331026e48f",
-    "registry.json": "a180a00b5c33fb1dee0ea7e14db89e6ca14828ada264ce6f3579c30f8dad54b9",
-    "scripts/capabilities.py": "f89ddae0a540c57693b56953f8158212f3b3bdfc11eb87a06105f724ef9e1bd4",
-    "scripts/migrate_consumer_contract.py": "4c03f2942c86dbef57144867d700b0e3f8e61a05e157a6e171db21de5f4f988a",
-    "scripts/validate_template.py": "7793b0d4e13531dfce7dafa13387184d5b3e49066856b1cc4a003ef8144f67d3",
-    "scripts/verify_compatibility_lock.py": "c9ceb81bb3ed3782fb98b644f0b224f1bc0c33f2805ada0fa691c983fe23d615"
+    "index.json": "4991bdcf277d4d447632bed4d69756a34edb7580b7485680bf44e6e21975f554",
+    "mcp_registry.json": "85e24d943cd682a733be8e2a1d2a85c8e383fb63f6458fbd5e370dad1b5eb1dc",
+    "registry.json": "4593eac390aede6bf7c53dd54190423f6e70808adce51e0def3e32e52157281c",
+    "schemas/agent-v1.json": "20610b224aa636cac24d80d773df6b279b34143589d74849beaed23960ac6eb3",
+    "schemas/capabilities-contract.json": "cb75588c5c2dac65a41a79e1e0768c55f4a7bea44cb782730ee6c323766c3f23",
+    "schemas/eval-v1.json": "021212ed8ccf22d7b70556d38f44c8266f25198a2ecd0c2284c52e0075fe9813",
+    "schemas/knowledge-v1.json": "8ec3c0ff2f002145bcaab0e3130271ce3f7bcbae600e013a1208f10ef578a3f8",
+    "schemas/mcp-registry-v1.json": "c440ebcef804a72263eeb287bcce8c82c7a0edd925e4f0d59815147b8b7e0a97",
+    "schemas/mcps-v1.json": "6ce1d29b490cc5711b3d90a02850747639c02f77ea429337791b353c6488b6ef",
+    "schemas/swarm-v1.json": "8e1982de92e79ebdd8ae535efec110ef6d42d807f38fe8e218136a609621d375",
+    "schemas/template-registry-v1.json": "bf493d3ded946e1752b9a6c3eb88cbe5cae8a973ca65585154bd952d46153e45",
+    "scripts/_generated_contract.py": "23dbb566e522ef31eb8c01f1a77406f8f757221c11d93a58395a0b0ff872e1ff",
+    "scripts/capabilities.py": "d97b76497766c7317b539ba454d88603e6d18ea40e32860ab20544e47f389b00",
+    "scripts/codegen_contract.py": "318330b1d8898036ae62ba842196edc826c516e4fdcc7c3747861913cde766ee",
+    "scripts/compile_prompt_fragments.py": "e0976aac1de936e67e0d4f1599d0d164f46152e7e3bef510e59ac7297d3102ea",
+    "scripts/generate_llms_docs.py": "8632024e768dee9821775652ae4d3ee9eb574fa4aa540297fc72d0bc70eec591",
+    "scripts/migrate_consumer_contract.py": "9f45e6b44c10cd5c64a42f1334639c5483bb6a9d194aead735e78af3a69dc25a",
+    "scripts/run_template_evals.py": "5ce9294b5de3a33f1d0231911d3306f35bfc13317ff56366751b9c1068e0b59b",
+    "scripts/validate_template.py": "15c53c13e36d61301fdd01e35d0c93ff142c2e3d8b415aad28eac3b1d22d587a",
+    "scripts/verify_compatibility_lock.py": "6d485f5c896bf2a0302b95ccb40e001f0907a0facf13d1a9dbbc9594096b3da4"
   }
 }

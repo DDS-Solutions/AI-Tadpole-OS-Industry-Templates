@@ -32,9 +32,13 @@ jobs:
 
     - name: Run template validation scripts
       run: |
+        python scripts/codegen_contract.py --check
         python scripts/verify_compatibility_lock.py
+        python scripts/compile_prompt_fragments.py --check
         python scripts/migrate_consumer_contract.py --check
         python scripts/validate_template.py
+        python scripts/run_template_evals.py --check
+        python scripts/generate_llms_docs.py --check
         python -m unittest discover -s tests -p 'test_*.py'
 
   builder:
@@ -56,9 +60,11 @@ jobs:
       working-directory: web-builder
       run: npm ci
 
-    - name: Lint
+    - name: Lint & Typecheck
       working-directory: web-builder
-      run: npm run lint
+      run: |
+        npm run typecheck
+        npm run lint
 
     - name: Test archive contracts
       working-directory: web-builder

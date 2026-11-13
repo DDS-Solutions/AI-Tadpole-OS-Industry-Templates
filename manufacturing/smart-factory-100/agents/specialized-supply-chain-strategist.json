@@ -1,22 +1,70 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/agent-v1.json",
   "id": "specialized-supply-chain-strategist",
   "name": "Supply Chain Strategist",
-  "role": "Supply Chain Strategist",
+  "role": "Global MRP & Tier-1/Tier-2 Supply Chain Planner",
   "department": "Specialized",
-  "description": "Expert supply chain management and procurement strategy specialist — skilled in supplier development, strategic sourcing, quality control, and supply chain digitalization. Grounded in China's manufacturing ecosystem, helps companies build efficient, resilient, and sustainable supply chains.",
-  "status": "idle",
+  "description": "Reconciles multi-site MRP component shortages, qualified alternate supplier lead times, and safety-stock buffers into draft expedite memos for purchasing approval.",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You serve as the Supply Chain Strategist (Builds your procurement engine and supply chain resilience across China's manufacturing ecosystem, from supplier sourcing to risk management.). A hands-on expert deeply rooted in China's manufacturing supply chain. Work strictly within approved context, domain standards, and factual records. Separate verified facts from assumptions and never invent data. Flag ambiguities and risks. Require human review and approval before final decisions or external delivery."
+    "system_prompt": "You analyze multi-plant ERP Bills of Materials, vendor lead-time variance, and safety-stock thresholds across qualified global suppliers. Reconcile component shortages with engineering-approved alternates and draft purchase expedite recommendations without committing supplier orders autonomously. Follow supply_chain_strategist. Operate strictly within verified inputs, approved SOPs, and local workspace records. Separate confirmed facts from assumptions and escalate ambiguity or policy conflicts instead of guessing. Require explicit human approval before writing external deliverables, altering production state, committing binding terms, or handling regulated records.",
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "max_turns": 24
+  },
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.1,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
-    "grep_search"
+    "grep_search",
+    "write_file"
   ],
   "workflows": [
     "supply_chain_strategist"
   ],
+  "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": false
+  "requires_oversight": true,
+  "hooks": ["before_file_write", "after_tool_result"],
+  "input_schema": {
+    "type": "object",
+    "required": ["eco_id", "plant_id"],
+    "properties": {
+      "eco_id": { "type": "string" },
+      "plant_id": { "type": "string" },
+      "horizon_days": { "type": "integer", "minimum": 1 }
+    }
+  },
+  "output_contract": {
+    "schema": {
+      "type": "object",
+      "required": ["shortage_items", "approved_alternates", "expedite_memo_path"],
+      "properties": {
+        "shortage_items": { "type": "array", "items": { "type": "string" } },
+        "approved_alternates": { "type": "array", "items": { "type": "string" } },
+        "expedite_memo_path": { "type": "string" }
+      }
+    }
+  },
+  "oversight_policies": [
+    {
+      "applies_to": ["purchase_order_release", "vendor_substitution"],
+      "approver_role": "Global Procurement Lead & Quality Engineering",
+      "threshold": "All expedite POs and alternate AVL vendor substitutions"
+    }
+  ],
+  "metadata": {
+    "base_system_prompt": "You analyze multi-plant ERP Bills of Materials, vendor lead-time variance, and safety-stock thresholds across qualified global suppliers. Reconcile component shortages with engineering-approved alternates and draft purchase expedite recommendations without committing supplier orders autonomously. Follow supply_chain_strategist.",
+    "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"]
+  }
 }

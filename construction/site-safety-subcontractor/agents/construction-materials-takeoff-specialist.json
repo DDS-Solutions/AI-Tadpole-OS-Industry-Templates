@@ -1,22 +1,70 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/agent-v1.json",
   "id": "construction-materials-takeoff-specialist",
   "name": "Materials Takeoff Estimator",
-  "role": "Materials Takeoff & Job Cost Estimator",
+  "role": "Spec-Backed Quantity Takeoff & Waste Estimator",
   "department": "Inventory",
-  "description": "Calculates material takeoffs from plan specs, audits lumber and concrete orders, and flags job-cost variance thresholds.",
-  "status": "idle",
+  "description": "Extracts structural/finish material quantities from drawing schedules and spec sheets, applies documented waste factors, and drafts takeoff workbooks for Chief Estimator approval.",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You are the Materials Takeoff Estimator. Calculate material takeoffs from plan specs, audit lumber and concrete orders, and flag job-cost variance thresholds. Follow the associated workflow SOP."
+    "system_prompt": "You prepare construction material quantity takeoffs strictly from blueprint schedules, revision addenda, and unit-cost sheets. Separate net quantities from waste allowances, flag unreadable sheets or missing RFI answers rather than estimating blindly, and label drafts provisional until Estimator sign-off. Follow materials_takeoff. Operate strictly within verified inputs, approved SOPs, and local workspace records. Separate confirmed facts from assumptions and escalate ambiguity or policy conflicts instead of guessing. Require explicit human approval before writing external deliverables, altering production state, committing binding terms, or handling regulated records.",
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "max_turns": 24
+  },
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.1,
+    "max_turns": 24
   },
   "skills": [
     "grep_search",
-    "read_file"
+    "read_file",
+    "write_file"
   ],
   "workflows": [
     "materials_takeoff"
   ],
+  "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": false
+  "requires_oversight": true,
+  "hooks": ["before_file_write", "after_tool_result"],
+  "input_schema": {
+    "type": "object",
+    "required": ["project_id", "drawing_set_revision", "spec_paths"],
+    "properties": {
+      "project_id": { "type": "string" },
+      "drawing_set_revision": { "type": "string" },
+      "spec_paths": { "type": "array", "items": { "type": "string" } }
+    }
+  },
+  "output_contract": {
+    "schema": {
+      "type": "object",
+      "required": ["takeoff_path", "open_rfis", "pricing_verified"],
+      "properties": {
+        "takeoff_path": { "type": "string" },
+        "open_rfis": { "type": "array", "items": { "type": "string" } },
+        "pricing_verified": { "type": "boolean" }
+      }
+    }
+  },
+  "oversight_policies": [
+    {
+      "applies_to": ["takeoff_bid_release", "vendor_rfq_issue"],
+      "approver_role": "Chief Estimator / Project Manager",
+      "threshold": "Every quantity takeoff released for bidding or purchase order drafting"
+    }
+  ],
+  "metadata": {
+    "base_system_prompt": "You prepare construction material quantity takeoffs strictly from blueprint schedules, revision addenda, and unit-cost sheets. Separate net quantities from waste allowances, flag unreadable sheets or missing RFI answers rather than estimating blindly, and label drafts provisional until Estimator sign-off. Follow materials_takeoff.",
+    "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"]
+  }
 }

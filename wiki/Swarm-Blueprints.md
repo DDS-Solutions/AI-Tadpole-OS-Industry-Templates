@@ -24,17 +24,17 @@ graph TD
 
 ## 🏢 Roster Design: Knowledge Work vs. Edge Operations
 
-Across the 30 industries represented in the catalog, swarms use one of two core archetypes. Field Services and Wholesale & Distribution also include compact three-agent starter teams for businesses with up to 25 seats:
+Across the 38 canonical industries represented in the catalog (81 public swarms: 12 `verified` flagships and 69 `starter` templates, plus 1 internal smoke fixture), swarms use one of two core archetypes. Field Services and Wholesale & Distribution also include compact three-agent starter teams for businesses with up to 25 seats:
 
 ### 1. Knowledge Work Swarms (Cognitive Layer)
 - **Focus**: High-context information retrieval, document audits, policy synthesis, case law precedent research, and regulatory reporting.
-- **Roster Characteristics**: Primarily high-context model allocations (e.g., `gemini-pro-latest`, `llama-3.3-70b-versatile`) equipped with read/write file access and specialized parsing/deduplication skills.
-- **Example**: `legal-precedent-synthesis` or `financial-policy-synthesizer`.
+- **Roster Characteristics**: Primarily high-context planning/primary slots (`provider: "ollama-cloud"`, `model_id: "gemma4:31b-cloud"`) equipped with read/write file access and explicit oversight gates.
+- **Example**: `legal/contract-review` or `financial-services/bookkeeping-audit`.
 
 ### 2. Edge Operations Swarms (Transactional Layer)
-- **Focus**: Supply chain tracking, inventory receiving audits, parts procurement QA, ISO 9000 compliance logs, and dock shipping coordination.
-- **Roster Characteristics**: Highly-optimized, low-latency model allocations (e.g., `gemini-1.5-flash`, local `phi-3`) combined with automated verification scripts.
-- **Example**: `manufacturing-iso9000-qa` or `ecommerce-dispatch-qa`.
+- **Focus**: Supply chain tracking, inventory receiving audits, parts procurement QA, OT/SCADA telemetry review, and dock shipping coordination.
+- **Roster Characteristics**: Low-latency edge execution slot (`model_config3`: `provider: "ollama"`, `model_id: "gemma4:e4b"`) paired with cloud planning slots (`ollama-cloud` / `gemma4:31b-cloud`).
+- **Example**: `manufacturing/smart-factory-100` or `e-commerce/market-analysis`.
 
 ### Small-Business Operations Starters (25 Seats or Fewer)
 
@@ -46,19 +46,21 @@ Across the 30 industries represented in the catalog, swarms use one of two core 
 
 ## 📄 Swarm Configuration Schema (`swarm.json`)
 
-Every template directory must host a `swarm.json` config. It is the registry's portable blueprint and round-trip metadata format. At the currently pinned consumer revision, the installer copies this file but does not deserialize its roster, defaults, workflows, or MCP references; operational installation comes from scanning the template directories and root `mcps.json` directly.
+Every template directory must host a `swarm.json` config matching [`schemas/swarm-v1.json`](../schemas/swarm-v1.json). At `v1.1.464`, it is copied alongside `installed_manifest.json` during installation and drives UI preview, local `.zip` import, and `connector_ids` / roster validation. Multi-agent swarms where every roster entry sets `"supervisor": null` must also declare `"flat_peer_swarm": true`.
 
 ```json
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "id": "swarm-name",
   "name": "Swarm Name",
   "version": "1.0.0",
   "author": "Author Name",
   "description": "Swarm description.",
   "industry": "Industry Category",
+  "maturity": "starter",
   "tags": ["tag1", "tag2"],
   "defaults": {
-    "model": "llama-3.3-70b-versatile",
+    "model": "gemma4:31b-cloud",
     "temperature": 0.4
   },
   "roster": [
@@ -79,6 +81,8 @@ Every template directory must host a `swarm.json` config. It is the registry's p
   "global_workflows": ["workflows/step_by_step_sop.md"]
 }
 ```
+
+Verified flagship templates and `testing/smoke-test` (`13` suites total) also include `evals/scenarios.json` validated against [`schemas/eval-v1.json`](../schemas/eval-v1.json) via `scripts/run_template_evals.py --check`.
 
 ---
 

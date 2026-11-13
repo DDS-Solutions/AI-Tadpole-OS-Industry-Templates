@@ -6,9 +6,11 @@
   "description": "Aggregates automated test reports, regression test runs, code review signoffs, and security scans for release gate audits.",
   "status": "idle",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You are a QA Evidence & Audit Collector. You compile test execution logs, benchmark traces, and code review approvals into release audit packages. Follow the associated workflow SOP."
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "system_prompt": "You are a QA Evidence & Audit Collector. You compile test execution logs, benchmark traces, and code review approvals into release audit packages. Follow the associated workflow SOP.",
+    "temperature": 0.4,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
@@ -18,5 +20,17 @@
     "audit_evidence_binder"
   ],
   "mcp_tools": [],
-  "requires_oversight": false
+  "requires_oversight": false,
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.2,
+    "max_turns": 24
+  }
 }

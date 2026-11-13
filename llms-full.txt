@@ -1,0 +1,173 @@
+# AI-Tadpole-OS Industry Templates
+
+> Official community template registry and Swarm Architect builder for AI-Tadpole-OS (Contract v1.1.464, Consumer Pin `2dfc14f1bc52`).
+
+## Registry Snapshot
+- Public Templates: 81 across 38 canonical industries (12 verified flagships + 69 starters, plus 1 internal smoke fixture).
+- Primary / Planning Model Slot: `ollama-cloud` / `gemma4:31b-cloud`.
+- Edge / Execution Model Slot (`model_config3`): `ollama` / `gemma4:e4b`.
+- Declarative Eval Suites (`evals/scenarios.json`): 13 templates.
+- MCP Connector Blueprints: 4 (`mcp_registry.json`).
+
+## Core Contract & Governance Docs
+- [Compatibility Matrix](COMPATIBILITY_MATRIX.md): Pinned consumer behavior and cross-repo alignment.
+- [Template Spec](TEMPLATE_SPEC.md): Manifest, agent profile, workflow SOP, capability, and OKF specs.
+- [Capabilities Contract](schemas/capabilities-contract.json): Single source of truth codegen source for Python & TypeScript.
+- [Swarm Schema v1](schemas/swarm-v1.json): Strict JSON Schema for `swarm.json` manifests.
+- [Agent Schema v1](schemas/agent-v1.json): JSON Schema for `agents/*.json` profiles.
+- [Eval Schema v1](schemas/eval-v1.json): JSON Schema for declarative `evals/scenarios.json` suites.
+
+## Verified Templates
+- [Commercial Jobsite & Subcontractor Operations](construction/site-safety-subcontractor/swarm.json) (`Construction & General Contracting`): Construction: Daily jobsite safety compliance, subcontractor milestone tracking, OSHA hazard logs, and AIA pay-application auditing.
+- [Sr. Architect Reviewer](development/code-reviewer/swarm.json) (`Software Development`): Automated code review and architectural auditing from a senior perspective.
+- [Marketing Funnel Pilot](digital-marketing/full-funnel-automation/swarm.json) (`Digital Marketing`): Automated content generation, ad spend optimization, and journey analytics.
+- [E-Commerce Catalog & Quoting Desk](e-commerce/market-analysis/swarm.json) (`E-commerce`): E-Commerce: Product catalog QA, customer returns triage, and B2B quote drafting.
+- [Small Field Service Operations (25 Seats)](field-services/operations-25/swarm.json) (`Field Services`): Dispatch, estimate and work-order preparation, customer follow-up, and daily exception review for small appointment-based field-service teams.
+- [Bookkeeping & Cash Operations Swarm](financial-services/bookkeeping-audit/swarm.json) (`Financial Services`): Financial Operations: General ledger reconciliation, AP/AR cash flow, and client document collection.
+- [Patient Intake & Scheduling Desk](healthcare/patient-intake/swarm.json) (`Medical Practices`): Clinical Practice: Patient intake, appointment scheduling, HIPAA consent verification, and visit follow-ups.
+- [Recruiting & Talent Acquisition Swarm](hr/recruiting-triage/swarm.json) (`Human Resources`): People Operations: Candidate sourcing, job descriptions, interview coordination, and scorecard aggregation.
+- [Legal Matter Intake & Contract Review](legal/contract-review/swarm.json) (`Legal Services`): Legal Operations: Client conflict check, first-pass contract review, and docket deadline management.
+- [Smart Factory (100 Seats)](manufacturing/smart-factory-100/swarm.json) (`Manufacturing`): Enterprise-level ERP integration and digital twin synchronization across sites.
+- [Clinical Trial Manager](pharma/clinical-trials/swarm.json) (`Pharmaceuticals`): Automate clinical trial protocol mapping, trial candidate documentation, and adverse event logging.
+- [Small Wholesale B2B Operations (25 Seats)](wholesale-distribution/b2b-operations-25/swarm.json) (`Wholesale & Distribution`): Quote preparation, account follow-up, replenishment planning, and fulfillment exception control for small wholesalers and distributors.
+
+## Validation & Build Commands
+- `python scripts/codegen_contract.py --check`
+- `python scripts/validate_template.py`
+- `python scripts/compile_prompt_fragments.py --check`
+- `python scripts/run_template_evals.py --check`
+- `python scripts/verify_compatibility_lock.py --check`
+
+---
+
+## Canonical Industries (38)
+
+- Aerospace & Orbital Surveillance (1 template)
+- Agriculture & AgTech (3 templates)
+- Automotive Dealerships & Repair (1 template)
+- Chemical Sector (3 templates)
+- Construction & General Contracting (1 template)
+- Critical Infrastructure (3 templates)
+- Cybersecurity (3 templates)
+- Digital Marketing (3 templates)
+- E-commerce (2 templates)
+- Economic & Commercial Spatial Intelligence (1 template)
+- EdTech & Training (2 templates)
+- Education (3 templates)
+- Emergency Management & Disaster Response (1 template)
+- Engineering & Architecture (2 templates)
+- Field Services (1 template)
+- Financial Services (3 templates)
+- Food & Beverage (3 templates)
+- Geospatial Intelligence & OSINT (1 template)
+- Governance & Compliance (3 templates)
+- Hospitality & Lodging (1 template)
+- Human Resources (3 templates)
+- Insurance & Claims Processing (1 template)
+- Legal Services (3 templates)
+- Logistics & Supply Chain (2 templates)
+- Manufacturing (5 templates)
+- Maritime Operations & Domain Awareness (1 template)
+- Media & Creative (3 templates)
+- Medical Practices (3 templates)
+- Non-Profit & Foundations (1 template)
+- Pharmaceuticals (3 templates)
+- Real Estate (3 templates)
+- Renewable Energy & Solar (1 template)
+- Retail & Point of Sale (1 template)
+- Software Development (3 templates)
+- Specialized Consultancies (2 templates)
+- Transportation & Logistics (3 templates)
+- Veterinary & Animal Health (1 template)
+- Wholesale & Distribution (1 template)
+
+## All Public Swarm Templates
+
+- `aerospace-orbital/space-flight-surveillance` | id=`aerospace-flight-orbital-surveillance` | industry=`Aerospace & Orbital Surveillance` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `agriculture/grain-shipping` | id=`agriculture-grain-shipping` | industry=`Agriculture & AgTech` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `agriculture/precision-farming` | id=`agriculture-precision-farming` | industry=`Agriculture & AgTech` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `agriculture/research-synthesizer` | id=`agriculture-research-synthesizer` | industry=`Agriculture & AgTech` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `automotive/service-bay-parts` | id=`automotive-service-bay-parts` | industry=`Automotive Dealerships & Repair` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `chemical/hazmat-shipping` | id=`chemical-hazmat-shipping` | industry=`Chemical Sector` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `chemical/process-safety` | id=`chemical-process-safety` | industry=`Chemical Sector` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `chemical/sds-synthesizer` | id=`chemical-sds-synthesizer` | industry=`Chemical Sector` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `construction/site-safety-subcontractor` | id=`construction-site-safety-subcontractor` | industry=`Construction & General Contracting` | maturity=`verified` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `utilities/grid-telemetry` | id=`utilities-grid-telemetry` | industry=`Critical Infrastructure` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `utilities/maintenance-synthesizer` | id=`utilities-maintenance-synthesizer` | industry=`Critical Infrastructure` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `utilities/scada-qa` | id=`utilities-scada-qa` | industry=`Critical Infrastructure` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `security/hardware-inventory` | id=`security-hardware-inventory` | industry=`Cybersecurity` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `security/incident-response` | id=`security-incident-response` | industry=`Cybersecurity` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `security/threat-intelligence` | id=`security-threat-intelligence` | industry=`Cybersecurity` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `digital-marketing/full-funnel-automation` | id=`full-funnel-automation` | industry=`Digital Marketing` | maturity=`verified` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `digital-marketing/seo-indexer` | id=`marketing-seo-indexer` | industry=`Digital Marketing` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `digital-marketing/vendor-purchasing` | id=`marketing-vendor-purchasing` | industry=`Digital Marketing` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `e-commerce/dispatch-qa` | id=`ecommerce-dispatch-qa` | industry=`E-commerce` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `e-commerce/market-analysis` | id=`ecommerce-market-analysis` | industry=`E-commerce` | maturity=`verified` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `economic-intelligence/commercial-spatial-analytics` | id=`commercial-spatial-analytics` | industry=`Economic & Commercial Spatial Intelligence` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `edtech-training/curriculum-synthesizer` | id=`edtech-curriculum-synthesizer` | industry=`EdTech & Training` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `edtech-training/license-procurement` | id=`edtech-license-procurement` | industry=`EdTech & Training` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `education/accreditation-synthesizer` | id=`education-accreditation-synthesizer` | industry=`Education` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `education/curriculum-planner` | id=`education-curriculum-planner` | industry=`Education` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `education/supplies-purchasing` | id=`education-supplies-purchasing` | industry=`Education` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `emergency-management/disaster-response` | id=`disaster-response-coordination` | industry=`Emergency Management & Disaster Response` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `engineering-architecture/parts-procurement` | id=`engineering-parts-procurement` | industry=`Engineering & Architecture` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `engineering-architecture/spec-compliance` | id=`engineering-spec-compliance` | industry=`Engineering & Architecture` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `field-services/operations-25` | id=`field-service-operations-25` | industry=`Field Services` | maturity=`verified` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `financial-services/bookkeeping-audit` | id=`bookkeeping-audit` | industry=`Financial Services` | maturity=`verified` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `financial-services/policy-synthesizer` | id=`financial-policy-synthesizer` | industry=`Financial Services` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `financial-services/vendor-reconciliation` | id=`financial-vendor-reconciliation` | industry=`Financial Services` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `food/inventory-receiving` | id=`food-inventory-receiving` | industry=`Food & Beverage` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `food/recipe-compliance` | id=`food-recipe-compliance` | industry=`Food & Beverage` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `food/restaurant-ops` | id=`food-restaurant-ops` | industry=`Food & Beverage` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `geospatial-intelligence/geoint-osint-desk` | id=`geoint-osint-desk` | industry=`Geospatial Intelligence & OSINT` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `compliance/crosswalk-synthesizer` | id=`compliance-crosswalk-synthesizer` | industry=`Governance & Compliance` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `compliance/regulatory-audit` | id=`compliance-regulatory-audit` | industry=`Governance & Compliance` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `compliance/vendor-purchasing-qa` | id=`compliance-vendor-purchasing-qa` | industry=`Governance & Compliance` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `hospitality/guest-ops-pms` | id=`hospitality-guest-ops-pms` | industry=`Hospitality & Lodging` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `hr/policy-synthesizer` | id=`hr-policy-synthesizer` | industry=`Human Resources` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `hr/recruiter-purchasing` | id=`hr-recruiter-purchasing` | industry=`Human Resources` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `hr/recruiting-triage` | id=`hr-recruiting-triage` | industry=`Human Resources` | maturity=`verified` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `insurance/claims-triage-policy` | id=`insurance-claims-triage-policy` | industry=`Insurance & Claims Processing` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `legal/contract-review` | id=`legal-contract-review` | industry=`Legal Services` | maturity=`verified` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `legal/precedent-synthesis` | id=`legal-precedent-synthesis` | industry=`Legal Services` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `legal/procurement-qa` | id=`legal-procurement-qa` | industry=`Legal Services` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `logistics-supply-chain/dock-shipping` | id=`logistics-dock-shipping` | industry=`Logistics & Supply Chain` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `logistics-supply-chain/route-optimization` | id=`logistics-route-optimization` | industry=`Logistics & Supply Chain` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `manufacturing/design-synthesizer` | id=`manufacturing-design-synthesizer` | industry=`Manufacturing` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `manufacturing/iso9000-qa` | id=`manufacturing-iso9000-qa` | industry=`Manufacturing` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `manufacturing/job-shop-25` | id=`manufacturing-job-shop-25` | industry=`Manufacturing` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `manufacturing/medium-plant-50` | id=`manufacturing-medium-plant-50` | industry=`Manufacturing` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `manufacturing/smart-factory-100` | id=`manufacturing-smart-factory-100` | industry=`Manufacturing` | maturity=`verified` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `maritime-operations/maritime-domain-awareness` | id=`maritime-domain-awareness` | industry=`Maritime Operations & Domain Awareness` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `creative/asset-pipeline` | id=`creative-asset-pipeline` | industry=`Media & Creative` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `creative/equipment-procurement` | id=`creative-equipment-procurement` | industry=`Media & Creative` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `creative/script-synthesizer` | id=`creative-script-synthesizer` | industry=`Media & Creative` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `healthcare/clinical-guidelines` | id=`medical-clinical-guidelines` | industry=`Medical Practices` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `healthcare/inventory-qa` | id=`medical-inventory-qa` | industry=`Medical Practices` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `healthcare/patient-intake` | id=`healthcare-patient-intake` | industry=`Medical Practices` | maturity=`verified` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `non-profit/grant-donor-stewardship` | id=`non-profit-grant-donor-stewardship` | industry=`Non-Profit & Foundations` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `pharma/clinical-trials` | id=`pharma-clinical-trials` | industry=`Pharmaceuticals` | maturity=`verified` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `pharma/coldchain-shipping` | id=`pharma-coldchain-shipping` | industry=`Pharmaceuticals` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `pharma/research-synthesizer` | id=`pharma-research-synthesizer` | industry=`Pharmaceuticals` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `real-estate/lead-transaction` | id=`lead-transaction-management` | industry=`Real Estate` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `real-estate/maintenance-procurement` | id=`realestate-maintenance-procurement` | industry=`Real Estate` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `real-estate/valuation-synthesizer` | id=`realestate-valuation-synthesizer` | industry=`Real Estate` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `renewable-energy/solar-installation-interconnect` | id=`renewable-solar-installation-interconnect` | industry=`Renewable Energy & Solar` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `retail/storefront-shrinkage-merchandising` | id=`retail-storefront-shrinkage-merchandising` | industry=`Retail & Point of Sale` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `development/code-reviewer` | id=`development-code-reviewer` | industry=`Software Development` | maturity=`verified` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `development/docs-synthesizer` | id=`development-docs-synthesizer` | industry=`Software Development` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `development/qa-iso9000` | id=`development-qa-iso9000` | industry=`Software Development` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `specialized-consultancies/expert-synthesizer` | id=`consultancy-expert-synthesizer` | industry=`Specialized Consultancies` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `specialized-consultancies/subcontractor-qa` | id=`consultancy-subcontractor-qa` | industry=`Specialized Consultancies` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `transportation/fleet-logistics` | id=`transportation-fleet-logistics` | industry=`Transportation & Logistics` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `transportation/fleet-purchasing` | id=`transportation-fleet-purchasing` | industry=`Transportation & Logistics` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `transportation/policy-compliance` | id=`transportation-policy-compliance` | industry=`Transportation & Logistics` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `veterinary/clinic-patient-triage` | id=`veterinary-clinic-patient-triage` | industry=`Veterinary & Animal Health` | maturity=`starter` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+- `wholesale-distribution/b2b-operations-25` | id=`wholesale-b2b-operations-25` | industry=`Wholesale & Distribution` | maturity=`verified` | agents=0 | models=[gemma4:31b-cloud, gemma4:e4b]
+
+## MCP Connector Blueprints
+
+- `mcp-generic-crm` (`sample`): Sample reference MCP server returning simulated mock responses for querying REST endpoints and receiving webhooks from SMB SaaS platforms like HubSpot, Salesforce, etc. [tools: generic-crm:get_crm_contact, generic-crm:update_invoice, generic-crm:list_recent_changes]
+- `mcp-smb-accounting` (`sample`): Sample reference MCP server simulating lightweight SMB accounting workflows (QuickBooks/Xero invoice and balance queries). [tools: smb-accounting:get_invoice, smb-accounting:create_invoice, smb-accounting:get_account_balance]
+- `mcp-hardware-edge` (`verified`): Template MCP server for connecting to local serial interfaces (RS-232/USB scales) and Modbus TCP devices (thermal/pressure sensors). [tools: hardware-edge-sensors:read_scale_weight, hardware-edge-sensors:read_temperature_sensor, hardware-edge-sensors:read_pressure_sensor]
+- `mcp-local-log-scanner` (`sample`): Sample reference MCP server simulating structured log parsing and flat file inspection responses. [tools: log-scanner:search_logs, log-scanner:tail_log, log-scanner:list_log_files]

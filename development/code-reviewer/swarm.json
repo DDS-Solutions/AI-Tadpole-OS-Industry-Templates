@@ -1,18 +1,42 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Architect Review Swarm",
-  "version": "1.0.0",
+  "id": "development-code-reviewer",
+  "name": "Sr. Architect Reviewer",
+  "version": "1.1.0",
   "author": "DevOps Solutions",
-  "description": "A high-level architectural review swarm for quality auditing and security scanning.",
+  "description": "Automated code review and architectural auditing from a senior perspective.",
+  "mission": "Perform structured AppSec threat modeling, backend reliability/schema audits, and Architecture Decision Record (ADR) reviews across codebases while gating written design artifacts behind engineering lead review.",
   "industry": "Software Development",
+  "maturity": "verified",
+  "company_size": 25,
   "tags": [
     "development",
     "code-review",
-    "architecture"
+    "architecture",
+    "appsec"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "provider": "ollama-cloud",
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "model_config": {
+      "provider": "ollama-cloud",
+      "model_id": "gemma4:31b-cloud",
+      "temperature": 0.2,
+      "max_turns": 24
+    },
+    "model_config2": {
+      "provider": "ollama-cloud",
+      "model_id": "gemma4:31b-cloud",
+      "temperature": 0.2,
+      "max_turns": 16
+    },
+    "model_config3": {
+      "provider": "ollama",
+      "model_id": "gemma4:e4b",
+      "temperature": 0.1,
+      "max_turns": 24
+    }
   },
   "roster": [
     {
@@ -24,16 +48,43 @@
     {
       "id": "engineering-engineering-backend-architect",
       "path": "agents/engineering-engineering-backend-architect.json",
-      "supervisor": null,
+      "supervisor": "security-security-appsec-engineer",
       "priority": "normal"
     },
     {
       "id": "engineering-engineering-software-architect",
       "path": "agents/engineering-engineering-software-architect.json",
-      "supervisor": null,
+      "supervisor": "security-security-appsec-engineer",
       "priority": "normal"
     }
   ],
+  "agents": [
+    "security-security-appsec-engineer",
+    "engineering-engineering-backend-architect",
+    "engineering-engineering-software-architect"
+  ],
   "required_mcps": "mcps.json",
-  "global_workflows": []
+  "global_workflows": [
+    "workflows/appsec_engineer.md",
+    "workflows/backend_architect.md",
+    "workflows/software_architect.md"
+  ],
+  "oversight_policies": [
+    {
+      "applies_to": ["adr_file_write", "security_exception_waiver"],
+      "approver_role": "Staff Engineer / AppSec Lead",
+      "threshold": "Every written ADR artifact or critical CWE/OWASP vulnerability finding",
+      "gate_agent": "security-security-appsec-engineer"
+    }
+  ],
+  "disclosure": {
+    "capabilities": ["grep_search", "read_file", "write_file"],
+    "mcp_grants": [],
+    "oversight_gates": [
+      "Staff Engineer / AppSec Lead review required before accepting ADRs or waiving security findings"
+    ],
+    "egress_origins": []
+  },
+  "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"],
+  "evals_path": "evals/scenarios.json"
 }

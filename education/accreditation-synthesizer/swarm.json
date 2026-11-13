@@ -3,7 +3,7 @@
   "name": "School Office & Accreditation Desk",
   "version": "1.0.0",
   "description": "Education Operations: Student registrar intake, accreditation audit binders, and parent notices.",
-  "industry": "education",
+  "industry": "Education",
   "tags": [
     "education",
     "accreditation",
@@ -11,26 +11,27 @@
     "compliance"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "operations-enrollment-registrar-clerk",
       "path": "agents/operations-enrollment-registrar-clerk.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     },
     {
       "id": "support-support-legal-compliance-checker",
       "path": "agents/support-support-legal-compliance-checker.json",
-      "supervisor": null,
+      "supervisor": "operations-enrollment-registrar-clerk",
       "priority": "normal"
     },
     {
       "id": "support-parent-communications-drafter",
       "path": "agents/support-parent-communications-drafter.json",
-      "supervisor": null,
+      "supervisor": "operations-enrollment-registrar-clerk",
       "priority": "normal"
     }
   ],
@@ -39,5 +40,7 @@
     "operations-enrollment-registrar-clerk",
     "support-support-legal-compliance-checker",
     "support-parent-communications-drafter"
-  ]
+  ],
+  "id": "education-accreditation-synthesizer",
+  "maturity": "starter"
 }

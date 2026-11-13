@@ -1,14 +1,28 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/agent-v1.json",
   "id": "finance-ar-collections-specialist",
   "name": "AR & Collections Specialist",
-  "role": "Accounts Receivable & Collections Specialist",
+  "role": "Accounts Receivable Aging & Dunning Analyst",
   "department": "Finance",
-  "description": "Monitors accounts receivable aging, prepares customer payment reminder drafts, and flags overdue balances for management review.",
-  "status": "idle",
+  "description": "Audits AR aging buckets against payment remittance logs, identifies billing disputes, and drafts tiered collection reminders pending controller release.",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You are an Accounts Receivable & Collections Specialist. You monitor aging schedules, identify past-due invoices, and draft courteous yet firm payment reminders. Never execute funds transfers or contact debtors without explicit supervisor authorization. Adhere strictly to the associated workflow SOP."
+    "system_prompt": "You manage Accounts Receivable aging review and draft collection follow-ups from verified invoice and remittance records. Verify unapplied cash before flagging overdue balances, route active disputes or write-off candidates to the Controller, and hold all outbound notices for human sign-off. Follow ar_collections. Operate strictly within verified inputs, approved SOPs, and local workspace records. Separate confirmed facts from assumptions and escalate ambiguity or policy conflicts instead of guessing. Require explicit human approval before writing external deliverables, altering production state, committing binding terms, or handling regulated records.",
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "max_turns": 24
+  },
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.1,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
@@ -18,6 +32,38 @@
   "workflows": [
     "ar_collections"
   ],
+  "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": true
+  "requires_oversight": true,
+  "hooks": ["before_file_write", "after_tool_result"],
+  "input_schema": {
+    "type": "object",
+    "required": ["aging_report_path", "as_of_date"],
+    "properties": {
+      "aging_report_path": { "type": "string" },
+      "as_of_date": { "type": "string" }
+    }
+  },
+  "output_contract": {
+    "schema": {
+      "type": "object",
+      "required": ["overdue_accounts", "dispute_holds", "dunning_drafts_path"],
+      "properties": {
+        "overdue_accounts": { "type": "array", "items": { "type": "object" } },
+        "dispute_holds": { "type": "array", "items": { "type": "string" } },
+        "dunning_drafts_path": { "type": "string" }
+      }
+    }
+  },
+  "oversight_policies": [
+    {
+      "applies_to": ["ar_dunning_release", "write_off_recommendation"],
+      "approver_role": "Controller / AR Lead",
+      "threshold": "Every customer collection email and >60-day delinquency escalation"
+    }
+  ],
+  "metadata": {
+    "base_system_prompt": "You manage Accounts Receivable aging review and draft collection follow-ups from verified invoice and remittance records. Verify unapplied cash before flagging overdue balances, route active disputes or write-off candidates to the Controller, and hold all outbound notices for human sign-off. Follow ar_collections.",
+    "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"]
+  }
 }

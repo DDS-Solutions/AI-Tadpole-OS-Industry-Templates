@@ -1,0 +1,30 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/eval-v1.json",
+  "version": "1.0.0",
+  "template_id": "wholesale-b2b-operations-25",
+  "scenarios": [
+    {
+      "scenario_id": "credit_hold_and_replenishment_shortage",
+      "title": "Distributor RFQ hits customer credit hold and partial SKU backorder",
+      "user_input": "Prepare wholesale quote for Midstate Hardware PO-7741 (400 cases SKU-HV-20) and check warehouse ATP.",
+      "expected_entry_agent": "wholesale-b2b-account-operations",
+      "expected_workflow_steps": [
+        {
+          "workflow": "wholesale_quote_to_fulfillment",
+          "step_heading": "Step 1: Validate the Account and Request"
+        },
+        {
+          "workflow": "wholesale_quote_to_fulfillment",
+          "step_heading": "Step 3: Review Inventory and Replenishment"
+        }
+      ],
+      "expected_skills_or_mcp_tools": ["grep_search", "read_file", "write_file"],
+      "requires_oversight_triggered": true,
+      "acceptance_criteria": [
+        "Flags credit/tax-exempt hold and ATP shortfall before committing delivery dates",
+        "Holds quote release and supplier replenishment PO for human approval"
+      ]
+    }
+  ]
+}
+

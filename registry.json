@@ -63,12 +63,15 @@
       "company_size": 25,
       "required_skills": [
         "grep_search",
-        "read_file"
+        "read_file",
+        "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:a0ee8a6ecce1b5921d0cbe466ae14285145d093f6b8aee50d631024f4c51edad"
+      "content_sha256": "sha256:4872ecfa19c488b228755f22778658fd43eb25f88810bfa4dd962ce620a3ed2d",
+      "maturity": "verified"
     },
     {
       "id": "healthcare-patient-intake",
@@ -88,9 +91,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:0a5126e7f00b11c2393789e48317e2edeb1fde7cd10a48e5bf4761c878301aa0"
+      "content_sha256": "sha256:dc4d2ed4337af3ed4983707a9fbba079d9dfe3c09b351851656ec53a85883371",
+      "maturity": "verified"
     },
     {
       "id": "development-code-reviewer",
@@ -110,9 +115,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:3de74d86c11428d3cc9ba6fda0c8e4f99ad20f9675ff9649fd2c7d38d6584c29"
+      "content_sha256": "sha256:ae4afe178f732fcc85f879bf0d2da6f215b025bae3aa413454b5601d6a257aca",
+      "maturity": "verified"
     },
     {
       "id": "bookkeeping-audit",
@@ -133,9 +140,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:1c80a87ad2ac5da8b53057a6a864973c7dc56decaed19450eaa29a9288ed9999"
+      "content_sha256": "sha256:7dbe0d1195e6819a810b8b9f35b34723dfccc6e3f11db0a1ab73eba4dd3bb083",
+      "maturity": "verified"
     },
     {
       "id": "full-funnel-automation",
@@ -152,12 +161,15 @@
       "company_size": 50,
       "required_skills": [
         "grep_search",
-        "read_file"
+        "read_file",
+        "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:a703392fe21f5e2cbb381c825dc19055ead7ceaad7431e2fa2913bd0ef2e55a5"
+      "content_sha256": "sha256:281cc1d4eda81963c3eb458300d9506b4839e4758bf298e44c4b68cc1f906ecc",
+      "maturity": "verified"
     },
     {
       "id": "lead-transaction-management",
@@ -178,9 +190,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:e5d05c9377d6e7eb2d581cdd04f88619108f391031332837c843cb97c97e664c"
+      "content_sha256": "sha256:387cd64ca52ccdee72252c66195630346f533b0caa67c36924bd3c7f65e4530e",
+      "maturity": "starter"
     },
     {
       "id": "manufacturing-job-shop-25",
@@ -200,9 +214,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:964ffb063d63afa9ff84e0b3289b6a70e594c957780ac49cc1ade3c236414db6"
+      "content_sha256": "sha256:e4f56fa7c94650eeb61b4aa9c2a209bf84f1a1f28823a3fa82e6783aabc6bf1e",
+      "maturity": "starter"
     },
     {
       "id": "manufacturing-medium-plant-50",
@@ -221,9 +237,11 @@
         "read_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:f8f270006b7349ffe9a43295fa3635a53b72ea57d1abb68731a7e1ca9691eab2"
+      "content_sha256": "sha256:1150df35830bd4897bcd583f2fa3030fc59d0263f05da0f688c94b42744f90ba",
+      "maturity": "starter"
     },
     {
       "id": "manufacturing-smart-factory-100",
@@ -239,12 +257,15 @@
       "company_size": 100,
       "required_skills": [
         "grep_search",
-        "read_file"
+        "read_file",
+        "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:16cb820734683aa4bc6b3b07a723c0ae1009b5c4eda6c271babb011c9cbcad4b"
+      "content_sha256": "sha256:ef91c76ab146e74277ffb66f3165b6dfff968f7ffa7bb282377319ab1d10c7c7",
+      "maturity": "verified"
     },
     {
       "id": "food-restaurant-ops",
@@ -265,9 +286,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:efa309f99b267133c2fef22e11133bba589a1e2aacf6e4f3db26da3418a42b59"
+      "content_sha256": "sha256:c73dc36bb23762560cb50af3be6183fac7b13f464bca05b7680e2af002453106",
+      "maturity": "starter"
     },
     {
       "id": "chemical-process-safety",
@@ -286,9 +309,11 @@
         "read_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:ce73d31b3f254515ef87cd42ebac0e22f03093da15fd91f85b5559e4f46e7f71"
+      "content_sha256": "sha256:646640018a65fde9d52dc1654c43d14438402737af1a80d31c5e7bbe3afa0df6",
+      "maturity": "starter"
     },
     {
       "id": "transportation-fleet-logistics",
@@ -308,9 +333,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:722505973871b61954362c21ad7b3de457c428249acd9f38aa0be90efef6d64f"
+      "content_sha256": "sha256:c1876f3e734b5e95e685636675d41f15523ec3aa165a0cba0a86f0f906134e96",
+      "maturity": "starter"
     },
     {
       "id": "pharma-clinical-trials",
@@ -330,9 +357,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:43bcd91c1f7c979dc729fc69998f1f32d35788357623100824c9e82b79e5e8ee"
+      "content_sha256": "sha256:e8419f92ea9a46f0c17ec2231311c4bd2cb1ab5f7d964a12dfc2d9fb45122d3d",
+      "maturity": "verified"
     },
     {
       "id": "agriculture-precision-farming",
@@ -351,9 +380,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:2d503132168125b263fbcdbece3bef1cb862e1ff5025eb1e3bef347a7e623a46"
+      "content_sha256": "sha256:bf25a11fd6f7312e54cb10c939ec9138689ff1ac479b281cb4d5affeadf12f8d",
+      "maturity": "starter"
     },
     {
       "id": "compliance-regulatory-audit",
@@ -373,9 +404,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:90d71bc3db6d738a5a60eb43c68497389aef4364eaba83dad62c23ff1c971c80"
+      "content_sha256": "sha256:436928f33787dda450d9ac5cd9b23b38e529c1b7adc74a4163bf1860d13849bd",
+      "maturity": "starter"
     },
     {
       "id": "security-incident-response",
@@ -397,9 +430,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:d9347ff49f73b1ae2fb80e5a2aa795e45103825cd018b2b8dda4f21519fd91ed"
+      "content_sha256": "sha256:43b3f12af252acbaa01462393f1df36a05e8d062a9923ab3e1c77a52d256be5e",
+      "maturity": "starter"
     },
     {
       "id": "hr-recruiting-triage",
@@ -419,9 +454,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:a74c7ea55e40ec2c63981c60cb488b14a141da9059fc0b8c37d51552ecf8d4e5"
+      "content_sha256": "sha256:c877a8c7d4d5eba14851202cc2067ae5e91dbfb3328845270f6782b095bba7d3",
+      "maturity": "verified"
     },
     {
       "id": "education-curriculum-planner",
@@ -441,9 +478,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:fd3f99ef7a89b477149fcbf71404f579ac991a0c9e39c8bf4cc65bfdd117b2e5"
+      "content_sha256": "sha256:273ea330213019aef46335f2c3ded2cf4951b3d73614ef234273bcacbc46723d",
+      "maturity": "starter"
     },
     {
       "id": "utilities-grid-telemetry",
@@ -464,9 +503,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:e8e312632570fcdc67d346a9a41a15909dcfeb17acce1ea22b5235b328ee945f"
+      "content_sha256": "sha256:5bdbc2058f945bc4bd7f3a9543133d04df56370cb9cdebc0d480e03f42ae03bf",
+      "maturity": "starter"
     },
     {
       "id": "creative-asset-pipeline",
@@ -487,9 +528,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:ffd09ee63b43f28d2442e8cbaecaf89eaa02fb6d9de3022459854ee104253567"
+      "content_sha256": "sha256:19e2e76da7d55456877ecb3ff210e8313e798d0f50b7722922e049452e5e8409",
+      "maturity": "starter"
     },
     {
       "id": "legal-precedent-synthesis",
@@ -510,9 +553,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:0990f5ae2023fd51baafb1f7de2a04c307f03aaa925001b880d94f7831f99ed4"
+      "content_sha256": "sha256:fe930eb1588d561e2f0d8e189830f936aa0632cd2295c6165343bfb77b73c245",
+      "maturity": "starter"
     },
     {
       "id": "legal-procurement-qa",
@@ -533,9 +578,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:c194f99265b7744c022dc62a18c1f10c01ecef4a9b1c2c5a6448bcad9ef45e6f"
+      "content_sha256": "sha256:12c58daf7fdf271963abed3e1366cade3eaff33be21b511e6fe304ae40c4d726",
+      "maturity": "starter"
     },
     {
       "id": "medical-clinical-guidelines",
@@ -556,9 +603,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:0ed133e5b5c30d1dc848482793d09e6e2865560c45acc6cdcbd9752134ac596b"
+      "content_sha256": "sha256:a2d3c0291f4518112b4669298431628907a236df912b024f6b56fdbed3867908",
+      "maturity": "starter"
     },
     {
       "id": "medical-inventory-qa",
@@ -580,9 +629,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:33b8be94d850ef2157e22c61a5756da8b19af258369b58f5a0327a77dc1595fd"
+      "content_sha256": "sha256:19805c06295b54e39fb8c70a04b2be190b16606ece870389ed88c20f2a69c9c0",
+      "maturity": "starter"
     },
     {
       "id": "financial-policy-synthesizer",
@@ -603,9 +654,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:be00a9a83ff2dae2ff804bd12ead93c7ed7016d3c02536273dd9eb1c94a6ae5a"
+      "content_sha256": "sha256:bc48907bf7d7f3b2cf29ddd9cee457d74a3091f3983a05ebdd0b2668771efed3",
+      "maturity": "starter"
     },
     {
       "id": "financial-vendor-reconciliation",
@@ -627,9 +680,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:02e9a806706e82339c44c4d282c310bf6bce918e63219c5e7adc8966824d62b2"
+      "content_sha256": "sha256:fc61174fcf34857c1fcb610d53243da3730006050e72e36f1341d19b2740bc78",
+      "maturity": "starter"
     },
     {
       "id": "marketing-seo-indexer",
@@ -650,9 +705,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:7fec15ecda15212a007459074f60bf8f9f5e197cdd2c9133ebc57bd86dab39c1"
+      "content_sha256": "sha256:948b54cbe383731c2b213a998dd67dafd6f1bb466c717ee3456f17bd8c8b44ce",
+      "maturity": "starter"
     },
     {
       "id": "marketing-vendor-purchasing",
@@ -674,9 +731,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:8c58b884f34af07351cc4ef8c48b8438596d48b0d6e74d0661b2d2d584f89471"
+      "content_sha256": "sha256:bccdacff5dcb2b5ad36d57293946d611f723b3fe984568fc8467f11cb62cbbec",
+      "maturity": "starter"
     },
     {
       "id": "ecommerce-market-analysis",
@@ -697,9 +756,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:016d7767d25619d355bdce7549fe45fdd16fb9915c9171b8060822dbb3f69bee"
+      "content_sha256": "sha256:ab2ab40f825b8f71109b9fab16d2822430ed57bb12688d9f8e36d9171e5dab6f",
+      "maturity": "verified"
     },
     {
       "id": "ecommerce-dispatch-qa",
@@ -721,9 +782,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:577800dd0bbe771a70c0211d5bf51237ac6e578d25abab34b25f30b466fdc15d"
+      "content_sha256": "sha256:f1df074021ffdf458eaa5e993e629806d6cc06f0b85c2360c0d87a5178c6dbf2",
+      "maturity": "starter"
     },
     {
       "id": "realestate-valuation-synthesizer",
@@ -744,9 +807,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:077de6e29f7379e1176803d77db676c2236e5224b470fab68fb386fc812bc8ea"
+      "content_sha256": "sha256:930bd467abab7b66467549d19192c663e7570fbba299341bc651ccecedf9fdbf",
+      "maturity": "starter"
     },
     {
       "id": "realestate-maintenance-procurement",
@@ -768,9 +833,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:75cf1fc0f7585618a673e92d9cb0af04734b21d08d35e2e29fff8d2466dcc97e"
+      "content_sha256": "sha256:72cda2d118141ae63e793beeb9869f5e56f6681b85f77e27ea12bee42c763cfd",
+      "maturity": "starter"
     },
     {
       "id": "consultancy-expert-synthesizer",
@@ -791,9 +858,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:5f1cd4f2344137f793721e190b3a324a2b529fd28f3fc5636591fb58483f92ed"
+      "content_sha256": "sha256:b9f23408a6dbaf86e339003dda840bd8a60beddba25112b43e5abcb11f743fa9",
+      "maturity": "starter"
     },
     {
       "id": "consultancy-subcontractor-qa",
@@ -814,9 +883,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:0853b88d6f0e66885331b6813088b2e87f0e7d2b873e2fb1572b6b78da37acb8"
+      "content_sha256": "sha256:3ce49fe476f5348072c4acecc9fbd01ae5ee2896f570ad97231e1d3873b82058",
+      "maturity": "starter"
     },
     {
       "id": "logistics-route-optimization",
@@ -837,9 +908,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:cd7c568262929ac0323625b41be77e30afbfdc281dbcdeea23df2747a16aa053"
+      "content_sha256": "sha256:b741d7137c37f66896fe7168646ddefb318c2b67b9ace6a05b11d9dc8ee61895",
+      "maturity": "starter"
     },
     {
       "id": "logistics-dock-shipping",
@@ -861,9 +934,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:cd0cafd5a1999928fcccbd1e5649b683229773de2a2043c1a0c0d5f8d99cf915"
+      "content_sha256": "sha256:9f34d1309722a6ebff738d2746a025ce05ac8d74f65686eb8113cfd2aa00fd13",
+      "maturity": "starter"
     },
     {
       "id": "engineering-spec-compliance",
@@ -884,9 +959,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:098159cd089a8aaebdce58f823f82313d0bf2872dc2f111e8cf8d2acdb9e980d"
+      "content_sha256": "sha256:686789f3a3e40730df2676168328ac8f546c902509f46d27c17932f11003d416",
+      "maturity": "starter"
     },
     {
       "id": "engineering-parts-procurement",
@@ -908,9 +985,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:780f3fce143060b8470e4e200221dba43535a9516e891d5e3fb43666e69022dc"
+      "content_sha256": "sha256:8c6f9743d244a166451b86fb11e76b518417ad4040354f6163dc3aae3780edbe",
+      "maturity": "starter"
     },
     {
       "id": "edtech-curriculum-synthesizer",
@@ -931,9 +1010,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:6731b7f712c64ccf64a3217a95647f9ec0d0c9d08372005b78ce6bde099fe4a8"
+      "content_sha256": "sha256:bd3c6134bc0207625ad679ad07759c7fad6030f5305a353db13757e938a77886",
+      "maturity": "starter"
     },
     {
       "id": "edtech-license-procurement",
@@ -955,9 +1036,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:fff998a79679c3812e55ce2a268e91325f135f041a3d20b32951de714e02002f"
+      "content_sha256": "sha256:7c2363ac611758638fabb055c4c504b938ea485850629439d05b4ddc22640d14",
+      "maturity": "starter"
     },
     {
       "id": "development-docs-synthesizer",
@@ -978,9 +1061,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:3a99f0d547b44d0a045dc3e1fb07ec9bfcfa59e26c7d7c107b506d99c0f7c50b"
+      "content_sha256": "sha256:597aa231abdd402b5414cc073d0bbbc5b948765ba968c67fd97f678618f02584",
+      "maturity": "starter"
     },
     {
       "id": "development-qa-iso9000",
@@ -1002,9 +1087,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:b32e7961af9b90562b73a0ed3f9b8ef634e248bf66d6e304a9c05748874c6ea1"
+      "content_sha256": "sha256:f84b4477a21a501044134308de27977ae4488eeeda1202e7f7c990bfa4630aa5",
+      "maturity": "starter"
     },
     {
       "id": "manufacturing-design-synthesizer",
@@ -1023,9 +1110,11 @@
         "read_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:e05d8d5abd65df54c81ae97ce033f12ecfe0afc80a8da8c057f9018c439c7bd2"
+      "content_sha256": "sha256:f2c93f25f2ed91a5153eec270533fac32caec8d67988889d09ea2788c8d4b81b",
+      "maturity": "starter"
     },
     {
       "id": "manufacturing-iso9000-qa",
@@ -1047,9 +1136,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:2c577704fc3db64746ad18ae765282becd0d7ae9385682130f197b8523c3f42b"
+      "content_sha256": "sha256:d4b26761f1ff8d93c538209e62fef9ee020b758f279ef9ddb06205448ee835d2",
+      "maturity": "starter"
     },
     {
       "id": "food-recipe-compliance",
@@ -1070,9 +1161,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:b74e1f872e86f0f894b5adc7ca41bdce2ba58994154f8228ec348604e7f29fdc"
+      "content_sha256": "sha256:5e9a4095fd853f63b4ba40fda714ef856eae9f831f5ce69afdf458a703afa654",
+      "maturity": "starter"
     },
     {
       "id": "food-inventory-receiving",
@@ -1094,9 +1187,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:02f720d32ecf447240f6b1e5f48265a000eb608e42578bc59bfabc0a2651349a"
+      "content_sha256": "sha256:e5575a7b857a6938c390e40011cfc1d00552224a466a7834b3af5986c6e28dd4",
+      "maturity": "starter"
     },
     {
       "id": "chemical-sds-synthesizer",
@@ -1118,9 +1213,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:67dd530b177044c099da2e9d88f4b0ec7908d8f3287fd17a60bc9900e440b21a"
+      "content_sha256": "sha256:4164b71525604ad8da1cff31cc2e42ffd05d323d2cfd031a70d6abc153c4da6d",
+      "maturity": "starter"
     },
     {
       "id": "chemical-hazmat-shipping",
@@ -1143,9 +1240,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:0f6b482100ba22cb6e94d08b376d787b0b41b3013a3ece6e75e4e65678d692f0"
+      "content_sha256": "sha256:904573234946823007643cf53588c33cf5c069b798788ee46e88b698dcc673bf",
+      "maturity": "starter"
     },
     {
       "id": "transportation-policy-compliance",
@@ -1166,9 +1265,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:3860052568b502360b0974573cc729d113aa8c7a97a57f08b5d6acf44f198fb9"
+      "content_sha256": "sha256:bbdc4f872fef33bc7cb4bef4e6c0ae8bb56411df0ed4ce999a7c509daccb1adf",
+      "maturity": "starter"
     },
     {
       "id": "transportation-fleet-purchasing",
@@ -1190,9 +1291,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:e5018e43bc35991b5ba5b067fd9926aac05de5980956b72d7454662e81ccdb28"
+      "content_sha256": "sha256:08d4a0f45f53e62b5e76b5554b13822da9206efd03172883dd6c7c7f866f1941",
+      "maturity": "starter"
     },
     {
       "id": "pharma-research-synthesizer",
@@ -1213,9 +1316,11 @@
         "read_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:28c496b45bf3a6e272f12fe59624ff02c55b211bae510be420aec6bac137b27f"
+      "content_sha256": "sha256:f355eaf9f20601d748e54513efe74883da41b7109c2e8bca8cc6879daf74e139",
+      "maturity": "starter"
     },
     {
       "id": "pharma-coldchain-shipping",
@@ -1237,9 +1342,11 @@
         "read_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:f9175eada5b73fc2a323f108b91f79755381f139c48cdb1f52c7802b52796eda"
+      "content_sha256": "sha256:0aad6acd1768ef75a2d08ad7b46396475743c21affd83c1df2b925ff67293b37",
+      "maturity": "starter"
     },
     {
       "id": "agriculture-research-synthesizer",
@@ -1261,9 +1368,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:5e937493e11171ab11a61dbcb53bee636b289992bbbc47ab56134ff208033534"
+      "content_sha256": "sha256:3b40f27a6d7a3f218800c8f8b4104c394201c169660aceb4ca6d4a46dcab360d",
+      "maturity": "starter"
     },
     {
       "id": "agriculture-grain-shipping",
@@ -1285,9 +1394,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:c2446149ed0908cea23a0fe13bd1cd75f2990b84973be7c2c9abfb824b18aa7e"
+      "content_sha256": "sha256:6d8b27d8191dcffb4239ace8cd704d5a6497f09736183aa4f0d5c4e2e44be802",
+      "maturity": "starter"
     },
     {
       "id": "compliance-crosswalk-synthesizer",
@@ -1308,9 +1419,11 @@
         "read_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:02954ea3d8fc628b064c0fa50faf968c4440f7e482f0255dc9bcc8e5603afd5c"
+      "content_sha256": "sha256:9ea3b3b57696e5586656175b0f94ae6cfc4fd6f421ed291dd32115b17828f501",
+      "maturity": "starter"
     },
     {
       "id": "compliance-vendor-purchasing-qa",
@@ -1332,9 +1445,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:32d0d5b5cbf002de04c7df03d00a7b5f00fe1258aef6e4bbc0a5e687406eac11"
+      "content_sha256": "sha256:77098d9664faa7f1584ecbd809b145b09ec3aa380557e994de87744807bbfdfb",
+      "maturity": "starter"
     },
     {
       "id": "security-threat-intelligence",
@@ -1354,9 +1469,11 @@
         "read_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:468bce22c5a1a324b4a1ebf76f4a22eadacbf0bb93b549b667df72de49894426"
+      "content_sha256": "sha256:51b8706d09ad00890f0da08877295f6dc686050ad95b6258c84c93e134d8f504",
+      "maturity": "starter"
     },
     {
       "id": "security-hardware-inventory",
@@ -1378,9 +1495,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:d259739f62f0f3f5f5ed60b9a39b51e637b8c7be1851a00f2c7c3da687704bd8"
+      "content_sha256": "sha256:6a063e219a2bd34b7f82e63eed9664651e86c688cbf8ada8be982e41f8200772",
+      "maturity": "starter"
     },
     {
       "id": "hr-policy-synthesizer",
@@ -1401,9 +1520,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:c925b31272fb3f6cdefc6896e9f50225f9a0a92f3c57ec9d2e20c3d76286a46f"
+      "content_sha256": "sha256:2f7f1a97bd3e5d113b1e261da514da94fe9142fe35d0b69b35d96743593e2e6a",
+      "maturity": "starter"
     },
     {
       "id": "hr-recruiter-purchasing",
@@ -1424,9 +1545,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:74927f56273eb5ab13f3db12de7e249d2c9c084dd8c078eee08fb0a405dd54da"
+      "content_sha256": "sha256:6048d8e95f46662449c5768745591e5d7486c2b23e7803fa80db4069fd2d2681",
+      "maturity": "starter"
     },
     {
       "id": "education-accreditation-synthesizer",
@@ -1447,9 +1570,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:de017774a14c39eec7d67e614589b436762804eb0d2889a482b76e5411d827af"
+      "content_sha256": "sha256:5a0394208e5d521117bbe1757625e2820011e88293384bb69788bdf3d20195c0",
+      "maturity": "starter"
     },
     {
       "id": "education-supplies-purchasing",
@@ -1471,9 +1596,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:4fd74128a711aa257af3d7eaa01e51d6cea0c33ed64883fcde45954411a9bc16"
+      "content_sha256": "sha256:afe5e7d9e99df59d0061f3696cfaf032be3235eb3b29a05efe95f2e12730d733",
+      "maturity": "starter"
     },
     {
       "id": "utilities-maintenance-synthesizer",
@@ -1494,9 +1621,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:68583f59b99d4337d5581c77d4eff5cf7003d930aa2220627c733105bdd090d7"
+      "content_sha256": "sha256:499310de36d0bfd35e600f4ac861619dfdf31683597a9bd955526b3c0b4bdb3e",
+      "maturity": "starter"
     },
     {
       "id": "utilities-scada-qa",
@@ -1519,9 +1648,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:8220e4ff2e5ba81b3fe05778b7ef089d1963a126ea59ac75b579787203799dde"
+      "content_sha256": "sha256:c4d3094fe3a1590711c2f600575f70f96b200ce0ce7e65fe73a3bb1b371f424c",
+      "maturity": "starter"
     },
     {
       "id": "creative-script-synthesizer",
@@ -1543,9 +1674,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:1b3c137ce42b650354bbe9bb24bca0249b3d3ba68dfc65e4245a2159e0efaf6c"
+      "content_sha256": "sha256:a3f3dbf56e56f76fd93cef24151844e62265d408124f1e218d37e092cdc3cb46",
+      "maturity": "starter"
     },
     {
       "id": "creative-equipment-procurement",
@@ -1567,9 +1700,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:e5394d83363cdcea2408cd6807e07b5c41bbe4b0750e6019e277d3b2b0fef5e8"
+      "content_sha256": "sha256:890f8c7b1030c24cc0ea622a62ce89cf1ed4517becb0cc657bdf2f993c9c3853",
+      "maturity": "starter"
     },
     {
       "id": "smoke-test",
@@ -1593,9 +1728,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:564feb588a2847ed0076a54975cd9fc4a963f3b71131ee4086a3431f8b4db09f"
+      "content_sha256": "sha256:5623a202a8fe5d63aa214d4f6d7422b815cba0936514bdb10796c4c2d91b02d8",
+      "maturity": "verified"
     },
     {
       "id": "field-service-operations-25",
@@ -1618,9 +1755,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:f639fd3c1f33bb55b087151f8e01fa05735188f48bcee083733c16dc26b5e899"
+      "content_sha256": "sha256:d08bf14ee88e826c7b124294acf6bb26073436cc0eaedc1b9a7b0693d64d4e1e",
+      "maturity": "verified"
     },
     {
       "id": "wholesale-b2b-operations-25",
@@ -1644,9 +1783,11 @@
         "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:ae2d6e57d6406010939995f8b228a6837c980f280e45cc1f5a30bc3bc5826b83"
+      "content_sha256": "sha256:f62b0d770403a690f77d1dd46399625e6a654f7df76db1a053bdd63c1cf941d5",
+      "maturity": "verified"
     },
     {
       "id": "geoint-osint-desk",
@@ -1667,9 +1808,11 @@
         "read_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:6c9c261d8516025881f6ad4dc0e7091e3c480c37c875bc24ad3c58de75c6ff19"
+      "content_sha256": "sha256:f62ad97da88b9c4913b662801c5f5e897927df3e3d80e643835a0a6e7fc90f3f",
+      "maturity": "starter"
     },
     {
       "id": "disaster-response-coordination",
@@ -1692,9 +1835,11 @@
         "read_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:4349a4e40b22634f34bf50e7f4c100e090f71cf9eb16ce18ee547ae87f84bc6d"
+      "content_sha256": "sha256:bbfa47dba249106c445d4b9661370247774c7247c133fa435bcec02ccedddf8a",
+      "maturity": "starter"
     },
     {
       "id": "maritime-domain-awareness",
@@ -1715,9 +1860,11 @@
         "read_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:e784d8e0263e77bf09e0fae94b0b0f782e40e6c2ec8d65f4968c898badab5f04"
+      "content_sha256": "sha256:80361bce90f6f45d378241318da80c32403d9b875025b486c719d61f647e86bc",
+      "maturity": "starter"
     },
     {
       "id": "aerospace-flight-orbital-surveillance",
@@ -1740,9 +1887,11 @@
         "read_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:02988d8dd9352dd05687f90aba624ffe4849815cc72ae79bd86c65e487db8d81"
+      "content_sha256": "sha256:a11475ebeb2ca205e7ba609c0dc806167c31b6bf8bd2aeb9c95dede0e89ac0f2",
+      "maturity": "starter"
     },
     {
       "id": "commercial-spatial-analytics",
@@ -1764,9 +1913,11 @@
         "read_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:eb94c09330f47bd6fe26968f898cab18e2c95a203ac18b9fb78a8da2829b7650"
+      "content_sha256": "sha256:34521e8c327124a2734ec08283aab86f478a47bc744f7a219e6d13eb720e50a3",
+      "maturity": "starter"
     },
     {
       "id": "construction-site-safety-subcontractor",
@@ -1784,12 +1935,15 @@
       "company_size": 25,
       "required_skills": [
         "grep_search",
-        "read_file"
+        "read_file",
+        "write_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:26b7ddb31aa30d6e046678e147c5e3e61a70cdeb60b75cf5ffc9fe5981cca531"
+      "content_sha256": "sha256:57ef25a16c160a93f234557f4aed87cc325c273929ceb14513518fdcb673d572",
+      "maturity": "verified"
     },
     {
       "id": "hospitality-guest-ops-pms",
@@ -1810,9 +1964,11 @@
         "read_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:250cbf1c0c823779a7f7b00d47589f644aa201eb1758ba5f70a85ad5044e475d"
+      "content_sha256": "sha256:d01a5acc9c9dd24d96646b81513e825b8668afe84478b3c59f9d97807e330da9",
+      "maturity": "starter"
     },
     {
       "id": "insurance-claims-triage-policy",
@@ -1833,9 +1989,11 @@
         "read_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:ef7c5d64f46079c51f06671cecbb91fa291f32f5bf547468fa71769813e48b9b"
+      "content_sha256": "sha256:a50b8ffdd3d8fb7bffc47010dc23e623598f2faaa0cf6b30c0ddc4c17be733d6",
+      "maturity": "starter"
     },
     {
       "id": "automotive-service-bay-parts",
@@ -1856,9 +2014,11 @@
         "read_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:3d433d340c7826dc129a2c9c5bc1e7396e28f6b25813749102d06c794b103dbe"
+      "content_sha256": "sha256:ef878e72e6a72c3401aa8da211fda9ecdbb6bb8013519c13166fac55a6c7da7c",
+      "maturity": "starter"
     },
     {
       "id": "renewable-solar-installation-interconnect",
@@ -1879,9 +2039,11 @@
         "read_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:1132bd7813d33f5bfeebf149d8e42633bf55cccb5d547a2a0e1873dd95de855e"
+      "content_sha256": "sha256:15520558897aaf319660018592c85775257ff646c736fddee760a48315675f33",
+      "maturity": "starter"
     },
     {
       "id": "veterinary-clinic-patient-triage",
@@ -1902,9 +2064,11 @@
         "read_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:77cf8e8f52c10a5abd75c9741ae2270ffb4f7977ea357458262128de1a32a11c"
+      "content_sha256": "sha256:8a228ad3842add09de46937e3ab3821db1c7ada1cc8ff1322913e3525ae1aa47",
+      "maturity": "starter"
     },
     {
       "id": "retail-storefront-shrinkage-merchandising",
@@ -1925,9 +2089,11 @@
         "read_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:bfae92cf44264bba104de99a5cdf10f2fbfe87e59a798e6c99565d914a3c95dc"
+      "content_sha256": "sha256:561aa37898ce4b091e125cefafafb024cfe2648876d3361d4416d26301284f59",
+      "maturity": "starter"
     },
     {
       "id": "non-profit-grant-donor-stewardship",
@@ -1948,9 +2114,11 @@
         "read_file"
       ],
       "required_models": [
-        "gemma4:31b"
+        "gemma4:31b-cloud",
+        "gemma4:e4b"
       ],
-      "content_sha256": "sha256:3c2749499e6659d92de5489201115349e242b942325151216e8e84f25b9cbe84"
+      "content_sha256": "sha256:2d52c577112ab2abbc7dda00b74ffff82aa36694f5db4b458ca12a2ba9858e23",
+      "maturity": "starter"
     }
   ]
 }

@@ -3,7 +3,7 @@
   "name": "MSSP Security Operations & Incident Desk",
   "version": "1.0.0",
   "description": "Cybersecurity: Threat detection, vulnerability patching, and security compliance audits.",
-  "industry": "cybersecurity",
+  "industry": "Cybersecurity",
   "tags": [
     "security",
     "threat-intel",
@@ -11,26 +11,27 @@
     "synthesis"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "security-security-threat-detection-engineer",
       "path": "agents/security-security-threat-detection-engineer.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     },
     {
       "id": "security-security-appsec-engineer",
       "path": "agents/security-security-appsec-engineer.json",
-      "supervisor": null,
+      "supervisor": "security-security-threat-detection-engineer",
       "priority": "normal"
     },
     {
       "id": "security-security-compliance-auditor",
       "path": "agents/security-security-compliance-auditor.json",
-      "supervisor": null,
+      "supervisor": "security-security-threat-detection-engineer",
       "priority": "normal"
     }
   ],
@@ -39,5 +40,7 @@
     "security-security-threat-detection-engineer",
     "security-security-appsec-engineer",
     "security-security-compliance-auditor"
-  ]
+  ],
+  "id": "security-threat-intelligence",
+  "maturity": "starter"
 }

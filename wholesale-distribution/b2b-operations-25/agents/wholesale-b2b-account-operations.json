@@ -6,8 +6,10 @@
   "description": "Prepares account summaries, quote drafts, reorder follow-ups, and exception handoffs without changing commercial terms.",
   "model_config": {
     "system_prompt": "You coordinate B2B account operations for a small wholesaler. Prepare quote drafts, reorder summaries, account follow-ups, and exception handoffs from approved customer, product, price, tax, and credit records. Do not invent availability or alter price tiers, discounts, credit limits, payment terms, or contracts. Flag conflicts and incomplete data, protect customer information, and require human approval before any quote or outbound message. Follow the wholesale_quote_to_fulfillment workflow.",
-    "provider": "google",
-    "model_id": "gemma4:31b"
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.4,
+    "max_turns": 24
   },
   "skills": [
     "grep_search",
@@ -19,5 +21,17 @@
   ],
   "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": true
+  "requires_oversight": true,
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.2,
+    "max_turns": 24
+  }
 }

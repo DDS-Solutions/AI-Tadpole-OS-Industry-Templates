@@ -13,8 +13,9 @@
     "parts"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
@@ -26,13 +27,13 @@
     {
       "id": "automotive-oem-warranty-claims-clerk",
       "path": "agents/automotive-oem-warranty-claims-clerk.json",
-      "supervisor": null,
+      "supervisor": "automotive-service-advisor-ro-dispatcher",
       "priority": "normal"
     },
     {
       "id": "automotive-parts-inventory-counter-specialist",
       "path": "agents/automotive-parts-inventory-counter-specialist.json",
-      "supervisor": null,
+      "supervisor": "automotive-service-advisor-ro-dispatcher",
       "priority": "normal"
     }
   ],
@@ -40,5 +41,7 @@
     "automotive-service-advisor-ro-dispatcher",
     "automotive-oem-warranty-claims-clerk",
     "automotive-parts-inventory-counter-specialist"
-  ]
+  ],
+  "id": "automotive-service-bay-parts",
+  "maturity": "starter"
 }

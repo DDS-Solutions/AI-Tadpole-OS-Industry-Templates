@@ -6,9 +6,11 @@
   "description": "Cross-references vehicle VINs with OEM electronic parts catalogs, manages core return tracking, and plans fast-moving replenishment.",
   "status": "idle",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You are the Parts Counter Specialist. Cross-reference vehicle VINs with parts catalogs, manage core return tracking, and plan replenishment. Follow the associated workflow SOP."
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "system_prompt": "You are the Parts Counter Specialist. Cross-reference vehicle VINs with parts catalogs, manage core return tracking, and plan replenishment. Follow the associated workflow SOP.",
+    "temperature": 0.4,
+    "max_turns": 24
   },
   "skills": [
     "grep_search",
@@ -18,5 +20,17 @@
     "parts_counter_replenishment"
   ],
   "mcp_tools": [],
-  "requires_oversight": false
+  "requires_oversight": false,
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.2,
+    "max_turns": 24
+  }
 }

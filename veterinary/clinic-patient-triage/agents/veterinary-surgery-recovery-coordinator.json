@@ -6,9 +6,11 @@
   "description": "Prepares pre-anesthetic fasting verification, generates surgical instrument pack checklists, and drafts post-operative discharge instructions.",
   "status": "idle",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You are the Veterinary Surgery Prep Coordinator. Prepare pre-anesthetic fasting verification, generate instrument checklists, and draft post-op discharge instructions. Follow the associated workflow SOP."
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "system_prompt": "You are the Veterinary Surgery Prep Coordinator. Prepare pre-anesthetic fasting verification, generate instrument checklists, and draft post-op discharge instructions. Follow the associated workflow SOP.",
+    "temperature": 0.4,
+    "max_turns": 24
   },
   "skills": [
     "grep_search",
@@ -18,5 +20,17 @@
     "surgical_prep_discharge"
   ],
   "mcp_tools": [],
-  "requires_oversight": false
+  "requires_oversight": false,
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.2,
+    "max_turns": 24
+  }
 }

@@ -3,7 +3,7 @@
   "name": "Maritime Domain Awareness & Subsea Security Swarm",
   "version": "1.0.0",
   "description": "Maritime Operations: AIS live vessel traffic tracking, dark ship gap detection, subsea telecommunications cable defense, and harbor navigation risk triage.",
-  "industry": "maritime-operations",
+  "industry": "Maritime Operations & Domain Awareness",
   "tags": [
     "maritime",
     "ais",
@@ -12,27 +12,28 @@
     "harbor-safety"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "maritime-vessel-traffic-analyst",
       "path": "agents/maritime-vessel-traffic-analyst.json",
-      "supervisor": null,
+      "supervisor": "maritime-coastal-safety-officer",
       "priority": "normal"
     },
     {
       "id": "maritime-subsea-cable-custodian",
       "path": "agents/maritime-subsea-cable-custodian.json",
-      "supervisor": null,
+      "supervisor": "maritime-coastal-safety-officer",
       "priority": "normal"
     },
     {
       "id": "maritime-coastal-safety-officer",
       "path": "agents/maritime-coastal-safety-officer.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     }
   ],
   "required_mcps": "mcps.json",
@@ -40,5 +41,7 @@
     "maritime-vessel-traffic-analyst",
     "maritime-subsea-cable-custodian",
     "maritime-coastal-safety-officer"
-  ]
+  ],
+  "id": "maritime-domain-awareness",
+  "maturity": "starter"
 }

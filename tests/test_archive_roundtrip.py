@@ -128,6 +128,26 @@ class ArchiveRoundtripTests(unittest.TestCase):
             self.assertEqual([], report.errors, f"Validation errors: {report.errors}")
             self.assertEqual([], report.warnings, f"Validation warnings: {report.warnings}")
 
+            # Tamper a workflow byte and verify canonical content_sha256 detects drift.
+            (quarantine_dir / "workflows" / "freight-triage.md").write_text(
+                workflow_md + "\nTampered step.",
+                encoding="utf-8",
+            )
+            tampered_report = ValidationReport()
+            validate_template(
+                tmproot / "quarantine",
+                {
+                    "id": "apex-logistics",
+                    "path": "apex-logistics",
+                    "content_sha256": content_digest,
+                },
+                tampered_report,
+            )
+            self.assertTrue(
+                any("digest mismatch" in err.lower() or "content_sha256" in err.lower() for err in tampered_report.errors),
+                f"Expected digest mismatch error, got: {tampered_report.errors}",
+            )
+
     def test_adversarial_archive_contents_are_strictly_rejected(self):
         """Archives containing security violations fail package tree or template validation."""
         with tempfile.TemporaryDirectory() as tmpdir:

@@ -1,22 +1,70 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/agent-v1.json",
   "id": "specialized-data-privacy-officer",
   "name": "Specialized Data Privacy Officer",
-  "role": "Specialized Data Privacy Officer Specialist",
+  "role": "HIPAA & Patient Privacy Gatekeeper",
   "department": "Operations",
-  "description": "Specialized AI agent handling Specialized Data Privacy Officer Specialist workflows.",
-  "status": "idle",
+  "description": "Audits intake packets, consent authorizations, BAA requirements, and outbound patient drafts to enforce HIPAA minimum-necessary PHI safeguards.",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You operate as the Specialized Data Privacy Officer. Execute tasks according to verified SOPs."
+    "system_prompt": "You enforce HIPAA minimum-necessary and patient consent controls across clinic intake workflows. Verify signed authorizations, redaction of unnecessary PHI in outbound drafts, third-party release eligibility, and BAA coverage before writing audit clearance logs. Follow data_privacy. Operate strictly within verified inputs, approved SOPs, and local workspace records. Separate confirmed facts from assumptions and escalate ambiguity or policy conflicts instead of guessing. Require explicit human approval before writing external deliverables, altering production state, committing binding terms, or handling regulated records.",
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "max_turns": 24
+  },
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.1,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
-    "grep_search"
+    "grep_search",
+    "write_file"
   ],
   "workflows": [
     "data_privacy"
   ],
+  "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": false
+  "requires_oversight": true,
+  "hooks": ["before_file_write", "after_tool_result"],
+  "input_schema": {
+    "type": "object",
+    "required": ["packet_id", "disclosure_purpose"],
+    "properties": {
+      "packet_id": { "type": "string" },
+      "disclosure_purpose": { "type": "string" },
+      "signed_consent_verified": { "type": "boolean" }
+    }
+  },
+  "output_contract": {
+    "schema": {
+      "type": "object",
+      "required": ["privacy_clearance", "redaction_notes", "audit_log_path"],
+      "properties": {
+        "privacy_clearance": { "type": "string", "enum": ["approved_draft", "hold_missing_consent", "escalate_privacy_officer"] },
+        "redaction_notes": { "type": "array", "items": { "type": "string" } },
+        "audit_log_path": { "type": "string" }
+      }
+    }
+  },
+  "oversight_policies": [
+    {
+      "applies_to": ["phi_disclosure", "third_party_release_review"],
+      "approver_role": "Designated Clinic Privacy Officer",
+      "threshold": "Every non-routine PHI disclosure, minor guardian check, or missing authorization"
+    }
+  ],
+  "metadata": {
+    "base_system_prompt": "You enforce HIPAA minimum-necessary and patient consent controls across clinic intake workflows. Verify signed authorizations, redaction of unnecessary PHI in outbound drafts, third-party release eligibility, and BAA coverage before writing audit clearance logs. Follow data_privacy.",
+    "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"]
+  }
 }

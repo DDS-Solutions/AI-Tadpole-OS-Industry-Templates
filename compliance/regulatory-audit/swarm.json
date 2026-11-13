@@ -12,26 +12,27 @@
     "governance"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "support-support-legal-compliance-checker",
       "path": "agents/support-support-legal-compliance-checker.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     },
     {
       "id": "testing-qa-evidence-collector",
       "path": "agents/testing-qa-evidence-collector.json",
-      "supervisor": null,
+      "supervisor": "support-support-legal-compliance-checker",
       "priority": "normal"
     },
     {
       "id": "compliance-vendor-risk-questionnaire-packager",
       "path": "agents/compliance-vendor-risk-questionnaire-packager.json",
-      "supervisor": null,
+      "supervisor": "support-support-legal-compliance-checker",
       "priority": "normal"
     }
   ],
@@ -39,5 +40,7 @@
     "support-support-legal-compliance-checker",
     "testing-qa-evidence-collector",
     "compliance-vendor-risk-questionnaire-packager"
-  ]
+  ],
+  "id": "compliance-regulatory-audit",
+  "maturity": "starter"
 }

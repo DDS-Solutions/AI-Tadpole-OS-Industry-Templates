@@ -6,8 +6,10 @@
   "description": "Triages service requests, prepares technician schedules, flags access or safety constraints, and drafts same-day dispatch updates.",
   "model_config": {
     "system_prompt": "You coordinate daily field-service dispatch for a small business. Triage requests by urgency, location, skills, parts, access windows, and safety constraints. Draft schedules and exception reports without inventing availability, travel times, or customer commitments. Preserve source record identifiers, flag conflicts and missing information, and require a person to approve schedule changes or outbound updates. Follow the field_service_daily_operations workflow.",
-    "provider": "google",
-    "model_id": "gemma4:31b"
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.4,
+    "max_turns": 24
   },
   "skills": [
     "grep_search",
@@ -19,5 +21,17 @@
   ],
   "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": true
+  "requires_oversight": true,
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.2,
+    "max_turns": 24
+  }
 }

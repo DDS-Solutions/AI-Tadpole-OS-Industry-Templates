@@ -3,7 +3,7 @@
   "name": "Logistics Dispatch & Route Maintenance Desk",
   "version": "1.0.0",
   "description": "Supply Chain Operations: Delivery fleet maintenance, DOT driver hours audit, and transport costing.",
-  "industry": "logistics-supply-chain",
+  "industry": "Logistics & Supply Chain",
   "tags": [
     "logistics",
     "route-planning",
@@ -11,8 +11,9 @@
     "synthesis"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
@@ -24,13 +25,13 @@
     {
       "id": "compliance-dot-hours-inspection-clerk",
       "path": "agents/compliance-dot-hours-inspection-clerk.json",
-      "supervisor": null,
+      "supervisor": "operations-fleet-maintenance-scheduler",
       "priority": "normal"
     },
     {
       "id": "finance-job-costing-estimator",
       "path": "agents/finance-job-costing-estimator.json",
-      "supervisor": null,
+      "supervisor": "operations-fleet-maintenance-scheduler",
       "priority": "normal"
     }
   ],
@@ -39,5 +40,7 @@
     "operations-fleet-maintenance-scheduler",
     "compliance-dot-hours-inspection-clerk",
     "finance-job-costing-estimator"
-  ]
+  ],
+  "id": "logistics-route-optimization",
+  "maturity": "starter"
 }

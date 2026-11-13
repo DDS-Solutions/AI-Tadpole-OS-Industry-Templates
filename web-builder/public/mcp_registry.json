@@ -11,13 +11,21 @@
       "author": "AI-Tadpole-OS Core",
       "status": "sample",
       "maintainer": "AI-Tadpole-OS Security Team",
-      "last_reviewed": "2026-09-01",
+      "last_reviewed": "2026-11-13",
       "required_env": {
         "CRM_API_KEY": {
           "description": "API token for CRM access",
           "placeholder": "CONFIGURE_LOCALLY"
         }
       },
+      "variables": [
+        {
+          "name": "CRM_API_KEY",
+          "type": "secret",
+          "required": true,
+          "description": "API token for CRM access"
+        }
+      ],
       "integrity_hash": "sha256:141da6c37f0a1dbcab3b05c78678feaeff000a6031b0733b7f3a9448bd83f6d6",
       "dependency_manifest": "requirements.txt",
       "dependency_provenance": [
@@ -38,7 +46,14 @@
           "recommendedGoalIds": [
             "customer-follow-up",
             "quoting"
-          ]
+          ],
+          "inputSchema": {
+            "type": "object",
+            "required": ["contact_id"],
+            "properties": {
+              "contact_id": { "type": "string", "description": "Unique CRM contact identifier" }
+            }
+          }
         },
         {
           "id": "generic-crm:update_invoice",
@@ -48,7 +63,15 @@
           "recommendedGoalIds": [
             "quoting",
             "bookkeeping"
-          ]
+          ],
+          "inputSchema": {
+            "type": "object",
+            "required": ["invoice_id", "status"],
+            "properties": {
+              "invoice_id": { "type": "string", "description": "Invoice identifier" },
+              "status": { "type": "string", "description": "Target invoice lifecycle status" }
+            }
+          }
         },
         {
           "id": "generic-crm:list_recent_changes",
@@ -58,7 +81,11 @@
           "recommendedGoalIds": [
             "customer-follow-up",
             "scheduling"
-          ]
+          ],
+          "inputSchema": {
+            "type": "object",
+            "properties": {}
+          }
         }
       ],
       "config": {
@@ -78,20 +105,28 @@
     {
       "id": "mcp-smb-accounting",
       "name": "SMB Accounting Blueprint",
-      "description": "Connect to lightweight SMB accounting platforms like QuickBooks and Xero. Mirrors invoicing workflows.",
+      "description": "Sample reference MCP server simulating lightweight SMB accounting workflows (QuickBooks/Xero invoice and balance queries).",
       "category": "Accounting",
       "path": "mcp-blueprints/smb-accounting",
       "version": "1.0.0",
       "author": "AI-Tadpole-OS Core",
-      "status": "verified",
+      "status": "sample",
       "maintainer": "AI-Tadpole-OS Security Team",
-      "last_reviewed": "2026-09-01",
+      "last_reviewed": "2026-11-13",
       "required_env": {
         "ACCOUNTING_API_KEY": {
           "description": "API authentication key for accounting software",
           "placeholder": "CONFIGURE_LOCALLY"
         }
       },
+      "variables": [
+        {
+          "name": "ACCOUNTING_API_KEY",
+          "type": "secret",
+          "required": true,
+          "description": "API authentication key for accounting software"
+        }
+      ],
       "integrity_hash": "sha256:cb5eaab51f9781c41e3f646e5fcd4ae27980da69a510e41d4991df22f84d6f10",
       "dependency_manifest": "requirements.txt",
       "dependency_provenance": [
@@ -112,7 +147,14 @@
           "recommendedGoalIds": [
             "bookkeeping",
             "quoting"
-          ]
+          ],
+          "inputSchema": {
+            "type": "object",
+            "required": ["invoice_id"],
+            "properties": {
+              "invoice_id": { "type": "string", "description": "Invoice identifier" }
+            }
+          }
         },
         {
           "id": "smb-accounting:create_invoice",
@@ -122,7 +164,15 @@
           "recommendedGoalIds": [
             "bookkeeping",
             "quoting"
-          ]
+          ],
+          "inputSchema": {
+            "type": "object",
+            "required": ["customer_id", "amount"],
+            "properties": {
+              "customer_id": { "type": "string", "description": "Customer account identifier" },
+              "amount": { "type": "number", "description": "Invoice total amount" }
+            }
+          }
         },
         {
           "id": "smb-accounting:get_account_balance",
@@ -131,7 +181,14 @@
           "risk": "read",
           "recommendedGoalIds": [
             "bookkeeping"
-          ]
+          ],
+          "inputSchema": {
+            "type": "object",
+            "required": ["account_id"],
+            "properties": {
+              "account_id": { "type": "string", "description": "Ledger account identifier" }
+            }
+          }
         }
       ],
       "config": {
@@ -158,7 +215,7 @@
       "author": "AI-Tadpole-OS Core",
       "status": "verified",
       "maintainer": "AI-Tadpole-OS Security Team",
-      "last_reviewed": "2026-09-01",
+      "last_reviewed": "2026-11-13",
       "required_env": {
         "SCALE_COM_PORT": {
           "description": "Serial communications port",
@@ -177,6 +234,36 @@
           "placeholder": "502"
         }
       },
+      "variables": [
+        {
+          "name": "SCALE_COM_PORT",
+          "type": "text",
+          "required": true,
+          "default": "COM3",
+          "description": "Serial communications port"
+        },
+        {
+          "name": "SCALE_BAUDRATE",
+          "type": "text",
+          "required": true,
+          "default": "9600",
+          "description": "Serial port baud rate"
+        },
+        {
+          "name": "MODBUS_SENSOR_IP",
+          "type": "text",
+          "required": true,
+          "default": "192.168.1.100",
+          "description": "IP address of Modbus sensor"
+        },
+        {
+          "name": "MODBUS_PORT",
+          "type": "text",
+          "required": true,
+          "default": "502",
+          "description": "Modbus TCP communication port"
+        }
+      ],
       "integrity_hash": "sha256:878b9b54ced171c23e7a4651ea68fb2e1da796178bce58c21f81d2c80cdc1341",
       "dependency_manifest": "requirements.txt",
       "dependency_provenance": [
@@ -211,7 +298,11 @@
           "recommendedGoalIds": [
             "inventory",
             "order-fulfillment"
-          ]
+          ],
+          "inputSchema": {
+            "type": "object",
+            "properties": {}
+          }
         },
         {
           "id": "hardware-edge-sensors:read_temperature_sensor",
@@ -221,7 +312,13 @@
           "recommendedGoalIds": [
             "compliance-review",
             "inventory"
-          ]
+          ],
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "register_address": { "type": "integer", "default": 100, "description": "Modbus holding register address" }
+            }
+          }
         },
         {
           "id": "hardware-edge-sensors:read_pressure_sensor",
@@ -231,7 +328,13 @@
           "recommendedGoalIds": [
             "compliance-review",
             "inventory"
-          ]
+          ],
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "register_address": { "type": "integer", "default": 200, "description": "Modbus holding register address" }
+            }
+          }
         }
       ],
       "config": {
@@ -254,15 +357,16 @@
     {
       "id": "mcp-local-log-scanner",
       "name": "Local Log Scanner & File Parser",
-      "description": "Parses structured logs and local flat files for continuous state observation.",
+      "description": "Sample reference MCP server simulating structured log parsing and flat file inspection responses.",
       "category": "System",
       "path": "mcp-blueprints/log-scanner",
       "version": "1.1.2",
       "author": "Community",
-      "status": "reviewed",
+      "status": "sample",
       "maintainer": "AI-Tadpole-OS Community Working Group",
-      "last_reviewed": "2026-09-01",
+      "last_reviewed": "2026-11-13",
       "required_env": {},
+      "variables": [],
       "integrity_hash": "sha256:0480073b9d20f65a555b5560a0b3565871aafde0faa7e1f613ea291115693e62",
       "dependency_manifest": "requirements.txt",
       "dependency_provenance": [
@@ -282,7 +386,15 @@
           "risk": "read",
           "recommendedGoalIds": [
             "compliance-review"
-          ]
+          ],
+          "inputSchema": {
+            "type": "object",
+            "required": ["query"],
+            "properties": {
+              "query": { "type": "string", "description": "Search substring" },
+              "log_dir": { "type": "string", "default": "/var/log", "description": "Target log directory" }
+            }
+          }
         },
         {
           "id": "log-scanner:tail_log",
@@ -291,7 +403,15 @@
           "risk": "read",
           "recommendedGoalIds": [
             "compliance-review"
-          ]
+          ],
+          "inputSchema": {
+            "type": "object",
+            "required": ["log_file"],
+            "properties": {
+              "log_file": { "type": "string", "description": "Path to log file" },
+              "lines": { "type": "integer", "default": 10, "description": "Number of trailing lines" }
+            }
+          }
         },
         {
           "id": "log-scanner:list_log_files",
@@ -300,7 +420,13 @@
           "risk": "read",
           "recommendedGoalIds": [
             "compliance-review"
-          ]
+          ],
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "log_dir": { "type": "string", "default": "/var/log", "description": "Target log directory" }
+            }
+          }
         }
       ],
       "config": {

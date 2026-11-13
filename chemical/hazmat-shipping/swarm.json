@@ -3,7 +3,7 @@
   "name": "Hazmat Shipping & Chemical AP Swarm",
   "version": "1.0.0",
   "description": "Chemical Sector: DOT 49 CFR dangerous goods manifests, hazmat shipping, and raw material AP.",
-  "industry": "chemical-sector",
+  "industry": "Chemical Sector",
   "tags": [
     "chemical",
     "hazmat",
@@ -13,27 +13,28 @@
     "inventory"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "specialized-hazmat-shipping-clerk",
       "path": "agents/specialized-hazmat-shipping-clerk.json",
-      "supervisor": null,
+      "supervisor": "finance-finance-bookkeeper-controller",
       "priority": "normal"
     },
     {
       "id": "purchasing-vendor-purchasing-clerk",
       "path": "agents/purchasing-vendor-purchasing-clerk.json",
-      "supervisor": null,
+      "supervisor": "finance-finance-bookkeeper-controller",
       "priority": "normal"
     },
     {
       "id": "finance-finance-bookkeeper-controller",
       "path": "agents/finance-finance-bookkeeper-controller.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     }
   ],
   "required_mcps": "mcps.json",
@@ -41,5 +42,7 @@
     "specialized-hazmat-shipping-clerk",
     "purchasing-vendor-purchasing-clerk",
     "finance-finance-bookkeeper-controller"
-  ]
+  ],
+  "id": "chemical-hazmat-shipping",
+  "maturity": "starter"
 }

@@ -24,23 +24,25 @@
       "id": "project-management-transaction-coordinator",
       "path": "agents/project-management-transaction-coordinator.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     },
     {
       "id": "sales-showing-lead-response-clerk",
       "path": "agents/sales-showing-lead-response-clerk.json",
-      "supervisor": null,
+      "supervisor": "project-management-transaction-coordinator",
       "priority": "normal"
     },
     {
       "id": "marketing-marketing-aeo-foundations",
       "path": "agents/marketing-marketing-aeo-foundations.json",
-      "supervisor": null,
+      "supervisor": "project-management-transaction-coordinator",
       "priority": "normal"
     }
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
-  }
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
+  },
+  "maturity": "starter"
 }

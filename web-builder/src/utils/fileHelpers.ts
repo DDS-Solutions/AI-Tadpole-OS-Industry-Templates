@@ -1,10 +1,12 @@
 import JSZip from 'jszip';
+import { isValidMcpGrant, normalizeMcpGrant } from './mcpGrants';
 import type { Agent, CompanyInfo, WorkflowItem, MCPConnector, MCPConfig, MCPServerConfig, SwarmDetails } from '../types';
 
 export type SwarmCompanyInfo = Pick<CompanyInfo, 'name' | 'mission' | 'size' | 'industry'> & Partial<CompanyInfo>;
 import { safeFileId } from './catalogHelpers';
-import { inferProvider } from './validation';
+import { inferProvider, resolveCanonicalIndustry } from './validation';
 import { VALID_RUNTIME_CAPABILITIES, DANGEROUS_SKILL_SET as DANGEROUS_SKILLS } from '../constants/capabilities';
+import { DEFAULT_MODEL_SLOTS, LEGACY_SKILL_LIST } from '../constants/_generatedContract';
 
 const REGISTRY_RAW_BASE = import.meta.env.VITE_RAW_BASE || 'https://raw.githubusercontent.com/DDS-Solutions/AI-Tadpole-OS-Industry-Templates/main';
 const CONNECTOR_ASSET_BASE = '.';
@@ -13,6 +15,8 @@ interface SwarmAgentReference {
   id: string;
   path: string;
   role?: string;
+  supervisor?: string | null;
+  priority?: 'critical' | 'high' | 'normal' | 'low';
 }
 
 interface AgentPayload {
@@ -40,6 +44,13 @@ interface AgentPayload {
 }
 
 interface SwarmPayload {
+  id?: string;
+  name?: string;
+  description?: string;
+  industry?: string;
+  company_size?: number;
+  maturity?: 'starter' | 'verified';
+  content_sha256?: string;
   roster?: SwarmAgentReference[];
   global_workflows?: string[];
   connector_ids?: string[];
@@ -55,7 +66,7 @@ const safeRepoPath = (value: string): string => {
   return parts.join('/');
 };
 
-const LEGACY_SKILLS = new Set(['run_command', 'write_to_file']);
+const LEGACY_SKILLS = new Set<string>(LEGACY_SKILL_LIST);
 
 const validatedSkills = (skills: string[] | undefined): string[] => {
   const normalized = Array.from(new Set((skills || ['read_file']).map(skill => skill.trim()).filter(Boolean)));
@@ -132,10 +143,93 @@ const loadConnectorAssets = async (
     const source = await (
       await responseOrThrow(`${CONNECTOR_ASSET_BASE}/${connectorPath}/server.py`, `${connector.name} server source`)
     ).text();
+    if (connector.integrity_hash && connector.integrity_hash.trim() !== '') {
+      const actualHex = await sha256Hex(new TextEncoder().encode(source));
+      const actualDigest = `sha256:${actualHex}`;
+      if (actualDigest !== connector.integrity_hash.toLowerCase()) {
+        throw new Error(
+          `Integrity verification failed for connector "${connector.name}": expected ${connector.integrity_hash}, got ${actualDigest}.`,
+        );
+      }
+    }
     zip.file(archiveServerPath, source);
   }
   return { mcpServers: rewritten };
 };
+
+export function normalizeCanonicalBytes(input: Uint8Array | string): Uint8Array {
+  if (typeof input === 'string') {
+    return new TextEncoder().encode(input.replace(/\r\r\n/g, '\n').replace(/\r\n/g, '\n'));
+  }
+  const out: number[] = [];
+  for (let i = 0; i < input.length; i += 1) {
+    if (input[i] === 13 && input[i + 1] === 13 && input[i + 2] === 10) {
+      out.push(10);
+      i += 2;
+    } else if (input[i] === 13 && input[i + 1] === 10) {
+      out.push(10);
+      i += 1;
+    } else {
+      out.push(input[i]);
+    }
+  }
+  return new Uint8Array(out);
+}
+
+function stableJsonSort(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    return value.map(stableJsonSort);
+  }
+  if (value !== null && typeof value === 'object') {
+    const record = value as Record<string, unknown>;
+    const sorted: Record<string, unknown> = {};
+    for (const key of Object.keys(record).sort()) {
+      sorted[key] = stableJsonSort(record[key]);
+    }
+    return sorted;
+  }
+  return value;
+}
+
+export async function sha256Hex(bytes: Uint8Array): Promise<string> {
+  const copy = new Uint8Array(bytes.byteLength);
+  copy.set(bytes);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', copy.buffer);
+  return Array.from(new Uint8Array(hashBuffer))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+async function canonicalFileBytes(relPath: string, rawBytes: Uint8Array): Promise<Uint8Array> {
+  const normalized = normalizeCanonicalBytes(rawBytes);
+  if (relPath === 'swarm.json') {
+    try {
+      const parsed = JSON.parse(new TextDecoder().decode(normalized));
+      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+        const canonicalObj = { ...(parsed as Record<string, unknown>) };
+        delete canonicalObj.content_sha256;
+        return new TextEncoder().encode(JSON.stringify(stableJsonSort(canonicalObj)));
+      }
+    } catch {
+      // Fall through to raw normalized bytes
+    }
+  }
+  return normalized;
+}
+
+export async function computeTemplateDigestFromMap(files: Record<string, Uint8Array | string>): Promise<string> {
+  const relPaths = Object.keys(files).sort();
+  const lines: string[] = [];
+  for (const rel of relPaths) {
+    const raw = files[rel];
+    const rawBytes = typeof raw === 'string' ? new TextEncoder().encode(raw) : raw;
+    const canonical = await canonicalFileBytes(rel, rawBytes);
+    const hex = await sha256Hex(canonical);
+    lines.push(`${rel}\0${hex}`);
+  }
+  const payload = new TextEncoder().encode(lines.join('\n'));
+  return `sha256:${await sha256Hex(payload)}`;
+}
 
 export const buildSwarmZip = async (
   companyInfo: SwarmCompanyInfo,
@@ -186,12 +280,36 @@ export const buildSwarmZip = async (
 
   const parsedSize = Number.parseInt(companyInfo.size, 10);
   const companySize = Number.isFinite(parsedSize) && parsedSize > 0 ? parsedSize : 25;
-  const roster = agents.map(agent => ({
-    id: safeFileId(agent.id),
-    path: `agents/${safeFileId(agent.id)}.json`,
-    role: agent.role.trim() || 'Specialist',
-  }));
+  const canonicalIndustry = resolveCanonicalIndustry(companyInfo.industry) || companyInfo.industry.trim();
 
+  const normalizedAgentIds = agents.map(a => safeFileId(a.id));
+  const explicitNullRootIdx = agents.findIndex(a => a.supervisor === null);
+  const criticalUnassignedRootIdx = agents.findIndex(a => a.supervisor === undefined && a.priority === 'critical');
+  const firstUnassignedIdx = agents.findIndex(a => a.supervisor === undefined);
+  const rootIdx = explicitNullRootIdx >= 0
+    ? explicitNullRootIdx
+    : criticalUnassignedRootIdx >= 0
+    ? criticalUnassignedRootIdx
+    : firstUnassignedIdx >= 0
+    ? firstUnassignedIdx
+    : 0;
+  const defaultRootId = normalizedAgentIds[rootIdx];
+  const roster = agents.map((agent, index) => {
+    const id = normalizedAgentIds[index];
+    const hasExplicitSupervisor = agent.supervisor !== undefined;
+    const supervisor = hasExplicitSupervisor
+      ? (typeof agent.supervisor === 'string' && agent.supervisor.trim() ? safeFileId(agent.supervisor) : null)
+      : (id === defaultRootId ? null : defaultRootId);
+    const priority = agent.priority || (supervisor === null ? 'critical' : 'normal');
+    return {
+      id,
+      path: `agents/${id}.json`,
+      supervisor,
+      priority,
+    };
+  });
+
+  const isFlatPeerSwarm = roster.length > 1 && roster.every(r => r.supervisor === null);
   const swarmJson: Record<string, unknown> = {
     $schema: 'https://tadpoleos.dev/schemas/swarm-v1.json',
     id: safeFileId(companyInfo.name),
@@ -199,10 +317,19 @@ export const buildSwarmZip = async (
     version: '1.0.0',
     author: companyInfo.name.trim(),
     description: companyInfo.mission.trim(),
-    industry: companyInfo.industry.toLowerCase(),
+    industry: canonicalIndustry,
+    maturity: 'starter',
     tags: companyInfo.goals || [],
     company_size: companySize,
-    defaults: { model: 'gemma4:31b' },
+    ...(isFlatPeerSwarm ? { flat_peer_swarm: true } : {}),
+    defaults: {
+      provider: DEFAULT_MODEL_SLOTS.primary.provider,
+      model: DEFAULT_MODEL_SLOTS.primary.model_id,
+      temperature: DEFAULT_MODEL_SLOTS.primary.temperature,
+      model_config: { ...DEFAULT_MODEL_SLOTS.primary },
+      model_config2: { ...DEFAULT_MODEL_SLOTS.planning },
+      model_config3: { ...DEFAULT_MODEL_SLOTS.execution },
+    },
     roster,
     global_workflows: standardWorkflows.map(workflow => `workflows/${safeFileId(workflow.id)}.md`),
     required_mcps: 'mcps.json',
@@ -223,7 +350,7 @@ export const buildSwarmZip = async (
   const agentsFolder = zip.folder('agents');
   for (const agent of agents) {
     const id = safeFileId(agent.id);
-    const modelId = agent.model || 'gemma4:31b';
+    const modelId = agent.model || DEFAULT_MODEL_SLOTS.primary.model_id;
     const agentWorkflows = (agent.workflows || []).map(safeFileId);
 
     // Reject OKF playbooks referenced as agent workflows
@@ -246,12 +373,10 @@ export const buildSwarmZip = async (
       if (grant.endsWith(':*') || grant === '*') {
         throw new Error(`Agent "${agent.name}" contains wildcard MCP grant "${grant}". Wildcards are prohibited.`);
       }
-      const canonical = grant.includes(':')
-        ? grant
-        : grant.startsWith('mcp__')
-        ? grant.replace('mcp__', '').replace('__', ':')
-        : grant;
-      canonicalGrants.push(canonical);
+      if (!isValidMcpGrant(grant)) {
+        throw new Error(`Agent "${agent.name}" contains invalid MCP grant "${grant}". Expected server:tool or mcp__server__tool format.`);
+      }
+      canonicalGrants.push(normalizeMcpGrant(grant));
     }
 
     const hasMutatingToolGrant = canonicalGrants.some(grant => {
@@ -270,7 +395,11 @@ export const buildSwarmZip = async (
         provider: agent.provider || inferProvider(modelId),
         model_id: modelId,
         system_prompt: agent.prompt.trim(),
+        temperature: DEFAULT_MODEL_SLOTS.primary.temperature,
+        max_turns: DEFAULT_MODEL_SLOTS.primary.max_turns,
       },
+      model_config2: { ...DEFAULT_MODEL_SLOTS.planning },
+      model_config3: { ...DEFAULT_MODEL_SLOTS.execution },
       skills,
       workflows: agentWorkflows,
       mcp_tools: Array.from(new Set(canonicalGrants)),
@@ -328,15 +457,21 @@ export const buildSwarmZip = async (
   }
 
   if (okfPlaybooks.length > 0) {
-    const knowledgeJson = okfPlaybooks.map(workflow => ({
-      title: workflow.name,
-      description: workflow.description.slice(0, 200),
-      topic: workflow.topic?.trim() || companyInfo.industry.toLowerCase() || 'general',
-      concept_type: workflow.conceptType || 'playbook',
-      resource_uri: workflow.resourceUri || undefined,
-      tags: workflow.tags || companyInfo.industry.toLowerCase() || 'general',
-      text: workflow.description,
-    }));
+    const knowledgeJson = okfPlaybooks.map(workflow => {
+      const parsedTags = workflow.tags
+        ? workflow.tags.split(',').map(t => t.trim()).filter(Boolean)
+        : [];
+      const fallbackTag = companyInfo.industry.trim().toLowerCase() || 'general';
+      return {
+        title: workflow.name,
+        description: workflow.description.slice(0, 200),
+        topic: workflow.topic?.trim() || companyInfo.industry.toLowerCase() || 'general',
+        concept_type: workflow.conceptType || 'playbook',
+        resource_uri: workflow.resourceUri || undefined,
+        tags: parsedTags.length > 0 ? parsedTags : [fallbackTag],
+        text: workflow.description,
+      };
+    });
     zip.file('knowledge.json', JSON.stringify(knowledgeJson, null, 2));
 
     const knowledgeFolder = zip.folder('knowledge');
@@ -364,6 +499,7 @@ export const buildSwarmZip = async (
     }
   }
 
+  zip.file('swarm.json', JSON.stringify(swarmJson, null, 2));
   const contentSha256 = await computeArchiveDigest(zip);
   swarmJson.content_sha256 = contentSha256;
   zip.file('swarm.json', JSON.stringify(swarmJson, null, 2));
@@ -372,28 +508,12 @@ export const buildSwarmZip = async (
 };
 
 export async function computeArchiveDigest(zip: JSZip): Promise<string> {
-  const fileEntries: Array<{ name: string; content: string }> = [];
-  const files = Object.keys(zip.files).filter(name => !zip.files[name].dir && name !== 'swarm.json');
-  files.sort();
-
+  const files = Object.keys(zip.files).filter(name => !zip.files[name].dir);
+  const fileMap: Record<string, Uint8Array> = {};
   for (const name of files) {
-    const text = await zip.file(name)!.async('string');
-    const normalized = text.replace(/\r\n/g, '\n');
-    const bytes = new TextEncoder().encode(normalized);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', bytes);
-    const hashHex = Array.from(new Uint8Array(hashBuffer))
-      .map(b => b.toString(16).padStart(2, '0'))
-      .join('');
-    fileEntries.push({ name, content: hashHex });
+    fileMap[name] = await zip.file(name)!.async('uint8array');
   }
-
-  const manifest = fileEntries.map(e => `${e.name}\0${e.content}`).join('\n');
-  const manifestBytes = new TextEncoder().encode(manifest);
-  const manifestHashBuffer = await crypto.subtle.digest('SHA-256', manifestBytes);
-  const manifestHex = Array.from(new Uint8Array(manifestHashBuffer))
-    .map(b => b.toString(16).padStart(2, '0'))
-    .join('');
-  return `sha256:${manifestHex}`;
+  return computeTemplateDigestFromMap(fileMap);
 }
 
 export const exportSwarmZip = async (
@@ -434,7 +554,7 @@ export const fetchSwarmDetailsFromRepo = async (
     if (!agentRes.ok) throw new Error(`Failed to fetch agent ${reference.id}`);
     const details = await agentRes.json() as AgentPayload;
     for (const workflowId of details.workflows || []) workflowReferences.add(workflowPathForId(workflowId));
-    const modelId = details.model_config?.model_id || details.model_id || details.model || 'gemma4:31b';
+    const modelId = details.model_config?.model_id || details.model_id || details.model || DEFAULT_MODEL_SLOTS.primary.model_id;
     return {
       id: details.id || reference.id,
       name: details.name || reference.id,
@@ -452,6 +572,8 @@ export const fetchSwarmDetailsFromRepo = async (
       emoji: details.emoji || '🤖',
       color: details.color || '#3B82F6',
       vibe: details.vibe || '',
+      ...(reference.supervisor !== undefined ? { supervisor: reference.supervisor } : {}),
+      ...(reference.priority ? { priority: reference.priority } : {}),
     } satisfies Agent;
   }));
 
@@ -503,6 +625,11 @@ export const fetchSwarmDetailsFromRepo = async (
         knowledge = parsed;
         for (const item of parsed) {
           if (typeof item.title === 'string' && item.title) {
+            const importedTags = Array.isArray(item.tags)
+              ? item.tags.filter((t): t is string => typeof t === 'string' && t.trim().length > 0).map(t => t.trim()).join(', ')
+              : typeof item.tags === 'string'
+              ? item.tags
+              : undefined;
             workflows.push({
               id: safeFileId(item.title),
               name: item.title,
@@ -511,7 +638,7 @@ export const fetchSwarmDetailsFromRepo = async (
               resourceUri: typeof item.resource_uri === 'string' ? item.resource_uri : undefined,
               topic: typeof item.topic === 'string' ? item.topic : undefined,
               conceptType: typeof item.concept_type === 'string' ? item.concept_type : undefined,
-              tags: typeof item.tags === 'string' ? item.tags : undefined,
+              tags: importedTags || undefined,
             });
           }
         }

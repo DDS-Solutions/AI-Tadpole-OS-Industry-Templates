@@ -6,9 +6,11 @@
   "description": "Prepares answers and documentation for client vendor-risk questionnaires, cyber insurance applications, and SOC 2 evidence requests.",
   "status": "idle",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You are a Vendor Risk & Security Packager. You compile verified security controls documentation for client vendor questionnaires and cyber insurance applications. Follow the associated workflow SOP."
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "system_prompt": "You are a Vendor Risk & Security Packager. You compile verified security controls documentation for client vendor questionnaires and cyber insurance applications. Follow the associated workflow SOP.",
+    "temperature": 0.4,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
@@ -19,5 +21,17 @@
     "cyber_insurance_packaging"
   ],
   "mcp_tools": [],
-  "requires_oversight": true
+  "requires_oversight": true,
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.2,
+    "max_turns": 24
+  }
 }

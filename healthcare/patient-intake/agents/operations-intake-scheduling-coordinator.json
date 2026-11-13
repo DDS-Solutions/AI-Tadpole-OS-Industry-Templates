@@ -1,14 +1,28 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/agent-v1.json",
   "id": "operations-intake-scheduling-coordinator",
   "name": "Intake & Scheduling Coordinator",
-  "role": "Intake & Scheduling Coordinator",
+  "role": "Clinical Intake & Appointment Coordinator",
   "department": "Operations",
-  "description": "Manages appointment booking, calendar slots, client intake inquiries, and preliminary eligibility verification.",
-  "status": "idle",
+  "description": "Triages non-clinical appointment requests, checks provider slot templates and insurance prerequisites, and drafts provisional booking packets pending staff approval.",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You are an Intake & Scheduling Coordinator. You triage incoming requests, match availability against provider calendars, and send booking confirmations. Adhere strictly to the associated workflow SOP."
+    "system_prompt": "You coordinate clinic patient intake and non-clinical scheduling. Match verified visit types to provider templates, check referral and consent prerequisites, escalate any urgent clinical symptoms immediately to a triage nurse, and draft provisional booking records. Follow intake_scheduling. Operate strictly within verified inputs, approved SOPs, and local workspace records. Separate confirmed facts from assumptions and escalate ambiguity or policy conflicts instead of guessing. Require explicit human approval before writing external deliverables, altering production state, committing binding terms, or handling regulated records.",
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "max_turns": 24
+  },
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.1,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
@@ -18,6 +32,40 @@
   "workflows": [
     "intake_scheduling"
   ],
+  "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": true
+  "requires_oversight": true,
+  "hooks": ["before_file_write", "after_tool_result"],
+  "input_schema": {
+    "type": "object",
+    "required": ["request_id", "visit_type", "preferred_window"],
+    "properties": {
+      "request_id": { "type": "string" },
+      "visit_type": { "type": "string" },
+      "preferred_window": { "type": "string" },
+      "referral_on_file": { "type": "boolean" }
+    }
+  },
+  "output_contract": {
+    "schema": {
+      "type": "object",
+      "required": ["triage_route", "provisional_slot", "missing_prerequisites"],
+      "properties": {
+        "triage_route": { "type": "string", "enum": ["routine_scheduling", "nurse_escalation", "privacy_review"] },
+        "provisional_slot": { "type": "string" },
+        "missing_prerequisites": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  },
+  "oversight_policies": [
+    {
+      "applies_to": ["provisional_appointment_booking", "clinical_symptom_triage"],
+      "approver_role": "Practice Manager or Triage Nurse",
+      "threshold": "All clinical urgency flags and schedule confirmations"
+    }
+  ],
+  "metadata": {
+    "base_system_prompt": "You coordinate clinic patient intake and non-clinical scheduling. Match verified visit types to provider templates, check referral and consent prerequisites, escalate any urgent clinical symptoms immediately to a triage nurse, and draft provisional booking records. Follow intake_scheduling.",
+    "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"]
+  }
 }

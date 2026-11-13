@@ -3,7 +3,7 @@
   "name": "Tax Compliance & Client Onboarding",
   "version": "1.0.0",
   "description": "Financial Operations: Tax packet collection, KYC onboarding checklists, and quarterly tax estimate prep.",
-  "industry": "financial-services",
+  "industry": "Financial Services",
   "tags": [
     "finance",
     "tax",
@@ -11,26 +11,27 @@
     "synthesis"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "support-client-document-coordinator",
       "path": "agents/support-client-document-coordinator.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     },
     {
       "id": "specialized-kyc-onboarding-specialist",
       "path": "agents/specialized-kyc-onboarding-specialist.json",
-      "supervisor": null,
+      "supervisor": "support-client-document-coordinator",
       "priority": "normal"
     },
     {
       "id": "finance-finance-fpa-analyst",
       "path": "agents/finance-finance-fpa-analyst.json",
-      "supervisor": null,
+      "supervisor": "support-client-document-coordinator",
       "priority": "normal"
     }
   ],
@@ -39,5 +40,7 @@
     "support-client-document-coordinator",
     "specialized-kyc-onboarding-specialist",
     "finance-finance-fpa-analyst"
-  ]
+  ],
+  "id": "financial-policy-synthesizer",
+  "maturity": "starter"
 }

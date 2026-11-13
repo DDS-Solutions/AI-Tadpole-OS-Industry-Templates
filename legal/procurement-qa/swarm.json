@@ -3,7 +3,7 @@
   "name": "Law Firm Time & Billing Operations",
   "version": "1.0.0",
   "description": "Legal Operations: Attorney time entry audit, realization tracking, and retainer invoicing.",
-  "industry": "legal-services",
+  "industry": "Legal Services",
   "tags": [
     "law",
     "purchasing",
@@ -11,20 +11,21 @@
     "vendor-compliance"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "finance-time-billing-coder",
       "path": "agents/finance-time-billing-coder.json",
-      "supervisor": null,
+      "supervisor": "specialized-legal-client-intake",
       "priority": "normal"
     },
     {
       "id": "finance-ar-collections-specialist",
       "path": "agents/finance-ar-collections-specialist.json",
-      "supervisor": null,
+      "supervisor": "specialized-legal-client-intake",
       "priority": "normal"
     },
     {
@@ -39,5 +40,7 @@
     "finance-time-billing-coder",
     "finance-ar-collections-specialist",
     "specialized-legal-client-intake"
-  ]
+  ],
+  "id": "legal-procurement-qa",
+  "maturity": "starter"
 }

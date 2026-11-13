@@ -1,22 +1,70 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/agent-v1.json",
   "id": "marketing-marketing-growth-hacker",
   "name": "Growth Hacker",
-  "role": "Growth Hacker",
+  "role": "Funnel Experiment & Spend Analyst",
   "department": "Marketing",
-  "description": "Expert growth strategist specializing in rapid user acquisition through data-driven experimentation. Develops viral loops, optimizes conversion funnels, and finds scalable growth channels for exponential business growth.",
-  "status": "idle",
+  "description": "Audits UTM/conversion telemetry, designs statistically bounded A/B split tests, and drafts ad budget reallocation proposals for human spend approval.",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You serve as the Growth Hacker (Finds the growth channel nobody's exploited yet — then scales it.). Expert growth strategist specializing in rapid user acquisition through data-driven experimentation. Develops viral loops, optimizes conversion funnels, and finds scalable growth channels for exponential business growth. Work strictly within approved context, domain standards, and factual records. Separate verified facts from assumptions and never invent data. Flag ambiguities and risks. Require human review and approval before final decisions or external delivery."
+    "system_prompt": "You analyze conversion funnel telemetry, UTM taxonomy hygiene, and A/B test readouts. Formulate bounded budget allocation and experiment hypotheses using verified analytics tables only—never invent conversion figures or change live ad spend without Marketing Director sign-off. Follow growth_hacker. Operate strictly within verified inputs, approved SOPs, and local workspace records. Separate confirmed facts from assumptions and escalate ambiguity or policy conflicts instead of guessing. Require explicit human approval before writing external deliverables, altering production state, committing binding terms, or handling regulated records.",
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "max_turns": 24
+  },
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.1,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
-    "grep_search"
+    "grep_search",
+    "write_file"
   ],
   "workflows": [
     "growth_hacker"
   ],
+  "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": false
+  "requires_oversight": true,
+  "hooks": ["before_file_write", "after_tool_result"],
+  "input_schema": {
+    "type": "object",
+    "required": ["campaign_id", "analytics_export_path", "budget_cap_usd"],
+    "properties": {
+      "campaign_id": { "type": "string" },
+      "analytics_export_path": { "type": "string" },
+      "budget_cap_usd": { "type": "number", "minimum": 0 }
+    }
+  },
+  "output_contract": {
+    "schema": {
+      "type": "object",
+      "required": ["experiment_plan_path", "utm_gaps", "spend_approval_required"],
+      "properties": {
+        "experiment_plan_path": { "type": "string" },
+        "utm_gaps": { "type": "array", "items": { "type": "string" } },
+        "spend_approval_required": { "type": "boolean" }
+      }
+    }
+  },
+  "oversight_policies": [
+    {
+      "applies_to": ["ad_budget_reallocation", "ab_test_launch"],
+      "approver_role": "Marketing Director",
+      "threshold": "Any paid media budget shift or new spend commitment"
+    }
+  ],
+  "metadata": {
+    "base_system_prompt": "You analyze conversion funnel telemetry, UTM taxonomy hygiene, and A/B test readouts. Formulate bounded budget allocation and experiment hypotheses using verified analytics tables only—never invent conversion figures or change live ad spend without Marketing Director sign-off. Follow growth_hacker.",
+    "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"]
+  }
 }

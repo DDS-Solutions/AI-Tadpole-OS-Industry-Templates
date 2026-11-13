@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tadpoleos.dev/schemas/mcp-registry-v1.json",
+  "title": "AI-Tadpole-OS MCP Connector Registry Schema",
+  "type": "object",
+  "required": ["version", "connectors"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "version": { "type": "string", "const": "2.0.0" },
+    "connectors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "description", "category", "path", "version", "status", "tools", "config"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "minLength": 1 },
+          "description": { "type": "string", "minLength": 1 },
+          "category": { "type": "string", "minLength": 1 },
+          "path": { "type": "string", "minLength": 1 },
+          "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+(?:[-+][A-Za-z0-9.-]+)?$" },
+          "author": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["verified", "reviewed", "experimental", "quarantined", "sample"]
+          },
+          "maintainer": { "type": "string" },
+          "last_reviewed": { "type": "string" },
+          "integrity_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "required_env": { "type": "object" },
+          "variables": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "type", "required", "description"],
+              "properties": {
+                "name": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]*$" },
+                "type": { "type": "string", "enum": ["text", "secret"] },
+                "required": { "type": "boolean" },
+                "default": { "type": "string" },
+                "description": { "type": "string", "minLength": 1 }
+              }
+            }
+          },
+          "dependency_manifest": { "type": "string" },
+          "dependency_provenance": { "type": "array" },
+          "tools": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["id", "name", "description", "risk"],
+              "properties": {
+                "id": { "type": "string", "pattern": "^[^:*]+:[^:*]+$" },
+                "name": { "type": "string", "minLength": 1 },
+                "description": { "type": "string", "minLength": 1 },
+                "risk": { "type": "string", "enum": ["read", "write", "execute"] },
+                "recommendedGoalIds": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                },
+                "inputSchema": { "type": "object" }
+              }
+            }
+          },
+          "config": { "$ref": "mcps-v1.json" }
+        }
+      }
+    }
+  }
+}
+

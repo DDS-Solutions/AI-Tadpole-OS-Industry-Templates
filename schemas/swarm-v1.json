@@ -4,30 +4,43 @@
   "title": "AI-Tadpole-OS Swarm Manifest Schema",
   "type": "object",
   "required": ["name", "description", "industry", "roster"],
+  "additionalProperties": false,
   "properties": {
     "$schema": {
       "type": "string"
     },
     "id": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "version": {
-      "type": "string"
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(?:[-+][A-Za-z0-9.-]+)?$"
     },
     "author": {
       "type": "string"
     },
     "description": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "mission": {
       "type": "string"
     },
     "industry": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
+    },
+    "maturity": {
+      "type": "string",
+      "enum": ["starter", "verified"]
+    },
+    "flat_peer_swarm": {
+      "type": "boolean"
     },
     "tags": {
       "type": "array",
@@ -44,12 +57,47 @@
     },
     "defaults": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
         "model": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         },
         "temperature": {
-          "type": "number"
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "model_config": {
+          "type": "object",
+          "properties": {
+            "provider": { "type": "string", "minLength": 1 },
+            "model_id": { "type": "string", "minLength": 1 },
+            "temperature": { "type": "number", "minimum": 0, "maximum": 2 },
+            "max_turns": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "model_config2": {
+          "type": "object",
+          "properties": {
+            "provider": { "type": "string", "minLength": 1 },
+            "model_id": { "type": "string", "minLength": 1 },
+            "temperature": { "type": "number", "minimum": 0, "maximum": 2 },
+            "max_turns": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "model_config3": {
+          "type": "object",
+          "properties": {
+            "provider": { "type": "string", "minLength": 1 },
+            "model_id": { "type": "string", "minLength": 1 },
+            "temperature": { "type": "number", "minimum": 0, "maximum": 2 },
+            "max_turns": { "type": "integer", "minimum": 1 }
+          }
         }
       }
     },
@@ -64,15 +112,19 @@
     },
     "roster": {
       "type": "array",
+      "minItems": 1,
       "items": {
         "type": "object",
         "required": ["id", "path"],
+        "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,64}$"
           },
           "path": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "supervisor": {
             "type": ["string", "null"]
@@ -98,6 +150,73 @@
       "items": {
         "type": "string"
       }
+    },
+    "variables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "type", "required", "description"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]*$" },
+          "type": { "type": "string", "enum": ["text", "secret"] },
+          "required": { "type": "boolean" },
+          "scoped": { "type": "string" },
+          "default": { "type": "string" },
+          "description": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "oversight_policies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["applies_to", "approver_role"],
+        "properties": {
+          "applies_to": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" }
+          },
+          "approver_role": { "type": "string", "minLength": 1 },
+          "threshold": { "type": "string" },
+          "gate_agent": { "type": "string" }
+        }
+      }
+    },
+    "disclosure": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "capabilities": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "mcp_grants": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "oversight_gates": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "egress_origins": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "prompt_includes": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "evals_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "content_sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
     }
   }
 }

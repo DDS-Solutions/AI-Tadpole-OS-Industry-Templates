@@ -10,14 +10,14 @@ Official community repository for AI-Tadpole-OS. Download, share, and install in
 Don't want to start from scratch? Use our **[Swarm Architect](https://dds-solutions.github.io/AI-Tadpole-OS-Industry-Templates/)** to design, review, and export contract-validated multi-agent swarms.
 
 *   **Dual-Experience Builder**:
-    *   **Guided Setup (Business Owners & Operators)**: A plain-language workflow. Describe your business and goals, receive a deterministic recommended team with clear operational boundaries (*What it reads, What it prepares, What requires approval*), connect verified business tools, review governance, and export a ready-to-run package.
-    *   **Advanced Setup (Developers & Administrators)**: Granular technical control over agent runtime prompts, model configurations (`gemma4:31b`), capabilities (`read_file`, `write_file`, `grep_search`, `execute_shell`, `search_web`), raw/structured playbook editors, MCP server parameters, and live contract diagnostics.
+    *   **Guided Setup (Business Owners & Operators)**: A plain-language workflow. Describe your business and goals, receive a deterministic recommended team with clear operational boundaries (*What it reads, What it prepares, What requires approval*), inspect the pre-export **"What This Swarm Can Do"** capability & egress disclosure, connect verified business tools, and export a ready-to-run package.
+    *   **Advanced Setup (Developers & Administrators)**: Granular technical control over agent runtime prompts, multi-slot model configurations (`ollama-cloud` / `gemma4:31b-cloud` primary & planning slots; `ollama` / `gemma4:e4b` execution slot), capabilities (`read_file`, `write_file`, `grep_search`, `execute_shell`, `shell`, `terminal`, `search_web`), supervisor/priority DAG hierarchy, raw/structured playbook editors, MCP server parameters, and live contract diagnostics.
 *   **Unified State & Bidirectional Switching**: Switch between Guided and Advanced modes at any time without losing configuration state.
 *   **Draft Recovery**: Non-sensitive blueprint state is persisted automatically to browser local storage, with clear session recovery and discard controls.
 *   **Curated 342-Persona Catalog**: All 342 catalog personas feature validated `runtimePrompt` definitions (&le; 800 chars) with explicit domain guardrails, SMB operational competencies, and human review requirements.
-*   **Dual-Plane Sovereign Hierarchy**: Rigorous structural separation between Plane 1 (Engine-Maintenance / Sovereign self-governance) and Plane 2 (`Plane 2: SMB-Digital-Twin` practice companies `Mock-1-Product` and `Mock-2-Service`). Enforces the FR-11 Dual-Plane Permission Firewall forbidding shell execution or destructive tools on Plane 2 personas with mandatory human oversight.
-*   **81 Pre-Configured Templates**: 81 public industry swarms across 38 sectors, composed of 246 installable agent profile files across 134 distinct persona specializations.
-*   **AI-Tadpole-OS Contract Validation**: Live continuous checking guarantees model inference compatibility, capability safety, workflow reference integrity, and agent-level `requires_oversight` enforcement.
+*   **Dual-Plane Permission Firewall**: Personas marked with `Plane 2: SMB-Digital-Twin` are blocked from `execute_shell`, `shell`, `terminal`, or `delete_file` capabilities and must declare `requires_oversight: true`.
+*   **81 Pre-Configured Public Templates (+1 Internal Smoke Fixture)**: 81 public industry swarms (12 `verified` flagships + 69 `starter` packs) across 38 canonical industries, composed of 246 installable agent profile files, plus [llms.txt](llms.txt) and [llms-full.txt](llms-full.txt) indexes.
+*   **AI-Tadpole-OS Contract Validation**: Continuous schema (`schemas/*.json`), DAG roster, canonical `content_sha256` digest, prompt fragment compiler (`compile_prompt_fragments.py`), and declarative eval (`run_template_evals.py`) checks aligned with `AI-TadPole-OS` v1.1.464.
 
 ---
 
@@ -143,19 +143,23 @@ See [wiki/Security-Policy.md](wiki/Security-Policy.md) for the exact enforced co
 We welcome contributions from industry experts! If you have built an incredibly efficient Swarm for your specific business niche, share it with the community.
 
 > [!IMPORTANT]
-> This registry supports [AI-Tadpole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS), but private `DDS-Solutions/TadPole-OS` is the authoritative source contract. Any implementation changing schemas, validators, archives, MCP packaging, workflows, security claims, or migrations must start with a read-only cross-repository contract audit and record the private upstream commit. See the [Cross-Repository Audit Remediation Plan](AUDIT_REMEDIATION_PLAN.md).
+> This registry targets [AI-Tadpole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS) (pinned release `v1.1.464`, commit `2dfc14f1bc52`). Any change to schemas, validators, archives, MCP packaging, workflows, security claims, or migrations must keep the shared `schemas/capabilities-contract.json` codegen and consumer compatibility contract in sync.
 
 The current compatibility review is pinned in [COMPATIBILITY_MATRIX.md](COMPATIBILITY_MATRIX.md). Update that matrix whenever the reviewed consumer revision or accepted contract changes.
 
 1. Fork this repository.
 2. Create a new folder under your relevant industry (or create a new industry).
-3. Ensure your template passes the [TEMPLATE_SPEC.md](TEMPLATE_SPEC.md) requirements.
+3. Ensure your template passes the [TEMPLATE_SPEC.md](TEMPLATE_SPEC.md) requirements and strict JSON schemas in `schemas/`.
 4. Run the local validators to audit your template structure:
    ```bash
-   # Verify compatibility lockfile, check for pending migrations, and validate registry assets
+   # Verify contract codegen, compatibility lockfile, compiled prompts, migrations, evals, and templates
+   python scripts/codegen_contract.py --check
    python scripts/verify_compatibility_lock.py --check
+   python scripts/compile_prompt_fragments.py --check
    python scripts/migrate_consumer_contract.py --check
    python scripts/validate_template.py
+   python scripts/run_template_evals.py --check
+   python scripts/generate_llms_docs.py --check
 
    # Run contract and characterization test suites
    python -m unittest discover -s tests -p "test_*.py"

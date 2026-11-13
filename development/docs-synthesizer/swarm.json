@@ -3,7 +3,7 @@
   "name": "Studio Delivery & Release Desk",
   "version": "1.0.0",
   "description": "Software Studio: Client ticket triage, changelog release writing, and scope change-order drafting.",
-  "industry": "software-development",
+  "industry": "Software Development",
   "tags": [
     "development",
     "api",
@@ -11,26 +11,27 @@
     "synthesis"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "project-management-ticket-triage-pm",
       "path": "agents/project-management-ticket-triage-pm.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     },
     {
       "id": "support-customer-release-writer",
       "path": "agents/support-customer-release-writer.json",
-      "supervisor": null,
+      "supervisor": "project-management-ticket-triage-pm",
       "priority": "normal"
     },
     {
       "id": "sales-quote-proposal-drafter",
       "path": "agents/sales-quote-proposal-drafter.json",
-      "supervisor": null,
+      "supervisor": "project-management-ticket-triage-pm",
       "priority": "normal"
     }
   ],
@@ -39,5 +40,7 @@
     "project-management-ticket-triage-pm",
     "support-customer-release-writer",
     "sales-quote-proposal-drafter"
-  ]
+  ],
+  "id": "development-docs-synthesizer",
+  "maturity": "starter"
 }

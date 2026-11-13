@@ -42,7 +42,7 @@ describe('Swarm Architect archive contract', () => {
     expect(swarm.content_sha256).toMatch(/^sha256:[a-f0-9]{64}$/);
     expect(swarm.$schema).toBe('https://tadpoleos.dev/schemas/swarm-v1.json');
     expect(swarm.roster).toEqual([
-      { id: 'review-agent', path: 'agents/review-agent.json', role: 'Reviewer' },
+      { id: 'review-agent', path: 'agents/review-agent.json', supervisor: null, priority: 'critical' },
     ]);
     expect(agentJson).toMatchObject({
       id: 'review-agent',
@@ -517,5 +517,101 @@ describe('Swarm Architect archive contract', () => {
     expect(mcpJson.mcpServers['cloud-crm'].protocol_version).toBe('2026-07-28');
     // Ensure no unnecessary skills/ server.py was bundled
     expect(zip.file('skills/cloud-crm-server.py')).toBeNull();
+  });
+
+  it('computes canonical digest ignoring swarm.content_sha256 and fails closed on connector hash mismatch', async () => {
+    const { computeTemplateDigestFromMap } = await import('./fileHelpers');
+    const a = await computeTemplateDigestFromMap({
+      'swarm.json': JSON.stringify({ id: 'demo', name: 'Demo', content_sha256: 'sha256:' + '0'.repeat(64) }),
+      'workflows/step.md': 'line1\r\nline2\n',
+    });
+    const b = await computeTemplateDigestFromMap({
+      'workflows/step.md': 'line1\nline2\n',
+      'swarm.json': JSON.stringify({ name: 'Demo', id: 'demo' }),
+    });
+    expect(a).toBe(b);
+    expect(a).toBe('sha256:e1cc14e41ebee6b8e97532f2fb31a945713f5f3b1f626e8039df650200405394');
+  });
+
+  it('rejects tampered stdio connector source when integrity_hash mismatches', async () => {
+    const tamperedConnector: MCPConnector = {
+      id: 'tampered-crm',
+      name: 'Tampered CRM',
+      category: 'Data',
+      description: 'CRM server',
+      version: '1.0.0',
+      path: 'connectors/tampered-crm',
+      integrity_hash: 'sha256:' + 'f'.repeat(64),
+      tools: [{ id: 'tampered-crm:read', name: 'Read', description: 'Read', risk: 'read' }],
+      config: { mcpServers: { 'tampered-crm': { command: 'python', args: ['server.py'] } } },
+    };
+    const agentWithMcp: Agent = { ...agent, mcpTools: ['tampered-crm:read'] };
+
+    vi.stubGlobal('fetch', vi.fn(async () => new Response('print("tampered")', { status: 200 })));
+    await expect(
+      buildSwarmZip(company, [agentWithMcp], [workflow], ['tampered-crm'], [tamperedConnector]),
+    ).rejects.toThrow('Integrity verification failed for connector');
+  });
+
+  it('preserves supervisor, priority, and canonical industry across fetchSwarmDetailsFromRepo and re-export', async () => {
+    const responses: Record<string, string> = {
+      'swarm.json': JSON.stringify({
+        id: 'logistics-team',
+        name: 'Logistics Team',
+        industry: 'logistics-supply-chain',
+        roster: [
+          { id: 'ops-lead', path: 'agents/ops-lead.json', supervisor: null, priority: 'critical' },
+          { id: 'route-analyst', path: 'agents/route-analyst.json', supervisor: 'ops-lead', priority: 'high' },
+        ],
+        global_workflows: ['workflows/dispatch.md'],
+      }),
+      'agents/ops-lead.json': JSON.stringify({
+        id: 'ops-lead',
+        name: 'Ops Lead',
+        role: 'Coordinator',
+        status: 'idle',
+        model_config: { provider: 'ollama-cloud', model_id: 'gemma4:31b-cloud', system_prompt: 'Lead dispatch.' },
+        skills: ['read_file'],
+        workflows: ['dispatch'],
+        mcp_tools: [],
+        requires_oversight: false,
+      }),
+      'agents/route-analyst.json': JSON.stringify({
+        id: 'route-analyst',
+        name: 'Route Analyst',
+        role: 'Analyst',
+        status: 'idle',
+        model_config: { provider: 'ollama', model_id: 'gemma4:e4b', system_prompt: 'Analyze routes.' },
+        skills: ['read_file'],
+        workflows: ['dispatch'],
+        mcp_tools: [],
+        requires_oversight: false,
+      }),
+      'workflows/dispatch.md': '# Dispatch\n\n## Step 1: Assign\nRoute carriers.',
+    };
+    vi.stubGlobal('fetch', vi.fn(async (url: string) => {
+      const key = Object.keys(responses).find(candidate => url.endsWith(candidate));
+      return key ? new Response(responses[key], { status: 200 }) : new Response('', { status: 404 });
+    }));
+
+    const imported = await fetchSwarmDetailsFromRepo('logistics/demo');
+    expect(imported.roster.map(a => ({ id: a.id, supervisor: a.supervisor, priority: a.priority }))).toEqual([
+      { id: 'ops-lead', supervisor: null, priority: 'critical' },
+      { id: 'route-analyst', supervisor: 'ops-lead', priority: 'high' },
+    ]);
+
+    const zip = await buildSwarmZip(
+      { ...company, industry: 'logistics-supply-chain' },
+      imported.roster,
+      imported.workflows,
+      [],
+      [],
+    );
+    const reexportedSwarm = JSON.parse(await zip.file('swarm.json')!.async('string'));
+    expect(reexportedSwarm.industry).toBe('Logistics & Supply Chain');
+    expect(reexportedSwarm.roster).toEqual([
+      { id: 'ops-lead', path: 'agents/ops-lead.json', supervisor: null, priority: 'critical' },
+      { id: 'route-analyst', path: 'agents/route-analyst.json', supervisor: 'ops-lead', priority: 'high' },
+    ]);
   });
 });

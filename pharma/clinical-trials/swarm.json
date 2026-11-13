@@ -1,39 +1,92 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "name": "Clinical Trial Management Swarm",
-  "version": "1.0.0",
+  "id": "pharma-clinical-trials",
+  "name": "Clinical Trial Manager",
+  "version": "1.1.0",
   "author": "PharmaFlow Research",
-  "description": "Designed for clinical trial protocol mapping, candidate documentation analysis, and automated adverse event tracking.",
+  "description": "Automate clinical trial protocol mapping, trial candidate documentation, and adverse event logging.",
+  "mission": "Coordinate ICH-GCP protocol eligibility mapping, trial ePHI/pseudonymization audits, and IRB-compliant recruitment & safety documentation under Principal Investigator and regulatory QA oversight.",
   "industry": "Pharmaceuticals",
+  "maturity": "verified",
+  "company_size": 75,
   "tags": [
     "pharma",
     "clinical",
     "trials",
-    "compliance"
+    "compliance",
+    "ich-gcp"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.1
+    "provider": "ollama-cloud",
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "model_config": {
+      "provider": "ollama-cloud",
+      "model_id": "gemma4:31b-cloud",
+      "temperature": 0.1,
+      "max_turns": 24
+    },
+    "model_config2": {
+      "provider": "ollama-cloud",
+      "model_id": "gemma4:31b-cloud",
+      "temperature": 0.1,
+      "max_turns": 16
+    },
+    "model_config3": {
+      "provider": "ollama",
+      "model_id": "gemma4:e4b",
+      "temperature": 0.1,
+      "max_turns": 24
+    }
   },
   "roster": [
     {
-      "id": "specialized-data-privacy-officer",
-      "path": "agents/specialized-data-privacy-officer.json",
+      "id": "pharma-clinical-trial-coordinator",
+      "path": "agents/pharma-clinical-trial-coordinator.json",
       "supervisor": null,
       "priority": "critical"
     },
     {
-      "id": "specialized-healthcare-marketing-compliance",
-      "path": "agents/specialized-healthcare-marketing-compliance.json",
-      "supervisor": null,
+      "id": "specialized-data-privacy-officer",
+      "path": "agents/specialized-data-privacy-officer.json",
+      "supervisor": "pharma-clinical-trial-coordinator",
       "priority": "normal"
     },
     {
-      "id": "specialized-hr-onboarding",
-      "path": "agents/specialized-hr-onboarding.json",
-      "supervisor": null,
+      "id": "specialized-healthcare-marketing-compliance",
+      "path": "agents/specialized-healthcare-marketing-compliance.json",
+      "supervisor": "pharma-clinical-trial-coordinator",
       "priority": "normal"
     }
   ],
-  "global_workflows": []
+  "agents": [
+    "pharma-clinical-trial-coordinator",
+    "specialized-data-privacy-officer",
+    "specialized-healthcare-marketing-compliance"
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/clinical_trial_protocol.md",
+    "workflows/data_privacy_officer.md",
+    "workflows/healthcare_marketing_compliance.md"
+  ],
+  "oversight_policies": [
+    {
+      "applies_to": ["adverse_event_report", "eligibility_determination", "irb_recruitment_copy", "pseudonymization_key_access"],
+      "approver_role": "Principal Investigator and Regulatory QA Lead",
+      "threshold": "Mandatory sign-off on every protocol deviation, AE/SAE log, ePHI export, or external study material",
+      "gate_agent": "pharma-clinical-trial-coordinator"
+    }
+  ],
+  "disclosure": {
+    "capabilities": ["read_file", "grep_search", "write_file"],
+    "mcp_grants": [],
+    "oversight_gates": [
+      "Principal Investigator approval required for inclusion/exclusion determinations and AE/SAE regulatory filings",
+      "Privacy & IRB compliance sign-off required before releasing recruitment assets or transferring coded subject data"
+    ],
+    "egress_origins": []
+  },
+  "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"],
+  "evals_path": "evals/scenarios.json"
 }

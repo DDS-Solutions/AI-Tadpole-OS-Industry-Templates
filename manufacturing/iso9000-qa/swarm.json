@@ -3,7 +3,7 @@
   "name": "Manufacturing ISO 9001 Quality & Maintenance",
   "version": "1.0.0",
   "description": "Manufacturing Operations: Calibration logs, machine preventative maintenance, and vendor purchasing.",
-  "industry": "manufacturing",
+  "industry": "Manufacturing",
   "tags": [
     "manufacturing",
     "iso9000",
@@ -12,26 +12,27 @@
     "shipping"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "testing-quality-inspector-traveler",
       "path": "agents/testing-quality-inspector-traveler.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     },
     {
       "id": "operations-equipment-maintenance-clerk",
       "path": "agents/operations-equipment-maintenance-clerk.json",
-      "supervisor": null,
+      "supervisor": "testing-quality-inspector-traveler",
       "priority": "normal"
     },
     {
       "id": "purchasing-vendor-purchasing-clerk",
       "path": "agents/purchasing-vendor-purchasing-clerk.json",
-      "supervisor": null,
+      "supervisor": "testing-quality-inspector-traveler",
       "priority": "normal"
     }
   ],
@@ -40,5 +41,7 @@
     "testing-quality-inspector-traveler",
     "operations-equipment-maintenance-clerk",
     "purchasing-vendor-purchasing-clerk"
-  ]
+  ],
+  "id": "manufacturing-iso9000-qa",
+  "maturity": "starter"
 }

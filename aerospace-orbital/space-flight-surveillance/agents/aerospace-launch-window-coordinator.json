@@ -6,9 +6,11 @@
   "description": "Specialized AI agent handling orbital launch schedule aggregation, ascent corridor tracking, and multi-domain exclusion zone advisories.",
   "status": "idle",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You operate as the Launch Window and Trajectory Coordinator. Monitor space launch dashboards, map launch trajectories, and coordinate airspace and maritime exclusion zones according to verified SOPs."
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "system_prompt": "You operate as the Launch Window and Trajectory Coordinator. Monitor space launch dashboards, map launch trajectories, and coordinate airspace and maritime exclusion zones according to verified SOPs.",
+    "temperature": 0.4,
+    "max_turns": 24
   },
   "skills": [
     "grep_search",
@@ -18,5 +20,17 @@
     "launch_trajectory_exclusion_coordination"
   ],
   "mcp_tools": [],
-  "requires_oversight": false
+  "requires_oversight": false,
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.2,
+    "max_turns": 24
+  }
 }

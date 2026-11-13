@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { CatalogAgent } from '../types';
 import {
   catalogAgentToRuntimeAgent,
+  normalizeAgentColor,
   recommendTeam,
   BUSINESS_GOALS,
   DEFAULT_BUSINESS_GOALS,
@@ -57,8 +58,8 @@ describe('catalogHelpers', () => {
     expect(runtimeAgent.id).toBe('project-management-field-service-dispatch-coordinator');
     expect(runtimeAgent.name).toBe('Field Service Dispatch Coordinator');
     expect(runtimeAgent.status).toBe('idle');
-    expect(runtimeAgent.provider).toBe('google');
-    expect(runtimeAgent.model).toBe('gemma4:31b');
+    expect(runtimeAgent.provider).toBe('ollama-cloud');
+    expect(runtimeAgent.model).toBe('gemma4:31b-cloud');
     expect(runtimeAgent.prompt).toBe(sampleCatalogAgent.runtimePrompt);
     expect(runtimeAgent.prompt.length).toBeLessThanOrEqual(800);
     expect(runtimeAgent.skills).toEqual(['read_file', 'grep_search']);
@@ -274,6 +275,20 @@ describe('catalogHelpers', () => {
     };
     const runtimeAgent = catalogAgentToRuntimeAgent(plane2CatalogAgent);
     expect(runtimeAgent.requiresOversight).toBe(true);
+  });
+
+  it('normalizes named catalog agent colors and shorthand hex to 6-digit hex codes', () => {
+    expect(normalizeAgentColor('blue')).toBe('#3B82F6');
+    expect(normalizeAgentColor('metallic-blue')).toBe('#2563EB');
+    expect(normalizeAgentColor('#0af')).toBe('#00AAFF');
+    expect(normalizeAgentColor('#22c55e')).toBe('#22C55E');
+    expect(normalizeAgentColor('unknown-color')).toBe('#3B82F6');
+
+    const runtimeBlue = catalogAgentToRuntimeAgent({
+      ...sampleCatalogAgent,
+      color: 'blue',
+    });
+    expect(runtimeBlue.color).toBe('#3B82F6');
   });
 });
 

@@ -3,7 +3,7 @@
   "name": "HR Policy & Offboarding Security Swarm",
   "version": "1.0.0",
   "description": "People Operations: Employee handbook policies, onboarding paperwork, and access deprovisioning.",
-  "industry": "human-resources",
+  "industry": "Human Resources",
   "tags": [
     "hr",
     "policy",
@@ -11,26 +11,27 @@
     "employee-handbook"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "support-handbook-policy-drafter",
       "path": "agents/support-handbook-policy-drafter.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     },
     {
       "id": "specialized-hr-onboarding",
       "path": "agents/specialized-hr-onboarding.json",
-      "supervisor": null,
+      "supervisor": "support-handbook-policy-drafter",
       "priority": "normal"
     },
     {
       "id": "security-offboarding-access-guard",
       "path": "agents/security-offboarding-access-guard.json",
-      "supervisor": null,
+      "supervisor": "support-handbook-policy-drafter",
       "priority": "normal"
     }
   ],
@@ -39,5 +40,7 @@
     "support-handbook-policy-drafter",
     "specialized-hr-onboarding",
     "security-offboarding-access-guard"
-  ]
+  ],
+  "id": "hr-policy-synthesizer",
+  "maturity": "starter"
 }

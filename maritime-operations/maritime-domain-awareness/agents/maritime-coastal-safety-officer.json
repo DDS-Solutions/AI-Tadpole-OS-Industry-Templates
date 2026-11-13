@@ -6,9 +6,11 @@
   "description": "Specialized AI agent handling coastal navigational hazards, shallow draft warnings, distress signal triage, and search-and-rescue vector computation.",
   "status": "idle",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You operate as the Coastal Safety and Navigation Officer. Coordinate coastal navigational hazard notices, triage maritime distress telemetry, and calculate rescue search vectors according to verified SOPs."
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "system_prompt": "You operate as the Coastal Safety and Navigation Officer. Coordinate coastal navigational hazard notices, triage maritime distress telemetry, and calculate rescue search vectors according to verified SOPs.",
+    "temperature": 0.4,
+    "max_turns": 24
   },
   "skills": [
     "grep_search",
@@ -18,5 +20,17 @@
     "coastal_hazard_navigation_triage"
   ],
   "mcp_tools": [],
-  "requires_oversight": false
+  "requires_oversight": false,
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.2,
+    "max_turns": 24
+  }
 }

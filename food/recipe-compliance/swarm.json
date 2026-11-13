@@ -3,7 +3,7 @@
   "name": "Food Safety & Recipe Compliance Desk",
   "version": "1.0.0",
   "description": "Food & Beverage: HACCP safety logs, recipe allergen labeling, and dock receiving temperature checks.",
-  "industry": "food-beverage",
+  "industry": "Food & Beverage",
   "tags": [
     "food",
     "compliance",
@@ -11,8 +11,9 @@
     "recipe-standards"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
@@ -24,13 +25,13 @@
     {
       "id": "specialized-recipe-allergen-checker",
       "path": "agents/specialized-recipe-allergen-checker.json",
-      "supervisor": null,
+      "supervisor": "compliance-food-safety-haccp-clerk",
       "priority": "normal"
     },
     {
       "id": "purchasing-vendor-purchasing-clerk",
       "path": "agents/purchasing-vendor-purchasing-clerk.json",
-      "supervisor": null,
+      "supervisor": "compliance-food-safety-haccp-clerk",
       "priority": "normal"
     }
   ],
@@ -39,5 +40,7 @@
     "compliance-food-safety-haccp-clerk",
     "specialized-recipe-allergen-checker",
     "purchasing-vendor-purchasing-clerk"
-  ]
+  ],
+  "id": "food-recipe-compliance",
+  "maturity": "starter"
 }

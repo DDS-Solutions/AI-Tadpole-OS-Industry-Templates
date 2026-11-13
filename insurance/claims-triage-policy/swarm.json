@@ -13,8 +13,9 @@
     "policy"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
@@ -26,13 +27,13 @@
     {
       "id": "insurance-policy-coverage-verification-auditor",
       "path": "agents/insurance-policy-coverage-verification-auditor.json",
-      "supervisor": null,
+      "supervisor": "insurance-fnol-claims-intake-specialist",
       "priority": "normal"
     },
     {
       "id": "insurance-loss-adjuster-reserve-analyst",
       "path": "agents/insurance-loss-adjuster-reserve-analyst.json",
-      "supervisor": null,
+      "supervisor": "insurance-fnol-claims-intake-specialist",
       "priority": "normal"
     }
   ],
@@ -40,5 +41,7 @@
     "insurance-fnol-claims-intake-specialist",
     "insurance-policy-coverage-verification-auditor",
     "insurance-loss-adjuster-reserve-analyst"
-  ]
+  ],
+  "id": "insurance-claims-triage-policy",
+  "maturity": "starter"
 }

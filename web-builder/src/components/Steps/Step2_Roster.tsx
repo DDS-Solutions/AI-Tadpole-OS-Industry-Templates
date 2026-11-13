@@ -61,15 +61,14 @@ export default function Step2_Roster({
         {agents.map(agent => (
           <div
             key={agent.id}
-            data-tooltip="Agent Roster Card: Click the sliders icon to customize identity, emoji, color, and system instructions."
-            className="bg-zinc-950/50 border rounded-xl p-5 relative group sovereign-transition flex flex-col justify-between min-h-[150px] overflow-hidden"
+            className="bg-zinc-950/50 border rounded-xl p-5 relative group sovereign-transition flex flex-col justify-between min-h-[150px]"
             style={{
               borderColor: agent.color ? `color-mix(in srgb, ${agent.color} 30%, var(--color-zinc-800))` : 'var(--color-zinc-800)'
             }}
           >
             {/* Left accent bar */}
             <div
-              className="absolute left-0 top-0 bottom-0 w-1"
+              className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl"
               style={{ backgroundColor: agent.color || 'var(--color-zinc-700)' }}
             />
 
@@ -78,7 +77,14 @@ export default function Step2_Roster({
                 <div className="flex items-center gap-2">
                   <span className="text-xl select-none">{agent.emoji || '🤖'}</span>
                   <div>
-                    <div className="font-bold text-zinc-100 text-sm text-left">{agent.name}</div>
+                    <div className="font-bold text-zinc-100 text-sm text-left flex items-center gap-1.5 flex-wrap">
+                      <span>{agent.name}</span>
+                      {agent.priority && agent.priority !== 'normal' && (
+                        <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">
+                          {agent.priority}
+                        </span>
+                      )}
+                    </div>
                     {agent.isCustom ? (
                       <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-tighter block text-left">Custom Agent</span>
                     ) : (
@@ -86,24 +92,24 @@ export default function Step2_Roster({
                     )}
                   </div>
                 </div>
-                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 focus-within:opacity-100 transition-opacity">
+                <div className="flex items-center gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 group-focus-within:opacity-100 focus-within:opacity-100 transition-opacity shrink-0">
                   <button
                     type="button"
                     onClick={() => onEditAgent(agent)}
-                    className="focus-sovereign p-1.5 text-zinc-400 hover:text-white rounded hover:bg-zinc-900 transition-colors cursor-pointer"
-                    title="Configure Agent Details"
+                    data-tooltip="Configure identity, DAG supervisor, model, capabilities, and prompt"
+                    className="focus-sovereign tooltip-left min-h-11 min-w-11 sm:min-h-9 sm:min-w-9 flex items-center justify-center p-2 sm:p-1.5 text-zinc-400 hover:text-white rounded hover:bg-zinc-900 transition-colors cursor-pointer"
                     aria-label={`Configure ${agent.name}`}
                   >
-                    <Sliders className="w-3.5 h-3.5" />
+                    <Sliders className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
                   </button>
                   <button
                     type="button"
                     onClick={() => onRemoveAgent(agent.id)}
-                    className="focus-sovereign p-1.5 text-zinc-400 hover:text-danger rounded hover:bg-zinc-900 transition-colors cursor-pointer"
-                    title="Remove Agent"
+                    data-tooltip={`Remove ${agent.name} from roster`}
+                    className="focus-sovereign tooltip-left min-h-11 min-w-11 sm:min-h-9 sm:min-w-9 flex items-center justify-center p-2 sm:p-1.5 text-zinc-400 hover:text-danger rounded hover:bg-zinc-900 transition-colors cursor-pointer"
                     aria-label={`Remove ${agent.name}`}
                   >
-                    <Trash2 className="w-3.5 h-3.5" />
+                    <Trash2 className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
                   </button>
                 </div>
               </div>
@@ -136,11 +142,12 @@ export default function Step2_Roster({
       </div>
 
       <div className="mt-12 flex justify-between">
-        <button onClick={onPrevious} className="text-zinc-500 hover:text-white transition-colors cursor-pointer">Previous</button>
+        <button type="button" onClick={onPrevious} className="focus-sovereign px-2 py-1 rounded text-zinc-500 hover:text-white transition-colors cursor-pointer">Previous</button>
         <button
+          type="button"
           onClick={onNext}
           disabled={agents.length === 0}
-          className="bg-neural-pulse text-zinc-950 font-bold px-8 py-3 rounded-lg hover:bg-white disabled:opacity-50 transition-all cursor-pointer"
+          className="focus-sovereign bg-neural-pulse text-zinc-950 font-bold px-8 py-3 rounded-lg hover:bg-white disabled:opacity-50 transition-all cursor-pointer"
         >
           Next Playbooks
         </button>

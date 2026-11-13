@@ -15,6 +15,19 @@ import shutil
 from pathlib import Path
 from typing import Any
 
+try:
+    from scripts._generated_contract import (
+        DEFAULT_EXECUTION_MODEL_CONFIG,
+        DEFAULT_PLANNING_MODEL_CONFIG,
+        DEFAULT_PRIMARY_MODEL_CONFIG,
+    )
+except ImportError:
+    from _generated_contract import (
+        DEFAULT_EXECUTION_MODEL_CONFIG,
+        DEFAULT_PLANNING_MODEL_CONFIG,
+        DEFAULT_PRIMARY_MODEL_CONFIG,
+    )
+
 
 def get_words(text: str) -> set[str]:
     words = re.findall(r"\w+", text.lower())
@@ -58,10 +71,14 @@ def agent_payload(agent: dict[str, Any]) -> dict[str, Any]:
         "description": description,
         "status": "idle",
         "model_config": {
-            "provider": "google",
-            "model_id": "gemini-pro-latest",
+            "provider": DEFAULT_PRIMARY_MODEL_CONFIG["provider"],
+            "model_id": DEFAULT_PRIMARY_MODEL_CONFIG["model_id"],
             "system_prompt": prompt[:800],
+            "temperature": DEFAULT_PRIMARY_MODEL_CONFIG["temperature"],
+            "max_turns": DEFAULT_PRIMARY_MODEL_CONFIG["max_turns"],
         },
+        "model_config2": dict(DEFAULT_PLANNING_MODEL_CONFIG),
+        "model_config3": dict(DEFAULT_EXECUTION_MODEL_CONFIG),
         "skills": ["read_file"],
         "workflows": [],
         "mcp_tools": [],
@@ -125,6 +142,7 @@ def main() -> int:
         shutil.rmtree(staged_agents)
         staged_agents.mkdir()
         roster: list[dict[str, Any]] = []
+        lead_id = chosen[0]["id"] if chosen else None
         for index, agent in enumerate(chosen):
             payload = agent_payload(agent)
             (staged_agents / f"{payload['id']}.json").write_text(
@@ -135,7 +153,7 @@ def main() -> int:
                 {
                     "id": payload["id"],
                     "path": f"agents/{payload['id']}.json",
-                    "supervisor": None,
+                    "supervisor": None if index == 0 else lead_id,
                     "priority": "critical" if index == 0 else "normal",
                 }
             )

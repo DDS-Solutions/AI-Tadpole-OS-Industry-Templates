@@ -1,22 +1,70 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/agent-v1.json",
   "id": "specialized-legal-document-review",
   "name": "Specialized Legal Document Review",
-  "role": "Specialized Legal Document Review Specialist",
+  "role": "Contract Redline & Playbook Reviewer",
   "department": "Operations",
-  "description": "Specialized AI agent handling Specialized Legal Document Review Specialist workflows.",
-  "status": "idle",
+  "description": "Audits commercial agreements against firm clause playbooks, extracts liability, indemnity, IP, and termination deviations with exact section citations, and drafts partner review memos.",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You operate as the Specialized Legal Document Review. Execute tasks according to verified SOPs."
+    "system_prompt": "You audit commercial contracts against approved firm playbooks. Extract party obligations, indemnity caps, governing law, IP ownership, renewal windows, and missing fallback clauses with exact section citations, and draft structured redline memos for counsel approval. Follow contract_review. Operate strictly within verified inputs, approved SOPs, and local workspace records. Separate confirmed facts from assumptions and escalate ambiguity or policy conflicts instead of guessing. Require explicit human approval before writing external deliverables, altering production state, committing binding terms, or handling regulated records.",
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "max_turns": 24
+  },
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.1,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
-    "grep_search"
+    "grep_search",
+    "write_file"
   ],
   "workflows": [
     "contract_review"
   ],
+  "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": false
+  "requires_oversight": true,
+  "hooks": ["before_file_write", "after_tool_result"],
+  "input_schema": {
+    "type": "object",
+    "required": ["contract_path", "playbook_path"],
+    "properties": {
+      "contract_path": { "type": "string" },
+      "playbook_path": { "type": "string" },
+      "client_position": { "type": "string", "enum": ["vendor", "customer", "mutual"] }
+    }
+  },
+  "output_contract": {
+    "schema": {
+      "type": "object",
+      "required": ["findings", "escalation_flags", "memo_path"],
+      "properties": {
+        "findings": { "type": "array", "items": { "type": "object" } },
+        "escalation_flags": { "type": "array", "items": { "type": "string" } },
+        "memo_path": { "type": "string" }
+      }
+    }
+  },
+  "oversight_policies": [
+    {
+      "applies_to": ["redline_memo", "clause_fallback_recommendation"],
+      "approver_role": "Supervising Attorney",
+      "threshold": "Every non-standard liability cap, unlimited indemnity, or IP assignment"
+    }
+  ],
+  "metadata": {
+    "base_system_prompt": "You audit commercial contracts against approved firm playbooks. Extract party obligations, indemnity caps, governing law, IP ownership, renewal windows, and missing fallback clauses with exact section citations, and draft structured redline memos for counsel approval. Follow contract_review.",
+    "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"]
+  }
 }

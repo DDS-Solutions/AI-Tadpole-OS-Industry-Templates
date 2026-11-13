@@ -5,6 +5,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Literal
 
+try:
+    from scripts._generated_contract import CAPABILITY_SPECS
+except ImportError:  # executed directly as `python scripts/capabilities.py`
+    from _generated_contract import CAPABILITY_SPECS
+
 RiskCategory = Literal["read_only", "mutating", "dangerous"]
 
 
@@ -18,64 +23,16 @@ class CapabilitySpec:
     companion_markers: tuple[str, ...] = ()
 
 
-CAPABILITIES: tuple[CapabilitySpec, ...] = (
+CAPABILITIES: tuple[CapabilitySpec, ...] = tuple(
     CapabilitySpec(
-        id="read_file",
-        label="Read File",
-        description="Inspect files in the local filesystem workspace.",
-        risk="read_only",
-        requires_oversight=False,
-    ),
-    CapabilitySpec(
-        id="grep_search",
-        label="Grep Search",
-        description="Perform pattern searches across repository text files.",
-        risk="read_only",
-        requires_oversight=False,
-    ),
-    CapabilitySpec(
-        id="search_web",
-        label="Search Web",
-        description="Search public internet resources and documentation.",
-        risk="read_only",
-        requires_oversight=False,
-    ),
-    CapabilitySpec(
-        id="write_file",
-        label="Write File",
-        description="Create or overwrite files in the local filesystem workspace.",
-        risk="mutating",
-        requires_oversight=True,
-    ),
-    CapabilitySpec(
-        id="delete_file",
-        label="Delete File",
-        description="Remove files from the workspace.",
-        risk="dangerous",
-        requires_oversight=True,
-    ),
-    CapabilitySpec(
-        id="execute_shell",
-        label="Execute Shell",
-        description="Execute system terminal shell commands.",
-        risk="dangerous",
-        requires_oversight=True,
-        companion_markers=("shell", "terminal"),
-    ),
-    CapabilitySpec(
-        id="shell",
-        label="Shell Marker",
-        description="Runtime permission marker enabling shell execution.",
-        risk="dangerous",
-        requires_oversight=True,
-    ),
-    CapabilitySpec(
-        id="terminal",
-        label="Terminal Marker",
-        description="Alternative runtime marker for terminal environment access.",
-        risk="dangerous",
-        requires_oversight=True,
-    ),
+        id=str(spec["id"]),
+        label=str(spec["label"]),
+        description=str(spec["description"]),
+        risk=spec["risk"],  # type: ignore[arg-type]
+        requires_oversight=bool(spec["requires_oversight"]),
+        companion_markers=tuple(spec.get("companion_markers", ())),
+    )
+    for spec in CAPABILITY_SPECS
 )
 
 CAPABILITY_MAP: dict[str, CapabilitySpec] = {spec.id: spec for spec in CAPABILITIES}

@@ -3,7 +3,7 @@
   "name": "Clinical Supplies & Equipment Inventory",
   "version": "1.0.0",
   "description": "Clinical Practice: Medical supplies replenishment, sterilization logs, and clinic vendor purchasing.",
-  "industry": "medical-practices",
+  "industry": "Medical Practices",
   "tags": [
     "healthcare",
     "inventory",
@@ -12,27 +12,28 @@
     "procurement"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "purchasing-vendor-purchasing-clerk",
       "path": "agents/purchasing-vendor-purchasing-clerk.json",
-      "supervisor": null,
+      "supervisor": "finance-finance-bookkeeper-controller",
       "priority": "normal"
     },
     {
       "id": "operations-equipment-maintenance-clerk",
       "path": "agents/operations-equipment-maintenance-clerk.json",
-      "supervisor": null,
+      "supervisor": "finance-finance-bookkeeper-controller",
       "priority": "normal"
     },
     {
       "id": "finance-finance-bookkeeper-controller",
       "path": "agents/finance-finance-bookkeeper-controller.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     }
   ],
   "required_mcps": "mcps.json",
@@ -40,5 +41,7 @@
     "purchasing-vendor-purchasing-clerk",
     "operations-equipment-maintenance-clerk",
     "finance-finance-bookkeeper-controller"
-  ]
+  ],
+  "id": "medical-inventory-qa",
+  "maturity": "starter"
 }

@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tadpoleos.dev/schemas/knowledge-v1.json",
+  "title": "AI-Tadpole-OS Template Knowledge Base Schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["text", "topic"],
+    "properties": {
+      "topic": { "type": "string", "minLength": 1 },
+      "title": { "type": "string" },
+      "description": { "type": "string" },
+      "concept_type": { "type": "string" },
+      "resource_uri": { "type": "string" },
+      "tags": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "text": { "type": "string", "minLength": 1 }
+    }
+  }
+}
+

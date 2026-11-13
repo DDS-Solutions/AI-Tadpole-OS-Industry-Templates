@@ -3,7 +3,7 @@
   "name": "Construction RFI & Submittal Desk",
   "version": "1.0.0",
   "description": "Engineering & Architecture: RFI tracking, specification compliance, and jobsite OSHA safety logs.",
-  "industry": "engineering-architecture",
+  "industry": "Engineering & Architecture",
   "tags": [
     "engineering",
     "compliance",
@@ -11,14 +11,15 @@
     "auditing"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "project-management-rfi-submittal-clerk",
       "path": "agents/project-management-rfi-submittal-clerk.json",
-      "supervisor": null,
+      "supervisor": "compliance-osha-safety-clerk",
       "priority": "normal"
     },
     {
@@ -30,7 +31,7 @@
     {
       "id": "finance-job-costing-estimator",
       "path": "agents/finance-job-costing-estimator.json",
-      "supervisor": null,
+      "supervisor": "compliance-osha-safety-clerk",
       "priority": "normal"
     }
   ],
@@ -39,5 +40,7 @@
     "project-management-rfi-submittal-clerk",
     "compliance-osha-safety-clerk",
     "finance-job-costing-estimator"
-  ]
+  ],
+  "id": "engineering-spec-compliance",
+  "maturity": "starter"
 }

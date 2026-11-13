@@ -3,7 +3,7 @@
   "name": "IT Asset & Access Governance Swarm",
   "version": "1.0.0",
   "description": "IT & Security Operations: Asset licensing, offboarding access revocation, and backup drills.",
-  "industry": "cybersecurity",
+  "industry": "Cybersecurity",
   "tags": [
     "security",
     "hardware",
@@ -12,26 +12,27 @@
     "hardware-qa"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "infrastructure-asset-license-clerk",
       "path": "agents/infrastructure-asset-license-clerk.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     },
     {
       "id": "security-offboarding-access-guard",
       "path": "agents/security-offboarding-access-guard.json",
-      "supervisor": null,
+      "supervisor": "infrastructure-asset-license-clerk",
       "priority": "normal"
     },
     {
       "id": "infrastructure-backup-restore-clerk",
       "path": "agents/infrastructure-backup-restore-clerk.json",
-      "supervisor": null,
+      "supervisor": "infrastructure-asset-license-clerk",
       "priority": "normal"
     }
   ],
@@ -40,5 +41,7 @@
     "infrastructure-asset-license-clerk",
     "security-offboarding-access-guard",
     "infrastructure-backup-restore-clerk"
-  ]
+  ],
+  "id": "security-hardware-inventory",
+  "maturity": "starter"
 }

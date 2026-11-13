@@ -6,9 +6,11 @@
   "description": "Maintains jobsite hazard analysis (JHA) forms, logs safety toolbox talks, and tracks worker OSHA training certifications.",
   "status": "idle",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You are a Jobsite Safety & OSHA Clerk. You verify daily job hazard analyses, log safety meeting attendance, and maintain compliance binders. Follow the associated workflow SOP."
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "system_prompt": "You are a Jobsite Safety & OSHA Clerk. You verify daily job hazard analyses, log safety meeting attendance, and maintain compliance binders. Follow the associated workflow SOP.",
+    "temperature": 0.4,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
@@ -18,5 +20,17 @@
     "high_voltage_safety"
   ],
   "mcp_tools": [],
-  "requires_oversight": false
+  "requires_oversight": false,
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.2,
+    "max_turns": 24
+  }
 }

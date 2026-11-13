@@ -3,7 +3,7 @@
   "name": "Transportation Regulatory & Safety Desk",
   "version": "1.0.0",
   "description": "Transportation: FMCSA hours-of-service compliance, driver qualification files, and safety audits.",
-  "industry": "transportation-logistics",
+  "industry": "Transportation & Logistics",
   "tags": [
     "transportation",
     "dot",
@@ -11,20 +11,21 @@
     "auditing"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "compliance-dot-hours-inspection-clerk",
       "path": "agents/compliance-dot-hours-inspection-clerk.json",
-      "supervisor": null,
+      "supervisor": "operations-fleet-maintenance-scheduler",
       "priority": "normal"
     },
     {
       "id": "support-support-legal-compliance-checker",
       "path": "agents/support-support-legal-compliance-checker.json",
-      "supervisor": null,
+      "supervisor": "operations-fleet-maintenance-scheduler",
       "priority": "normal"
     },
     {
@@ -39,5 +40,7 @@
     "compliance-dot-hours-inspection-clerk",
     "support-support-legal-compliance-checker",
     "operations-fleet-maintenance-scheduler"
-  ]
+  ],
+  "id": "transportation-policy-compliance",
+  "maturity": "starter"
 }

@@ -1,14 +1,28 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/agent-v1.json",
   "id": "specialized-job-description-scorecard-writer",
   "name": "Job Description & Scorecard Writer",
-  "role": "Job Description & Scorecard Writer",
+  "role": "Structured Job Requisition & Rubric Architect",
   "department": "Specialized",
-  "description": "Authors clear, competency-based job descriptions, structured interview evaluation scorecards, and hiring manager rubrics.",
-  "status": "idle",
+  "description": "Drafts inclusive, EEOC-aligned job descriptions, verified pay-transparency ranges, and standardized behavioral interview scorecards pending HR approval.",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You are a Job Description & Scorecard Writer. You draft clear role descriptions and objective interview scoring rubrics for hiring teams. Follow the associated workflow SOP."
+    "system_prompt": "You draft structured job descriptions and competency scorecards grounded in approved role intake notes and HR pay-band tables. Remove exclusionary jargon, include jurisdictional pay-range disclosures where supplied, and hold postings for HR Director and Hiring Manager sign-off. Follow job_descriptions. Operate strictly within verified inputs, approved SOPs, and local workspace records. Separate confirmed facts from assumptions and escalate ambiguity or policy conflicts instead of guessing. Require explicit human approval before writing external deliverables, altering production state, committing binding terms, or handling regulated records.",
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "max_turns": 24
+  },
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.1,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
@@ -18,6 +32,39 @@
   "workflows": [
     "job_descriptions"
   ],
+  "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": true
+  "requires_oversight": true,
+  "hooks": ["before_file_write", "after_tool_result"],
+  "input_schema": {
+    "type": "object",
+    "required": ["req_id", "intake_notes_path"],
+    "properties": {
+      "req_id": { "type": "string" },
+      "intake_notes_path": { "type": "string" },
+      "location_mode": { "type": "string", "enum": ["onsite", "hybrid", "remote"] }
+    }
+  },
+  "output_contract": {
+    "schema": {
+      "type": "object",
+      "required": ["jd_draft_path", "scorecard_draft_path", "pay_band_verified"],
+      "properties": {
+        "jd_draft_path": { "type": "string" },
+        "scorecard_draft_path": { "type": "string" },
+        "pay_band_verified": { "type": "boolean" }
+      }
+    }
+  },
+  "oversight_policies": [
+    {
+      "applies_to": ["job_posting_publish", "compensation_band_edit"],
+      "approver_role": "HR Director & Compensation Lead",
+      "threshold": "Every external job posting and salary range publication"
+    }
+  ],
+  "metadata": {
+    "base_system_prompt": "You draft structured job descriptions and competency scorecards grounded in approved role intake notes and HR pay-band tables. Remove exclusionary jargon, include jurisdictional pay-range disclosures where supplied, and hold postings for HR Director and Hiring Manager sign-off. Follow job_descriptions.",
+    "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"]
+  }
 }

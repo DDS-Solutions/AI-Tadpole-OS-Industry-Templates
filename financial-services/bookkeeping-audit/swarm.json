@@ -2,45 +2,104 @@
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
   "id": "bookkeeping-audit",
   "name": "Bookkeeping & Cash Operations Swarm",
-  "industry": "Financial Services",
-  "company_size": 50,
-  "description": "Financial Operations: General ledger reconciliation, AP/AR cash flow, and client document collection.",
+  "version": "1.1.0",
   "author": "AI-Tadpole-OS",
+  "description": "Financial Operations: General ledger reconciliation, AP/AR cash flow, and client document collection.",
+  "mission": "Reconcile general ledger entries, categorize receipts against chart-of-accounts rules, coordinate missing client source documents, and prepare AR aging notices under CPA/Controller sign-off.",
+  "industry": "Financial Services",
+  "maturity": "verified",
+  "company_size": 50,
+  "path": "financial-services/bookkeeping-audit",
   "tags": [
     "finance",
-    "accounting",
-    "tax",
-    "audit"
+    "bookkeeping",
+    "audit",
+    "reconciliation",
+    "ar-collections"
   ],
-  "path": "financial-services/bookkeeping-audit",
-  "agents": [
-    "finance-finance-bookkeeper-controller",
-    "finance-ar-collections-specialist",
-    "support-client-document-coordinator"
-  ],
-  "version": "1.0.0",
+  "defaults": {
+    "provider": "ollama-cloud",
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "model_config": {
+      "provider": "ollama-cloud",
+      "model_id": "gemma4:31b-cloud",
+      "temperature": 0.1,
+      "max_turns": 24
+    },
+    "model_config2": {
+      "provider": "ollama-cloud",
+      "model_id": "gemma4:31b-cloud",
+      "temperature": 0.1,
+      "max_turns": 16
+    },
+    "model_config3": {
+      "provider": "ollama",
+      "model_id": "gemma4:e4b",
+      "temperature": 0.1,
+      "max_turns": 24
+    }
+  },
   "roster": [
     {
       "id": "finance-finance-bookkeeper-controller",
       "path": "agents/finance-finance-bookkeeper-controller.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     },
     {
       "id": "finance-ar-collections-specialist",
       "path": "agents/finance-ar-collections-specialist.json",
-      "supervisor": null,
+      "supervisor": "finance-finance-bookkeeper-controller",
       "priority": "normal"
     },
     {
       "id": "support-client-document-coordinator",
       "path": "agents/support-client-document-coordinator.json",
-      "supervisor": null,
+      "supervisor": "finance-finance-bookkeeper-controller",
       "priority": "normal"
     }
   ],
-  "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
-  }
+  "agents": [
+    "finance-finance-bookkeeper-controller",
+    "finance-ar-collections-specialist",
+    "support-client-document-coordinator"
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/bookkeeping.md",
+    "workflows/ar_collections.md",
+    "workflows/doc_request.md"
+  ],
+  "oversight_policies": [
+    {
+      "applies_to": [
+        "journal_entry_post",
+        "tax_treatment_classification",
+        "ar_dunning_release",
+        "write_off_recommendation"
+      ],
+      "approver_role": "CPA / Controller",
+      "threshold": "Every adjusting journal entry, close certification, dispute/write-off, and external collections notice",
+      "gate_agent": "finance-finance-bookkeeper-controller"
+    }
+  ],
+  "disclosure": {
+    "capabilities": [
+      "read_file",
+      "grep_search",
+      "write_file"
+    ],
+    "mcp_grants": [],
+    "oversight_gates": [
+      "CPA / Controller approval required before posting journal entries or certifying period close",
+      "Human sign-off required before dispatching external AR dunning letters or client document escalations"
+    ],
+    "egress_origins": []
+  },
+  "prompt_includes": [
+    "sovereign-guardrails.md",
+    "oversight-gate.md"
+  ],
+  "evals_path": "evals/scenarios.json"
 }

@@ -1,6 +1,7 @@
-import { cpSync, mkdirSync, readFileSync } from 'node:fs';
+import { cpSync, mkdirSync, readFileSync, readdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { VALID_RUNTIME_CAPABILITIES } from './_generatedContract.mjs';
 
 
 const builderRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -53,17 +54,8 @@ function validateAgentCatalog(path) {
     ids.add(agent.id);
 
     if (Array.isArray(agent.skills)) {
-      const validCapabilities = new Set([
-        'read_file',
-        'grep_search',
-        'search_web',
-        'write_file',
-        'delete_file',
-        'execute_shell',
-        'shell',
-      ]);
       for (const skill of agent.skills) {
-        if (!validCapabilities.has(skill)) {
+        if (!VALID_RUNTIME_CAPABILITIES.has(skill)) {
           throw new Error(`Agent catalog entry ${index} (${agent.id}) has invalid skill: ${skill}`);
         }
       }
@@ -92,8 +84,14 @@ function validateMcpRegistry(path) {
 }
 
 mkdirSync(publicRoot, { recursive: true });
+mkdirSync(resolve(publicRoot, 'schemas'), { recursive: true });
 cpSync(resolve(repositoryRoot, 'registry.json'), resolve(publicRoot, 'registry.json'));
 cpSync(resolve(repositoryRoot, 'mcp_registry.json'), resolve(publicRoot, 'mcp_registry.json'));
+for (const entry of readdirSync(resolve(repositoryRoot, 'schemas'))) {
+  if (entry.endsWith('.json')) {
+    cpSync(resolve(repositoryRoot, 'schemas', entry), resolve(publicRoot, 'schemas', entry));
+  }
+}
 cpSync(
   resolve(repositoryRoot, 'mcp-blueprints'),
   resolve(publicRoot, 'mcp-blueprints'),

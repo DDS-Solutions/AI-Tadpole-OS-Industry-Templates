@@ -3,7 +3,7 @@
   "name": "Agency Client Reporting & Project Desk",
   "version": "1.0.0",
   "description": "Agency Operations: Monthly client recap reports, creative brief tracking, and review management.",
-  "industry": "digital-marketing",
+  "industry": "Digital Marketing",
   "tags": [
     "marketing",
     "seo",
@@ -11,26 +11,27 @@
     "synthesis"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "support-client-reporting-recap-writer",
       "path": "agents/support-client-reporting-recap-writer.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     },
     {
       "id": "project-management-creative-brief-tracker",
       "path": "agents/project-management-creative-brief-tracker.json",
-      "supervisor": null,
+      "supervisor": "support-client-reporting-recap-writer",
       "priority": "normal"
     },
     {
       "id": "support-review-reputation-clerk",
       "path": "agents/support-review-reputation-clerk.json",
-      "supervisor": null,
+      "supervisor": "support-client-reporting-recap-writer",
       "priority": "normal"
     }
   ],
@@ -39,5 +40,7 @@
     "support-client-reporting-recap-writer",
     "project-management-creative-brief-tracker",
     "support-review-reputation-clerk"
-  ]
+  ],
+  "id": "marketing-seo-indexer",
+  "maturity": "starter"
 }

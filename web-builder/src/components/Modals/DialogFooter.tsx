@@ -26,7 +26,7 @@ export function DialogFooter({
       <button
         type="submit"
         disabled={!canSave}
-        className="focus-sovereign min-h-11 bg-cyber-green text-zinc-950 font-bold text-xs px-6 py-2.5 rounded-lg hover:scale-102 transition-all cursor-pointer disabled:opacity-50 disabled:pointer-events-none shadow-md"
+        className="focus-sovereign min-h-11 bg-cyber-green text-zinc-950 font-bold text-xs px-6 py-2.5 rounded-lg motion-safe:hover:scale-102 transition-all cursor-pointer disabled:opacity-50 disabled:pointer-events-none shadow-md"
       >
         {saveLabel}
       </button>

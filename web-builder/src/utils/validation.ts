@@ -1,42 +1,125 @@
 import type { Agent, CompanyInfo, MCPConnector, ValidationIssue, WorkflowItem } from '../types';
 import { VALID_RUNTIME_CAPABILITIES, DANGEROUS_SKILL_SET } from '../constants/capabilities';
+import { extractMcpServerName, isValidMcpGrant, normalizeMcpGrant } from './mcpGrants';
+import {
+  CANONICAL_INDUSTRIES,
+  DEFAULT_MODEL_SLOTS,
+  ENGINE_PRIVATE_ENV_VAR_LIST,
+  INDUSTRY_ALIASES,
+  LEGACY_SKILL_LIST,
+  PLANE2_DEPARTMENT_MARKER,
+  PLANE2_FORBIDDEN_SKILL_LIST,
+  PROMPT_INJECTION_PATTERN_DEFS,
+  RESERVED_MCP_HTTP_HEADER_LIST,
+  RESERVED_MCP_HTTP_HEADER_PREFIX_LIST,
+} from '../constants/_generatedContract';
 
-const LEGACY_SKILLS = new Set(['run_command', 'write_to_file']);
-export const ENGINE_PRIVATE_ENV_VARS = new Set([
-  'NEURAL_TOKEN',
-  'NEURAL_ENGINE_ACCESS_TOKEN',
-  'NEURAL_ADMIN_TOKEN',
-  'ADMIN_TOKEN',
-  'VITE_NEURAL_TOKEN',
-  'CAPABILITY_KEY_CURR',
-  'CAPABILITY_KEY_PREV',
-  'AUDIT_PRIVATE_KEY',
-  'OVERSIGHT_PRIVATE_KEY',
-  'WORKFLOW_ENCRYPTION_KEY',
-]);
-export const RESERVED_MCP_HTTP_HEADERS = new Set([
-  'host',
-  'content-type',
-  'accept',
-  'mcp-protocol-version',
-  'mcp-method',
-  'mcp-name',
-  'origin',
-  'mcp-session-id',
-  'last-event-id',
-]);
-export const PLANE2_DEPARTMENT_MARKER = 'Plane 2: SMB-Digital-Twin';
-export const PLANE2_FORBIDDEN_SKILLS = new Set(['execute_shell', 'shell', 'terminal', 'delete_file']);
+const LEGACY_SKILLS = new Set<string>(LEGACY_SKILL_LIST);
+export const ENGINE_PRIVATE_ENV_VARS = new Set<string>(ENGINE_PRIVATE_ENV_VAR_LIST);
+export const RESERVED_MCP_HTTP_HEADERS = new Set<string>(RESERVED_MCP_HTTP_HEADER_LIST);
+export { PLANE2_DEPARTMENT_MARKER };
+export const PLANE2_FORBIDDEN_SKILLS = new Set<string>(PLANE2_FORBIDDEN_SKILL_LIST);
 
-const PROMPT_INJECTION_PATTERNS = [
-  /<<<|>>>/,
-  /ignore\s+(?:all\s+)?previous\s+instructions/i,
-  /disregard\s+(?:all\s+)?(?:previous\s+instructions|system\s+prompt)/i,
-  /you\s+are\s+now\s+in\s+developer\s+mode/i,
-  /bypass\s+(?:safety\s+filters|oversight)/i,
-  /disable\s+oversight/i,
-  /system\s+prompt\s+override/i,
-];
+const PROMPT_INJECTION_PATTERNS = PROMPT_INJECTION_PATTERN_DEFS.map(
+  def => new RegExp(def.pattern, def.ignore_case ? 'i' : ''),
+);
+
+const CANONICAL_INDUSTRY_LOOKUP = new Map<string, string>(
+  CANONICAL_INDUSTRIES.map(name => [name.toLowerCase(), name]),
+);
+
+export function resolveCanonicalIndustry(value: string): string | null {
+  const trimmed = (value || '').trim();
+  if (!trimmed) return null;
+  const lower = trimmed.toLowerCase();
+  if (CANONICAL_INDUSTRY_LOOKUP.has(lower)) {
+    return CANONICAL_INDUSTRY_LOOKUP.get(lower)!;
+  }
+  const slug = lower.replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  return INDUSTRY_ALIASES[lower] ?? INDUSTRY_ALIASES[slug] ?? null;
+}
+
+export function validateRosterSupervisorDag(agents: Agent[]): ValidationIssue[] {
+  const issues: ValidationIssue[] = [];
+  if (agents.length === 0) return issues;
+
+  const idSet = new Set<string>();
+  const supervisorById = new Map<string, string | null>();
+  let explicitSupervisorsCount = 0;
+
+  for (const agent of agents) {
+    const cleanId = tryNormalizeId(agent.id);
+    if (!cleanId) continue;
+    idSet.add(cleanId);
+    const rawSup = agent.supervisor;
+    const cleanSup = typeof rawSup === 'string' && rawSup.trim() ? tryNormalizeId(rawSup) : null;
+    if (typeof rawSup === 'string' && rawSup.trim()) {
+      explicitSupervisorsCount += 1;
+    }
+    supervisorById.set(cleanId, cleanSup);
+  }
+
+  for (const agent of agents) {
+    const cleanId = tryNormalizeId(agent.id);
+    if (!cleanId) continue;
+    const sup = supervisorById.get(cleanId);
+    if (!sup) continue;
+
+    if (sup === cleanId) {
+      issues.push({
+        id: `agent-self-supervisor-${cleanId}`,
+        severity: 'error',
+        section: 'agents',
+        itemId: agent.id,
+        message: `Agent "${agent.name || cleanId}" cannot supervise itself.`,
+        suggestedAction: 'Clear supervisor or set a different coordinator agent ID.',
+      });
+      continue;
+    }
+
+    if (!idSet.has(sup)) {
+      issues.push({
+        id: `agent-dangling-supervisor-${cleanId}`,
+        severity: 'error',
+        section: 'agents',
+        itemId: agent.id,
+        message: `Agent "${agent.name || cleanId}" references missing supervisor "${sup}".`,
+        suggestedAction: 'Assign an active roster agent as supervisor or promote this agent to root.',
+      });
+      continue;
+    }
+
+    const visited = new Set<string>([cleanId]);
+    let cursor: string | null | undefined = sup;
+    while (cursor) {
+      if (visited.has(cursor)) {
+        issues.push({
+          id: `agent-supervisor-cycle-${cleanId}`,
+          severity: 'error',
+          section: 'agents',
+          itemId: agent.id,
+          message: `Supervisor hierarchy cycle detected involving "${cleanId}" and "${cursor}".`,
+          suggestedAction: 'Break the supervisor cycle so every chain terminates at a root coordinator.',
+        });
+        break;
+      }
+      visited.add(cursor);
+      cursor = supervisorById.get(cursor);
+    }
+  }
+
+  if (explicitSupervisorsCount > 0 && explicitSupervisorsCount === idSet.size) {
+    issues.push({
+      id: 'agents-no-root-coordinator',
+      severity: 'error',
+      section: 'agents',
+      message: 'Every roster agent has a supervisor assigned; at least one root coordinator (supervisor: null) is required.',
+      suggestedAction: 'Clear the supervisor field on your lead coordinator agent.',
+    });
+  }
+
+  return issues;
+}
 
 export function inferProvider(modelId: string): string {
   const model = modelId.toLowerCase().trim();
@@ -196,7 +279,7 @@ export function validateSwarm(
     }
 
     // Model and provider validation
-    const modelId = agent.model || 'gemma4:31b';
+    const modelId = agent.model || DEFAULT_MODEL_SLOTS.primary.model_id;
     if (!agent.provider) {
       try {
         inferProvider(modelId);
@@ -343,6 +426,9 @@ export function validateSwarm(
     }
   }
 
+  // Supervisor DAG validation
+  issues.push(...validateRosterSupervisorDag(agents));
+
   // 3. Workflows validation (safe non-throwing)
   const wfIdSet = new Set<string>();
   for (const wf of workflows) {
@@ -451,7 +537,10 @@ export function validateSwarm(
         }
         for (const [hdrKey, hdrVal] of Object.entries(srv.headers || {})) {
           const lowerHdr = hdrKey.trim().toLowerCase();
-          if (RESERVED_MCP_HTTP_HEADERS.has(lowerHdr) || lowerHdr.startsWith('mcp-param-')) {
+          if (
+            RESERVED_MCP_HTTP_HEADERS.has(lowerHdr)
+            || RESERVED_MCP_HTTP_HEADER_PREFIX_LIST.some(prefix => lowerHdr.startsWith(prefix))
+          ) {
             issues.push({
               id: `connector-reserved-header-${connectorId}-${hdrKey}`,
               severity: 'error',
@@ -543,7 +632,9 @@ export function validateSwarm(
 
   for (const agent of agents) {
     const cleanId = tryNormalizeId(agent.id) || agent.id;
-    for (const grant of agent.mcpTools || []) {
+    for (const rawGrant of agent.mcpTools || []) {
+      const grant = rawGrant.trim();
+      if (!grant) continue;
       if (grant.endsWith(':*') || grant === '*') {
         issues.push({
           id: `agent-mcp-wildcard-${cleanId}-${grant}`,
@@ -556,13 +647,22 @@ export function validateSwarm(
         continue;
       }
 
-      const serverName = grant.includes(':')
-        ? grant.split(':')[0]
-        : grant.startsWith('mcp__')
-        ? grant.replace('mcp__', '').split('__')[0]
-        : grant;
+      if (!isValidMcpGrant(grant)) {
+        issues.push({
+          id: `agent-mcp-invalid-format-${cleanId}-${grant}`,
+          severity: 'error',
+          section: 'connectors',
+          itemId: agent.id,
+          message: `Agent "${agent.name}" declares malformed MCP grant "${grant}".`,
+          suggestedAction: 'Use explicit server:tool or mcp__server__tool format.',
+        });
+        continue;
+      }
 
-      const conn = activeServers.get(serverName) || (connectorToolsMap.get(grant)?.connector);
+      const normalizedGrant = normalizeMcpGrant(grant);
+      const serverName = extractMcpServerName(normalizedGrant);
+
+      const conn = activeServers.get(serverName) || (connectorToolsMap.get(normalizedGrant)?.connector);
 
       if (!conn) {
         issues.push({
@@ -576,7 +676,7 @@ export function validateSwarm(
       } else {
         connectorGrantsCount.set(conn.id, (connectorGrantsCount.get(conn.id) || 0) + 1);
 
-        const toolDesc = connectorToolsMap.get(grant);
+        const toolDesc = connectorToolsMap.get(normalizedGrant);
         if (toolDesc) {
           if ((toolDesc.risk === 'write' || toolDesc.risk === 'execute') && !agent.requiresOversight) {
             issues.push({

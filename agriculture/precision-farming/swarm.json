@@ -3,7 +3,7 @@
   "name": "Precision Agriculture Swarm",
   "version": "1.0.0",
   "author": "AgriTech Labs",
-  "description": "Designed for crop yield forecasting, soil moisture telemetry analysis, and irrigation planning.",
+  "description": "Crop yield forecasting, soil health telemetry analysis, and irrigation optimization.",
   "industry": "Agriculture & AgTech",
   "tags": [
     "agriculture",
@@ -12,8 +12,9 @@
     "analytics"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.3
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
@@ -25,15 +26,17 @@
     {
       "id": "sales-sales-pipeline-analyst",
       "path": "agents/sales-sales-pipeline-analyst.json",
-      "supervisor": null,
+      "supervisor": "finance-finance-financial-analyst",
       "priority": "normal"
     },
     {
       "id": "specialized-corporate-training-designer",
       "path": "agents/specialized-corporate-training-designer.json",
-      "supervisor": null,
+      "supervisor": "finance-finance-financial-analyst",
       "priority": "normal"
     }
   ],
-  "global_workflows": []
+  "global_workflows": [],
+  "id": "agriculture-precision-farming",
+  "maturity": "starter"
 }

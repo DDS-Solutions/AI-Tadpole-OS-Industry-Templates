@@ -1,27 +1,45 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
   "id": "full-funnel-automation",
-  "name": "Full-Funnel Marketing Automation",
-  "industry": "Digital Marketing",
-  "company_size": 50,
-  "description": "Automate content creation, ad spend optimization, and conversion tracking. Designed to give small teams the marketing power of a large agency.",
+  "name": "Marketing Funnel Pilot",
+  "version": "1.1.0",
   "author": "AI-Tadpole-OS",
+  "description": "Automated content generation, ad spend optimization, and journey analytics.",
+  "mission": "Coordinate AI-discoverable web foundations (llms.txt, schema markup), brand-compliant creative production, and funnel experiment planning with strict human approval gates on external claims and ad spend.",
+  "industry": "Digital Marketing",
+  "maturity": "verified",
+  "company_size": 50,
+  "path": "digital-marketing/full-funnel-automation",
   "tags": [
     "marketing",
     "ads",
     "content",
-    "automation"
+    "automation",
+    "aeo"
   ],
-  "path": "digital-marketing/full-funnel-automation",
-  "agents": [
-    "marketing-marketing-aeo-foundations",
-    "marketing-marketing-growth-hacker",
-    "marketing-marketing-content-creator"
-  ],
-  "global_workflows": [
-    "workflows/campaign_launch.md"
-  ],
-  "version": "1.0.0",
+  "defaults": {
+    "provider": "ollama-cloud",
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "model_config": {
+      "provider": "ollama-cloud",
+      "model_id": "gemma4:31b-cloud",
+      "temperature": 0.3,
+      "max_turns": 24
+    },
+    "model_config2": {
+      "provider": "ollama-cloud",
+      "model_id": "gemma4:31b-cloud",
+      "temperature": 0.2,
+      "max_turns": 16
+    },
+    "model_config3": {
+      "provider": "ollama",
+      "model_id": "gemma4:e4b",
+      "temperature": 0.2,
+      "max_turns": 24
+    }
+  },
   "roster": [
     {
       "id": "marketing-marketing-aeo-foundations",
@@ -32,14 +50,45 @@
     {
       "id": "marketing-marketing-growth-hacker",
       "path": "agents/marketing-marketing-growth-hacker.json",
-      "supervisor": null,
+      "supervisor": "marketing-marketing-aeo-foundations",
       "priority": "normal"
     },
     {
       "id": "marketing-marketing-content-creator",
       "path": "agents/marketing-marketing-content-creator.json",
-      "supervisor": null,
+      "supervisor": "marketing-marketing-aeo-foundations",
       "priority": "normal"
     }
-  ]
+  ],
+  "agents": [
+    "marketing-marketing-aeo-foundations",
+    "marketing-marketing-growth-hacker",
+    "marketing-marketing-content-creator"
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/campaign_launch.md",
+    "workflows/marketing_marketing_aeo_foundations.md",
+    "workflows/growth_hacker.md",
+    "workflows/content_creator.md"
+  ],
+  "oversight_policies": [
+    {
+      "applies_to": ["ad_budget_reallocation", "public_campaign_publish", "robots_or_llms_txt_deploy"],
+      "approver_role": "Marketing Director & Brand Compliance Lead",
+      "threshold": "Every paid media budget commit, external copy release, or site discovery config change",
+      "gate_agent": "marketing-marketing-aeo-foundations"
+    }
+  ],
+  "disclosure": {
+    "capabilities": ["read_file", "grep_search", "write_file"],
+    "mcp_grants": [],
+    "oversight_gates": [
+      "Marketing Director approval required before committing live ad spend or campaign budgets",
+      "Brand & technical SEO review required before publishing creative assets or robots/llms.txt changes"
+    ],
+    "egress_origins": []
+  },
+  "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"],
+  "evals_path": "evals/scenarios.json"
 }

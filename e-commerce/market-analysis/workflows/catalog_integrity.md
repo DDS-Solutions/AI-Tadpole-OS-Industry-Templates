@@ -1,10 +1,21 @@
-# E-Commerce Product Catalog & Attribute QA SOP
+# Workflow: Storefront Catalog Integrity & Pricing QA SOP
 
-## Step 1: Listing Content Audit
-Audit SKU descriptions, image specifications, dimensions, and variation groupings.
+## Purpose
 
-## Step 2: Search Suppression Scan
-Identify suppressed listings and fix missing category-specific attributes.
+Verify product feed accuracy, minimum margin floors, GTIN/shipping weight completeness, and policy compliance prior to storefront publication.
 
-## Step 3: Price & Inventory Sync
-Verify synchronization between central ERP inventory and multi-channel marketplaces.
+## Step 1: Audit Feed Completeness & Identifier Parity
+
+- Read supplier feed exports and active SKU catalogs via `read_file` to catch duplicate SKUs, missing UPC/GTIN identifiers, zero weights, or broken variant parent links.
+
+## Step 2: Enforce Price Floor & Promo Conflict Checks
+
+- Cross-reference sale prices and coupon stacks against the approved minimum margin floor sheet; immediately quarantine any $0.00 or below-cost SKU anomaly.
+
+## Step 3: Screen Regulated Listing Claims
+
+- Check titles and bullet copy for unsupported safety, medical, or IP-infringing claims and document corrective copy recommendations.
+
+## Step 4: Merchandising Release Gate
+
+- Write a catalog anomaly manifest and require Merchandising Manager sign-off before publishing price updates or un-quarantining flagged listings.

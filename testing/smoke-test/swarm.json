@@ -3,6 +3,7 @@
   "id": "smoke-test",
   "name": "Reference Lifecycle Smoke Test Swarm",
   "industry": "Governance & Compliance",
+  "maturity": "verified",
   "company_size": 25,
   "description": "Deterministic reference swarm verifying end-to-end installation, idle availability, workflow parsing, knowledge ingestion, and MCP execution isolation.",
   "author": "AI-Tadpole-OS QA Team",
@@ -18,21 +19,62 @@
     "smoke-connector"
   ],
   "global_workflows": [
-    "workflows/smoke_sop.md"
+    "workflows/smoke_sop.md",
+    "workflows/operator_sop.md"
   ],
   "version": "1.0.0",
   "roster": [
-    {
-      "id": "reader",
-      "path": "agents/reader.json",
-      "supervisor": null,
-      "priority": "normal"
-    },
     {
       "id": "operator",
       "path": "agents/operator.json",
       "supervisor": null,
       "priority": "critical"
+    },
+    {
+      "id": "reader",
+      "path": "agents/reader.json",
+      "supervisor": "operator",
+      "priority": "normal"
     }
-  ]
+  ],
+  "defaults": {
+    "provider": "ollama-cloud",
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.4,
+    "model_config": {
+      "provider": "ollama-cloud",
+      "model_id": "gemma4:31b-cloud",
+      "temperature": 0.4,
+      "max_turns": 24
+    },
+    "model_config2": {
+      "provider": "ollama-cloud",
+      "model_id": "gemma4:31b-cloud",
+      "temperature": 0.3,
+      "max_turns": 16
+    },
+    "model_config3": {
+      "provider": "ollama",
+      "model_id": "gemma4:e4b",
+      "temperature": 0.2,
+      "max_turns": 24
+    }
+  },
+  "oversight_policies": [
+    {
+      "applies_to": ["execute_shell", "shell", "write_file", "smoke-connector:healthcheck"],
+      "approver_role": "QA Test Operator",
+      "threshold": "Every shell execution or file write during smoke verification",
+      "gate_agent": "operator"
+    }
+  ],
+  "disclosure": {
+    "capabilities": ["read_file", "grep_search", "write_file", "execute_shell", "shell"],
+    "mcp_grants": ["smoke-connector:healthcheck"],
+    "oversight_gates": [
+      "Operator confirmation required prior to shell/bridge execution"
+    ],
+    "egress_origins": []
+  },
+  "evals_path": "evals/scenarios.json"
 }

@@ -1,20 +1,42 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "id": "construction-site-safety-subcontractor",
   "name": "Commercial Jobsite & Subcontractor Operations",
-  "version": "1.0.0",
-  "author": "AI-Tadpole-OS Core Team",
+  "version": "1.1.0",
+  "author": "BuildSafe Ops Inc.",
   "description": "Construction: Daily jobsite safety compliance, subcontractor milestone tracking, OSHA hazard logs, and AIA pay-application auditing.",
+  "mission": "Prepare OSHA 1926 toolbox talks and Job Hazard Analyses (JHAs), track subcontractor COI/trade milestone dependencies, and calculate spec-backed material takeoffs under Superintendent and Estimator sign-off.",
   "industry": "Construction & General Contracting",
+  "maturity": "verified",
+  "company_size": 35,
   "tags": [
     "construction",
-    "safety",
-    "subcontractors",
     "osha",
-    "milestones"
+    "subcontractors",
+    "estimating"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "provider": "ollama-cloud",
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "model_config": {
+      "provider": "ollama-cloud",
+      "model_id": "gemma4:31b-cloud",
+      "temperature": 0.1,
+      "max_turns": 24
+    },
+    "model_config2": {
+      "provider": "ollama-cloud",
+      "model_id": "gemma4:31b-cloud",
+      "temperature": 0.1,
+      "max_turns": 16
+    },
+    "model_config3": {
+      "provider": "ollama",
+      "model_id": "gemma4:e4b",
+      "temperature": 0.1,
+      "max_turns": 24
+    }
   },
   "roster": [
     {
@@ -26,13 +48,13 @@
     {
       "id": "construction-subcontractor-coordinator",
       "path": "agents/construction-subcontractor-coordinator.json",
-      "supervisor": null,
+      "supervisor": "construction-safety-officer",
       "priority": "normal"
     },
     {
       "id": "construction-materials-takeoff-specialist",
       "path": "agents/construction-materials-takeoff-specialist.json",
-      "supervisor": null,
+      "supervisor": "construction-safety-officer",
       "priority": "normal"
     }
   ],
@@ -40,5 +62,41 @@
     "construction-safety-officer",
     "construction-subcontractor-coordinator",
     "construction-materials-takeoff-specialist"
-  ]
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/site_safety_brief.md",
+    "workflows/subcontractor_milestones.md",
+    "workflows/materials_takeoff.md"
+  ],
+  "oversight_policies": [
+    {
+      "applies_to": [
+        "stop_work_safety_flag",
+        "subcontractor_notice_to_proceed",
+        "takeoff_bid_release"
+      ],
+      "approver_role": "Project Superintendent & Safety Director",
+      "threshold": "Mandatory sign-off on all JHA/OSHA corrective logs, COI clearance, trade schedules, and material bids",
+      "gate_agent": "construction-safety-officer"
+    }
+  ],
+  "disclosure": {
+    "capabilities": [
+      "grep_search",
+      "read_file",
+      "write_file"
+    ],
+    "mcp_grants": [],
+    "oversight_gates": [
+      "Safety Director & Superintendent sign-off required on OSHA JHA reports and stop-work hazards",
+      "Project Manager approval required before dispatching trade schedules or committing material takeoff bids"
+    ],
+    "egress_origins": []
+  },
+  "prompt_includes": [
+    "sovereign-guardrails.md",
+    "oversight-gate.md"
+  ],
+  "evals_path": "evals/scenarios.json"
 }

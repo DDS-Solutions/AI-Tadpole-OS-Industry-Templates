@@ -1,11 +1,46 @@
 import type { Agent, CatalogAgent, RecommendedSpecialist } from '../types';
 import { DANGEROUS_SKILL_SET } from '../constants/capabilities';
+import { DEFAULT_MODEL_SLOTS } from '../constants/_generatedContract';
 
 export const safeFileId = (value: string): string => {
   const normalized = value.toLowerCase().replace(/[^a-z0-9_-]+/g, '-').replace(/^-+|-+$/g, '');
   if (!normalized) throw new Error(`Cannot create a safe file name from "${value}".`);
   return normalized;
 };
+
+const NAMED_AGENT_COLORS: Record<string, string> = {
+  amber: '#F59E0B',
+  blue: '#3B82F6',
+  cyan: '#06B6D4',
+  gold: '#EAB308',
+  green: '#22C55E',
+  indigo: '#6366F1',
+  'metallic-blue': '#2563EB',
+  navy: '#1E40AF',
+  'neon-cyan': '#22D3EE',
+  'neon-green': '#4ADE80',
+  orange: '#F97316',
+  pink: '#EC4899',
+  purple: '#A855F7',
+  red: '#EF4444',
+  slate: '#64748B',
+  teal: '#14B8A6',
+  violet: '#8B5CF6',
+  yellow: '#EAB308',
+};
+
+export function normalizeAgentColor(rawColor?: string): string {
+  const candidate = (rawColor || '').trim();
+  if (/^#[0-9a-f]{6}$/i.test(candidate)) {
+    return candidate.toUpperCase();
+  }
+  if (/^#[0-9a-f]{3}$/i.test(candidate)) {
+    const [, r, g, b] = candidate;
+    return `#${r}${r}${g}${g}${b}${b}`.toUpperCase();
+  }
+  const mapped = NAMED_AGENT_COLORS[candidate.toLowerCase()];
+  return mapped || '#3B82F6';
+}
 
 const DANGEROUS_SKILLS = DANGEROUS_SKILL_SET;
 
@@ -39,8 +74,8 @@ export function catalogAgentToRuntimeAgent(
     department: customOverrides.department || defaultDepartment,
     description: customOverrides.description || defaultDescription,
     status: 'idle',
-    provider: customOverrides.provider || catalogAgent.provider || 'google',
-    model: customOverrides.model || catalogAgent.model || 'gemma4:31b',
+    provider: customOverrides.provider || catalogAgent.provider || DEFAULT_MODEL_SLOTS.primary.provider,
+    model: customOverrides.model || catalogAgent.model || DEFAULT_MODEL_SLOTS.primary.model_id,
     prompt: runtimePrompt,
     skills,
     workflows: customOverrides.workflows || [],
@@ -57,7 +92,7 @@ export function catalogAgentToRuntimeAgent(
               : false)
     ),
     emoji: customOverrides.emoji || catalogAgent.emoji || '🤖',
-    color: customOverrides.color || catalogAgent.color || '#3B82F6',
+    color: normalizeAgentColor(customOverrides.color || catalogAgent.color),
     vibe: customOverrides.vibe || catalogAgent.vibe || '',
     isCustom: Boolean(customOverrides.isCustom),
     recommendationReason: customOverrides.recommendationReason,

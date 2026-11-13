@@ -1,9 +1,12 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "id": "wholesale-b2b-operations-25",
   "name": "Small Wholesale B2B Operations (25 Seats)",
   "version": "1.0.0",
-  "description": "A compact quote-to-fulfillment team for wholesalers and distributors serving business accounts with up to 25 seats.",
-  "industry": "wholesale-distribution",
+  "description": "Quote preparation, account follow-up, replenishment planning, and fulfillment exception control for small wholesalers and distributors.",
+  "industry": "Wholesale & Distribution",
+  "maturity": "verified",
+  "company_size": 25,
   "tags": [
     "wholesale",
     "b2b",
@@ -14,8 +17,27 @@
     "small-business"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "provider": "ollama-cloud",
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "model_config": {
+      "provider": "ollama-cloud",
+      "model_id": "gemma4:31b-cloud",
+      "temperature": 0.2,
+      "max_turns": 24
+    },
+    "model_config2": {
+      "provider": "ollama-cloud",
+      "model_id": "gemma4:31b-cloud",
+      "temperature": 0.2,
+      "max_turns": 16
+    },
+    "model_config3": {
+      "provider": "ollama",
+      "model_id": "gemma4:e4b",
+      "temperature": 0.2,
+      "max_turns": 24
+    }
   },
   "roster": [
     {
@@ -40,5 +62,23 @@
   "required_mcps": "mcps.json",
   "global_workflows": [
     "workflows/wholesale_quote_to_fulfillment.md"
-  ]
+  ],
+  "oversight_policies": [
+    {
+      "applies_to": ["quote_release", "credit_hold_override", "replenishment_po_draft", "fulfillment_exception"],
+      "approver_role": "Wholesale Operations & Purchasing Lead",
+      "threshold": "Every customer quote, credit exception, supplier PO release, and backorder substitution",
+      "gate_agent": "wholesale-b2b-account-operations"
+    }
+  ],
+  "disclosure": {
+    "capabilities": ["grep_search", "read_file", "write_file"],
+    "mcp_grants": [],
+    "oversight_gates": [
+      "Account Lead approval required before releasing B2B quotes or overriding credit limits",
+      "Purchasing & Warehouse Lead sign-off required before submitting supplier POs or changing shipment routing"
+    ],
+    "egress_origins": []
+  },
+  "evals_path": "evals/scenarios.json"
 }

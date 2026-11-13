@@ -1,18 +1,43 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
+  "id": "legal-contract-review",
   "name": "Legal Matter Intake & Contract Review",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "SMB Legal Inc.",
   "description": "Legal Operations: Client conflict check, first-pass contract review, and docket deadline management.",
-  "industry": "legal",
+  "mission": "Triage prospective legal matters, execute conflict screening against active client registers, produce evidence-backed redline issue memos, and maintain docketing calendars under supervising attorney sign-off.",
+  "industry": "Legal Services",
+  "maturity": "verified",
+  "company_size": 25,
   "tags": [
     "law",
     "contracts",
-    "auditing"
+    "auditing",
+    "compliance",
+    "intake"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "provider": "ollama-cloud",
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "model_config": {
+      "provider": "ollama-cloud",
+      "model_id": "gemma4:31b-cloud",
+      "temperature": 0.1,
+      "max_turns": 24
+    },
+    "model_config2": {
+      "provider": "ollama-cloud",
+      "model_id": "gemma4:31b-cloud",
+      "temperature": 0.1,
+      "max_turns": 16
+    },
+    "model_config3": {
+      "provider": "ollama",
+      "model_id": "gemma4:e4b",
+      "temperature": 0.1,
+      "max_turns": 24
+    }
   },
   "roster": [
     {
@@ -24,20 +49,44 @@
     {
       "id": "specialized-legal-document-review",
       "path": "agents/specialized-legal-document-review.json",
-      "supervisor": null,
+      "supervisor": "specialized-legal-client-intake",
       "priority": "normal"
     },
     {
       "id": "support-support-legal-compliance-checker",
       "path": "agents/support-support-legal-compliance-checker.json",
-      "supervisor": null,
+      "supervisor": "specialized-legal-client-intake",
       "priority": "normal"
     }
   ],
-  "required_mcps": "mcps.json",
   "agents": [
     "specialized-legal-client-intake",
     "specialized-legal-document-review",
     "support-support-legal-compliance-checker"
-  ]
+  ],
+  "required_mcps": "mcps.json",
+  "global_workflows": [
+    "workflows/legal_intake.md",
+    "workflows/contract_review.md",
+    "workflows/docket_compliance.md"
+  ],
+  "oversight_policies": [
+    {
+      "applies_to": ["engagement_letter_draft", "conflict_clearance", "redline_memo", "docket_filing_schedule"],
+      "approver_role": "Managing Partner or Supervising Attorney",
+      "threshold": "Mandatory sign-off before client delivery or court docketing",
+      "gate_agent": "specialized-legal-client-intake"
+    }
+  ],
+  "disclosure": {
+    "capabilities": ["read_file", "grep_search", "write_file"],
+    "mcp_grants": [],
+    "oversight_gates": [
+      "Supervising attorney approval required on all engagement letters and conflict clearances",
+      "Partner review required before issuing redlines or binding legal opinions"
+    ],
+    "egress_origins": []
+  },
+  "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"],
+  "evals_path": "evals/scenarios.json"
 }

@@ -3,7 +3,7 @@
   "name": "Warehouse Dock Receiving & QA Swarm",
   "version": "1.0.0",
   "description": "Supply Chain Operations: Inbound dock traveler verification, vendor purchasing, and quality inspection.",
-  "industry": "logistics-supply-chain",
+  "industry": "Logistics & Supply Chain",
   "tags": [
     "logistics",
     "shipping",
@@ -12,26 +12,27 @@
     "warehouse"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "operations-receiving-traveler-clerk",
       "path": "agents/operations-receiving-traveler-clerk.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     },
     {
       "id": "purchasing-vendor-purchasing-clerk",
       "path": "agents/purchasing-vendor-purchasing-clerk.json",
-      "supervisor": null,
+      "supervisor": "operations-receiving-traveler-clerk",
       "priority": "normal"
     },
     {
       "id": "testing-quality-inspector-traveler",
       "path": "agents/testing-quality-inspector-traveler.json",
-      "supervisor": null,
+      "supervisor": "operations-receiving-traveler-clerk",
       "priority": "normal"
     }
   ],
@@ -40,5 +41,7 @@
     "operations-receiving-traveler-clerk",
     "purchasing-vendor-purchasing-clerk",
     "testing-quality-inspector-traveler"
-  ]
+  ],
+  "id": "logistics-dock-shipping",
+  "maturity": "starter"
 }

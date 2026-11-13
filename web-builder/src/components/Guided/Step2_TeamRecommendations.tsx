@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Users, Shield, Plus, Trash2, Eye, EyeOff, Info, ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
 import type { Agent, MCPConnector, RecommendedSpecialist } from '../../types';
 import { DANGEROUS_SKILL_SET, VALID_RUNTIME_CAPABILITIES } from '../../constants/capabilities';
+import { normalizeMcpGrant } from '../../utils/mcpGrants';
 
 interface Step2TeamRecommendationsProps {
   agents: Agent[];
@@ -46,23 +47,29 @@ export default function Step2_TeamRecommendations({
         <div className="flex items-center flex-wrap gap-2">
           {onRegenerateTeam && (
             <button
+              type="button"
               onClick={onRegenerateTeam}
-              className="px-3.5 py-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-cyber-green text-xs font-medium transition-colors flex items-center gap-1.5 cursor-pointer"
-              title="Reset team to recommended goals"
+              data-tooltip="Reset recommended roster to match your Step 1 business goals"
+              className="focus-sovereign px-3.5 py-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-cyber-green text-xs font-medium transition-colors flex items-center gap-1.5 cursor-pointer"
             >
               <Sparkles className="w-3.5 h-3.5" /> Re-sync Goals
             </button>
           )}
           <button
+            type="button"
             onClick={() => setShowTechnicalDetails(!showTechnicalDetails)}
-            className="px-3.5 py-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-200 text-xs font-medium transition-colors flex items-center gap-1.5 cursor-pointer"
+            aria-pressed={showTechnicalDetails}
+            data-tooltip="Toggle model IDs, runtime capabilities, and raw agent instructions"
+            className="focus-sovereign px-3.5 py-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-200 text-xs font-medium transition-colors flex items-center gap-1.5 cursor-pointer"
           >
             {showTechnicalDetails ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
             {showTechnicalDetails ? 'Hide details' : 'View details'}
           </button>
           <button
+            type="button"
             onClick={onAddSpecialistFromCatalog}
-            className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer border border-zinc-700"
+            data-tooltip={`Browse all ${catalogCount} domain specialists to add to your team`}
+            className="focus-sovereign px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer border border-zinc-700"
           >
             <Plus className="w-3.5 h-3.5 text-cyber-green" /> Add Specialist
           </button>
@@ -96,9 +103,9 @@ export default function Step2_TeamRecommendations({
             const skills = agent.skills || ['read_file'];
             const requiresApproval = Boolean(agent.requiresOversight)
               || skills.some(skill => DANGEROUS_SKILL_SET.has(skill))
-              || (agent.mcpTools || []).some(grant => ['write', 'execute'].includes(toolRisks.get(grant) || ''));
+              || (agent.mcpTools || []).some(grant => ['write', 'execute'].includes(toolRisks.get(normalizeMcpGrant(grant)) || ''));
             const hasUnknownPermissions = skills.some(skill => !VALID_RUNTIME_CAPABILITIES.has(skill))
-              || (agent.mcpTools || []).some(grant => !toolRisks.has(grant));
+              || (agent.mcpTools || []).some(grant => !toolRisks.has(normalizeMcpGrant(grant)));
 
             return (
               <div
@@ -121,10 +128,11 @@ export default function Step2_TeamRecommendations({
                       </div>
                     </div>
                     <button
+                      type="button"
                       onClick={() => onRemoveAgent(agent.id)}
                       aria-label={`Remove ${agent.name}`}
-                      className="p-1.5 text-zinc-500 hover:text-red-400 hover:bg-red-950/30 rounded-lg transition-colors cursor-pointer"
-                      title="Remove agent"
+                      data-tooltip={`Remove ${agent.name} from recommended team`}
+                      className="focus-sovereign tooltip-left p-1.5 text-zinc-500 hover:text-red-400 hover:bg-red-950/30 rounded-lg transition-colors cursor-pointer"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -215,16 +223,18 @@ export default function Step2_TeamRecommendations({
       {/* Navigation Footer */}
       <div className="pt-6 border-t border-zinc-800/80 flex flex-wrap gap-3 items-center justify-between">
         <button
+          type="button"
           onClick={onBack}
-          className="px-5 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-300 text-sm font-medium transition-colors flex items-center gap-2 cursor-pointer border border-zinc-800"
+          className="focus-sovereign px-5 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-300 text-sm font-medium transition-colors flex items-center gap-2 cursor-pointer border border-zinc-800"
         >
           <ArrowLeft className="w-4 h-4" /> Back to Business Brief
         </button>
 
         <button
+          type="button"
           onClick={onNext}
           disabled={agents.length === 0}
-          className={`w-full sm:w-auto px-6 py-3 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md ${
+          className={`focus-sovereign w-full sm:w-auto px-6 py-3 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md ${
             agents.length > 0
               ? 'bg-cyber-green hover:bg-cyber-green-light text-zinc-950 shadow-cyber-green/20'
               : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'

@@ -319,4 +319,66 @@ describe('validateSwarm', () => {
     const issues = validateSwarm(validCompany, [agentWithAliasGrant], [validWorkflow], ['mcp-financial'], [multiAliasConnector]);
     expect(issues.some(e => e.id === 'connector-no-grants-mcp-financial')).toBe(false);
   });
+
+  it('validates agent supervisor DAG for self-reference, missing target, and cycles', () => {
+    const selfLoop: Agent = { ...validAgent, id: 'lead', supervisor: 'lead' };
+    expect(validateSwarm(validCompany, [selfLoop], [validWorkflow], [], [])
+      .some(e => e.id === 'agent-self-supervisor-lead')).toBe(true);
+
+    const missingSup: Agent = { ...validAgent, id: 'worker', supervisor: 'ghost-boss' };
+    expect(validateSwarm(validCompany, [missingSup], [validWorkflow], [], [])
+      .some(e => e.id === 'agent-dangling-supervisor-worker')).toBe(true);
+
+    const a: Agent = { ...validAgent, id: 'agent-a', name: 'Agent A', supervisor: 'agent-b' };
+    const b: Agent = { ...validAgent, id: 'agent-b', name: 'Agent B', supervisor: 'agent-a' };
+    expect(validateSwarm(validCompany, [a, b], [validWorkflow], [], [])
+      .some(e => e.id.startsWith('agent-supervisor-cycle-'))).toBe(true);
+
+    const rootLead: Agent = { ...validAgent, id: 'director', name: 'Director', supervisor: null };
+    const delegate: Agent = { ...validAgent, id: 'specialist', name: 'Specialist', supervisor: 'director' };
+    expect(validateSwarm(validCompany, [rootLead, delegate], [validWorkflow], [], [])
+      .filter(e => e.severity === 'error')).toEqual([]);
+  });
+
+  it('resolves canonical display industries case-insensitively and via legacy alias slugs', async () => {
+    const { resolveCanonicalIndustry } = await import('./validation');
+    expect(resolveCanonicalIndustry('field services')).toBe('Field Services');
+    expect(resolveCanonicalIndustry('construction')).toBe('Construction & General Contracting');
+    expect(resolveCanonicalIndustry('digital-marketing')).toBe('Digital Marketing');
+    expect(resolveCanonicalIndustry('   ')).toBeNull();
+    expect(resolveCanonicalIndustry('Custom Unlisted Vertical')).toBeNull();
+  });
+
+  it('rejects malformed MCP tool grants without a server:tool delimiter and normalizes mcp__server__tool grants', () => {
+    const crmConnector: MCPConnector = {
+      id: 'crm',
+      name: 'CRM',
+      category: 'CRM',
+      description: 'Customer records',
+      version: '1.0.0',
+      path: 'mcp-blueprints/crm',
+      status: 'verified',
+      tools: [{ id: 'crm:update_lead', name: 'Update Lead', description: 'Mutate CRM record', risk: 'write' as const }],
+      config: { mcpServers: { crm: { command: 'python', args: ['server.py'] } } },
+    };
+
+    const bareServerGrantAgent: Agent = {
+      ...validAgent,
+      mcpTools: ['crm'],
+    };
+    const bareIssues = validateSwarm(validCompany, [bareServerGrantAgent], [validWorkflow], ['crm'], [crmConnector]);
+    expect(bareIssues.some(e => e.id === `agent-mcp-invalid-format-${validAgent.id}-crm`)).toBe(true);
+
+    const legacyMutatingAgent: Agent = {
+      ...validAgent,
+      mcpTools: ['mcp__crm__update_lead'],
+      requiresOversight: false,
+    };
+    const mutatingIssues = validateSwarm(validCompany, [legacyMutatingAgent], [validWorkflow], ['crm'], [crmConnector]);
+    expect(mutatingIssues.some(e => e.id.startsWith('agent-mcp-oversight-required-'))).toBe(true);
+
+    const reviewedMutatingAgent: Agent = { ...legacyMutatingAgent, requiresOversight: true };
+    const cleanIssues = validateSwarm(validCompany, [reviewedMutatingAgent], [validWorkflow], ['crm'], [crmConnector]);
+    expect(cleanIssues.filter(e => e.severity === 'error')).toEqual([]);
+  });
 });

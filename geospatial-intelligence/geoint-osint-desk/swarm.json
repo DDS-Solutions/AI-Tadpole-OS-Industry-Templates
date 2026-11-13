@@ -3,7 +3,7 @@
   "name": "GEOINT Tactical OSINT Operations Desk",
   "version": "1.0.0",
   "description": "Geospatial Intelligence: Multi-layer global situational awareness, tactical scene serialization, Overpass spatial querying, and real-time open-source anomaly correlation.",
-  "industry": "geospatial-intelligence",
+  "industry": "Geospatial Intelligence & OSINT",
   "tags": [
     "geoint",
     "osint",
@@ -12,26 +12,27 @@
     "cctv"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "geoint-tactical-recon-specialist",
       "path": "agents/geoint-tactical-recon-specialist.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     },
     {
       "id": "geoint-osint-correlation-analyst",
       "path": "agents/geoint-osint-correlation-analyst.json",
-      "supervisor": null,
+      "supervisor": "geoint-tactical-recon-specialist",
       "priority": "normal"
     },
     {
       "id": "geoint-spatial-infrastructure-analyst",
       "path": "agents/geoint-spatial-infrastructure-analyst.json",
-      "supervisor": null,
+      "supervisor": "geoint-tactical-recon-specialist",
       "priority": "normal"
     }
   ],
@@ -40,5 +41,7 @@
     "geoint-tactical-recon-specialist",
     "geoint-osint-correlation-analyst",
     "geoint-spatial-infrastructure-analyst"
-  ]
+  ],
+  "id": "geoint-osint-desk",
+  "maturity": "starter"
 }

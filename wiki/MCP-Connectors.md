@@ -12,7 +12,7 @@ The `mcp-blueprints/` folder houses standard implementations of FastMCP servers 
 
 ### Registry Indexing (`mcp_registry.json`)
 
-All active MCPs in the repository are cataloged in `mcp_registry.json`:
+The active MCP blueprints (`4` connectors currently indexed) are cataloged in `mcp_registry.json` (`generic-crm`, `quickbooks-online`, `github-dev`, `hardware-edge`), and connector runtime dependencies travel in `connector-lock.json` manifests alongside verified blueprints:
 
 ```json
 {
@@ -35,9 +35,9 @@ All active MCPs in the repository are cataloged in `mcp_registry.json`:
 When configuring your swarm using the visual **Swarm Architect** (`/web-builder`), Phase 4 lets you select catalog connectors. Export then:
 
 - merges selected server definitions into a root `mcps.json`;
-- sets manifest metadata to `"required_mcps": "mcps.json"`;
+- sets manifest metadata `"required_mcps": "mcps.json"` and `"connector_ids": [...]` on `swarm.json`;
 - places bundled Python source under template `skills/` and rewrites its argument to the post-install `execution/<connector>-server.py` path; and
-- rejects missing connector definitions or duplicate MCP server names.
+- rejects missing connector definitions, invalid server keys (`gev`, `__`), or duplicate MCP server names.
 
 ### Manual Configuration
 If you are writing a template manually, place the accepted MCP configuration at the template root. The pinned private Tadpole-OS installer reads this exact file and does not follow repository-relative `required_mcps` paths:
@@ -76,9 +76,9 @@ Place the corresponding reviewed source at `skills/mcp-generic-crm-server.py`. T
 In alignment with the Sapphire Shield policy and the MCP 2026-07-28 protocol upgrade:
 - **Dual Transport Support**: Configuration supports both stdio (`command`, `args`, `env`) and streamable HTTP (`url`, `headers`, `protocol_version`).
 - **Probe-First Discovery**: Stdio probes `server/discover` negotiating version `2026-07-28`, falling back to `initialize` (`2024-11-05`) if unsupported. HTTP servers utilize stateless per-request `_meta`.
-- **Placeholder Security**: Sensitive environment and header values must use explicit placeholders (`CONFIGURE_LOCALLY`, `YOUR_API_KEY_HERE`, or `${API_TOKEN}`). Placeholders resolve from the host process environment.
-- **Runtime Command Whitelist**: Stdio commands are strictly limited to approved runtimes (`node`, `npx`, `python`, `python3`). Shell control syntax, redirection, inline interpreter code, and double underscores (`__`) in server names are rejected.
-- **Explicit Tool Authorization**: AI-Tadpole-OS authorization is not inferred from a connector description. External MCP tools require explicit agent `mcp_tools` declarations (`server:tool`), and mutating tool grants enforce `requires_oversight: true`.
+- **Placeholder & Header Security**: Sensitive environment and header values must use explicit placeholders (`CONFIGURE_LOCALLY`, `YOUR_API_KEY_HERE`, or `${API_TOKEN}`). `${NAME}` placeholders resolve from the Tadpole process environment or post-install `Mcp_Secrets_Wizard_Modal`. `ENGINE_PRIVATE_ENV_VARS` overrides and transport-owned HTTP headers (`host`, `content-type`, `accept`, `mcp-protocol-version`, `mcp-method`, `mcp-name`, `origin`, `mcp-session-id`, `last-event-id`, `mcp-param-*`) are blocked.
+- **Runtime Command Whitelist**: Stdio commands are strictly limited to approved runtimes (`node`, `npx`, `python`, `python3`). Shell control syntax, redirection, inline interpreter code, reserved `"gev"` keys, and double underscores (`__`) in server names are rejected.
+- **Explicit Tool Authorization**: AI-Tadpole-OS authorization is not inferred from a connector description. External MCP tools require explicit exact `server:tool` declarations in `mcp_tools` (wildcards such as `server:*` are rejected), and mutating tool grants enforce `requires_oversight: true`.
 
 > [!WARNING]
 > Swarm Architect routes bundled stdio source through `skills/` so the installer retains it in `execution/`. Remote HTTP servers do not require bundled source. Automatic dependency installation remains an operator responsibility.

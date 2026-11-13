@@ -13,8 +13,9 @@
     "compliance"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
@@ -26,13 +27,13 @@
     {
       "id": "nonprofit-donor-stewardship-tax-receipt-clerk",
       "path": "agents/nonprofit-donor-stewardship-tax-receipt-clerk.json",
-      "supervisor": null,
+      "supervisor": "nonprofit-grant-compliance-reporting-officer",
       "priority": "normal"
     },
     {
       "id": "nonprofit-volunteer-program-coordinator",
       "path": "agents/nonprofit-volunteer-program-coordinator.json",
-      "supervisor": null,
+      "supervisor": "nonprofit-grant-compliance-reporting-officer",
       "priority": "normal"
     }
   ],
@@ -40,5 +41,7 @@
     "nonprofit-grant-compliance-reporting-officer",
     "nonprofit-donor-stewardship-tax-receipt-clerk",
     "nonprofit-volunteer-program-coordinator"
-  ]
+  ],
+  "id": "non-profit-grant-donor-stewardship",
+  "maturity": "starter"
 }

@@ -1,22 +1,72 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/agent-v1.json",
   "id": "specialized-legal-client-intake",
   "name": "Specialized Legal Client Intake",
-  "role": "Specialized Legal Client Intake Specialist",
+  "role": "Legal Matter Intake & Conflict Coordinator",
   "department": "Operations",
-  "description": "Specialized AI agent handling Specialized Legal Client Intake Specialist workflows.",
-  "status": "idle",
+  "description": "Screens prospective legal matters for conflicts of interest, gathers verified party disclosures, and drafts engagement dossiers for partner approval.",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You operate as the Specialized Legal Client Intake. Execute tasks according to verified SOPs."
+    "system_prompt": "You coordinate legal matter intake and conflict screening. Cross-check prospective clients, adverse parties, and affiliates against local matter registers, flag potential ethical walls, and draft engagement packets without giving legal advice. Follow the legal_intake workflow. Operate strictly within verified inputs, approved SOPs, and local workspace records. Separate confirmed facts from assumptions and escalate ambiguity or policy conflicts instead of guessing. Require explicit human approval before writing external deliverables, altering production state, committing binding terms, or handling regulated records.",
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "max_turns": 24
+  },
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.1,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
-    "grep_search"
+    "grep_search",
+    "write_file"
   ],
   "workflows": [
     "legal_intake"
   ],
+  "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": false
+  "requires_oversight": true,
+  "hooks": ["before_file_write", "after_tool_result"],
+  "input_schema": {
+    "type": "object",
+    "required": ["matter_title", "prospective_client", "adverse_parties"],
+    "properties": {
+      "matter_title": { "type": "string" },
+      "prospective_client": { "type": "string" },
+      "adverse_parties": { "type": "array", "items": { "type": "string" } },
+      "jurisdiction": { "type": "string" }
+    }
+  },
+  "output_contract": {
+    "schema": {
+      "type": "object",
+      "required": ["conflict_status", "matched_records", "draft_engagement_path", "requires_partner_review"],
+      "properties": {
+        "conflict_status": { "type": "string", "enum": ["clear", "potential_conflict", "blocked"] },
+        "matched_records": { "type": "array", "items": { "type": "string" } },
+        "draft_engagement_path": { "type": "string" },
+        "requires_partner_review": { "type": "boolean" }
+      }
+    }
+  },
+  "oversight_policies": [
+    {
+      "applies_to": ["engagement_letter_draft", "conflict_clearance"],
+      "approver_role": "Managing Partner",
+      "threshold": "All new matters and conflict hits"
+    }
+  ],
+  "metadata": {
+    "base_system_prompt": "You coordinate legal matter intake and conflict screening. Cross-check prospective clients, adverse parties, and affiliates against local matter registers, flag potential ethical walls, and draft engagement packets without giving legal advice. Follow the legal_intake workflow.",
+    "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"]
+  }
 }

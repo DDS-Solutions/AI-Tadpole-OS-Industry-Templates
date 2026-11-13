@@ -61,5 +61,28 @@ describe('McpEditor modal', () => {
     expect(html).toContain('Credential Var Name');
     expect(html).toContain('CRM_API_TOKEN');
   });
+
+  it('disables Save Changes when a remote connector uses an invalid serverKey containing double underscores', () => {
+    const invalidKeyConnector: MCPConnector = {
+      ...sampleConnector,
+      config: {
+        mcpServers: {
+          bad__key: {
+            url: 'https://api.crm.internal/mcp',
+          },
+        },
+      },
+    };
+
+    const html = renderToStaticMarkup(
+      <McpEditor
+        connector={invalidKeyConnector}
+        onClose={vi.fn()}
+        onSave={vi.fn()}
+      />,
+    );
+
+    expect(html).toMatch(/<button[^>]*disabled=""[^>]*>Save Connector<\/button>/);
+  });
 });
 

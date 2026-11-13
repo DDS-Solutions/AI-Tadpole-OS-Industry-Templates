@@ -20,6 +20,8 @@ export interface Agent {
   isCustom?: boolean;
   catalogId?: string;
   recommendationReason?: string;
+  supervisor?: string | null;
+  priority?: 'critical' | 'high' | 'normal' | 'low';
 }
 
 export interface WorkflowItem {
@@ -43,6 +45,7 @@ export interface TemplateItem {
   path: string;
   tags: string[];
   company_size?: number;
+  maturity?: 'starter' | 'verified';
   internal?: boolean;
   content_sha256?: string;
 }

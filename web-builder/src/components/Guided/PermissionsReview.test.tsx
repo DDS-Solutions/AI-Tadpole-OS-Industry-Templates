@@ -72,4 +72,25 @@ describe('guided permission summaries', () => {
     expect(renderReview(agent, catalog)).toContain('1 of 1 Require Oversight');
     expect(renderReview(agent, catalog)).not.toMatch(/Read.only Capabilities/i);
   });
+
+  it('normalizes mcp__server__tool grants in guided team and review summaries', () => {
+    const catalog: MCPConnector[] = [{
+      id: 'crm', name: 'CRM', description: 'Customer records', category: 'CRM',
+      version: '1', path: 'mcp-blueprints/crm',
+      tools: [
+        { id: 'crm:search', name: 'search', description: 'Search CRM', risk: 'read' },
+        { id: 'crm:update', name: 'update', description: 'Update a record', risk: 'write' },
+      ],
+    }];
+
+    const readGrantAgent = { ...readAgent, mcpTools: ['mcp__crm__search'] };
+    expect(renderTeam(readGrantAgent, catalog)).toContain('Read-only Capabilities');
+    expect(renderTeam(readGrantAgent, catalog)).not.toContain('Review Tool Permissions');
+    expect(renderReview(readGrantAgent, catalog)).toContain('declare only read-only capabilities and tool grants');
+    expect(renderReview(readGrantAgent, catalog)).not.toContain('Permissions Need Review');
+
+    const writeGrantAgent = { ...readAgent, mcpTools: ['mcp__crm__update'] };
+    expect(renderTeam(writeGrantAgent, catalog)).toContain('Human Approval Required');
+    expect(renderReview(writeGrantAgent, catalog)).toContain('1 of 1 Require Oversight');
+  });
 });

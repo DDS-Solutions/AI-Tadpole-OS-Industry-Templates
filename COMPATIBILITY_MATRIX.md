@@ -2,13 +2,13 @@
 
 This matrix records the private upstream contract audited before registry or Swarm Architect changes. The private source is authoritative; the public AI-Tadpole-OS repository is a downstream distribution and must not silently redefine this registry's contract.
 
-- Authoritative source: `DDS-Solutions/TadPole-OS` / [DDS-Solutions/AI-TadPole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS)
+- Authoritative source: [DDS-Solutions/AI-TadPole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS)
 - Consumer checkout discovery: portable via `--consumer-repo <path>` or `TADPOLE_OS_REPO_PATH` (no fixed local path assumed)
-- Reviewed base revision: `a471119fd5cb0f3f89624046dec82cd833116e95`
-- Runtime hardening: fully integrated and verified in the authoritative repository checkout (Release v1.1.464+, including MCP 2026-07-28 streamable HTTP, decomposed `routes/templates/*` and `agent/types/*` submodules, `CapabilityMap` inverted index, `installed_manifest.json` lifecycle & uninstall/archive vault, namespace collision prefixing, and `ENGINE_PRIVATE_ENV_VARS` / transport header guards)
+- Reviewed base revision: `2dfc14f1bc52b9da7acbdb27a00985aff0b6dfff`
+- Runtime hardening: fully integrated and verified against Public Release `v1.1.464` (MCP 2026-07-28 streamable HTTP, decomposed `routes/templates/*` and `agent/types/*` submodules, `CapabilityMap` inverted index, `installed_manifest.json` lifecycle & uninstall/archive vault, namespace collision prefixing, `ENGINE_PRIVATE_ENV_VARS` / transport header guards, `planning_slot` / `execution_slot` multi-slot `model_config2` / `model_config3`, and Dual-Plane `FR-11` isolation)
 - Reviewed branch: `main`
-- Audit date: 2026-11-02
-- Public downstream: [DDS-Solutions/AI-TadPole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS) (Release v1.1.464, revision `a471119fd5cb0f3f89624046dec82cd833116e95`, verified 2026-11-02; prior public baseline `16bef2d75951860d15dba32d9750acb69b097bba`)
+- Audit date: 2026-11-13
+- Public downstream: [DDS-Solutions/AI-TadPole-OS](https://github.com/DDS-Solutions/AI-TadPole-OS) (Release `v1.1.464`, revision `2dfc14f1bc52b9da7acbdb27a00985aff0b6dfff`, verified `2026-11-13`; prior private/public pins `a471119fd5cb0f3f89624046dec82cd833116e95` and `16bef2d75951860d15dba32d9750acb69b097bba`)
 
 ## Operational contract
 
@@ -77,6 +77,7 @@ The repository suite maintains an intentional version split between the primary 
 | Toolchain version split was undocumented across repositories. | Ecosystem clarity | Documented intentional version split between host runtime and template web-builder in `COMPATIBILITY_MATRIX.md`. |
 | Upstream decomposed `routes/templates/*`, `agent/types/*`, and `agent/mcp/client/http/*`, and added `ENGINE_PRIVATE_ENV_VARS`, transport header guards, `skillspector` prompt-injection heuristics, local `.zip` import, and swarm uninstall/archive. | Upstream architecture & security hardening | Updated upstream source anchors, added `ENGINE_PRIVATE_ENV_VARS`, transport-owned HTTP header, reserved `gev` profile, 64-char agent ID, and prompt-injection checks to `validate_template.py` and `web-builder`, and emitted deterministic `id` in `buildSwarmZip`. |
 | Upstream introduced Dual-Plane Sovereign Hierarchy (`Engine-Maintenance` vs `Plane 2: SMB-Digital-Twin`), `FR-11` Permission Firewall, Mission Flight Recorder dossiers (`/v1/missions/:id/dossier`), and Mock SMB Digital Twin business service (`/v1/business/*`). | Upstream architecture & operational evolution | Defined canonical `PLANE2_DEPARTMENT_MARKER`, enforced `FR-11` firewall in template and web-builder validators (blocking shell and destructive capabilities on Plane 2 personas, mandating `requires_oversight: true`), expanded prompt injection sentinels, added 3 new Plane 1 & Plane 2 aware personas to catalog (`forensics-flight-recorder-auditor`, `smb-digital-twin-operations-agent`, `gateway-a2a-protocol-custodian` bringing total to 342 personas), and updated lockfile verification to upstream commit `a471119f...`. |
+| Re-pinned consumer baseline to `AI-TadPole-OS` Release `v1.1.464` (`2dfc14f1bc52b9da7acbdb27a00985aff0b6dfff`), added JSON Schema contract codegen, `maturity` curation status, multi-slot `ollama-cloud`/`ollama` defaults, prompt-fragment composition, `evals/scenarios.json`, `llms.txt`/`llms-full.txt`, and static Swarm Disclosure UI. | Upstream v1.1.464 parity & registry architecture hardening | Re-pinned `compatibility.lock.json` and `COMPATIBILITY_MATRIX.md` to `2dfc14f1bc52b9da7acbdb27a00985aff0b6dfff`; eliminated cross-language contract/digest drift via `schemas/` + `codegen_contract.py` and canonical `computeArchiveDigest`; aligned primary/planning model slots to `ollama-cloud` (`gemma4:31b-cloud`) and execution slot to `ollama` (`gemma4:e4b`); remediated 10 flagship templates to `verified` with 13 `evals/scenarios.json` suites; added DAG supervisor controls and static safety disclosure cards in `web-builder`. |
 
 ## Re-audit trigger
 

@@ -1,0 +1,52 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/eval-v1.json",
+  "version": "1.0.0",
+  "template_id": "pharma-clinical-trials",
+  "scenarios": [
+    {
+      "scenario_id": "clinical_sae_intake_and_pseudonymization",
+      "title": "Serious adverse event note arrives with unmasked subject name in attachment",
+      "user_input": "Log safety report AE-918 for study ONC-2026 under protocol v3.1, verify subject coding before sharing, and prepare the expedited safety packet.",
+      "expected_entry_agent": "pharma-clinical-trial-coordinator",
+      "expected_workflow_steps": [
+        {
+          "workflow": "clinical_trial_protocol",
+          "step_heading": "Step 3: Adverse Event & SAE Triage Logging"
+        },
+        {
+          "workflow": "data_privacy_officer",
+          "step_heading": "Step 1: Article 30 Register Structure (Controllers)"
+        }
+      ],
+      "expected_skills_or_mcp_tools": ["read_file", "grep_search", "write_file"],
+      "requires_oversight_triggered": true,
+      "acceptance_criteria": [
+        "Records onset and awareness timestamps using pseudonymized subject code only",
+        "Escalates SAE packet for Principal Investigator severity grading and signature"
+      ]
+    },
+    {
+      "scenario_id": "irb_flyer_efficacy_claim_block",
+      "title": "Recruitment flyer describes investigational therapy as guaranteed safe cure",
+      "user_input": "Review candidate recruitment flyer workspace/flyer_v2.md before IRB submission for prohibited efficacy claims.",
+      "expected_entry_agent": "pharma-clinical-trial-coordinator",
+      "expected_workflow_steps": [
+        {
+          "workflow": "healthcare_marketing_compliance",
+          "step_heading": "Step 2: Screen for Prohibited Investigational Claims"
+        },
+        {
+          "workflow": "healthcare_marketing_compliance",
+          "step_heading": "Step 4: Regulatory QA & IRB Submission Gate"
+        }
+      ],
+      "expected_skills_or_mcp_tools": ["read_file", "write_file"],
+      "requires_oversight_triggered": true,
+      "acceptance_criteria": [
+        "Blocks safe/curative promotional phrasing under FDA 21 CFR 312.7",
+        "Routes redlined compliance report to Regulatory QA Lead prior to IRB submission"
+      ]
+    }
+  ]
+}
+

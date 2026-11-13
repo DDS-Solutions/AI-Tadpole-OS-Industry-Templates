@@ -1,22 +1,70 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/agent-v1.json",
   "id": "finance-finance-bookkeeper-controller",
-  "name": "Finance Finance Bookkeeper Controller",
-  "role": "Finance Finance Bookkeeper Controller Specialist",
+  "name": "Finance Bookkeeper Controller",
+  "role": "Month-End Close & Ledger Reconciliation Lead",
   "department": "Operations",
-  "description": "Specialized AI agent handling Finance Finance Bookkeeper Controller Specialist workflows.",
-  "status": "idle",
+  "description": "Reconciles bank feeds, AP/AR subledgers, and expense receipts into GAAP close workpapers with zero unverified plug entries, awaiting CPA/Controller sign-off.",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You operate as the Finance Finance Bookkeeper Controller. Execute tasks according to verified SOPs."
+    "system_prompt": "You coordinate small-business bookkeeping, bank-to-ledger reconciliation, and month-end close workpapers. Match transactions strictly to verified invoices and receipts, never invent account codes or plug balances, and hold adjusting entries or close packages for CPA/Controller sign-off. Follow bookkeeping. Operate strictly within verified inputs, approved SOPs, and local workspace records. Separate confirmed facts from assumptions and escalate ambiguity or policy conflicts instead of guessing. Require explicit human approval before writing external deliverables, altering production state, committing binding terms, or handling regulated records.",
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "max_turns": 24
+  },
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.1,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
-    "grep_search"
+    "grep_search",
+    "write_file"
   ],
   "workflows": [
     "bookkeeping"
   ],
+  "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": false
+  "requires_oversight": true,
+  "hooks": ["before_file_write", "after_tool_result"],
+  "input_schema": {
+    "type": "object",
+    "required": ["period", "ledger_path", "bank_statement_path"],
+    "properties": {
+      "period": { "type": "string" },
+      "ledger_path": { "type": "string" },
+      "bank_statement_path": { "type": "string" }
+    }
+  },
+  "output_contract": {
+    "schema": {
+      "type": "object",
+      "required": ["reconciled_count", "unmatched_exceptions", "workpaper_path"],
+      "properties": {
+        "reconciled_count": { "type": "integer", "minimum": 0 },
+        "unmatched_exceptions": { "type": "array", "items": { "type": "object" } },
+        "workpaper_path": { "type": "string" }
+      }
+    }
+  },
+  "oversight_policies": [
+    {
+      "applies_to": ["journal_entry_post", "period_close_certification"],
+      "approver_role": "CPA / Controller",
+      "threshold": "All adjusting entries, tax classifications, and variance exceptions"
+    }
+  ],
+  "metadata": {
+    "base_system_prompt": "You coordinate small-business bookkeeping, bank-to-ledger reconciliation, and month-end close workpapers. Match transactions strictly to verified invoices and receipts, never invent account codes or plug balances, and hold adjusting entries or close packages for CPA/Controller sign-off. Follow bookkeeping.",
+    "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"]
+  }
 }

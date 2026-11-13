@@ -1,10 +1,10 @@
 {
   "$schema": "https://tadpoleos.dev/schemas/swarm-v1.json",
-  "id": "medium-plant-50",
-  "name": "Medium Manufacturing Plant (50 Seats)",
+  "id": "manufacturing-medium-plant-50",
+  "name": "Medium Plant (50 Seats)",
   "industry": "Manufacturing",
   "company_size": 50,
-  "description": "Optimize predictive maintenance, supply chain coordination, and plant-level analytics for medium-sized manufacturing facilities.",
+  "description": "Predictive maintenance and supply chain orchestration for medium-sized facilities.",
   "author": "AI-Tadpole-OS",
   "tags": [
     "manufacturing",
@@ -32,14 +32,20 @@
     {
       "id": "engineering-engineering-it-service-manager",
       "path": "agents/engineering-engineering-it-service-manager.json",
-      "supervisor": null,
+      "supervisor": "specialized-supply-chain-strategist",
       "priority": "normal"
     },
     {
       "id": "support-support-infrastructure-maintainer",
       "path": "agents/support-support-infrastructure-maintainer.json",
-      "supervisor": null,
+      "supervisor": "specialized-supply-chain-strategist",
       "priority": "normal"
     }
-  ]
+  ],
+  "maturity": "starter",
+  "defaults": {
+    "model": "gemma4:31b-cloud",
+    "provider": "ollama-cloud",
+    "temperature": 0.4
+  }
 }

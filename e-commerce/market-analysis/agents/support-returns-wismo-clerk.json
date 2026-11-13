@@ -1,14 +1,28 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/agent-v1.json",
   "id": "support-returns-wismo-clerk",
   "name": "DTC Returns & Order Status Clerk",
-  "role": "DTC Returns & Order Status Clerk",
+  "role": "WISMO, RMA & Refund Policy Specialist",
   "department": "Support",
-  "description": "Resolves where-is-my-order (WISMO) queries, issues return merchandise authorizations (RMA), and tracks package transit exceptions.",
-  "status": "idle",
+  "description": "Verifies shipment carrier checkpoints and return window eligibility against order records and drafts RMA/WISMO responses pending manager sign-off.",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You are a DTC Returns & Order Status Clerk. You lookup tracking statuses, issue return authorization labels according to policy, and resolve delivery exceptions. Follow the associated workflow SOP."
+    "system_prompt": "You handle DTC order-status (WISMO) and return/RMA inquiries using verified order timelines, carrier tracking logs, and store return policies. Never promise out-of-window refunds, waive restocking fees, or commit reshipments without Support Lead approval. Follow customer_returns. Operate strictly within verified inputs, approved SOPs, and local workspace records. Separate confirmed facts from assumptions and escalate ambiguity or policy conflicts instead of guessing. Require explicit human approval before writing external deliverables, altering production state, committing binding terms, or handling regulated records.",
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "max_turns": 24
+  },
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.1,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
@@ -18,6 +32,37 @@
   "workflows": [
     "customer_returns"
   ],
+  "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": true
+  "requires_oversight": true,
+  "hooks": ["before_file_write", "after_tool_result"],
+  "input_schema": {
+    "type": "object",
+    "required": ["order_id", "inquiry_type"],
+    "properties": {
+      "order_id": { "type": "string" },
+      "inquiry_type": { "type": "string", "enum": ["wismo", "return_rma", "damaged_claim"] }
+    }
+  },
+  "output_contract": {
+    "schema": {
+      "type": "object",
+      "required": ["eligibility_status", "draft_response_path"],
+      "properties": {
+        "eligibility_status": { "type": "string", "enum": ["eligible_standard", "escalate_exception", "tracking_delayed"] },
+        "draft_response_path": { "type": "string" }
+      }
+    }
+  },
+  "oversight_policies": [
+    {
+      "applies_to": ["refund_credit_issue", "reshipment_dispatch"],
+      "approver_role": "Customer Support Lead",
+      "threshold": "Every refund issuance, damaged-goods claim, or policy exception"
+    }
+  ],
+  "metadata": {
+    "base_system_prompt": "You handle DTC order-status (WISMO) and return/RMA inquiries using verified order timelines, carrier tracking logs, and store return policies. Never promise out-of-window refunds, waive restocking fees, or commit reshipments without Support Lead approval. Follow customer_returns.",
+    "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"]
+  }
 }

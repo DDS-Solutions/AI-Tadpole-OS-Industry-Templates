@@ -13,8 +13,9 @@
     "triage"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
@@ -26,13 +27,13 @@
     {
       "id": "veterinary-pharmacy-refill-records-clerk",
       "path": "agents/veterinary-pharmacy-refill-records-clerk.json",
-      "supervisor": null,
+      "supervisor": "veterinary-patient-intake-triage-assistant",
       "priority": "normal"
     },
     {
       "id": "veterinary-surgery-recovery-coordinator",
       "path": "agents/veterinary-surgery-recovery-coordinator.json",
-      "supervisor": null,
+      "supervisor": "veterinary-patient-intake-triage-assistant",
       "priority": "normal"
     }
   ],
@@ -40,5 +41,7 @@
     "veterinary-patient-intake-triage-assistant",
     "veterinary-pharmacy-refill-records-clerk",
     "veterinary-surgery-recovery-coordinator"
-  ]
+  ],
+  "id": "veterinary-clinic-patient-triage",
+  "maturity": "starter"
 }

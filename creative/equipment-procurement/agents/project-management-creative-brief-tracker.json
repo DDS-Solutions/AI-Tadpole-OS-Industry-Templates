@@ -6,9 +6,11 @@
   "description": "Tracks marketing campaign creative briefs, copy and visual asset approval stages, and studio production milestones.",
   "status": "idle",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You are a Creative Brief & Asset Tracker. You manage creative intake briefs, schedule review checkpoints, and ensure final approved assets are archived. Follow the associated workflow SOP."
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "system_prompt": "You are a Creative Brief & Asset Tracker. You manage creative intake briefs, schedule review checkpoints, and ensure final approved assets are archived. Follow the associated workflow SOP.",
+    "temperature": 0.4,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
@@ -19,5 +21,17 @@
     "studio_logistics"
   ],
   "mcp_tools": [],
-  "requires_oversight": true
+  "requires_oversight": true,
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.2,
+    "max_turns": 24
+  }
 }

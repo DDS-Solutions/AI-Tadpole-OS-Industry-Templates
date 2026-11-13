@@ -3,7 +3,7 @@
   "name": "Vendor AP & Cash Disbursement Swarm",
   "version": "1.0.0",
   "description": "Financial Operations: Accounts payable 3-way matching, invoice disbursement approval, and vendor inquiries.",
-  "industry": "financial-services",
+  "industry": "Financial Services",
   "tags": [
     "finance",
     "invoices",
@@ -12,26 +12,27 @@
     "audit"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "finance-finance-bookkeeper-controller",
       "path": "agents/finance-finance-bookkeeper-controller.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     },
     {
       "id": "finance-ar-collections-specialist",
       "path": "agents/finance-ar-collections-specialist.json",
-      "supervisor": null,
+      "supervisor": "finance-finance-bookkeeper-controller",
       "priority": "normal"
     },
     {
       "id": "purchasing-vendor-purchasing-clerk",
       "path": "agents/purchasing-vendor-purchasing-clerk.json",
-      "supervisor": null,
+      "supervisor": "finance-finance-bookkeeper-controller",
       "priority": "normal"
     }
   ],
@@ -40,5 +41,7 @@
     "finance-finance-bookkeeper-controller",
     "finance-ar-collections-specialist",
     "purchasing-vendor-purchasing-clerk"
-  ]
+  ],
+  "id": "financial-vendor-reconciliation",
+  "maturity": "starter"
 }

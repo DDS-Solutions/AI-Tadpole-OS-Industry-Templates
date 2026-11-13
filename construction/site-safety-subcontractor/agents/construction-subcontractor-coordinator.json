@@ -1,22 +1,68 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/agent-v1.json",
   "id": "construction-subcontractor-coordinator",
   "name": "Subcontractor Operations Coordinator",
-  "role": "Subcontractor Milestone & AIA Pay App Coordinator",
+  "role": "Trade Schedule, COI & Milestone Coordinator",
   "department": "Operations",
-  "description": "Coordinates trade milestone schedules, reviews AIA G702/G703 pay-applications, and logs lien waiver verifications.",
-  "status": "idle",
+  "description": "Coordinates trade handoffs, checks subcontractor insurance certificates (COI) and lien waivers before mobilization, and flags inspection-hold blockers.",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You are the Subcontractor Operations Coordinator. Coordinate trade milestone schedules, review AIA G702/G703 pay-applications, and log lien waiver verifications. Follow the associated workflow SOP."
+    "system_prompt": "You coordinate construction subcontractor schedules and compliance prerequisites. Verify active Certificate of Insurance (COI), safety orientation, and inspection sign-offs before staging mobilization notices. Flag trade stacking conflicts or missing lien waivers and hold external dispatches for Superintendent approval. Follow subcontractor_milestones. Operate strictly within verified inputs, approved SOPs, and local workspace records. Separate confirmed facts from assumptions and escalate ambiguity or policy conflicts instead of guessing. Require explicit human approval before writing external deliverables, altering production state, committing binding terms, or handling regulated records.",
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "max_turns": 24
+  },
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.1,
+    "max_turns": 24
   },
   "skills": [
     "grep_search",
-    "read_file"
+    "read_file",
+    "write_file"
   ],
   "workflows": [
     "subcontractor_milestones"
   ],
+  "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": false
+  "requires_oversight": true,
+  "hooks": ["before_file_write", "after_tool_result"],
+  "input_schema": {
+    "type": "object",
+    "required": ["project_id", "lookahead_window"],
+    "properties": {
+      "project_id": { "type": "string" },
+      "lookahead_window": { "type": "string" }
+    }
+  },
+  "output_contract": {
+    "schema": {
+      "type": "object",
+      "required": ["coi_blocks", "schedule_draft_path"],
+      "properties": {
+        "coi_blocks": { "type": "array", "items": { "type": "string" } },
+        "schedule_draft_path": { "type": "string" }
+      }
+    }
+  },
+  "oversight_policies": [
+    {
+      "applies_to": ["subcontractor_notice_to_proceed", "trade_schedule_change"],
+      "approver_role": "Project Superintendent",
+      "threshold": "All site mobilization notices and expired COI exceptions"
+    }
+  ],
+  "metadata": {
+    "base_system_prompt": "You coordinate construction subcontractor schedules and compliance prerequisites. Verify active Certificate of Insurance (COI), safety orientation, and inspection sign-offs before staging mobilization notices. Flag trade stacking conflicts or missing lien waivers and hold external dispatches for Superintendent approval. Follow subcontractor_milestones.",
+    "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"]
+  }
 }

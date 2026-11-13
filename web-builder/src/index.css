@@ -138,48 +138,84 @@
 [data-tooltip]::before {
   content: attr(data-tooltip);
   position: absolute;
-  bottom: 120%;
+  bottom: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%) scale(0.95);
-  background: #09090b;
-  border: 1px solid #27272a;
-  color: #e4e4e7;
+  background: var(--color-zinc-900);
+  border: 1px solid var(--color-zinc-700);
+  color: var(--color-zinc-200);
   padding: 8px 12px;
   border-radius: 6px;
   font-family: var(--font-mono);
   font-size: 10px;
   white-space: normal;
   width: max-content;
-  max-width: 250px;
+  max-width: min(260px, calc(100vw - 2rem));
   opacity: 0;
   pointer-events: none;
-  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 999;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.9), 0 0 1px 1px rgba(34, 197, 94, 0.2);
-  line-height: 1.4;
+  box-shadow: 0 10px 25px -5px rgba(4, 4, 5, 0.85), 0 0 0 1px rgba(34, 197, 94, 0.2);
+  line-height: 1.45;
   text-align: center;
   font-weight: normal;
   text-transform: none;
   letter-spacing: normal;
 }
 
-[data-tooltip]:hover::before {
+.tooltip-top-end[data-tooltip]::before {
+  left: auto;
+  right: 0;
+  text-align: left;
+  transform: translateY(2px) scale(0.95);
+}
+.tooltip-top-end[data-tooltip]:hover::before,
+.tooltip-top-end[data-tooltip]:focus-visible::before {
   opacity: 1;
-  transform: translateX(-50%) scale(1);
+  transform: translateY(0) scale(1);
 }
 
+[data-tooltip]:hover::before,
 [data-tooltip]:focus-visible::before {
   opacity: 1;
   transform: translateX(-50%) scale(1);
 }
 
 /* Tooltip position modifiers */
+.tooltip-bottom[data-tooltip]::before {
+  top: calc(100% + 8px);
+  bottom: auto;
+  left: 50%;
+  transform: translateX(-50%) scale(0.95);
+}
+.tooltip-bottom[data-tooltip]:hover::before,
+.tooltip-bottom[data-tooltip]:focus-visible::before {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+.tooltip-bottom-end[data-tooltip]::before {
+  top: calc(100% + 8px);
+  bottom: auto;
+  left: auto;
+  right: 0;
+  text-align: left;
+  transform: translateY(-2px) scale(0.95);
+}
+.tooltip-bottom-end[data-tooltip]:hover::before,
+.tooltip-bottom-end[data-tooltip]:focus-visible::before {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
 .tooltip-right[data-tooltip]::before {
   bottom: 50%;
   left: 105%;
   transform: translateY(50%) scale(0.95);
 }
-.tooltip-right[data-tooltip]:hover::before {
+.tooltip-right[data-tooltip]:hover::before,
+.tooltip-right[data-tooltip]:focus-visible::before {
+  opacity: 1;
   transform: translateY(50%) scale(1);
 }
 
@@ -189,7 +225,9 @@
   left: auto;
   transform: translateY(50%) scale(0.95);
 }
-.tooltip-left[data-tooltip]:hover::before {
+.tooltip-left[data-tooltip]:hover::before,
+.tooltip-left[data-tooltip]:focus-visible::before {
+  opacity: 1;
   transform: translateY(50%) scale(1);
 }
 
@@ -301,8 +339,8 @@
 .setup-card-label { font-size: .625rem; }
 .recommended-badge { font-size: .58rem; }
 .setup-card-footer > span:first-child { font-size: .56rem; }
-.animate-fadeIn { animation: fade-in .3s ease-out both; }
-@keyframes fade-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+.animate-fadeIn { animation: fade-in .3s ease-out backwards; }
+@keyframes fade-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
 @keyframes topology-flow { to { stroke-dashoffset: -408; } }
 
 @media (min-width: 1440px) { .landing-hero { padding-top: 6rem; padding-bottom: 5.5rem; } }

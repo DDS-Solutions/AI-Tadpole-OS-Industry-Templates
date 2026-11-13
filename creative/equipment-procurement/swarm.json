@@ -3,7 +3,7 @@
   "name": "Creative Studio Gear & Vendor Operations",
   "version": "1.0.0",
   "description": "Creative Studio: Camera equipment rental POs, software licensing, and studio AP reconciliation.",
-  "industry": "media-creative",
+  "industry": "Media & Creative",
   "tags": [
     "creative",
     "procurement",
@@ -12,27 +12,28 @@
     "cameras"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "purchasing-vendor-purchasing-clerk",
       "path": "agents/purchasing-vendor-purchasing-clerk.json",
-      "supervisor": null,
+      "supervisor": "finance-finance-bookkeeper-controller",
       "priority": "normal"
     },
     {
       "id": "project-management-creative-brief-tracker",
       "path": "agents/project-management-creative-brief-tracker.json",
-      "supervisor": null,
+      "supervisor": "finance-finance-bookkeeper-controller",
       "priority": "normal"
     },
     {
       "id": "finance-finance-bookkeeper-controller",
       "path": "agents/finance-finance-bookkeeper-controller.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     }
   ],
   "required_mcps": "mcps.json",
@@ -40,5 +41,7 @@
     "purchasing-vendor-purchasing-clerk",
     "project-management-creative-brief-tracker",
     "finance-finance-bookkeeper-controller"
-  ]
+  ],
+  "id": "creative-equipment-procurement",
+  "maturity": "starter"
 }

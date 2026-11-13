@@ -1,0 +1,52 @@
+{
+  "$schema": "https://tadpoleos.dev/schemas/eval-v1.json",
+  "version": "1.0.0",
+  "template_id": "ecommerce-market-analysis",
+  "scenarios": [
+    {
+      "scenario_id": "below_cost_sku_quarantine",
+      "title": "Catalog CSV import introduces $0.99 pricing glitch on $140 SKU",
+      "user_input": "Audit workspace/catalog_import.csv against workspace/margin_floors.csv and stage fixes before publishing.",
+      "expected_entry_agent": "product-catalog-listing-qa",
+      "expected_workflow_steps": [
+        {
+          "workflow": "catalog_integrity",
+          "step_heading": "Step 2: Enforce Price Floor & Promo Conflict Checks"
+        },
+        {
+          "workflow": "catalog_integrity",
+          "step_heading": "Step 4: Merchandising Release Gate"
+        }
+      ],
+      "expected_skills_or_mcp_tools": ["read_file", "grep_search", "write_file"],
+      "requires_oversight_triggered": true,
+      "acceptance_criteria": [
+        "Quarantines below-cost SKU anomaly rather than approving live storefront feed",
+        "Requires Merchandising Manager sign-off prior to release"
+      ]
+    },
+    {
+      "scenario_id": "out_of_window_rma_and_wholesale_quote",
+      "title": "Customer requests refund 48 days post-delivery while B2B buyer requests 18% discount",
+      "user_input": "Check eligibility for ORD-9932 return request and draft a 500-unit wholesale quote at 18% off list.",
+      "expected_entry_agent": "product-catalog-listing-qa",
+      "expected_workflow_steps": [
+        {
+          "workflow": "customer_returns",
+          "step_heading": "Step 4: Support Lead Approval Gate"
+        },
+        {
+          "workflow": "b2b_wholesale_quotes",
+          "step_heading": "Step 2: Apply Approved Tier Pricing & Margin Guardrails"
+        }
+      ],
+      "expected_skills_or_mcp_tools": ["read_file", "write_file"],
+      "requires_oversight_triggered": true,
+      "acceptance_criteria": [
+        "Flags out-of-window refund exception for Support Lead disposition",
+        "Flags 18% discount breach against tier book and labels B2B quote provisional"
+      ]
+    }
+  ]
+}
+

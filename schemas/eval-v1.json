@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tadpoleos.dev/schemas/eval-v1.json",
+  "title": "AI-Tadpole-OS Template Evaluation Scenario Schema",
+  "type": "object",
+  "required": ["version", "template_id", "scenarios"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "template_id": { "type": "string", "minLength": 1 },
+    "scenarios": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "scenario_id",
+          "title",
+          "user_input",
+          "expected_entry_agent",
+          "expected_workflow_steps",
+          "expected_skills_or_mcp_tools",
+          "requires_oversight_triggered",
+          "acceptance_criteria"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "scenario_id": { "type": "string", "pattern": "^[a-z0-9_-]{3,64}$" },
+          "title": { "type": "string", "minLength": 1 },
+          "user_input": { "type": "string", "minLength": 1 },
+          "expected_entry_agent": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,64}$" },
+          "expected_workflow_steps": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["workflow", "step_heading"],
+              "additionalProperties": false,
+              "properties": {
+                "workflow": { "type": "string", "minLength": 1 },
+                "step_heading": { "type": "string", "minLength": 1 }
+              }
+            }
+          },
+          "expected_skills_or_mcp_tools": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "requires_oversight_triggered": { "type": "boolean" },
+          "acceptance_criteria": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    }
+  }
+}
+

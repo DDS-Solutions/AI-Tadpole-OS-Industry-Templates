@@ -55,4 +55,26 @@ describe('Advanced export validation gate', () => {
     expect(html).toContain('Packaging Swarm...');
     expect(html).toContain('disabled=""');
   });
+
+  it('separates standard workflows and OKF knowledge playbooks in the manifest', () => {
+    const html = renderToStaticMarkup(
+      <Step5_Forge
+        companyInfo={{ name: 'Acme' }}
+        agents={[agent]}
+        workflows={[
+          { id: 'triage', name: 'Triage', description: 'Standard workflow' },
+          { id: 'kb-policy', name: 'Policy KB', description: 'Knowledge item', isOkfPlaybook: true },
+        ]}
+        validationIssues={[]}
+        isExporting={false}
+        onExport={vi.fn()}
+        onPrevious={vi.fn()}
+        onReset={vi.fn()}
+      />,
+    );
+
+    expect(html).toContain('agents/ (1 file)');
+    expect(html).toContain('workflows/ (1 file)');
+    expect(html).toContain('knowledge/ (1 playbook + knowledge.json)');
+  });
 });

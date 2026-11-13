@@ -3,7 +3,7 @@
   "name": "Enterprise Security & Control Crosswalk",
   "version": "1.0.0",
   "description": "Compliance Operations: Security control audits, access verification, and QA evidence aggregation.",
-  "industry": "governance-compliance",
+  "industry": "Governance & Compliance",
   "tags": [
     "compliance",
     "soc2",
@@ -12,26 +12,27 @@
     "synthesis"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "support-support-legal-compliance-checker",
       "path": "agents/support-support-legal-compliance-checker.json",
       "supervisor": null,
-      "priority": "normal"
+      "priority": "critical"
     },
     {
       "id": "security-security-compliance-auditor",
       "path": "agents/security-security-compliance-auditor.json",
-      "supervisor": null,
+      "supervisor": "support-support-legal-compliance-checker",
       "priority": "normal"
     },
     {
       "id": "testing-qa-evidence-collector",
       "path": "agents/testing-qa-evidence-collector.json",
-      "supervisor": null,
+      "supervisor": "support-support-legal-compliance-checker",
       "priority": "normal"
     }
   ],
@@ -40,5 +41,7 @@
     "support-support-legal-compliance-checker",
     "security-security-compliance-auditor",
     "testing-qa-evidence-collector"
-  ]
+  ],
+  "id": "compliance-crosswalk-synthesizer",
+  "maturity": "starter"
 }

@@ -66,22 +66,34 @@ export default function Step3_Playbooks({
               <Trash2 className="w-5 h-5" />
             </button>
             <div className="space-y-4">
-              <input
-                className="bg-transparent border-b border-zinc-850 mb-2 w-full font-bold focus:border-cyber-green outline-none pb-1 text-zinc-100 text-sm"
-                value={workflow.name}
-                onChange={e => updateWorkflow(workflow.id, { name: e.target.value })}
-              />
-              <textarea
-                className="bg-transparent text-sm w-full outline-none text-zinc-400 min-h-[80px] leading-relaxed"
-                placeholder="Describe the workflow SOP..."
-                value={workflow.description}
-                onChange={e => updateWorkflow(workflow.id, { description: e.target.value })}
-              />
+              <div>
+                <label htmlFor={`workflow-name-${workflow.id}`} className="sr-only">Workflow title</label>
+                <input
+                  id={`workflow-name-${workflow.id}`}
+                  name={`workflow-name-${workflow.id}`}
+                  className="bg-transparent border-b border-zinc-850 mb-2 w-full font-bold focus:border-cyber-green outline-none pb-1 text-zinc-100 text-sm"
+                  value={workflow.name}
+                  onChange={e => updateWorkflow(workflow.id, { name: e.target.value })}
+                />
+              </div>
+              <div>
+                <label htmlFor={`workflow-desc-${workflow.id}`} className="sr-only">Workflow procedure steps</label>
+                <textarea
+                  id={`workflow-desc-${workflow.id}`}
+                  name={`workflow-desc-${workflow.id}`}
+                  className="bg-transparent text-sm w-full outline-none text-zinc-400 min-h-[80px] leading-relaxed"
+                  placeholder="Describe the workflow SOP..."
+                  value={workflow.description}
+                  onChange={e => updateWorkflow(workflow.id, { description: e.target.value })}
+                />
+              </div>
 
               {/* OKF/IKS Integration Panel */}
               <div className="pt-4 border-t border-zinc-900 mt-4 space-y-4" style={{ borderColor: 'color-mix(in srgb, var(--color-zinc-800) 40%, transparent)' }}>
-                <label className="flex items-center gap-2 text-xs text-zinc-500 cursor-pointer font-mono select-none">
+                <label htmlFor={`workflow-okf-${workflow.id}`} className="flex items-center gap-2 text-xs text-zinc-500 cursor-pointer font-mono select-none">
                   <input
+                    id={`workflow-okf-${workflow.id}`}
+                    name={`workflow-okf-${workflow.id}`}
                     type="checkbox"
                     checked={!!workflow.isOkfPlaybook}
                     onChange={e => {
@@ -103,8 +115,10 @@ export default function Step3_Playbooks({
                 {workflow.isOkfPlaybook && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-6 border-l border-zinc-800">
                     <div>
-                      <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1 cursor-help" data-tooltip="Link to external raw source material, Confluence wiki pages, or Google Docs.">External SOP / Confluence URL</label>
+                      <label htmlFor={`workflow-uri-${workflow.id}`} className="block text-[10px] font-mono text-zinc-500 uppercase mb-1 cursor-help" data-tooltip="Link to external raw source material, Confluence wiki pages, or Google Docs.">External SOP / Confluence URL</label>
                       <input
+                        id={`workflow-uri-${workflow.id}`}
+                        name={`workflow-uri-${workflow.id}`}
                         className="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-xs focus:border-cyber-green outline-none text-zinc-300"
                         placeholder="https://confluence.company.com/pages/..."
                         value={workflow.resourceUri || ''}
@@ -112,8 +126,10 @@ export default function Step3_Playbooks({
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1 cursor-help" data-tooltip="Primary focus category (e.g. legal, compliance, operations) for sorting.">Topic</label>
+                      <label htmlFor={`workflow-topic-${workflow.id}`} className="block text-[10px] font-mono text-zinc-500 uppercase mb-1 cursor-help" data-tooltip="Primary focus category (e.g. legal, compliance, operations) for sorting.">Topic</label>
                       <input
+                        id={`workflow-topic-${workflow.id}`}
+                        name={`workflow-topic-${workflow.id}`}
                         className="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-xs focus:border-cyber-green outline-none text-zinc-300"
                         placeholder="e.g. marketing, compliance"
                         value={workflow.topic || ''}
@@ -121,8 +137,10 @@ export default function Step3_Playbooks({
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1 cursor-help" data-tooltip="Structural classification category (e.g. playbook, guideline, policy).">Concept Type</label>
+                      <label htmlFor={`workflow-concept-${workflow.id}`} className="block text-[10px] font-mono text-zinc-500 uppercase mb-1 cursor-help" data-tooltip="Structural classification category (e.g. playbook, guideline, policy).">Concept Type</label>
                       <input
+                        id={`workflow-concept-${workflow.id}`}
+                        name={`workflow-concept-${workflow.id}`}
                         className="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-xs focus:border-cyber-green outline-none text-zinc-300"
                         placeholder="e.g. playbook, guideline"
                         value={workflow.conceptType || ''}
@@ -130,8 +148,10 @@ export default function Step3_Playbooks({
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-mono text-zinc-500 uppercase mb-1 cursor-help" data-tooltip="Keywords matching agent filters to trigger memory retrieval.">Tags (comma-separated)</label>
+                      <label htmlFor={`workflow-tags-${workflow.id}`} className="block text-[10px] font-mono text-zinc-500 uppercase mb-1 cursor-help" data-tooltip="Keywords matching agent filters to trigger memory retrieval.">Tags (comma-separated)</label>
                       <input
+                        id={`workflow-tags-${workflow.id}`}
+                        name={`workflow-tags-${workflow.id}`}
                         className="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-xs focus:border-cyber-green outline-none text-zinc-300"
                         placeholder="e.g. seo, advertising"
                         value={workflow.tags || ''}

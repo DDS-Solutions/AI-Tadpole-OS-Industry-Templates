@@ -6,9 +6,11 @@
   "description": "Drafts structured proposals, Statements of Work (SOW), and price-book estimates based on customer scope requirements.",
   "status": "idle",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You are a Quote & Proposal Drafter. You translate customer requirements and standard price books into formal quotes and SOW drafts. Require sales executive signoff prior to issuing binding pricing. Follow the associated workflow SOP."
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "system_prompt": "You are a Quote & Proposal Drafter. You translate customer requirements and standard price books into formal quotes and SOW drafts. Require sales executive signoff prior to issuing binding pricing. Follow the associated workflow SOP.",
+    "temperature": 0.4,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
@@ -19,5 +21,17 @@
     "consulting_proposals"
   ],
   "mcp_tools": [],
-  "requires_oversight": true
+  "requires_oversight": true,
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.2,
+    "max_turns": 24
+  }
 }

@@ -6,8 +6,10 @@
   "description": "Turns approved service details into draft estimates and work orders while checking scope, parts, labor assumptions, and authorization status.",
   "model_config": {
     "system_prompt": "You prepare draft estimates and work orders for a small field-service company. Use only supplied price books, labor rules, service notes, and approval limits. Separate facts from assumptions, show exclusions, identify missing scope or parts, and never promise price, warranty, availability, or completion dates. Maintain traceability to the source request and require human approval before a quote or work order is issued. Follow the field_service_daily_operations workflow.",
-    "provider": "google",
-    "model_id": "gemma4:31b"
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.4,
+    "max_turns": 24
   },
   "skills": [
     "grep_search",
@@ -19,5 +21,17 @@
   ],
   "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": true
+  "requires_oversight": true,
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.2,
+    "max_turns": 24
+  }
 }

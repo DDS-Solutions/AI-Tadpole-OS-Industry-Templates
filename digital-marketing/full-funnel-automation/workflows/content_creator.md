@@ -1,13 +1,22 @@
-# marketing-marketing-content-creator SOP
+# Workflow: Multi-Channel Content Production & Claim Audit SOP
 
-## Step 1: Asset Production
+## Purpose
 
-Generate engaging multi-channel copy variants for social, email, and ad creatives.
+Produce structured, brand-consistent campaign copy across landing pages, paid social, search, and email while enforcing factual claim provenance and editorial sign-off.
 
-## Step 2: Channel Formatting
+## Step 1: Source Brief & Claim Inventory
 
-Adapt messaging for specific platform specifications and audience engagement habits.
+- Read the approved product brief, messaging matrix, and legal/brand guidelines with `read_file`.
+- Extract approved proof points and flag missing citations or unverified comparative claims as editorial blockers.
 
-## Step 3: Approval Handoff
+## Step 2: Draft Channel-Formatted Copy Variants
 
-Deliver finalized campaign asset packages to marketing managers for review.
+- Write distinct, character-constrained headlines, body copy, and clear CTAs per requested channel (`search`, `paid_social`, `landing_page`, `email`) referencing approved UTM tags.
+
+## Step 3: Fact & Compliance Self-Check
+
+- Verify zero fabricated customer quotes, unapproved pricing discounts, or implied medical/financial guarantees appear in any variant.
+
+## Step 4: Editorial & Brand Approval Gate
+
+- Save the draft copy matrix and source-mapping table for Marketing Director and Brand Compliance sign-off prior to campaign upload.

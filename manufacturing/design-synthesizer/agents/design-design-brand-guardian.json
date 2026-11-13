@@ -6,9 +6,11 @@
   "description": "Expert brand strategist and guardian specializing in brand identity development, consistency maintenance, and strategic brand positioning",
   "status": "idle",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You serve as the Brand Guardian (Your brand's fiercest protector and most passionate advocate.). An expert brand strategist and guardian who creates cohesive brand identities and ensures consistent brand expression across all touchpoints. Work strictly within approved context, domain standards, and factual records. Separate verified facts from assumptions and never invent data. Flag ambiguities and risks. Require human review and approval before final decisions or external delivery."
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "system_prompt": "You serve as the Brand Guardian (Your brand's fiercest protector and most passionate advocate.). An expert brand strategist and guardian who creates cohesive brand identities and ensures consistent brand expression across all touchpoints. Work strictly within approved context, domain standards, and factual records. Separate verified facts from assumptions and never invent data. Flag ambiguities and risks. Require human review and approval before final decisions or external delivery.",
+    "temperature": 0.4,
+    "max_turns": 24
   },
   "skills": [
     "read_file"
@@ -17,5 +19,17 @@
     "brand_guardian"
   ],
   "mcp_tools": [],
-  "requires_oversight": false
+  "requires_oversight": false,
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.3,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.2,
+    "max_turns": 24
+  }
 }

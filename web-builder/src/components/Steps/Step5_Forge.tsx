@@ -1,7 +1,8 @@
 import { AlertCircle, AlertTriangle, Cpu, Shield, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
-import type { Agent, ValidationIssue, WorkflowItem } from '../../types';
+import type { Agent, MCPConnector, ValidationIssue, WorkflowItem } from '../../types';
 import { scanShieldCapabilities } from '../../utils';
+import { buildSwarmDisclosureSummary } from '../../utils/disclosureSummary';
 
 interface CompanyInfo {
   name: string;
@@ -11,6 +12,8 @@ interface Step5Props {
   companyInfo: CompanyInfo;
   agents: Agent[];
   workflows: WorkflowItem[];
+  selectedConnectors?: string[];
+  mcpCatalog?: MCPConnector[];
   validationIssues: ValidationIssue[];
   isExporting: boolean;
   onExport: () => void;
@@ -22,12 +25,15 @@ export default function Step5_Forge({
   companyInfo,
   agents,
   workflows,
+  selectedConnectors = [],
+  mcpCatalog = [],
   validationIssues,
   isExporting,
   onExport,
   onPrevious,
   onReset
 }: Step5Props) {
+  const disclosure = buildSwarmDisclosureSummary(agents, selectedConnectors, mcpCatalog);
   const dangerousSkills = new Set(['write_file', 'delete_file', 'execute_shell', 'shell', 'terminal']);
   const oversightAgents = agents.filter(agent => (
     agent.requiresOversight || (agent.skills || []).some(skill => dangerousSkills.has(skill))
@@ -44,13 +50,13 @@ export default function Step5_Forge({
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       data-tooltip="Phase 5 Forge Workspace: Inspect the compilation manifest, review prompt capability hints, and generate installation ZIP packages."
-      className="w-full sovereign-panel p-12 text-center"
+      className="w-full sovereign-panel p-5 sm:p-12 text-center"
     >
       <div className="bg-cyber-green/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-cyber-green/30">
         <Cpu className="text-cyber-green w-8 h-8" />
       </div>
 
-      <div className="max-w-md mx-auto mb-8 grid grid-cols-3 gap-3 text-left">
+      <div className="max-w-md mx-auto mb-8 grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
         <div className="rounded-lg border border-zinc-800 bg-zinc-950/70 p-3">
           <div className="text-[9px] uppercase font-mono text-zinc-600">Capabilities</div>
           <div className="text-lg font-bold text-zinc-200 mt-1">{capabilityCount}</div>
@@ -64,11 +70,11 @@ export default function Step5_Forge({
           <div className="text-lg font-bold text-zinc-200 mt-1">{oversightAgents}</div>
         </div>
       </div>
-      <h2 className="text-2xl font-bold mb-1" data-tooltip="The swarm configuration is ready to build and compile.">Phase 5: Validate & Export</h2>
+      <h2 className="text-2xl font-bold mb-1">Phase 5: Validate & Export</h2>
       <p className="text-xs font-mono text-zinc-500 mb-6">Forge diagnostics & AI-Tadpole-OS package compilation</p>
       <p className="text-zinc-400 max-w-md mx-auto mb-8 text-sm leading-relaxed">
         Your swarm configuration for <span className="text-white font-bold">{companyInfo.name}</span> is ready for validation.
-        The package includes {agents.length} agents and {workflows.length} workflows.
+        The package includes {agents.length} {agents.length === 1 ? 'agent' : 'agents'} and {workflows.length} {workflows.length === 1 ? 'workflow' : 'workflows'}.
       </p>
 
       <div
@@ -119,13 +125,39 @@ export default function Step5_Forge({
         </div>
       </div>
 
-      <div data-tooltip="Archive Manifest: List of configuration maps, agent prompt profiles, and SOP documents structured in the build." className="max-w-sm mx-auto p-4 bg-zinc-950 border border-zinc-800 rounded-xl text-left font-mono text-xs text-zinc-500 mb-12">
+      <div data-tooltip="Archive Manifest: List of configuration maps, agent prompt profiles, and SOP documents structured in the build." className="max-w-sm mx-auto p-4 bg-zinc-950 border border-zinc-800 rounded-xl text-left font-mono text-xs text-zinc-500 mb-6">
         <div className="mb-2">Manifest:</div>
-        <ul className="space-y-1">
-          <li className="flex items-center gap-2"><div className="w-1 h-1 bg-cyber-green rounded-full" /> swarm.json</li>
-          <li className="flex items-center gap-2"><div className="w-1 h-1 bg-cyber-green rounded-full" /> agents/ ({agents.length} files)</li>
-          <li className="flex items-center gap-2"><div className="w-1 h-1 bg-cyber-green rounded-full" /> workflows/ ({workflows.length} files)</li>
-        </ul>
+        {(() => {
+          const standardWorkflowCount = workflows.filter(w => !w.isOkfPlaybook).length;
+          const okfPlaybookCount = workflows.filter(w => w.isOkfPlaybook).length;
+          return (
+            <ul className="space-y-1">
+              <li className="flex items-center gap-2"><div className="w-1 h-1 bg-cyber-green rounded-full" /> swarm.json</li>
+              <li className="flex items-center gap-2"><div className="w-1 h-1 bg-cyber-green rounded-full" /> agents/ ({agents.length} {agents.length === 1 ? 'file' : 'files'})</li>
+              <li className="flex items-center gap-2"><div className="w-1 h-1 bg-cyber-green rounded-full" /> workflows/ ({standardWorkflowCount} {standardWorkflowCount === 1 ? 'file' : 'files'})</li>
+              {okfPlaybookCount > 0 && (
+                <li className="flex items-center gap-2"><div className="w-1 h-1 bg-cyber-green rounded-full" /> knowledge/ ({okfPlaybookCount} {okfPlaybookCount === 1 ? 'playbook' : 'playbooks'} + knowledge.json)</li>
+              )}
+            </ul>
+          );
+        })()}
+      </div>
+
+      <div data-testid="swarm-disclosure-card" className="max-w-md mx-auto p-4 bg-zinc-950 border border-zinc-800 rounded-xl text-left font-mono text-[11px] text-zinc-400 mb-8 space-y-2">
+        <div className="text-zinc-200 font-bold uppercase tracking-wider text-[10px]">What This Swarm Can Do</div>
+        <div><span className="text-zinc-500">Capabilities:</span> {disclosure.capabilities.join(', ') || 'none'}</div>
+        <div><span className="text-zinc-500">MCP Grants:</span> {disclosure.mcpGrants.join(', ') || 'none'}</div>
+        {disclosure.requiredEnvVars.length > 0 && (
+          <div><span className="text-zinc-500">Env Vars:</span> {disclosure.requiredEnvVars.join(', ')}</div>
+        )}
+        {disclosure.egressUrls.length > 0 && (
+          <div className="text-amber-300"><span className="text-zinc-500">Egress:</span> {disclosure.egressUrls.join(', ')}</div>
+        )}
+        {disclosure.hasBundledPythonSkills && (
+          <div className="p-2.5 rounded bg-amber-950/30 border border-amber-800/50 text-amber-200 font-sans">
+            Note: Local <code>.zip</code> import on AI-TadPole-OS v1.1.464 skips <code>skills/</code>; copy bundled <code>skills/*-server.py</code> into <code>execution/</code> manually (Template Store installs handle this automatically).
+          </div>
+        )}
       </div>
 
       {/* Advisory prompt review. Enforcement happens in repository and consumer gates. */}
@@ -145,11 +177,11 @@ export default function Step5_Forge({
         const isClear = allWarnings.length === 0;
 
         return (
-          <div data-tooltip="Advisory keyword review of prompt text. This does not prove safety or grant runtime authorization." className="max-w-md mx-auto mb-12 bg-zinc-950/80 border rounded-xl overflow-hidden text-left sovereign-transition font-mono text-xs" style={{ borderColor: isClear ? '#10B981' : '#F59E0B' }}>
+          <div className="max-w-md mx-auto mb-12 bg-zinc-950/80 border rounded-xl overflow-hidden text-left sovereign-transition font-mono text-xs" style={{ borderColor: isClear ? '#10B981' : '#F59E0B' }}>
             <div className={`p-4 flex items-center gap-3 border-b ${isClear ? 'bg-emerald-950/20 border-emerald-900/40' : 'bg-amber-950/20 border-amber-900/40'}`} style={{ borderColor: isClear ? 'color-mix(in srgb, #10B981 30%, transparent)' : 'color-mix(in srgb, #F59E0B 30%, transparent)' }}>
               <Shield className={`w-5 h-5 ${isClear ? 'text-emerald-500' : 'text-amber-500'}`} />
               <div>
-                <h4 className="font-bold text-xs text-white uppercase tracking-wider cursor-help" data-tooltip="A keyword-based prompt review; repository and AI-Tadpole-OS checks remain required.">Prompt Capability Advisory</h4>
+                <h4 className="font-bold text-xs text-white uppercase tracking-wider cursor-help" data-tooltip="Keyword-based advisory review of prompt text; repository and AI-Tadpole-OS checks remain required.">Prompt Capability Advisory</h4>
                 <p className="text-[10px] text-zinc-550 font-mono mt-0.5 font-normal">
                   {isClear ? 'No capability keywords detected' : 'Manual security review recommended'}
                 </p>
@@ -189,22 +221,27 @@ export default function Step5_Forge({
 
       <div className="flex flex-col gap-4 items-center mt-8">
         <button
+          type="button"
           onClick={onExport}
           disabled={!isReady || isExporting}
-          className="bg-cyber-green text-zinc-950 font-black px-12 py-4 rounded-xl hover:scale-105 transition-all flex items-center gap-3 cursor-pointer shadow-[0_0_20px_rgba(34,197,94,0.3)] text-sm uppercase font-mono tracking-wider disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
+          data-tooltip="Generate deterministic AI-Tadpole-OS .zip package with swarm.json, agent prompts, and playbooks"
+          className="focus-sovereign bg-cyber-green text-zinc-950 font-black px-12 py-4 rounded-xl motion-safe:hover:scale-105 transition-all flex items-center gap-3 cursor-pointer shadow-[0_0_20px_rgba(34,197,94,0.3)] text-sm uppercase font-mono tracking-wider disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
         >
           <Download className="w-6 h-6" /> {isExporting ? 'Packaging Swarm...' : 'Export Swarm Archive'}
         </button>
         <div className="flex gap-8 items-center mt-4">
           <button
+            type="button"
             onClick={onPrevious}
-            className="text-zinc-550 hover:text-white transition-colors text-xs font-mono tracking-wider uppercase cursor-pointer"
+            className="focus-sovereign rounded px-2 py-1 text-zinc-550 hover:text-white transition-colors text-xs font-mono tracking-wider uppercase cursor-pointer"
           >
             &larr; Previous Step
           </button>
           <button
+            type="button"
             onClick={onReset}
-            className="text-zinc-550 hover:text-white transition-colors text-xs font-mono tracking-wider uppercase cursor-pointer"
+            data-tooltip="Discard current workspace edits and start a fresh configuration"
+            className="tooltip-top-end focus-sovereign rounded px-2 py-1 text-zinc-550 hover:text-white transition-colors text-xs font-mono tracking-wider uppercase cursor-pointer"
           >
             Restart Configuration
           </button>

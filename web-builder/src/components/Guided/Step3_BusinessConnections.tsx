@@ -140,10 +140,17 @@ export default function Step3_BusinessConnections({
                       role="checkbox"
                       aria-checked={isSelected}
                       aria-label={`Toggle ${connector.name} connector`}
+                      data-tooltip={
+                        !hasRuntime
+                          ? 'Requires server runtime configuration in registry before selection'
+                          : isSelected
+                            ? `Disconnect ${connector.name} and clear its MCP tool grants`
+                            : `Connect ${connector.name} and grant safe read-only MCP tools`
+                      }
                       disabled={!hasRuntime && !isSelected}
                       aria-describedby={!hasRuntime ? `guided-${connector.id}-readiness` : undefined}
                       onClick={() => toggleConnector(connector.id)}
-                      className={`w-11 h-11 rounded-lg flex items-center justify-center shrink-0 border transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
+                      className={`focus-sovereign tooltip-left w-11 h-11 rounded-lg flex items-center justify-center shrink-0 border transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
                         isSelected
                           ? 'bg-cyber-green border-cyber-green text-zinc-950'
                           : 'border-zinc-700 bg-zinc-900 hover:border-zinc-500'
@@ -259,7 +266,7 @@ export default function Step3_BusinessConnections({
         <button
           type="button"
           onClick={onBack}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-zinc-800 text-xs font-semibold text-zinc-400 hover:text-white hover:bg-zinc-900 transition-colors cursor-pointer"
+          className="focus-sovereign flex items-center gap-2 px-5 py-2.5 rounded-xl border border-zinc-800 text-xs font-semibold text-zinc-400 hover:text-white hover:bg-zinc-900 transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Team</span>
@@ -268,7 +275,7 @@ export default function Step3_BusinessConnections({
         <button
           type="button"
           onClick={onNext}
-          className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-2.5 rounded-xl bg-cyber-green text-zinc-950 text-xs font-bold hover:bg-white hover:shadow-lg hover:shadow-cyber-green/20 transition-all cursor-pointer"
+          className="focus-sovereign flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-2.5 rounded-xl bg-cyber-green text-zinc-950 text-xs font-bold hover:bg-white hover:shadow-lg hover:shadow-cyber-green/20 transition-all cursor-pointer"
         >
           <span>Next: Review & Download</span>
           <ArrowRight className="w-4 h-4" />

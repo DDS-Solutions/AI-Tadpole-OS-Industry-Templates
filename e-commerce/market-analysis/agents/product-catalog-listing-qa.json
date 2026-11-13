@@ -1,22 +1,69 @@
 {
+  "$schema": "https://tadpoleos.dev/schemas/agent-v1.json",
   "id": "product-catalog-listing-qa",
   "name": "E-Commerce Catalog & Listing QA",
-  "role": "E-Commerce Catalog & Listing QA",
+  "role": "Storefront SKU, Pricing & Inventory Auditor",
   "department": "Product",
-  "description": "Scans digital product catalogs for missing attributes, image errors, suppressed SKUs, and marketplace policy violations.",
-  "status": "idle",
+  "description": "Audits SKU feeds against supplier cost sheets and compliance copy rules, flags below-cost pricing anomalies, and stages catalog fix manifests for merchandising approval.",
   "model_config": {
-    "provider": "google",
-    "model_id": "gemma4:31b",
-    "system_prompt": "You are an E-Commerce Catalog & Listing QA Specialist. You audit product listings across channels for missing dimensions, broken variant links, and search suppression. Follow the associated workflow SOP."
+    "system_prompt": "You audit e-commerce product catalogs for SKU mismatches, missing GTIN/dimensions, zero-dollar or below-margin pricing glitches, and unverified product claims. Write staged catalog exception manifests for merchandising sign-off rather than mutating live listings autonomously. Follow catalog_integrity. Operate strictly within verified inputs, approved SOPs, and local workspace records. Separate confirmed facts from assumptions and escalate ambiguity or policy conflicts instead of guessing. Require explicit human approval before writing external deliverables, altering production state, committing binding terms, or handling regulated records.",
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "max_turns": 24
+  },
+  "model_config2": {
+    "provider": "ollama-cloud",
+    "model_id": "gemma4:31b-cloud",
+    "temperature": 0.1,
+    "max_turns": 16
+  },
+  "model_config3": {
+    "provider": "ollama",
+    "model_id": "gemma4:e4b",
+    "temperature": 0.1,
+    "max_turns": 24
   },
   "skills": [
     "read_file",
-    "grep_search"
+    "grep_search",
+    "write_file"
   ],
   "workflows": [
     "catalog_integrity"
   ],
+  "status": "idle",
   "mcp_tools": [],
-  "requires_oversight": false
+  "requires_oversight": true,
+  "hooks": ["before_file_write", "after_tool_result"],
+  "input_schema": {
+    "type": "object",
+    "required": ["catalog_feed_path", "price_floor_sheet_path"],
+    "properties": {
+      "catalog_feed_path": { "type": "string" },
+      "price_floor_sheet_path": { "type": "string" }
+    }
+  },
+  "output_contract": {
+    "schema": {
+      "type": "object",
+      "required": ["anomalies", "blocked_skus", "audit_report_path"],
+      "properties": {
+        "anomalies": { "type": "array", "items": { "type": "object" } },
+        "blocked_skus": { "type": "array", "items": { "type": "string" } },
+        "audit_report_path": { "type": "string" }
+      }
+    }
+  },
+  "oversight_policies": [
+    {
+      "applies_to": ["catalog_price_publish"],
+      "approver_role": "Merchandising Manager",
+      "threshold": "Every live price update or quarantined SKU release"
+    }
+  ],
+  "metadata": {
+    "base_system_prompt": "You audit e-commerce product catalogs for SKU mismatches, missing GTIN/dimensions, zero-dollar or below-margin pricing glitches, and unverified product claims. Write staged catalog exception manifests for merchandising sign-off rather than mutating live listings autonomously. Follow catalog_integrity.",
+    "prompt_includes": ["sovereign-guardrails.md", "oversight-gate.md"]
+  }
 }

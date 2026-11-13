@@ -3,7 +3,7 @@
   "name": "Utility Work Order & Infrastructure Costing",
   "version": "1.0.0",
   "description": "Utilities Operations: Equipment preventative maintenance, job costing, and safety audits.",
-  "industry": "critical-infrastructure",
+  "industry": "Critical Infrastructure",
   "tags": [
     "utilities",
     "grid-maintenance",
@@ -11,14 +11,15 @@
     "synthesis"
   ],
   "defaults": {
-    "model": "gemma4:31b",
-    "temperature": 0.2
+    "model": "gemma4:31b-cloud",
+    "temperature": 0.2,
+    "provider": "ollama-cloud"
   },
   "roster": [
     {
       "id": "operations-equipment-maintenance-clerk",
       "path": "agents/operations-equipment-maintenance-clerk.json",
-      "supervisor": null,
+      "supervisor": "compliance-osha-safety-clerk",
       "priority": "normal"
     },
     {
@@ -30,7 +31,7 @@
     {
       "id": "finance-job-costing-estimator",
       "path": "agents/finance-job-costing-estimator.json",
-      "supervisor": null,
+      "supervisor": "compliance-osha-safety-clerk",
       "priority": "normal"
     }
   ],
@@ -39,5 +40,7 @@
     "operations-equipment-maintenance-clerk",
     "compliance-osha-safety-clerk",
     "finance-job-costing-estimator"
-  ]
+  ],
+  "id": "utilities-maintenance-synthesizer",
+  "maturity": "starter"
 }
